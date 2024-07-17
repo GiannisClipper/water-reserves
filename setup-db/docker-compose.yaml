@@ -1,0 +1,41 @@
+services:
+
+  water_reserves_db:
+    image: postgres:14
+    container_name: water_reserves_db
+    restart: always
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=pass5678
+      - POSTGRES_DB=water_reserves
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    volumes:
+      - 'water_reserves_db_volume:/var/lib/postgresql/data/'
+
+  water_reserves_pgadmin:
+    image: dpage/pgadmin4:8.9
+    container_name: water_reserves_pgadmin
+    restart: always
+    expose:
+      - 5050
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=giannisclipper@gmail.com 
+      - PGADMIN_DEFAULT_PASSWORD=pass5678
+    volumes:
+      - water_reserves_pgadmin_volume:/var/lib/pgadmin
+
+volumes:
+  water_reserves_db_volume:
+  water_reserves_pgadmin_volume:
