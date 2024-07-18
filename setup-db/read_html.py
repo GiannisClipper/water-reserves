@@ -41,16 +41,25 @@ def read_savings( htmlfile ):
             values = list( map( lambda td: td.text, tds ) )
             for i, v in enumerate( values ):
 
-                # Format data from dd/mm/yyyy to yyyy-mm-dd
-
                 if ( i == 0 ):
+
+                    # Format data from dd/mm/yyyy to yyyy-mm-dd
                     d, m, y = v.split( '/' )
                     values[ i ] = f'{y}-{m}-{d}'
                 
-                # Remove dots and spaces from values
-
                 else:
+                    # Remove dots and spaces from values
                     values[ i ] = values[ i ].strip().replace( '.', '' )
+
+                    # Handle invalid values
+                    try:
+                        values[ i ] = int( values[ i ] )
+                    except Exception as error:
+                        print( f'Handle missing values in {values[ 0 ]}' )
+                        if len( data ) > 1:
+                            values[ i ] = data[ -1 ][ i ]
+                        else:
+                            values[ i ] = 0
 
             data.append( values )
 
