@@ -3,13 +3,13 @@ import requests
 
 import sys
 
-def request_html_savings_yearly( year ):
+def request_savings_yearly( year ):
 
     print( f'- Year: {year}' )
 
     # Check if data already exists (as html file) 
 
-    htmlfile = f'./html/{year}.html'
+    htmlfile = f'./savings/html/{year}.html'
     if os.path.exists( htmlfile ):
         print( f'Found: {htmlfile}' )
         return
@@ -18,7 +18,7 @@ def request_html_savings_yearly( year ):
 
     URL = f'https://www.eydap.gr/el/Controls/GeneralControls/SavingsDetails.aspx?DaysSpan=Year&Date=31-12-{year}'
     print( f'Request: {URL}' )
-    r = requests.get( URL, verify='../../helpers/eydap.gr.cert' )
+    r = requests.get( URL, verify='../helpers/eydap.gr.cert' )
     if r.status_code != 200:
         print( f'Error: {r.status_code}' )
         return
@@ -47,10 +47,10 @@ if __name__ == "__main__":
             toYear = int( sys.argv[ 2 ] )
 
         for year in range( int( fromYear ), int( toYear ) + 1 ):
-            request_html_savings_yearly( year )
+            request_savings_yearly( year )
 
     except Exception as error:
         print( 'Error: ' + repr( error ) )
-        print ( 'Syntax example: python request-html.py 2021' )
-        print ( 'Syntax example: python request-html.py 2021 2024' )
+        print ( 'Syntax example: python request_savings.py 2021' )
+        print ( 'Syntax example: python request_savings.py 2021 2024' )
 
