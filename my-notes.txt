@@ -1,5 +1,21 @@
+# PostgreSQL
+
 Run PostgreSQL and PGAdmin using docker compose
 https://medium.com/@vishal.sharma./run-postgresql-and-pgadmin-using-docker-compose-34120618bcf9
 
 Setting up PostgreSQL and pgAdmin 4 with Docker
 https://medium.com/@marvinjungre/get-postgresql-and-pgadmin-4-up-and-running-with-docker-4a8d81048aea
+
+
+# EYDAP.GR certificate
+
+Unable to get local issuer certificate when using requests
+https://stackoverflow.com/a/75646345/12138247
+
+
+# BeautifulSoup
+
+Implementing Web Scraping in Python with BeautifulSoup
+https://www.geeksforgeeks.org/implementing-web-scraping-python-beautiful-soup/
+
+  - to install the html parser: pip3 install html5lib

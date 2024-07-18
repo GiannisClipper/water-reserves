@@ -3,15 +3,15 @@ import requests
 
 import sys
 
-def request_savings_yearly( year ):
+def request_html_savings_yearly( year ):
 
     print( f'- Year: {year}' )
 
     # Check if data already exists (as html file) 
 
-    filename = f'./html/{year}.html'
-    if os.path.exists( filename ):
-        print( f'Found: {filename}' )
+    htmlfile = f'./html/{year}.html'
+    if os.path.exists( htmlfile ):
+        print( f'Found: {htmlfile}' )
         return
 
     # Request data 
@@ -26,8 +26,8 @@ def request_savings_yearly( year ):
     # Save data into HTML file
 
     try: 
-        print( f'Save into: {filename}' )
-        with open( filename, 'w' ) as f:
+        print( f'Write into: {htmlfile}' )
+        with open( htmlfile, 'w' ) as f:
             f.writelines( r.text )
     except Exception as error:
         print( f'Error: {error}' )
@@ -35,19 +35,22 @@ def request_savings_yearly( year ):
 
 if __name__ == "__main__":
 
-    n = len( sys.argv )
+    try:
+        n = len( sys.argv )
+        if n < 2 or n > 3:
+            raise Exception( 'Incorrect number of parameters.' )
 
-    if n < 2 or n > 3:
-        print ( 'Error: Incorrect number of parameters.' )
+        fromYear = int( sys.argv[ 1 ] )
+        toYear = int( sys.argv[ 1 ] )
+
+        if n == 3:
+            toYear = int( sys.argv[ 2 ] )
+
+        for year in range( int( fromYear ), int( toYear ) + 1 ):
+            request_html_savings_yearly( year )
+
+    except Exception as error:
+        print( 'Error: ' + repr( error ) )
         print ( 'Syntax example: python request-html.py 2021' )
         print ( 'Syntax example: python request-html.py 2021 2024' )
-        exit( -1 )
 
-    fromYear = sys.argv[ 1 ]
-    toYear = sys.argv[ 1 ]
-
-    if n == 3:
-        toYear = sys.argv[ 2 ]
-
-    for year in range( int( fromYear ), int( toYear ) + 1 ):
-        request_savings_yearly( year )
