@@ -19,3 +19,9 @@ Implementing Web Scraping in Python with BeautifulSoup
 https://www.geeksforgeeks.org/implementing-web-scraping-python-beautiful-soup/
 
   - to install the html parser: pip3 install html5lib
+
+
+# Psycopg2 (to use Postgres within scripts)
+
+Introduction to Psycopg2 module in Python
+https://www.geeksforgeeks.org/introduction-to-psycopg2-module-in-python/
