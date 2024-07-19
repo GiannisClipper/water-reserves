@@ -20,7 +20,7 @@ def request_yearly( year ):
     print( f'Request: {URL}' )
     r = requests.get( URL, verify='../helpers/eydap.gr.cert' )
     if r.status_code != 200:
-        print( f'Error: {r.status_code}' )
+        print( f'Error: {r.status_code} {r.reason}' )
         return
 
     # Save data into HTML file

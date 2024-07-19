@@ -4,9 +4,11 @@ from connect_db import connectDB
 
 from create_tables import create_reservoirs, create_savings
 from create_tables import create_factories, create_production
+from create_tables import create_locations, create_weather
 
 from insert_rows import insert_reservoirs, insert_savings
 from insert_rows import insert_factories, insert_production
+from insert_rows import insert_locations, insert_weather
 
 if __name__ == "__main__":
 
@@ -15,7 +17,7 @@ if __name__ == "__main__":
         if n < 2:
             raise Exception( 'No tables defined.' )
 
-        tables = [ 'reservoirs', 'savings', 'factories', 'production' ]
+        tables = [ 'reservoirs', 'savings', 'factories', 'production', 'locations', 'weather' ]
         names = sys.argv[ 1: ]
         for name in names:
             if not name in tables:
@@ -26,6 +28,7 @@ if __name__ == "__main__":
         print ( 'Syntax example: python make_tables.py reservoirs' )
         print ( 'Syntax example: python make_tables.py reservoirs savings' )
         print ( 'Syntax example: python make_tables.py factories production' )
+        print ( 'Syntax example: python make_tables.py locations weather' )
         exit( -1 )
     
     try:
@@ -49,6 +52,14 @@ if __name__ == "__main__":
             elif name == 'production':
                 create_production( conn )
                 insert_production( conn )
+
+            elif name == 'locations':
+                create_locations( conn )
+                insert_locations( conn )
+
+            elif name == 'weather':
+                create_weather( conn )
+                insert_weather( conn )
 
         conn.close()
         

@@ -95,3 +95,57 @@ def create_production( conn ):
     print( f'Create table production' )
     cursor.execute( sql )
     conn.commit()
+
+def create_locations( conn ):
+
+    # Create a cursor object
+    cursor = conn.cursor()
+
+    # Drop table if already exists (as well as depended tables)
+    cursor.execute( "DROP TABLE IF EXISTS weather" )
+    cursor.execute( "DROP TABLE IF EXISTS locations" )
+
+    # Create table
+    sql = '''
+        CREATE TABLE locations (
+            id SERIAL PRIMARY KEY,
+            name_el VARCHAR(30) UNIQUE NOT NULL,
+            name_en VARCHAR(30) UNIQUE NOT NULL,
+            lat REAL,
+            lon REAL
+        );
+    '''
+
+    print( f'Create table locations' )
+    cursor.execute( sql )
+    conn.commit()
+
+def create_weather( conn ):
+
+    # Create a cursor object
+    cursor = conn.cursor()
+
+    # Drop table if already exists
+    cursor.execute( "DROP TABLE IF EXISTS weather" )
+
+    # Create table
+    sql = '''
+        CREATE TABLE weather (
+            id SERIAL PRIMARY KEY,
+            location_id SERIAL NOT NULL,
+            date TEXT NOT NULL,
+            weather_code INTEGER,
+            temperature_2m_mean REAL,
+            temperature_2m_min REAL,
+            temperature_2m_max REAL,
+            precipitation_sum REAL,
+            rain_sum REAL,
+            snowfall_sum REAL,
+            FOREIGN KEY( location_id ) REFERENCES locations( id ),
+            UNIQUE( location_id, date )
+        );
+    '''
+
+    print( f'Create table weather' )
+    cursor.execute( sql )
+    conn.commit()

@@ -1,8 +1,8 @@
-from read_csv import read_reservoirs, read_factories
-
 from os import listdir
 from os.path import isfile, join
+from read_csv import read_reservoirs, read_factories, read_locations
 from read_html import read_html
+from read_json import read_weather
 
 def insert_reservoirs( conn ):
 
@@ -32,7 +32,7 @@ def insert_savings( conn ):
 
     for htmlfile in htmlfiles:
 
-        # Get content from csv
+        # Get content from html
         headers, data = read_html( join( path, htmlfile ) )
 
         # Create a cursor object
@@ -77,7 +77,7 @@ def insert_production( conn ):
 
     for htmlfile in htmlfiles:
 
-        # Get content from csv
+        # Get content from html
         headers, data = read_html( join( path, htmlfile ) )
 
         # Create a cursor object
@@ -93,3 +93,67 @@ def insert_production( conn ):
         print( f'Insert into production ({htmlfile})' )
         cursor.execute( sql )
         conn.commit()
+
+def insert_locations( conn ):
+
+    # Get content from csv
+    headers, data = read_locations()
+
+    # Create a cursor object
+    cursor = conn.cursor()
+
+    sql = '''INSERT INTO locations ( name_el, name_en, lat, lon ) VALUES '''
+    for row in data:
+        name_el, name_en, lat, lon = row
+        row = f"('{name_el}','{name_en}',{lat},{lon}),"
+        sql += row
+    sql = sql[ 0:-1 ] + ';'
+    # print( sql )
+
+    print( f'Insert into locations' )
+    cursor.execute( sql )
+    conn.commit()
+
+def insert_weather( conn ):
+
+    headers, locations = read_locations()
+
+    for ilocation, location in enumerate( locations ):
+
+        location_id = ilocation + 1
+        name_el, name_en, lat, lon = location
+
+        path = f'./weather/json/{name_en}'
+        jsonfiles = [ f for f in listdir( path ) if isfile( join( path, f ) ) ]
+        jsonfiles.sort()
+
+        for jsonfile in jsonfiles:
+
+            # Get content from json
+            data = read_weather( join( path, jsonfile ) )
+
+            # Create a cursor object
+            cursor = conn.cursor()
+
+            sql = '''INSERT INTO weather ( 
+                date, location_id, weather_code, 
+                temperature_2m_min, temperature_2m_mean, temperature_2m_max, 
+                precipitation_sum, rain_sum, snowfall_sum 
+            ) VALUES '''
+            for date, weather_code, \
+                temperature_2m_min, temperature_2m_mean, temperature_2m_max, \
+                precipitation_sum, rain_sum, snowfall_sum in data:
+                oneDate = f"(\
+                    '{date}',{location_id},{weather_code},\
+                    {temperature_2m_min},{temperature_2m_mean},{temperature_2m_max},\
+                    {precipitation_sum},{rain_sum},{snowfall_sum}\
+                ),"
+                sql += oneDate
+            sql = sql[ 0:-1 ] + ';'
+            # print( sql )
+
+            print( f'Insert into weather ({jsonfile})' )
+            cursor.execute( sql )
+            conn.commit()
+
+
