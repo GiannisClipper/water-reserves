@@ -1,7 +1,7 @@
 import os
 from bs4 import BeautifulSoup 
 
-def read_savings( htmlfile ):
+def read_html( htmlfile ):
 
     # Read html file
 
@@ -32,17 +32,16 @@ def read_savings( htmlfile ):
 
         ths = trs[ 0 ].findAll( 'th' )
         headers = list( map( lambda th: th.text, ths ) )
-        # print( headers )
 
         # Get data
 
-        for tr in trs[ 1: ]:
+        # trs[ 0 ] = last day of previous year
+        for tr in trs[ 1: ]: 
             tds = tr.findAll( 'td' )
             values = list( map( lambda td: td.text, tds ) )
             for i, v in enumerate( values ):
 
                 if ( i == 0 ):
-
                     # Format data from dd/mm/yyyy to yyyy-mm-dd
                     d, m, y = v.split( '/' )
                     values[ i ] = f'{y}-{m}-{d}'
@@ -51,19 +50,21 @@ def read_savings( htmlfile ):
                     # Remove dots and spaces from values
                     values[ i ] = values[ i ].strip().replace( '.', '' )
 
-                    # Handle invalid values
+                    # Handle missing values
                     try:
                         values[ i ] = int( values[ i ] )
                     except Exception as error:
-                        print( f'Handle missing values in {values[ 0 ]}' )
-                        if len( data ) > 1:
+                        print( f'* Handle missing values in {values[ 0 ]}' )
+                        if len( data ) > 0:
                             values[ i ] = data[ -1 ][ i ]
                         else:
                             values[ i ] = 0
 
             data.append( values )
 
-        # print( data )
+        # Remove first row if represents the last day of previous year
+        if data[ 0 ][ 0 ][ 0:4 ] != data[ 1 ][ 0 ][ 0:4 ]:
+            data = data[ 1: ]
 
         return headers, data
 

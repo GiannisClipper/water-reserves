@@ -9,14 +9,14 @@ def request_yearly( year ):
 
     # Check if data already exists (as html file) 
 
-    htmlfile = f'./savings/html/{year}.html'
+    htmlfile = f'./production/html/{year}.html'
     if os.path.exists( htmlfile ):
         print( f'Found: {htmlfile}' )
         return
 
     # Request data 
 
-    URL = f'https://www.eydap.gr/el/Controls/GeneralControls/SavingsDetails.aspx?DaysSpan=Year&Date=31-12-{year}'
+    URL = f'https://www.eydap.gr/el/Controls/GeneralControls/DrinkingWaterProductionDetails.aspx?DaysSpan=Year&Date=31-12-{year}'
     print( f'Request: {URL}' )
     r = requests.get( URL, verify='../helpers/eydap.gr.cert' )
     if r.status_code != 200:
@@ -51,6 +51,6 @@ if __name__ == "__main__":
 
     except Exception as error:
         print( 'Error: ' + repr( error ) )
-        print ( 'Syntax example: python request_savings.py 2021' )
-        print ( 'Syntax example: python request_savings.py 2021 2024' )
+        print ( 'Syntax example: python request_production.py 2021' )
+        print ( 'Syntax example: python request_production.py 2021 2024' )
 
