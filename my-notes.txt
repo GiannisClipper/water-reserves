@@ -25,3 +25,18 @@ https://www.geeksforgeeks.org/implementing-web-scraping-python-beautiful-soup/
 
 Introduction to Psycopg2 module in Python
 https://www.geeksforgeeks.org/introduction-to-psycopg2-module-in-python/
+
+
+# Python virtual environment
+
+$ python -m venv venv
+
+$ source ./venv/bin/activate
+
+(venv) $ pip install -r requirements.txt
+
+$ uvicorn main:app --port=8000 --reload
+
+$ http://localhost:8000
+
+$ http://localhost:8000/docs (swagger-ui)
