@@ -1,5 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+# from starlette.requests import Request
+# from starlette.responses import JSONResponse
+# from traceback import print_exception
 
 import src.db as db
 
@@ -21,6 +24,17 @@ async def lifespan( app: FastAPI ):
     await db.close_pool()
 
 app = FastAPI( lifespan=lifespan )
+
+# Catch `Exception` globally in FastAPI
+# https://stackoverflow.com/a/62407111/12138247
+# async def catch_exceptions_middleware( request: Request, call_next ):
+#     try:
+#         return await call_next( request )
+#     except Exception as e:
+#         print_exception( e )
+#         return JSONResponse( repr( e ), status_code=500 )
+
+# app.middleware( 'http' )( catch_exceptions_middleware )
 
 app.include_router( reservoirs_router.router )
 app.include_router( savings_router.router )
