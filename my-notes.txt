@@ -27,6 +27,16 @@ Introduction to Psycopg2 module in Python
 https://www.geeksforgeeks.org/introduction-to-psycopg2-module-in-python/
 
 
+# FastAPI
+
+Fast API Tutorial
+https://www.youtube.com/playlist?list=PLqAmigZvYxIL9dnYeZEhMoHcoP4zop8-p
+
+FastAPI psycopg3 Tutorial
+https://www.fullstackbook.com/blog
+https://github.com/fullstackbook/fullstackbook-fastapi-psycopg3
+
+
 # Python virtual environment
 
 $ python -m venv venv
