@@ -1,8 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from src.db.factories import select_all, select_one_by_id
 
-from src.db import get_async_pool
-
 router = APIRouter( prefix="/api/v1/factories" )
 
 @router.get( "" )

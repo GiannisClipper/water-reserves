@@ -1,8 +1,7 @@
 from pydantic import BaseModel
 from psycopg.rows import class_row
 
-from src.db import get_async_pool
-pool = get_async_pool()
+from src.db import pool
 
 class Factory( BaseModel ):
     id: int
