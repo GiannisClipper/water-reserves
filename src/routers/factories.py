@@ -1,12 +1,19 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from src.db.factories import select_all, select_one_by_id
+
+from src.db import get_async_pool
 
 router = APIRouter( prefix="/api/v1/factories" )
 
 @router.get( "" )
 async def get_all():
-    return []
+    records = await select_all()
+    return records
 
 @router.get( "/{id}" )
 async def get_one_by_id( id: int ):
-    return { "id": id }
+    record = await select_one_by_id( id )
+    if not record:
+        raise HTTPException( 404, detail="The requested id not found." )
+    return record
 
