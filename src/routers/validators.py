@@ -23,21 +23,21 @@ def _validate_date( value: str | None ):
     
     raise;
 
-def validate_from_date( value: str | None ):
+def validate_from_time( value: str | None ):
 
     try:
         return _validate_date( value )
 
     except Exception as error:
-        raise HTTPException( 400, "Invalid from_date parameter." )
+        raise HTTPException( 400, "Invalid from_time parameter." )
 
-def validate_to_date( value: str | None ):
+def validate_to_time( value: str | None ):
 
     try:
         return _validate_date( value )
 
     except Exception as error:
-        raise HTTPException( 400, "Invalid to_date parameter." )
+        raise HTTPException( 400, "Invalid to_time parameter." )
 
 
 def _validate_id_filter( value: str | None ):

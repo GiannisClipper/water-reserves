@@ -14,19 +14,19 @@ from src.db import pool
 #     quantity: int
 
 async def select_all( 
-    from_date: str | None, 
-    to_date: str | None, 
+    from_time: str | None, 
+    to_time: str | None, 
     reservoir_filter: str | None,
     month_filter: str | None
 ):
     where_clause = []
     async with pool.connection() as conn, conn.cursor() as cur:
 
-        if from_date != None:
-            where_clause.append( f"date>='{from_date}'" )
+        if from_time != None:
+            where_clause.append( f"date>='{from_time}'" )
 
-        if to_date != None:
-            where_clause.append( f"date<='{to_date}'" )
+        if to_time != None:
+            where_clause.append( f"date<='{to_time}'" )
 
         if reservoir_filter != None:
             where_clause.append( f"reservoir_id IN ({reservoir_filter})" )
