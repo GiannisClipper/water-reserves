@@ -28,7 +28,7 @@ def validate_from_time( value: str | None ):
     try:
         return _validate_date( value )
 
-    except Exception as error:
+    except Exception:
         raise HTTPException( 400, "Invalid parameter value (from_time)." )
 
 def validate_to_time( value: str | None ):
@@ -36,11 +36,14 @@ def validate_to_time( value: str | None ):
     try:
         return _validate_date( value )
 
-    except Exception as error:
+    except Exception:
         raise HTTPException( 400, "Invalid parameter value (to_time)." )
 
 
 def _validate_id_filter( value: str | None ):
+
+    if value == '':
+        value = None
 
     if value == None:
         return value
@@ -56,11 +59,14 @@ def validate_reservoir_filter( value: str | None ):
     try:
         return _validate_id_filter( value )
 
-    except Exception as error:
+    except Exception:
         raise HTTPException( 400, "Invalid parameter value (reservoir_filter)." )
 
 
 def validate_month_filter( value: str | None ):
+
+    if value == '':
+        value = None
 
     if value == None:
         return value
@@ -75,11 +81,14 @@ def validate_month_filter( value: str | None ):
         value = ','.join( value )
         return value
 
-    except Exception as error:
+    except Exception:
         raise HTTPException( 400, "Invalid parameter value (month_filter)." )
 
 
-def validate_reservoir_aggregation( value: str | None ):
+def _validate_true_false( value: str | None ):
+
+    if value == '':
+        value = None
 
     if value == None:
         return value
@@ -90,4 +99,27 @@ def validate_reservoir_aggregation( value: str | None ):
     if value.lower() == 'false':
         return None
 
-    raise HTTPException( 400, "Invalid parameter value (reservoir_aggregation)." )
+    raise;
+
+
+def validate_reservoir_aggregation( value: str | None ):
+
+    try:
+        return _validate_true_false( value )
+
+    except Exception:
+        raise HTTPException( 400, "Invalid parameter value (reservoir_aggregation)." )
+
+
+def validate_time_aggregation( value: str | None ):
+
+    if value == '':
+        value = None
+
+    if value == None:
+        return value
+    
+    if value.lower() in ( 'month', 'year', 'hydrologicyear' ):
+        return value.lower()
+
+    raise HTTPException( 400, "Invalid parameter value (time_aggregation)." )
