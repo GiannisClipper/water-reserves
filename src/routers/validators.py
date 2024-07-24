@@ -29,7 +29,7 @@ def validate_from_time( value: str | None ):
         return _validate_date( value )
 
     except Exception as error:
-        raise HTTPException( 400, "Invalid from_time parameter." )
+        raise HTTPException( 400, "Invalid parameter value (from_time)." )
 
 def validate_to_time( value: str | None ):
 
@@ -37,7 +37,7 @@ def validate_to_time( value: str | None ):
         return _validate_date( value )
 
     except Exception as error:
-        raise HTTPException( 400, "Invalid to_time parameter." )
+        raise HTTPException( 400, "Invalid parameter value (to_time)." )
 
 
 def _validate_id_filter( value: str | None ):
@@ -57,7 +57,7 @@ def validate_reservoir_filter( value: str | None ):
         return _validate_id_filter( value )
 
     except Exception as error:
-        raise HTTPException( 400, "Invalid reservoir_filter parameter." )
+        raise HTTPException( 400, "Invalid parameter value (reservoir_filter)." )
 
 
 def validate_month_filter( value: str | None ):
@@ -76,4 +76,18 @@ def validate_month_filter( value: str | None ):
         return value
 
     except Exception as error:
-        raise HTTPException( 400, "Invalid month_filter parameter." )
+        raise HTTPException( 400, "Invalid parameter value (month_filter)." )
+
+
+def validate_reservoir_aggregation( value: str | None ):
+
+    if value == None:
+        return value
+
+    if value.lower() == 'true':
+        return value
+
+    if value.lower() == 'false':
+        return None
+
+    raise HTTPException( 400, "Invalid parameter value (reservoir_aggregation)." )
