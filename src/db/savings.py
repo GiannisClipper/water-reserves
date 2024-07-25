@@ -13,7 +13,7 @@ from src.db import pool
 #     date: str
 #     quantity: int
 
-def create_base_query( from_time, to_time, reservoir_filter, month_filter ):
+def create_base_query( from_time, to_time, reservoir_filter, interval_filter ):
 
     where_clause = []
 
@@ -26,8 +26,9 @@ def create_base_query( from_time, to_time, reservoir_filter, month_filter ):
     if reservoir_filter:
         where_clause.append( f"reservoir_id IN ({reservoir_filter})" )
 
-    if month_filter:
-        where_clause.append( f"SUBSTR(date,6,2) IN ({month_filter})" )
+    if interval_filter:
+        op = 'AND' if interval_filter[ 0 ] <= interval_filter[ 1 ] else 'OR'
+        where_clause.append( f"(SUBSTR(date,6,5)>='{interval_filter[ 0 ]}' {op} SUBSTR(date,6,5)<='{interval_filter[ 1 ]}')" )
 
     if len( where_clause ) > 0:
         where_clause = ' AND '.join( where_clause )
@@ -128,14 +129,14 @@ async def select_all(
     from_time: str | None, 
     to_time: str | None, 
     reservoir_filter: str | None,
-    month_filter: str | None,
+    interval_filter: str | None,
     reservoir_aggregation: str | None,
     time_aggregation: str | None,
     year_start: str | None
 ):
     async with pool.connection() as conn, conn.cursor() as cur:
 
-        query = create_base_query( from_time, to_time, reservoir_filter, month_filter )
+        query = create_base_query( from_time, to_time, reservoir_filter, interval_filter )
         print( 'base_query:', query )
 
         if reservoir_aggregation:
@@ -146,9 +147,9 @@ async def select_all(
             query = expand_query_with_month_aggregation( query )
             print( 'with_month_aggregation:', query )
 
-        elif time_aggregation == 'year':
+        if time_aggregation == 'year':
 
-            if ( year_start == None ):
+            if not year_start:
                 query = expand_query_with_year_aggregation( query )
                 print( 'with_year_aggregation:', query )
 

@@ -81,7 +81,7 @@ def validate_reservoir_filter( value: str | None ):
         raise HTTPException( 400, "Invalid parameter value (reservoir_filter)." )
 
 
-def validate_month_filter( value: str | None ):
+def validate_interval_filter( value: str | None ):
 
     if value == '':
         value = None
@@ -91,16 +91,14 @@ def validate_month_filter( value: str | None ):
 
     try:
         value = value.split( ',' )
-        months = ( '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' )
-        faults = list( filter( lambda x: x not in months, value ) )
-        if len( faults ) > 0:
-            raise Exception
-        value = list( map( lambda x: f"'{str( x )}'", value ) )
-        value = ','.join( value )
+        assert len( value ) == 2
+        value[ 0 ] = _validate_month_day( value[ 0 ] )
+        value[ 1 ] = _validate_month_day( value[ 1 ] )
+
         return value
 
     except Exception:
-        raise HTTPException( 400, "Invalid parameter value (month_filter)." )
+        raise HTTPException( 400, "Invalid parameter value (interval_filter)." )
 
 
 def _validate_true_false( value: str | None ):
