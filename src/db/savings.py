@@ -33,9 +33,11 @@ def create_base_query( from_time, to_time, reservoir_filter, interval_filter ):
     if len( where_clause ) > 0:
         where_clause = ' AND '.join( where_clause )
         where_clause = f'WHERE {where_clause}'
+    else:
+        where_clause = ''
 
     return f'''
-        SELECT id, date AS time, reservoir_id, quantity 
+        SELECT id, date, reservoir_id, quantity 
         FROM savings
         {where_clause}
     '''
@@ -45,12 +47,12 @@ def expand_query_with_reservoir_aggregation( query ):
 
     return f'''
         SELECT 
-        a.time AS time, '' AS reservoir_id, SUM(a.quantity) AS quantity 
+        a.date AS date, '' AS reservoir_id, SUM(a.quantity) AS quantity 
         FROM (
         {query}
         ) a 
         GROUP BY 
-        a.time
+        a.date
     '''
 
 
@@ -58,14 +60,14 @@ def expand_query_with_month_aggregation( query ):
 
     return f'''
         SELECT 
-        SUBSTR(b.time,1,7) AS time, 
+        SUBSTR(b.date,1,7) AS month, 
         b.reservoir_id AS reservoir_id, 
         AVG(b.quantity) AS quantity 
         FROM (
         {query}
         ) b 
         GROUP BY 
-        SUBSTR(b.time,1,7), 
+        SUBSTR(b.date,1,7), 
         b.reservoir_id
     '''
 
@@ -73,29 +75,29 @@ def expand_query_with_year_aggregation( query ):
 
     return f'''
         SELECT
-        SUBSTR(b.time,1,4) AS time, 
+        SUBSTR(b.date,1,4) AS year, 
         b.reservoir_id AS reservoir_id, 
         AVG(b.quantity) AS quantity 
         FROM (
         {query}
         ) b 
         GROUP BY 
-        SUBSTR(b.time,1,4), 
+        SUBSTR(b.date,1,4), 
         b.reservoir_id
     '''
 
 
 def expand_query_with_custom_year_aggregation( query, year_start ):
 
-    time = f'''
-        CASE WHEN SUBSTR(b.time,6,5)>='{year_start}'
-        THEN SUBSTR(b.time,1,4) || '-' || CAST(SUBSTR(b.time,1,4) AS INTEGER)+1
-        ELSE CAST(SUBSTR(b.time,1,4) AS INTEGER)-1 || '-' || SUBSTR(b.time,1,4) 
+    custom_year = f'''
+        CASE WHEN SUBSTR(b.date,6,5)>='{year_start}'
+        THEN SUBSTR(b.date,1,4) || '-' || CAST(SUBSTR(b.date,1,4) AS INTEGER)+1
+        ELSE CAST(SUBSTR(b.date,1,4) AS INTEGER)-1 || '-' || SUBSTR(b.date,1,4) 
         END'''
 
     query = f'''
         SELECT 
-        {time} AS time,
+        {custom_year} AS custom_year,
         b.reservoir_id AS reservoir_id, b.quantity AS quantity 
         FROM (
         {query}
@@ -104,24 +106,24 @@ def expand_query_with_custom_year_aggregation( query, year_start ):
 
     return f'''
         SELECT 
-        c.time AS time, 
+        c.custom_year AS custom_year, 
         c.reservoir_id AS reservoir_id, 
         AVG(c.quantity) AS quantity 
         FROM (
         {query}
         ) c
         GROUP BY 
-        c.time, 
+        c.custom_year, 
         c.reservoir_id
     '''
 
 
-def expand_query_with_order( query ):
+def expand_query_with_order( query, order ):
 
     return f'''
         {query}
         ORDER BY 
-        time
+        {order}
     '''
 
 
@@ -136,29 +138,33 @@ async def select_all(
 ):
     async with pool.connection() as conn, conn.cursor() as cur:
 
+        order = 'date'
         query = create_base_query( from_time, to_time, reservoir_filter, interval_filter )
-        print( 'base_query:', query )
+        # print( 'base_query:', query )
 
         if reservoir_aggregation:
             query = expand_query_with_reservoir_aggregation( query )
-            print( 'with_reservoir_aggregation:', query )
+            # print( 'with_reservoir_aggregation:', query )
 
         if time_aggregation == 'month':
+            order = 'month'
             query = expand_query_with_month_aggregation( query )
-            print( 'with_month_aggregation:', query )
+            # print( 'with_month_aggregation:', query )
 
         if time_aggregation == 'year':
 
             if not year_start:
+                order = 'year'
                 query = expand_query_with_year_aggregation( query )
-                print( 'with_year_aggregation:', query )
+                # print( 'with_year_aggregation:', query )
 
             else:
+                order = 'custom_year'
                 query = expand_query_with_custom_year_aggregation( query, year_start )
-                print( 'with_custom_year_aggregation:', query )
+                # print( 'with_custom_year_aggregation:', query )
 
-        query = expand_query_with_order( query )
-        print( 'with_order:', query )
+        query = expand_query_with_order( query, order )
+        print( 'query:', query )
 
         await cur.execute( query )
         return await cur.fetchall()
