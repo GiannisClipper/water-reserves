@@ -39,16 +39,16 @@ def month_days( month: str, year: str | None = None ):
         days.pop()
         return days
 
-    if month == "02" and is_leap( year ):
-        days.pop()
-        days.pop()
-        return days
-
     if month == "02":
-        days.pop()
-        days.pop()
-        days.pop()
-        return days
+        if year == None or is_leap( year ):
+            days.pop()
+            days.pop()
+            return days
+        else:
+            days.pop()
+            days.pop()
+            days.pop()
+            return days
 
     raise Exception( 'Invalid month value' )
 

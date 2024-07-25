@@ -4,7 +4,7 @@ from pydantic.functional_validators import AfterValidator
 
 from .validators import validate_from_time, validate_to_time
 from .validators import validate_reservoir_filter, validate_month_filter
-from .validators import validate_reservoir_aggregation, validate_time_aggregation
+from .validators import validate_reservoir_aggregation, validate_time_aggregation, validate_year_start
 
 from src.db.savings import select_all
 
@@ -17,13 +17,14 @@ async def get_all(
     reservoir_filter: Annotated[ str | None, AfterValidator( validate_reservoir_filter ) ] = None, 
     month_filter: Annotated[ str | None, AfterValidator( validate_month_filter ) ] = None, 
     reservoir_aggregation: Annotated[ str | None, AfterValidator( validate_reservoir_aggregation ) ] = None, 
-    time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None
+    time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None,
+    year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
 ):
 
     records = await select_all( 
         from_time, to_time, 
         reservoir_filter, month_filter, 
-        reservoir_aggregation, time_aggregation 
+        reservoir_aggregation, time_aggregation, year_start
     )
 
     return records

@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from src.helpers.time import is_year, is_month, is_day
 
+
 def _validate_date( value: str | None ):
 
     if value == None:
@@ -23,6 +24,22 @@ def _validate_date( value: str | None ):
     
     raise;
 
+
+def _validate_month_day( value: str | None ):
+
+    if value == None:
+        return value
+    
+    month = value[ 0:2 ]
+    sep = value[ 2:3 ]
+    day = value[ 3:5 ]
+
+    if ( is_month( month ) and sep == '-' and is_day( day, month ) ):
+        return value
+    
+    raise;
+
+
 def validate_from_time( value: str | None ):
 
     try:
@@ -30,6 +47,7 @@ def validate_from_time( value: str | None ):
 
     except Exception:
         raise HTTPException( 400, "Invalid parameter value (from_time)." )
+
 
 def validate_to_time( value: str | None ):
 
@@ -119,7 +137,16 @@ def validate_time_aggregation( value: str | None ):
     if value == None:
         return value
     
-    if value.lower() in ( 'month', 'year', 'hydrologicyear' ):
+    if value.lower() in ( 'month', 'year' ):
         return value.lower()
 
     raise HTTPException( 400, "Invalid parameter value (time_aggregation)." )
+
+
+def validate_year_start( value: str | None ):
+
+    try:
+        return _validate_month_day( value )
+
+    except Exception:
+        raise HTTPException( 400, "Invalid parameter value (year_start)." )

@@ -41,6 +41,7 @@ def create_base_query( from_time, to_time, reservoir_filter, month_filter ):
 
 
 def expand_query_with_reservoir_aggregation( query ):
+
     return f'''
         SELECT 
         a.time AS time, '' AS reservoir_id, SUM(a.quantity) AS quantity 
@@ -53,6 +54,7 @@ def expand_query_with_reservoir_aggregation( query ):
 
 
 def expand_query_with_month_aggregation( query ):
+
     return f'''
         SELECT 
         SUBSTR(b.time,1,7) AS time, 
@@ -67,6 +69,7 @@ def expand_query_with_month_aggregation( query ):
     '''
 
 def expand_query_with_year_aggregation( query ):
+
     return f'''
         SELECT
         SUBSTR(b.time,1,4) AS time, 
@@ -81,16 +84,17 @@ def expand_query_with_year_aggregation( query ):
     '''
 
 
-def expand_query_with_hydrologicyear_aggregation( query ):
-    hydrologicyear = '''
-        CASE WHEN SUBSTR(b.time,6,5)>='10-01' 
+def expand_query_with_custom_year_aggregation( query, year_start ):
+
+    time = f'''
+        CASE WHEN SUBSTR(b.time,6,5)>='{year_start}'
         THEN SUBSTR(b.time,1,4) || '-' || CAST(SUBSTR(b.time,1,4) AS INTEGER)+1
         ELSE CAST(SUBSTR(b.time,1,4) AS INTEGER)-1 || '-' || SUBSTR(b.time,1,4) 
         END'''
 
-    query=f'''
+    query = f'''
         SELECT 
-        {hydrologicyear} AS time,
+        {time} AS time,
         b.reservoir_id AS reservoir_id, b.quantity AS quantity 
         FROM (
         {query}
@@ -112,6 +116,7 @@ def expand_query_with_hydrologicyear_aggregation( query ):
 
 
 def expand_query_with_order( query ):
+
     return f'''
         {query}
         ORDER BY 
@@ -125,7 +130,8 @@ async def select_all(
     reservoir_filter: str | None,
     month_filter: str | None,
     reservoir_aggregation: str | None,
-    time_aggregation: str | None
+    time_aggregation: str | None,
+    year_start: str | None
 ):
     async with pool.connection() as conn, conn.cursor() as cur:
 
@@ -141,12 +147,14 @@ async def select_all(
             print( 'with_month_aggregation:', query )
 
         elif time_aggregation == 'year':
-            query = expand_query_with_year_aggregation( query )
-            print( 'with_year_aggregation:', query )
 
-        elif time_aggregation == 'hydrologicyear':
-            query = expand_query_with_hydrologicyear_aggregation( query )
-            print( 'with_hydrologicyear_aggregation:', query )
+            if ( year_start == None ):
+                query = expand_query_with_year_aggregation( query )
+                print( 'with_year_aggregation:', query )
+
+            else:
+                query = expand_query_with_custom_year_aggregation( query, year_start )
+                print( 'with_custom_year_aggregation:', query )
 
         query = expand_query_with_order( query )
         print( 'with_order:', query )
