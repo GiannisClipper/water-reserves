@@ -1,4 +1,6 @@
 from fastapi import APIRouter, Query
+from typing import Annotated
+from pydantic.functional_validators import AfterValidator
 
 from .validators import validate_from_time, validate_to_time
 from .validators import validate_reservoir_filter, validate_month_filter
@@ -10,22 +12,18 @@ router = APIRouter( prefix="/api/v1/savings" )
 
 @router.get( "" )
 async def get_all( 
-    from_time: str | None = None, 
-    to_time: str | None = None, 
-    reservoir_filter: str | None = Query( default=None ),
-    month_filter: str | None = Query( default=None ),
-    reservoir_aggregation: str | None = None,
-    time_aggregation: str | None = None
+    from_time: Annotated[ str | None, AfterValidator( validate_from_time ) ] = None, 
+    to_time: Annotated[ str | None, AfterValidator( validate_to_time ) ] = None, 
+    reservoir_filter: Annotated[ str | None, AfterValidator( validate_reservoir_filter ) ] = None, 
+    month_filter: Annotated[ str | None, AfterValidator( validate_month_filter ) ] = None, 
+    reservoir_aggregation: Annotated[ str | None, AfterValidator( validate_reservoir_aggregation ) ] = None, 
+    time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None
 ):
-    from_time = validate_from_time( from_time )
-    to_time = validate_to_time( to_time )
 
-    reservoir_filter = validate_reservoir_filter( reservoir_filter )
-    month_filter = validate_month_filter( month_filter )
-    
-    reservoir_aggregation = validate_reservoir_aggregation( reservoir_aggregation )
-    time_aggregation = validate_time_aggregation( time_aggregation )
-
-    records = await select_all( from_time, to_time, reservoir_filter, month_filter, reservoir_aggregation, time_aggregation )
+    records = await select_all( 
+        from_time, to_time, 
+        reservoir_filter, month_filter, 
+        reservoir_aggregation, time_aggregation 
+    )
 
     return records

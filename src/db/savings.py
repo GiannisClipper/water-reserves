@@ -83,7 +83,7 @@ def expand_query_with_year_aggregation( query ):
 
 def expand_query_with_hydrologicyear_aggregation( query ):
     hydrologicyear = '''
-        CASE WHEN SUBSTR(b.time,5,2)>='10' 
+        CASE WHEN SUBSTR(b.time,6,5)>='10-01' 
         THEN SUBSTR(b.time,1,4) || '-' || CAST(SUBSTR(b.time,1,4) AS INTEGER)+1
         ELSE CAST(SUBSTR(b.time,1,4) AS INTEGER)-1 || '-' || SUBSTR(b.time,1,4) 
         END'''
