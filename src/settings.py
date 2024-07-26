@@ -12,6 +12,6 @@ class Settings( BaseSettings ):
     class Config:
         env_file = "resources/.env"
 
-@lru_cache() # according to @lru_cache() will return a singleton object
+@lru_cache() # due to @lru_cache() will return a singleton object
 def get_settings():
     return Settings()

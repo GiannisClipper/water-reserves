@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 pydantic-settings
 psycopg[pool]
+httpx
+pytest
