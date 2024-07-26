@@ -10,7 +10,7 @@ class Settings( BaseSettings ):
     db_password: str = ""
 
     class Config:
-        env_file = ".env"
+        env_file = "resources/.env"
 
 @lru_cache() # according to @lru_cache() will return a singleton object
 def get_settings():
