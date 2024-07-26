@@ -18,7 +18,7 @@ def request_yearly( year ):
 
     URL = f'https://www.eydap.gr/el/Controls/GeneralControls/DrinkingWaterProductionDetails.aspx?DaysSpan=Year&Date=31-12-{year}'
     print( f'Request: {URL}' )
-    r = requests.get( URL, verify='../helpers/eydap.gr.cert' )
+    r = requests.get( URL, verify='../resources/eydap.gr.cert' )
     if r.status_code != 200:
         print( f'Error: {r.status_code} {r.reason}' )
         return
