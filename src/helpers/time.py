@@ -18,7 +18,7 @@ def is_leap( year: str ):
             return True
         return False
 
-    raise Exception( 'Invalid year value.' )
+    raise ValueError( 'Invalid year value.' )
 
 
 def is_month( month: str ):
@@ -50,8 +50,13 @@ def month_days( month: str, year: str | None = None ):
             days.pop()
             return days
 
-    raise Exception( 'Invalid month value' )
+    raise ValueError( 'Invalid month value' )
 
 
 def is_day( day: str, month: str, year: str | None = None ):
-    return day in month_days( month, year )
+
+    if day in month_days( '01' ):
+        return day in month_days( month, year )
+
+    raise ValueError( 'Invalid day value.' )
+
