@@ -1,5 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from psycopg_pool import AsyncConnectionPool
+
 # from starlette.requests import Request
 # from starlette.responses import JSONResponse
 # from traceback import print_exception
@@ -12,16 +14,18 @@ from src.routers import factories as factories_router
 from src.routers import locations as locations_router
 
 from .settings import get_settings
-
 settings = get_settings()
 
 @asynccontextmanager
 async def lifespan( app: FastAPI ):
     # Lifespan Events
     # https://fastapi.tiangolo.com/advanced/events/
-    await db.open_pool()
+    await db.pool.open()
+    await db.pool.wait()
+    # print( db.pool.get_stats() )
     yield
-    await db.close_pool()
+    # print( db.pool.get_stats() )
+    await db.pool.close()
 
 app = FastAPI( lifespan=lifespan )
 
@@ -36,13 +40,13 @@ app = FastAPI( lifespan=lifespan )
 
 # app.middleware( 'http' )( catch_exceptions_middleware )
 
-app.include_router( reservoirs_router.router )
-app.include_router( savings_router.router )
-app.include_router( factories_router.router )
-app.include_router( locations_router.router )
-
 @app.get( '/', description="This is the home endpoint." )
 async def home():
     print( repr( settings ) )
     settings.db_name = 'already printed'
     return { "message": "Water-reserves back-end is up and running..." }
+
+app.include_router( reservoirs_router.router )
+app.include_router( savings_router.router )
+app.include_router( factories_router.router )
+app.include_router( locations_router.router )

@@ -11,12 +11,15 @@ class Reservoir( BaseModel ):
     lon: float | None
 
 async def select_all():
+    result = None
     async with pool.connection() as conn, conn.cursor( row_factory=class_row( Reservoir ) ) as cur:
         await cur.execute( "SELECT * FROM reservoirs" )
-        return await cur.fetchall()
+        result = await cur.fetchall()
+    return result
 
 async def select_one_by_id( id: int ):
+    result = None
     async with pool.connection() as conn, conn.cursor( row_factory=class_row( Reservoir ) ) as cur:
         await cur.execute( "SELECT * FROM reservoirs WHERE id=%s", [ id ] )
-        return await cur.fetchone()
-
+        result = await cur.fetchone()
+    return result

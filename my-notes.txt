@@ -36,6 +36,18 @@ FastAPI psycopg3 Tutorial
 https://www.fullstackbook.com/blog
 https://github.com/fullstackbook/fullstackbook-fastapi-psycopg3
 
+Asynchronous Postgres with Python, FastAPI, and Psycopg 3
+https://medium.com/@benshearlaw/asynchronous-postgres-with-python-fastapi-and-psycopg-3-fafa5faa2c08
+
+
+# Testing
+
+FastAPI Async Tests
+https://fastapi.tiangolo.com/advanced/async-tests/
+
+Pytest with async tests: test setup before and after
+https://stackoverflow.com/questions/74351637/pytest-with-async-tests-test-setup-before-and-after
+
 
 # Python virtual environment
 

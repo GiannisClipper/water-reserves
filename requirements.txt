@@ -4,3 +4,5 @@ pydantic-settings
 psycopg[pool]
 httpx
 pytest
+pytest-asyncio
+asgi-lifespan
