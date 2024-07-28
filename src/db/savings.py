@@ -62,7 +62,7 @@ def expand_query_with_month_aggregation( query ):
         SELECT 
         SUBSTR(b.date,1,7) AS month, 
         b.reservoir_id AS reservoir_id, 
-        AVG(b.quantity) AS quantity 
+        ROUND(AVG(b.quantity),2) AS quantity 
         FROM (
         {query}
         ) b 
@@ -77,7 +77,7 @@ def expand_query_with_year_aggregation( query ):
         SELECT
         SUBSTR(b.date,1,4) AS year, 
         b.reservoir_id AS reservoir_id, 
-        AVG(b.quantity) AS quantity 
+        ROUND(AVG(b.quantity),2) AS quantity 
         FROM (
         {query}
         ) b 
@@ -108,7 +108,7 @@ def expand_query_with_custom_year_aggregation( query, year_start ):
         SELECT 
         c.custom_year AS custom_year, 
         c.reservoir_id AS reservoir_id, 
-        AVG(c.quantity) AS quantity 
+        ROUND(AVG(c.quantity),2) AS quantity 
         FROM (
         {query}
         ) c
@@ -138,7 +138,7 @@ async def select_all(
 ):
     async with pool.connection() as conn, conn.cursor() as cur:
 
-        order = 'date'
+        order = 'date,reservoir_id'
         query = create_base_query( from_time, to_time, reservoir_filter, interval_filter )
         # print( 'base_query:', query )
 
@@ -147,19 +147,19 @@ async def select_all(
             # print( 'with_reservoir_aggregation:', query )
 
         if time_aggregation == 'month':
-            order = 'month'
+            order = 'month,reservoir_id'
             query = expand_query_with_month_aggregation( query )
             # print( 'with_month_aggregation:', query )
 
         if time_aggregation == 'year':
 
             if not year_start:
-                order = 'year'
+                order = 'year,reservoir_id'
                 query = expand_query_with_year_aggregation( query )
                 # print( 'with_year_aggregation:', query )
 
             else:
-                order = 'custom_year'
+                order = 'custom_year,reservoir_id'
                 query = expand_query_with_custom_year_aggregation( query, year_start )
                 # print( 'with_custom_year_aggregation:', query )
 

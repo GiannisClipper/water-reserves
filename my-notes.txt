@@ -62,3 +62,5 @@ $ uvicorn main:app --port=8000 --reload
 $ http://localhost:8000
 
 $ http://localhost:8000/docs (swagger-ui)
+
+$ pytest tests/routers/test_savings.py -v -s -k "test_select_days_range_custom_years_avg" 
