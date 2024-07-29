@@ -57,6 +57,15 @@ def validate_reservoir_filter( value: str | None ):
         raise HTTPException( 400, "Invalid parameter value (reservoir_filter)." )
 
 
+def validate_factory_filter( value: str | None ):
+
+    try:
+        return _validate_id_filter( value )
+
+    except Exception:
+        raise HTTPException( 400, "Invalid parameter value (factory_filter)." )
+
+
 def validate_interval_filter( value: str | None ):
 
     if value == '':
@@ -102,6 +111,15 @@ def validate_reservoir_aggregation( value: str | None ):
 
     except Exception:
         raise HTTPException( 400, "Invalid parameter value (reservoir_aggregation)." )
+
+
+def validate_factory_aggregation( value: str | None ):
+
+    try:
+        return _validate_true_false( value )
+
+    except Exception:
+        raise HTTPException( 400, "Invalid parameter value (factory_aggregation)." )
 
 
 def validate_time_aggregation( value: str | None ):
