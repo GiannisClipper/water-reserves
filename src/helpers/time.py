@@ -103,3 +103,18 @@ def is_day( day: str, month: str, year: str | None = None ):
 
     return day in get_month_days( month, year )
 
+def is_month_day( val: str ):
+
+    if not has_month_day_format( val ):
+        raise ValueError( 'Invalid month-day format.' )
+
+    month, day = val.split( '-' )
+    return is_month( month ) and is_day( day, month )
+
+def is_date( val: str ):
+
+    if not has_date_format( val ):
+        raise ValueError( 'Invalid date format.' )
+
+    year, month, day = val.split( '-' )
+    return is_year( year ) and is_month( month ) and is_day( day, month, year )
