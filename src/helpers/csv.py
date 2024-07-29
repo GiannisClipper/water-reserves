@@ -35,7 +35,15 @@ def no_quotes( value ):
     return value
 
 
-def parse_csv_content( rows, data_sample ):
+def parse_csv_headers( row ):
+
+    for i, value in enumerate( row ):
+        row[ i ] = no_quotes( row[ i ] )
+
+    return row
+
+
+def parse_csv_data( rows, data_sample ):
 
     types = list( map( lambda x: type( x ), data_sample ) )
 

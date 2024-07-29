@@ -4,7 +4,7 @@ from httpx import AsyncClient, ASGITransport
 from src.main import app
 
 import pytest
-from src.helpers.csv import read_csv, parse_csv_content
+from src.helpers.csv import read_csv, parse_csv_headers, parse_csv_data
 
 
 # Pytest with async tests: test setup before and after
@@ -24,9 +24,15 @@ async def client( setup_pool ):
 
 @pytest.fixture
 def assert_against_csv():
-    def make_assertion( csvfile, data ):
+    def make_assertion( csvfile, response ):
+        headers = response[ 'headers' ]
+        data = response[ 'data' ]
+
         expected_headers, expected_data = read_csv( csvfile )
-        expected_data = parse_csv_content( expected_data, data[ 0 ] )
+        expected_headers = parse_csv_headers( expected_headers )
+        expected_data = parse_csv_data( expected_data, data[ 0 ] )
+
+        assert len( headers ) == len( expected_headers )
 
         assert len( data ) == len( expected_data )
         for i, row in enumerate( data ):

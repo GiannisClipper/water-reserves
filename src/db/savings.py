@@ -3,9 +3,12 @@ from psycopg.rows import class_row
 
 from src.db import pool
 
+from src.helpers.text import get_query_headers
+
 # result is possible to have a large amount of rows
 # so, in order to reduce the response size, is preferred 
-# to return an array of values instead an array of objects
+# to return headers and data separately 
+# instead of an array of objects
 
 # class Saving( BaseModel ):
 #     id: int
@@ -136,36 +139,40 @@ async def select_all(
     time_aggregation: str | None,
     year_start: str | None
 ):
+
+    query = create_base_query( from_time, to_time, reservoir_filter, interval_filter )
+    # print( 'base_query:', query )
+    order = 'date,reservoir_id'
+
+    if reservoir_aggregation:
+        query = expand_query_with_reservoir_aggregation( query )
+        # print( 'with_reservoir_aggregation:', query )
+
+    if time_aggregation == 'month':
+        query = expand_query_with_month_aggregation( query )
+        # print( 'with_month_aggregation:', query )
+        order = 'month,reservoir_id'
+
+    if time_aggregation == 'year':
+
+        if not year_start:
+            query = expand_query_with_year_aggregation( query )
+            # print( 'with_year_aggregation:', query )
+            order = 'year,reservoir_id'
+
+        else:
+            query = expand_query_with_custom_year_aggregation( query, year_start )
+            # print( 'with_custom_year_aggregation:', query )
+            order = 'custom_year,reservoir_id'
+
+    query = expand_query_with_order( query, order )
+    print( 'query:', query )
+
+    headers = get_query_headers( query )
+    data =[]
+
     async with pool.connection() as conn, conn.cursor() as cur:
-
-        order = 'date,reservoir_id'
-        query = create_base_query( from_time, to_time, reservoir_filter, interval_filter )
-        # print( 'base_query:', query )
-
-        if reservoir_aggregation:
-            query = expand_query_with_reservoir_aggregation( query )
-            # print( 'with_reservoir_aggregation:', query )
-
-        if time_aggregation == 'month':
-            order = 'month,reservoir_id'
-            query = expand_query_with_month_aggregation( query )
-            # print( 'with_month_aggregation:', query )
-
-        if time_aggregation == 'year':
-
-            if not year_start:
-                order = 'year,reservoir_id'
-                query = expand_query_with_year_aggregation( query )
-                # print( 'with_year_aggregation:', query )
-
-            else:
-                order = 'custom_year,reservoir_id'
-                query = expand_query_with_custom_year_aggregation( query, year_start )
-                # print( 'with_custom_year_aggregation:', query )
-
-        query = expand_query_with_order( query, order )
-        print( 'query:', query )
-
         await cur.execute( query )
-        return await cur.fetchall()
+        data = await cur.fetchall()
 
+    return headers, data
