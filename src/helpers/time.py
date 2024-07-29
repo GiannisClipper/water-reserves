@@ -9,6 +9,14 @@ def has_month_format( val: str ):
 def has_day_format( val: str ):
     return len( val ) == 2 and val.isdigit()
 
+def has_year_month_format( val: str ):
+    arr = val.split( '-' )
+    if len( arr ) != 2:
+        return False
+
+    year, month = arr
+    return has_year_format( year ) and has_month_format( month )
+
 def has_month_day_format( val: str ):
     arr = val.split( '-' )
     if len( arr ) != 2:
@@ -102,6 +110,14 @@ def is_day( day: str, month: str, year: str | None = None ):
         raise ValueError( 'Invalid year value.' )
 
     return day in get_month_days( month, year )
+
+def is_year_month( val: str ):
+
+    if not has_year_month_format( val ):
+        raise ValueError( 'Invalid year-month format.' )
+
+    year, month = val.split( '-' )
+    return is_year( year ) and is_month( month )
 
 def is_month_day( val: str ):
 

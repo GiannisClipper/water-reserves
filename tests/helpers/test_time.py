@@ -1,5 +1,5 @@
-from src.helpers.time import has_year_format, has_month_format, has_day_format, has_month_day_format, has_date_format
-from src.helpers.time import is_year, is_leap, is_month, get_month_days, is_day, is_month_day, is_date
+from src.helpers.time import has_year_format, has_month_format, has_day_format, has_year_month_format, has_month_day_format, has_date_format
+from src.helpers.time import is_year, is_leap, is_month, get_month_days, is_day, is_year_month, is_month_day, is_date
 
 # has_year_format
 
@@ -34,6 +34,19 @@ def test_has_day_format_invalid_text():
 def test_has_day_format_valid_text():
     assert has_day_format( '99' ) == True
     assert has_day_format( '01' ) == True
+
+# has_year_month_format
+
+def test_has_year_month_format_invalid_text():
+    assert has_year_month_format( '01' ) == False
+    assert has_year_month_format( '2023-01-01' ) == False
+    assert has_year_month_format( '12-31' ) == False
+    assert has_year_month_format( '2023-Jan' ) == False
+    assert has_year_month_format( '2023-Ja' ) == False
+
+def test_has_year_month_format_valid_text():
+    assert has_year_month_format( '9999-99' ) == True
+    assert has_year_month_format( '2024-01' ) == True
 
 # has_month_day_format
 
@@ -173,6 +186,23 @@ def test_is_day_valid_values():
     assert is_day( '28', '02', '2024' ) == True
     assert is_day( '29', '02', '2024' ) == True
     assert is_day( '30', '04', '2024' ) == True
+
+# is_year_month
+
+def test_is_year_month_valueerror():
+    try:
+        is_year_month( 'month-day' )
+        assert False
+    except ValueError:
+        assert True
+
+def test_is_year_month_invalid_values():
+    assert is_year_month( '2023-00' ) == False
+    assert is_year_month( '0000-01' ) == False
+
+def test_is_year_month_valid_values():
+    assert is_year_month( '2023-01' ) == True
+    assert is_year_month( '2023-12' ) == True
 
 # is_month_day
 

@@ -4,11 +4,11 @@ urlpath = '/api/v1/savings'
 csvpath = 'resources/tests/routers/savings'
 
 @pytest.mark.asyncio
-async def test_select_days_range( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2023-07-28&to_time=2023-08-06" )
+async def test_select_dates_range( client, assert_against_csv ):
+    response = await client.get( f"{urlpath}?time_filter=2023-07-28,2023-08-06" )
     assert response.status_code == 200
 
-    assert_against_csv( f'{csvpath}/select_days-range.csv', response.json() )
+    assert_against_csv( f'{csvpath}/select_dates-range.csv', response.json() )
     # csv content comes from: 
     # SELECT id, date, reservoir_id, quantity FROM savings 
     # WHERE date>='2023-07-28' AND date<='2023-08-06' ORDER BY date, reservoir_id;
@@ -16,7 +16,7 @@ async def test_select_days_range( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_months_range( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2023-07&to_time=2023-08" )
+    response = await client.get( f"{urlpath}?time_filter=2023-07,2023-08" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_months-range.csv', response.json() )
@@ -26,11 +26,11 @@ async def test_select_months_range( client, assert_against_csv ):
 
 
 @pytest.mark.asyncio
-async def test_select_days_range_momths_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2023-07-28&to_time=2023-08-06&time_aggregation=month" )
+async def test_select_dates_range_momths_avg( client, assert_against_csv ):
+    response = await client.get( f"{urlpath}?time_filter=2023-07-28,2023-08-06&time_aggregation=month" )
     assert response.status_code == 200
 
-    assert_against_csv( f'{csvpath}/select_days-range_months-avg.csv', response.json() )
+    assert_against_csv( f'{csvpath}/select_dates-range_months-avg.csv', response.json() )
     # csv content comes from: 
     # SELECT SUBSTR(date,1,7) AS month, reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM savings 
     # WHERE date>='2023-07-28' AND date<='2023-08-06'
@@ -39,7 +39,7 @@ async def test_select_days_range_momths_avg( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_years_range_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2022&to_time=2024&time_aggregation=year" )
+    response = await client.get( f"{urlpath}?time_filter=2022,2024&time_aggregation=year" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_years-avg.csv', response.json() )
@@ -50,22 +50,22 @@ async def test_select_years_range_years_avg( client, assert_against_csv ):
 
 
 @pytest.mark.asyncio
-async def test_select_days_range_reservoirs_sum( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2023-07-28&to_time=2023-08-06&reservoir_aggregation=true" )
+async def test_select_dates_range_reservoirs_sum( client, assert_against_csv ):
+    response = await client.get( f"{urlpath}?time_filter=2023-07-28,2023-08-06&reservoir_aggregation=true" )
     assert response.status_code == 200
 
-    assert_against_csv( f'{csvpath}/select_days-range_reservoirs-sum.csv', response.json() )
+    assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum.csv', response.json() )
     # csv content comes from: 
     # SELECT date, '' AS reservoir_id, SUM(quantity) AS quantity FROM savings 
     # WHERE date>='2023-07-28' AND date<='2023-08-06' GROUP BY date ORDER BY date, reservoir_id;
 
 
 @pytest.mark.asyncio
-async def test_select_days_range_reservoirs_sum_momths_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2023-07-28&to_time=2023-08-06&reservoir_aggregation=true&time_aggregation=month" )
+async def test_select_dates_range_reservoirs_sum_momths_avg( client, assert_against_csv ):
+    response = await client.get( f"{urlpath}?time_filter=2023-07-28,2023-08-06&reservoir_aggregation=true&time_aggregation=month" )
     assert response.status_code == 200
 
-    assert_against_csv( f'{csvpath}/select_days-range_reservoirs-sum_months-avg.csv', response.json() )
+    assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum_months-avg.csv', response.json() )
     # csv content comes from: 
     # SELECT SUBSTR(date,1,7) AS month, a.reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM 
     # (
@@ -77,7 +77,7 @@ async def test_select_days_range_reservoirs_sum_momths_avg( client, assert_again
 
 @pytest.mark.asyncio
 async def test_select_years_range_reservoirs_sum_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2022&to_time=2024&reservoir_aggregation=true&time_aggregation=year" )
+    response = await client.get( f"{urlpath}?time_filter=2022,2024&reservoir_aggregation=true&time_aggregation=year" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_reservoirs-sum_years-avg.csv', response.json() )
@@ -92,7 +92,7 @@ async def test_select_years_range_reservoirs_sum_years_avg( client, assert_again
 
 @pytest.mark.asyncio
 async def test_select_years_range_interval_filter( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2022&to_time=2024&interval_filter=07-28,08-16" )
+    response = await client.get( f"{urlpath}?time_filter=2022,2024&interval_filter=07-28,08-16" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_interval-filter.csv', response.json() )
@@ -104,10 +104,10 @@ async def test_select_years_range_interval_filter( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_years_range_reservoirs_sum_years_avg_interval_filter( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2022&to_time=2024&reservoir_aggregation=true&time_aggregation=year&interval_filter=07-28,08-16" )
+    response = await client.get( f"{urlpath}?time_filter=2022,2024&reservoir_aggregation=true&time_aggregation=year&interval_filter=07-28,08-16" )
     assert response.status_code == 200
 
-    assert_against_csv( f'{csvpath}/select_days-range_reservoirs-sum_years-avg_interval-filter.csv', response.json() )
+    assert_against_csv( f'{csvpath}/select_years-range_reservoirs-sum_years-avg_interval-filter.csv', response.json() )
     # csv content comes from: 
     # SELECT SUBSTR(date,1,4) AS year, a.reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM 
     # (
@@ -118,11 +118,11 @@ async def test_select_years_range_reservoirs_sum_years_avg_interval_filter( clie
 
 
 @pytest.mark.asyncio
-async def test_select_days_range_custom_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2021-10-01&to_time=2023-09-30&time_aggregation=year&year_start=10-01" )
+async def test_select_dates_range_custom_years_avg( client, assert_against_csv ):
+    response = await client.get( f"{urlpath}?time_filter=2021-10-01,2023-09-30&time_aggregation=year&year_start=10-01" )
     assert response.status_code == 200
 
-    assert_against_csv( f'{csvpath}/select_days-range_custom-years-avg.csv', response.json() )
+    assert_against_csv( f'{csvpath}/select_dates-range_custom-years-avg.csv', response.json() )
     # csv content comes from: 
     # SELECT b.custom_year, b.reservoir_id, ROUND(AVG(b.quantity),2) AS quantity
     # FROM (
@@ -142,11 +142,11 @@ async def test_select_days_range_custom_years_avg( client, assert_against_csv ):
 
 
 @pytest.mark.asyncio
-async def test_select_days_range_reservoirs_sum_custom_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?from_time=2021-10-01&to_time=2023-09-30&reservoir_aggregation=true&time_aggregation=year&year_start=10-01" )
+async def test_select_dates_range_reservoirs_sum_custom_years_avg( client, assert_against_csv ):
+    response = await client.get( f"{urlpath}?time_filter=2021-10-01,2023-09-30&reservoir_aggregation=true&time_aggregation=year&year_start=10-01" )
     assert response.status_code == 200
 
-    assert_against_csv( f'{csvpath}/select_days-range_reservoirs-sum_custom-years-avg.csv', response.json() )
+    assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum_custom-years-avg.csv', response.json() )
     # csv content comes from: 
     # SELECT b.custom_year, b.reservoir_id, ROUND(AVG(b.quantity),2) AS quantity
     # FROM (
