@@ -191,3 +191,20 @@ def test_is_month_day_valid_values():
     assert is_month_day( '01-31' ) == True
     assert is_month_day( '12-01' ) == True
 
+# is_date
+
+def test_is_date_valueerror():
+    try:
+        is_date( 'year/month/day' )
+        assert False
+    except ValueError:
+        assert True
+
+def test_is_date_invalid_values():
+    assert is_date( '2024-01-32' ) == False
+    assert is_date( '2024-13-01' ) == False
+    assert is_date( '0000-12-31' ) == False
+
+def test_is_date_valid_values():
+    assert is_date( '2024-01-31' ) == True
+    assert is_date( '2024-12-01' ) == True
