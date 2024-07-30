@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from src.validators import validate_id_filter, validate_true_false
+from src.validators import validate_id_filter
 
 
 def validate_reservoir_filter( value: str | None ):
@@ -13,9 +13,11 @@ def validate_reservoir_filter( value: str | None ):
 
 def validate_reservoir_aggregation( value: str | None ):
 
-    try:
-        return validate_true_false( value )
+    if value in ( None, '' ):
+        return None
 
-    except Exception:
-        raise HTTPException( 400, "Invalid parameter value (reservoir_aggregation)." )
+    if value.lower() in ( 'sum' ):
+        return value.lower()
+
+    raise HTTPException( 400, "Invalid parameter value (reservoir_aggregation)." )
 

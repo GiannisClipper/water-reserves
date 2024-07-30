@@ -64,13 +64,15 @@ def expand_query_with_factory_aggregation( query ):
     '''
 
 
-def expand_query_with_month_aggregation( query ):
+def expand_query_with_month_aggregation( query, aggregation_method ):
+
+    aggregation_method = "ROUND(AVG(b.quantity),2)" if aggregation_method == 'avg' else "SUM(b.quantity)"
 
     return f'''
         SELECT 
         SUBSTR(b.date,1,7) AS month, 
         b.factory_id AS factory_id, 
-        ROUND(AVG(b.quantity),2) AS quantity 
+        {aggregation_method} AS quantity 
         FROM (
         {query}
         ) b 
@@ -79,13 +81,15 @@ def expand_query_with_month_aggregation( query ):
         b.factory_id
     '''
 
-def expand_query_with_year_aggregation( query ):
+def expand_query_with_year_aggregation( query, aggregation_method ):
+
+    aggregation_method = "ROUND(AVG(b.quantity),2)" if aggregation_method == 'avg' else "SUM(b.quantity)"
 
     return f'''
         SELECT
         SUBSTR(b.date,1,4) AS year, 
         b.factory_id AS factory_id, 
-        ROUND(AVG(b.quantity),2) AS quantity 
+        {aggregation_method} AS quantity 
         FROM (
         {query}
         ) b 
@@ -95,7 +99,7 @@ def expand_query_with_year_aggregation( query ):
     '''
 
 
-def expand_query_with_custom_year_aggregation( query, year_start ):
+def expand_query_with_custom_year_aggregation( query, year_start, aggregation_method ):
 
     custom_year = f'''
         CASE WHEN SUBSTR(b.date,6,5)>='{year_start}'
@@ -112,11 +116,13 @@ def expand_query_with_custom_year_aggregation( query, year_start ):
         ) b
     '''
 
+    aggregation_method = "ROUND(AVG(c.quantity),2)" if aggregation_method == 'avg' else "SUM(c.quantity)"
+
     return f'''
         SELECT 
         c.custom_year AS custom_year, 
         c.factory_id AS factory_id, 
-        ROUND(AVG(c.quantity),2) AS quantity 
+        {aggregation_method} AS quantity 
         FROM (
         {query}
         ) c
@@ -152,20 +158,25 @@ async def select_all(
         query = expand_query_with_factory_aggregation( query )
         # print( 'with_factory_aggregation:', query )
 
-    if time_aggregation == 'month':
-        query = expand_query_with_month_aggregation( query )
+    if time_aggregation and time_aggregation[ 0 ] == 'month':
+
+        aggregation_method = time_aggregation[ 1 ]
+
+        query = expand_query_with_month_aggregation( query, aggregation_method )
         # print( 'with_month_aggregation:', query )
         order = 'month,factory_id'
 
-    if time_aggregation == 'year':
+    if time_aggregation and time_aggregation[ 0 ] == 'year':
+
+        aggregation_method = time_aggregation[ 1 ]
 
         if not year_start:
-            query = expand_query_with_year_aggregation( query )
+            query = expand_query_with_year_aggregation( query, aggregation_method )
             # print( 'with_year_aggregation:', query )
             order = 'year,factory_id'
 
         else:
-            query = expand_query_with_custom_year_aggregation( query, year_start )
+            query = expand_query_with_custom_year_aggregation( query, year_start, aggregation_method )
             # print( 'with_custom_year_aggregation:', query )
             order = 'custom_year,factory_id'
 

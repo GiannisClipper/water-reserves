@@ -67,23 +67,6 @@ def validate_interval_filter( value: str | None ):
         raise HTTPException( 400, "Invalid parameter value (interval_filter)." )
 
 
-def validate_true_false( value: str | None ):
-
-    if value == '':
-        value = None
-
-    if value == None:
-        return value
-
-    if value.lower() == 'true':
-        return value
-
-    if value.lower() == 'false':
-        return None
-
-    raise;
-
-
 def validate_time_aggregation( value: str | None ):
 
     if value == '':
@@ -92,10 +75,21 @@ def validate_time_aggregation( value: str | None ):
     if value == None:
         return value
     
-    if value.lower() in ( 'month', 'year' ):
-        return value.lower()
+    try:
+        value = value.split( ',' )
+        if len( value ) != 2:
+            raise ValueError()
 
-    raise HTTPException( 400, "Invalid parameter value (time_aggregation)." )
+        if value[ 0 ].lower() not in ( 'month', 'year' ):
+            raise ValueError()
+
+        if value[ 1 ].lower() not in ( 'avg', 'sum' ):
+            raise ValueError()
+        
+        return [ value[ 0 ].lower(), value[ 1 ].lower() ]
+
+    except Exception:
+        raise HTTPException( 400, "Invalid parameter value (time_aggregation)." )
 
 
 def validate_year_start( value: str | None ):

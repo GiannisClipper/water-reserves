@@ -152,12 +152,12 @@ async def select_all(
         query = expand_query_with_reservoir_aggregation( query )
         # print( 'with_reservoir_aggregation:', query )
 
-    if time_aggregation == 'month':
+    if time_aggregation and time_aggregation[ 0 ] == 'month':
         query = expand_query_with_month_aggregation( query )
         # print( 'with_month_aggregation:', query )
         order = 'month,reservoir_id'
 
-    if time_aggregation == 'year':
+    if time_aggregation and time_aggregation[ 0 ] == 'year':
 
         if not year_start:
             query = expand_query_with_year_aggregation( query )
