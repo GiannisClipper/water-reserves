@@ -31,7 +31,7 @@ def validate_time_range( value: str | None ):
         raise HTTPException( 400, "Invalid parameter value (time_range)." )
 
 
-def _validate_id_filter( value: str | None ):
+def validate_id_filter( value: str | None ):
 
     if value == '':
         value = None
@@ -44,32 +44,6 @@ def _validate_id_filter( value: str | None ):
     value = list( map( lambda x: str( x ), value ) )
     value = ','.join( value )
     return value
-
-def validate_reservoir_filter( value: str | None ):
-
-    try:
-        return _validate_id_filter( value )
-
-    except Exception:
-        raise HTTPException( 400, "Invalid parameter value (reservoir_filter)." )
-
-
-def validate_factory_filter( value: str | None ):
-
-    try:
-        return _validate_id_filter( value )
-
-    except Exception:
-        raise HTTPException( 400, "Invalid parameter value (factory_filter)." )
-
-
-def validate_location_filter( value: str | None ):
-
-    try:
-        return _validate_id_filter( value )
-
-    except Exception:
-        raise HTTPException( 400, "Invalid parameter value (location_filter)." )
 
 
 def validate_interval_filter( value: str | None ):
@@ -93,7 +67,7 @@ def validate_interval_filter( value: str | None ):
         raise HTTPException( 400, "Invalid parameter value (interval_filter)." )
 
 
-def _validate_true_false( value: str | None ):
+def validate_true_false( value: str | None ):
 
     if value == '':
         value = None
@@ -108,33 +82,6 @@ def _validate_true_false( value: str | None ):
         return None
 
     raise;
-
-
-def validate_reservoir_aggregation( value: str | None ):
-
-    try:
-        return _validate_true_false( value )
-
-    except Exception:
-        raise HTTPException( 400, "Invalid parameter value (reservoir_aggregation)." )
-
-
-def validate_factory_aggregation( value: str | None ):
-
-    try:
-        return _validate_true_false( value )
-
-    except Exception:
-        raise HTTPException( 400, "Invalid parameter value (factory_aggregation)." )
-
-
-def validate_location_aggregation( value: str | None ):
-
-    try:
-        return _validate_true_false( value )
-
-    except Exception:
-        raise HTTPException( 400, "Invalid parameter value (location_aggregation)." )
 
 
 def validate_time_aggregation( value: str | None ):

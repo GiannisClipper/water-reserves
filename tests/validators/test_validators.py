@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from src.helpers.validators import validate_time_range
+from src.validators import validate_time_range
 
 # validate_time_range
 

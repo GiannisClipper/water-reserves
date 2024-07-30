@@ -3,8 +3,8 @@ from typing import Annotated
 from pydantic.dataclasses import dataclass
 from pydantic.functional_validators import AfterValidator
 
-from src.helpers.validators import validate_time_range, validate_location_filter, validate_interval_filter
-from src.helpers.validators import validate_location_aggregation, validate_time_aggregation, validate_year_start
+from src.validators import validate_time_range, validate_interval_filter, validate_time_aggregation, validate_year_start
+from src.validators.weather import validate_location_aggregation, validate_location_filter
 
 from src.db.weather import select_all
 
