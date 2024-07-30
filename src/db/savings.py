@@ -3,6 +3,7 @@ from psycopg.rows import class_row
 
 from src.db import pool
 
+from src.helpers.time import get_first_date, get_last_date
 from src.helpers.text import get_query_headers
 
 # result is possible to have a large amount of rows
@@ -18,17 +19,17 @@ from src.helpers.text import get_query_headers
 
 def create_base_query( time_range, reservoir_filter, interval_filter ):
 
-    from_time, to_time = ( None, None )
-    if time_range:
-        from_time, to_time = time_range
+    from_time, to_time = time_range if time_range else ( None, None )
+    from_date = get_first_date( from_time )
+    to_date = get_last_date( to_time )
 
     where_clause = [ 'quantity>0' ]
 
-    if from_time:
-        where_clause.append( f"date>='{from_time}'" )
+    if from_date:
+        where_clause.append( f"date>='{from_date}'" )
 
-    if to_time:
-        where_clause.append( f"date<='{to_time}'" )
+    if to_date:
+        where_clause.append( f"date<='{to_date}'" )
 
     if reservoir_filter:
         where_clause.append( f"reservoir_id IN ({reservoir_filter})" )

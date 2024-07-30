@@ -12,23 +12,20 @@ def validate_time_range( value: str | None ):
 
     try:
         value = value.split( ',' )
-        assert len( value ) == 2
+        assert len( value ) <= 2
 
-        from_time, to_time = value
-        print( value )
+        for v in value:
+            if not v or \
+                ( has_year_format( v ) and is_year( v ) ) or \
+                ( has_year_month_format( v ) and is_year_month( v ) ) or \
+                ( has_date_format( v ) and is_date( v ) ):
+                continue
+            raise ValueError;
 
-        if ( not from_time or \
-            ( has_year_format( from_time ) and is_year( from_time ) ) or \
-            ( has_year_month_format( from_time ) and is_year_month( from_time ) ) or \
-            ( has_date_format( from_time ) and is_date( from_time ) ) ) and \
-            \
-            ( not to_time or \
-            ( has_year_format( to_time ) and is_year( to_time ) ) or \
-            ( has_year_month_format( to_time ) and is_year_month( to_time ) ) or \
-            ( has_date_format( to_time ) and is_date( to_time ) ) ):
+        if len( value ) == 1:
+            value.append( value[ 0 ] )
 
-            return value
-        raise;
+        return value
 
     except Exception as e:
         raise HTTPException( 400, "Invalid parameter value (time_range)." )

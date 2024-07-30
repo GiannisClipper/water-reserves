@@ -1,5 +1,6 @@
 from src.helpers.time import has_year_format, has_month_format, has_day_format, has_year_month_format, has_month_day_format, has_date_format
 from src.helpers.time import is_year, is_leap, is_month, get_month_days, is_day, is_year_month, is_month_day, is_date
+from src.helpers.time import get_first_date, get_last_date
 
 # has_year_format
 
@@ -138,7 +139,7 @@ def test_get_month_days_valueerror():
     except ValueError:
         assert True
 
-def test_month_days_results():
+def test_get_month_days_results():
     assert get_month_days( '01' )[ -1 ] == '31'
     assert get_month_days( '02', '2023' )[ -1 ] == '28'
     assert get_month_days( '02', '2024' )[ -1 ] == '29'
@@ -238,3 +239,34 @@ def test_is_date_invalid_values():
 def test_is_date_valid_values():
     assert is_date( '2024-01-31' ) == True
     assert is_date( '2024-12-01' ) == True
+
+# get_first_date
+
+def test_get_first_date_valueerror():
+    try:
+        get_first_date( 'blah blah...' )
+        assert False
+    except ValueError:
+        assert True
+
+def test_get_first_date_results():
+    assert get_first_date( '2023' ) == '2023-01-01'
+    assert get_first_date( '2023-01' ) == '2023-01-01'
+    assert get_first_date( '2023-01-02' ) == '2023-01-02'
+
+# get_last_date
+
+def test_get_last_date_valueerror():
+    try:
+        get_last_date( '9999-99-99' )
+        assert False
+    except ValueError:
+        assert True
+
+def test_get_last_date_results():
+    assert get_last_date( '2023' ) == '2023-12-31'
+    assert get_last_date( '2023-01' ) == '2023-01-31'
+    assert get_last_date( '2023-02' ) == '2023-02-28'
+    assert get_last_date( '2024-02' ) == '2024-02-29'
+    assert get_first_date( '2023-01-02' ) == '2023-01-02'
+

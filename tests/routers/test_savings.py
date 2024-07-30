@@ -16,13 +16,13 @@ async def test_select_dates_range( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_months_range( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_range=2023-07,2023-08" )
+    response = await client.get( f"{urlpath}?time_range=2023-07" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_months-range.csv', response.json() )
     # csv content comes from:
     # SELECT id, date, reservoir_id, quantity FROM savings 
-    # WHERE date>='2023-07' AND date<='2023-08' ORDER BY date, reservoir_id;
+    # WHERE date>='2023-07-01' AND date<='2023-07-31' ORDER BY date, reservoir_id;
 
 
 @pytest.mark.asyncio
@@ -39,13 +39,13 @@ async def test_select_dates_range_momths_avg( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_years_range_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_range=2022,2024&time_aggregation=year" )
+    response = await client.get( f"{urlpath}?time_range=2022,2023&time_aggregation=year" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_years-avg.csv', response.json() )
     # csv content comes from: 
     # SELECT SUBSTR(date,1,4) AS year, reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM savings 
-    # WHERE date>='2022' AND date<='2024'
+    # WHERE date>='2022-01-01' AND date<='2023-12-31'
     # GROUP BY SUBSTR(date,1,4), reservoir_id ORDER BY SUBSTR(date,1,4), reservoir_id;
 
 
@@ -77,7 +77,7 @@ async def test_select_dates_range_reservoirs_sum_momths_avg( client, assert_agai
 
 @pytest.mark.asyncio
 async def test_select_years_range_reservoirs_sum_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_range=2022,2024&reservoir_aggregation=true&time_aggregation=year" )
+    response = await client.get( f"{urlpath}?time_range=2022,2023&reservoir_aggregation=true&time_aggregation=year" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_reservoirs-sum_years-avg.csv', response.json() )
@@ -85,26 +85,26 @@ async def test_select_years_range_reservoirs_sum_years_avg( client, assert_again
     # SELECT SUBSTR(date,1,4) AS year, a.reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM 
     # (
     #   SELECT date, '' AS reservoir_id, SUM(quantity) AS quantity FROM savings 
-    #   WHERE date>='2022' AND date<='2024' GROUP BY date
+    #   WHERE date>='2022-01-01' AND date<='2023-12-31' GROUP BY date
     # ) a
     # GROUP BY SUBSTR(a.date,1,4), a.reservoir_id ORDER BY SUBSTR(a.date,1,4), a.reservoir_id;
 
 
 @pytest.mark.asyncio
 async def test_select_years_range_interval_filter( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_range=2022,2024&interval_filter=07-28,08-16" )
+    response = await client.get( f"{urlpath}?time_range=2022,2023&interval_filter=07-28,08-16" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_interval-filter.csv', response.json() )
     # csv content comes from: 
     # SELECT id, date, reservoir_id, quantity FROM savings 
-    # WHERE date>='2022' AND date<='2024' AND (SUBSTR(date,6,5)>='07-28' AND SUBSTR(date,6,5)<='08-16')
+    # WHERE date>='2022-01-01' AND date<='2023-12-31' AND (SUBSTR(date,6,5)>='07-28' AND SUBSTR(date,6,5)<='08-16')
     # ORDER BY date, reservoir_id;
 
 
 @pytest.mark.asyncio
 async def test_select_years_range_reservoirs_sum_years_avg_interval_filter( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_range=2022,2024&reservoir_aggregation=true&time_aggregation=year&interval_filter=07-28,08-16" )
+    response = await client.get( f"{urlpath}?time_range=2022,2023&reservoir_aggregation=true&time_aggregation=year&interval_filter=07-28,08-16" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_reservoirs-sum_years-avg_interval-filter.csv', response.json() )
@@ -112,7 +112,7 @@ async def test_select_years_range_reservoirs_sum_years_avg_interval_filter( clie
     # SELECT SUBSTR(date,1,4) AS year, a.reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM 
     # (
     #   SELECT date, '' AS reservoir_id, SUM(quantity) AS quantity FROM savings 
-    #   WHERE date>='2022' AND date<='2024' AND (SUBSTR(date,6,5)>='07-28' AND SUBSTR(date,6,5)<='08-16') GROUP BY date
+    #   WHERE date>='2022-01-01' AND date<='2023-12-31' AND (SUBSTR(date,6,5)>='07-28' AND SUBSTR(date,6,5)<='08-16') GROUP BY date
     # ) a
     # GROUP BY SUBSTR(a.date,1,4), a.reservoir_id ORDER BY SUBSTR(a.date,1,4), a.reservoir_id;
 

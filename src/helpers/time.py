@@ -134,3 +134,37 @@ def is_date( val: str ):
 
     year, month, day = val.split( '-' )
     return is_year( year ) and is_month( month ) and is_day( day, month, year )
+
+def get_first_date( val: str ):
+
+    if val == None:
+        return val
+
+    if has_year_format( val ) and is_year( val ):
+        return f"{val}-01-01"
+
+    if has_year_month_format( val ) and is_year_month( val ):
+        return f"{val}-01"
+
+    if has_date_format( val ) and is_date( val ):
+        return val
+
+    raise ValueError( 'Invalid value (no year or yera-month).' )
+
+def get_last_date( val: str ):
+
+    if val == None:
+        return val
+
+    if has_year_format( val ) and is_year( val ):
+        return f"{val}-12-31"
+
+    if has_year_month_format( val ) and is_year_month( val ):
+        year, month = val.split( '-' )
+        day = get_month_days( month, year )[ -1 ]
+        return f"{val}-{day}"
+
+    if has_date_format( val ) and is_date( val ):
+        return val
+
+    raise ValueError( 'Invalid value (no year or yera-month).' )
