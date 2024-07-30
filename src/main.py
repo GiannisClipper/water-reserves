@@ -13,6 +13,7 @@ from src.routers import savings as savings_router
 from src.routers import factories as factories_router
 from src.routers import production as production_router
 from src.routers import locations as locations_router
+from src.routers import weather as weather_router
 
 from .settings import get_settings
 settings = get_settings()
@@ -52,3 +53,4 @@ app.include_router( savings_router.router )
 app.include_router( factories_router.router )
 app.include_router( production_router.router )
 app.include_router( locations_router.router )
+app.include_router( weather_router.router )
