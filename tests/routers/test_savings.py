@@ -5,7 +5,7 @@ csvpath = 'resources/tests/routers/savings'
 
 @pytest.mark.asyncio
 async def test_select_dates_range( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2023-07-28,2023-08-06" )
+    response = await client.get( f"{urlpath}?time_range=2023-07-28,2023-08-06" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_dates-range.csv', response.json() )
@@ -16,7 +16,7 @@ async def test_select_dates_range( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_months_range( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2023-07,2023-08" )
+    response = await client.get( f"{urlpath}?time_range=2023-07,2023-08" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_months-range.csv', response.json() )
@@ -27,7 +27,7 @@ async def test_select_months_range( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_dates_range_momths_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2023-07-28,2023-08-06&time_aggregation=month" )
+    response = await client.get( f"{urlpath}?time_range=2023-07-28,2023-08-06&time_aggregation=month" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_dates-range_months-avg.csv', response.json() )
@@ -39,7 +39,7 @@ async def test_select_dates_range_momths_avg( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_years_range_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2022,2024&time_aggregation=year" )
+    response = await client.get( f"{urlpath}?time_range=2022,2024&time_aggregation=year" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_years-avg.csv', response.json() )
@@ -51,7 +51,7 @@ async def test_select_years_range_years_avg( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_dates_range_reservoirs_sum( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2023-07-28,2023-08-06&reservoir_aggregation=true" )
+    response = await client.get( f"{urlpath}?time_range=2023-07-28,2023-08-06&reservoir_aggregation=true" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum.csv', response.json() )
@@ -62,7 +62,7 @@ async def test_select_dates_range_reservoirs_sum( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_dates_range_reservoirs_sum_momths_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2023-07-28,2023-08-06&reservoir_aggregation=true&time_aggregation=month" )
+    response = await client.get( f"{urlpath}?time_range=2023-07-28,2023-08-06&reservoir_aggregation=true&time_aggregation=month" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum_months-avg.csv', response.json() )
@@ -77,7 +77,7 @@ async def test_select_dates_range_reservoirs_sum_momths_avg( client, assert_agai
 
 @pytest.mark.asyncio
 async def test_select_years_range_reservoirs_sum_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2022,2024&reservoir_aggregation=true&time_aggregation=year" )
+    response = await client.get( f"{urlpath}?time_range=2022,2024&reservoir_aggregation=true&time_aggregation=year" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_reservoirs-sum_years-avg.csv', response.json() )
@@ -92,7 +92,7 @@ async def test_select_years_range_reservoirs_sum_years_avg( client, assert_again
 
 @pytest.mark.asyncio
 async def test_select_years_range_interval_filter( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2022,2024&interval_filter=07-28,08-16" )
+    response = await client.get( f"{urlpath}?time_range=2022,2024&interval_filter=07-28,08-16" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_interval-filter.csv', response.json() )
@@ -104,7 +104,7 @@ async def test_select_years_range_interval_filter( client, assert_against_csv ):
 
 @pytest.mark.asyncio
 async def test_select_years_range_reservoirs_sum_years_avg_interval_filter( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2022,2024&reservoir_aggregation=true&time_aggregation=year&interval_filter=07-28,08-16" )
+    response = await client.get( f"{urlpath}?time_range=2022,2024&reservoir_aggregation=true&time_aggregation=year&interval_filter=07-28,08-16" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_years-range_reservoirs-sum_years-avg_interval-filter.csv', response.json() )
@@ -119,7 +119,7 @@ async def test_select_years_range_reservoirs_sum_years_avg_interval_filter( clie
 
 @pytest.mark.asyncio
 async def test_select_dates_range_custom_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2021-10-01,2023-09-30&time_aggregation=year&year_start=10-01" )
+    response = await client.get( f"{urlpath}?time_range=2021-10-01,2023-09-30&time_aggregation=year&year_start=10-01" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_dates-range_custom-years-avg.csv', response.json() )
@@ -143,7 +143,7 @@ async def test_select_dates_range_custom_years_avg( client, assert_against_csv )
 
 @pytest.mark.asyncio
 async def test_select_dates_range_reservoirs_sum_custom_years_avg( client, assert_against_csv ):
-    response = await client.get( f"{urlpath}?time_filter=2021-10-01,2023-09-30&reservoir_aggregation=true&time_aggregation=year&year_start=10-01" )
+    response = await client.get( f"{urlpath}?time_range=2021-10-01,2023-09-30&reservoir_aggregation=true&time_aggregation=year&year_start=10-01" )
     assert response.status_code == 200
 
     assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum_custom-years-avg.csv', response.json() )

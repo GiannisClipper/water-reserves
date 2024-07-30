@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from src.helpers.time import has_year_format, has_year_month_format, has_date_format
 from src.helpers.time import is_year, is_year_month, is_month_day, is_date
 
-def validate_time_filter( value: str | None ):
+def validate_time_range( value: str | None ):
 
     if value == '':
         value = None
@@ -31,7 +31,7 @@ def validate_time_filter( value: str | None ):
         raise;
 
     except Exception as e:
-        raise HTTPException( 400, "Invalid parameter value (time_filter)." )
+        raise HTTPException( 400, "Invalid parameter value (time_range)." )
 
 
 def _validate_id_filter( value: str | None ):

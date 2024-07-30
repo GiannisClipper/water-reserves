@@ -16,11 +16,11 @@ from src.helpers.text import get_query_headers
 #     date: str
 #     quantity: int
 
-def create_base_query( time_filter, reservoir_filter, interval_filter ):
+def create_base_query( time_range, reservoir_filter, interval_filter ):
 
     from_time, to_time = ( None, None )
-    if time_filter:
-        from_time, to_time = time_filter
+    if time_range:
+        from_time, to_time = time_range
 
     where_clause = [ 'quantity>0' ]
 
@@ -135,7 +135,7 @@ def expand_query_with_order( query, order ):
 
 
 async def select_all( 
-    time_filter: str | None, 
+    time_range: str | None, 
     reservoir_filter: str | None,
     interval_filter: str | None,
     reservoir_aggregation: str | None,
@@ -143,7 +143,7 @@ async def select_all(
     year_start: str | None
 ):
 
-    query = create_base_query( time_filter, reservoir_filter, interval_filter )
+    query = create_base_query( time_range, reservoir_filter, interval_filter )
     # print( 'base_query:', query )
     order = 'date,reservoir_id'
 
