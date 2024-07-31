@@ -1,3 +1,9 @@
+def set_indentation( n: int, text ):
+    lines = text.split( '\n' )
+    lines = map( lambda l: ' ' * n + l, lines )
+    text = '\n'.join( lines )
+    return text
+
 def get_query_headers( query ):
 
     text = ""

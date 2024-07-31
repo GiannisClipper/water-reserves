@@ -1,4 +1,11 @@
-from src.helpers.text import get_query_headers
+from src.helpers.text import set_indentation, get_query_headers
+
+# set_indentation
+
+def test_set_indentation_results():
+    assert set_indentation( 2, 'blah' ) == '  blah'
+    assert set_indentation( 2, 'blah\nblah' ) == '  blah\n  blah'
+
 
 # get_query_headers
 
