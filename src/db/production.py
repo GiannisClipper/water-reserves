@@ -224,9 +224,9 @@ class QueryMaker:
     def __expand_query_with_order( self ):
 
         headers = get_query_headers( self.query )
-        order = headers[ 0 ]
+        order = headers[ 0 ] if headers[ 0 ] != 'id' else headers[ 1 ]
         if not self.factory_aggregation:
-            order = f"{order},{headers[ 1 ]}"
+            order = f"{order},factory_id"
 
         self.query =f'''
             {self.query}

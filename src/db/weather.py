@@ -97,7 +97,7 @@ class QueryMaker:
 
         self.query = f'''
             SELECT 
-            {alias}.date AS date, SUM({alias}.precipitation_sum) AS precipitation_sum 
+            {alias}.date AS date, ROUND(SUM({alias}.precipitation_sum)::numeric,2) AS precipitation_sum 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -108,7 +108,7 @@ class QueryMaker:
     def __expand_query_with_month_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum::numeric),2)" if method == 'avg' else f"SUM({alias}.precipitation_sum)"
+        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
 
         # ::numeric is used to handle => 
         # psycopg.errors.UndefinedFunction: function round(double precision, integer) does not exist
@@ -143,7 +143,7 @@ class QueryMaker:
     def __expand_query_with_year_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum::numeric),2)" if method == 'avg' else f"SUM({alias}.precipitation_sum)"
+        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
 
         if self.location_aggregation:
             self.query = f'''
@@ -200,7 +200,7 @@ class QueryMaker:
     def __expand_query_with_custom_year_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum),2)" if method == 'avg' else f"SUM({alias}.precipitation_sum)"
+        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
 
         if self.location_aggregation:
             self.query = f'''
@@ -230,9 +230,9 @@ class QueryMaker:
     def __expand_query_with_order( self ):
 
         headers = get_query_headers( self.query )
-        order = headers[ 0 ]
+        order = headers[ 0 ] if headers[ 0 ] != 'id' else headers[ 1 ]
         if not self.location_aggregation:
-            order = f"{order},{headers[ 1 ]}"
+            order = f"{order},location_id"
 
         self.query =f'''
             {self.query}
