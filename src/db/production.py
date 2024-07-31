@@ -108,7 +108,7 @@ class QueryMaker:
     def __expand_query_with_month_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else "SUM({alias}.quantity)"
+        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else f"SUM({alias}.quantity)"
 
         if self.factory_aggregation:
             self.query = f'''
@@ -138,7 +138,7 @@ class QueryMaker:
     def __expand_query_with_year_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else "SUM({alias}.quantity)"
+        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else f"SUM({alias}.quantity)"
 
         if self.factory_aggregation:
             self.query = f'''
@@ -194,7 +194,7 @@ class QueryMaker:
     def __expand_query_with_custom_year_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else "SUM({alias}.quantity)"
+        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else f"SUM({alias}.quantity)"
 
         if self.factory_aggregation:
             self.query = f'''
