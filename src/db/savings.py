@@ -243,7 +243,7 @@ async def select_all(
     print( 'query:', query )
 
     headers = get_query_headers( query )
-    data =[]
+    data = []
 
     async with pool.connection() as conn, conn.cursor() as cur:
         await cur.execute( query )

@@ -29,12 +29,13 @@ def assert_against_csv():
         data = response[ 'data' ]
 
         expected_headers, expected_data = read_csv( csvfile )
-        expected_headers = parse_csv_headers( expected_headers )
-        expected_data = parse_csv_data( expected_data, data[ 0 ] )
 
+        expected_headers = parse_csv_headers( expected_headers )
         assert len( headers ) == len( expected_headers )
 
+        expected_data = parse_csv_data( expected_data, data[ 0 ] )
         assert len( data ) == len( expected_data )
+
         for i, row in enumerate( data ):
             for j, value in enumerate( row ):
                 print(data[ i ][ j ], expected_data[ i ][ j ])

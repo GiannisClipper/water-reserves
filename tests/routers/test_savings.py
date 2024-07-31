@@ -56,8 +56,8 @@ async def test_select_dates_range_reservoirs_sum( client, assert_against_csv ):
 
     assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum.csv', response.json() )
     # csv content comes from: 
-    # SELECT date, '' AS reservoir_id, SUM(quantity) AS quantity FROM savings 
-    # WHERE date>='2023-07-28' AND date<='2023-08-06' GROUP BY date ORDER BY date, reservoir_id;
+    # SELECT date, SUM(quantity) AS quantity FROM savings 
+    # WHERE date>='2023-07-28' AND date<='2023-08-06' GROUP BY date ORDER BY date;
 
 
 @pytest.mark.asyncio
@@ -67,12 +67,12 @@ async def test_select_dates_range_reservoirs_sum_momths_avg( client, assert_agai
 
     assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum_months-avg.csv', response.json() )
     # csv content comes from: 
-    # SELECT SUBSTR(date,1,7) AS month, a.reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM 
+    # SELECT SUBSTR(date,1,7) AS month, ROUND(AVG(quantity),2) AS quantity FROM 
     # (
-    #   SELECT date, '' AS reservoir_id, SUM(quantity) AS quantity FROM savings 
+    #   SELECT date, SUM(quantity) AS quantity FROM savings 
     #   WHERE date>='2023-07-28' AND date<='2023-08-06' GROUP BY date
     # ) a
-    # GROUP BY SUBSTR(a.date,1,7), a.reservoir_id ORDER BY SUBSTR(a.date,1,7), a.reservoir_id;
+    # GROUP BY SUBSTR(a.date,1,7) ORDER BY SUBSTR(a.date,1,7);
 
 
 @pytest.mark.asyncio
@@ -82,12 +82,12 @@ async def test_select_years_range_reservoirs_sum_years_avg( client, assert_again
 
     assert_against_csv( f'{csvpath}/select_years-range_reservoirs-sum_years-avg.csv', response.json() )
     # csv content comes from: 
-    # SELECT SUBSTR(date,1,4) AS year, a.reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM 
+    # SELECT SUBSTR(date,1,4) AS year, ROUND(AVG(quantity),2) AS quantity FROM 
     # (
-    #   SELECT date, '' AS reservoir_id, SUM(quantity) AS quantity FROM savings 
+    #   SELECT date, SUM(quantity) AS quantity FROM savings 
     #   WHERE date>='2022-01-01' AND date<='2023-12-31' GROUP BY date
     # ) a
-    # GROUP BY SUBSTR(a.date,1,4), a.reservoir_id ORDER BY SUBSTR(a.date,1,4), a.reservoir_id;
+    # GROUP BY SUBSTR(a.date,1,4) ORDER BY SUBSTR(a.date,1,4);
 
 
 @pytest.mark.asyncio
@@ -109,12 +109,12 @@ async def test_select_years_range_reservoirs_sum_years_avg_interval_filter( clie
 
     assert_against_csv( f'{csvpath}/select_years-range_reservoirs-sum_years-avg_interval-filter.csv', response.json() )
     # csv content comes from: 
-    # SELECT SUBSTR(date,1,4) AS year, a.reservoir_id, ROUND(AVG(quantity),2) AS quantity FROM 
+    # SELECT SUBSTR(date,1,4) AS year, ROUND(AVG(quantity),2) AS quantity FROM 
     # (
-    #   SELECT date, '' AS reservoir_id, SUM(quantity) AS quantity FROM savings 
+    #   SELECT date, SUM(quantity) AS quantity FROM savings 
     #   WHERE date>='2022-01-01' AND date<='2023-12-31' AND (SUBSTR(date,6,5)>='07-28' AND SUBSTR(date,6,5)<='08-16') GROUP BY date
     # ) a
-    # GROUP BY SUBSTR(a.date,1,4), a.reservoir_id ORDER BY SUBSTR(a.date,1,4), a.reservoir_id;
+    # GROUP BY SUBSTR(a.date,1,4) ORDER BY SUBSTR(a.date,1,4);
 
 
 @pytest.mark.asyncio
@@ -148,21 +148,19 @@ async def test_select_dates_range_reservoirs_sum_custom_years_avg( client, asser
 
     assert_against_csv( f'{csvpath}/select_dates-range_reservoirs-sum_custom-years-avg.csv', response.json() )
     # csv content comes from: 
-    # SELECT b.custom_year, b.reservoir_id, ROUND(AVG(b.quantity),2) AS quantity
+    # SELECT b.custom_year, ROUND(AVG(b.quantity),2) AS quantity
     # FROM (
     # SELECT
     #     CASE WHEN SUBSTR(a.date,6,5)>='10-01'
     #     THEN SUBSTR(a.date,1,4) || '-' || CAST(SUBSTR(a.date,1,4) AS INTEGER)+1
     #     ELSE CAST(SUBSTR(a.date,1,4) AS INTEGER)-1 || '-' || SUBSTR(a.date,1,4) 
     #     END AS custom_year,
-    #     a.reservoir_id,
     #     a.quantity
     # FROM ( 
-    #     SELECT date, '' AS reservoir_id, SUM(quantity) AS quantity FROM savings 
+    #     SELECT date, SUM(quantity) AS quantity FROM savings 
     #     WHERE date>='2021-10-01' AND date<='2023-09-30'
     #     GROUP BY date
     # ) a
     # ) b
-    # GROUP BY b.custom_year, b.reservoir_id
-    # ORDER BY b.custom_year, b.reservoir_id;
-
+    # GROUP BY b.custom_year
+    # ORDER BY b.custom_year;
