@@ -4,7 +4,7 @@ from psycopg.rows import class_row
 from src.db import pool
 
 from src.helpers.time import get_first_date, get_last_date
-from src.helpers.text import get_query_headers
+from src.helpers.text import set_indentation, get_query_headers
 
 # result is possible to have a large amount of rows
 # so, in order to reduce the response size, is preferred 
@@ -17,128 +17,222 @@ from src.helpers.text import get_query_headers
 #     date: str
 #     quantity: int
 
-def create_base_query( time_range, factory_filter, interval_filter ):
+class QueryMaker:
 
-    from_time, to_time = time_range if time_range else ( None, None )
-    from_date = get_first_date( from_time )
-    to_date = get_last_date( to_time )
+    def __init__(
+        self,
+        time_range: str | None, 
+        factory_filter: str | None,
+        interval_filter: str | None,
+        factory_aggregation: str | None,
+        time_aggregation: str | None,
+        year_start: str | None
+    ):
+        self.time_range = time_range
+        self.factory_filter = factory_filter
+        self.interval_filter = interval_filter
+        self.factory_aggregation = factory_aggregation
+        self.time_aggregation = time_aggregation
+        self.year_start = year_start
+        self.query = None
+    
+        aliases = [ 'c', 'b', 'a' ]
+        self.__create_base_query()
 
-    where_clause = [ 'quantity>0' ]
+        if self.factory_aggregation:
+            query = self.__expand_query_with_factory_aggregation( aliases.pop() )
 
-    if from_date:
-        where_clause.append( f"date>='{from_date}'" )
+        if self.time_aggregation and self.time_aggregation[ 0 ] == 'month':
+            self.__expand_query_with_month_aggregation( aliases.pop() )
 
-    if to_date:
-        where_clause.append( f"date<='{to_date}'" )
+        if self.time_aggregation and self.time_aggregation[ 0 ] == 'year':
+            if not self.year_start:
+                self.__expand_query_with_year_aggregation( aliases.pop() )
+            else:
+                self.__expand_query_with_custom_year_header( aliases.pop() )
+                self.__expand_query_with_custom_year_aggregation( aliases.pop() )
 
-    if factory_filter:
-        where_clause.append( f"factory_id IN ({factory_filter})" )
-
-    if interval_filter:
-        op = 'AND' if interval_filter[ 0 ] <= interval_filter[ 1 ] else 'OR'
-        where_clause.append( f"(SUBSTR(date,6,5)>='{interval_filter[ 0 ]}' {op} SUBSTR(date,6,5)<='{interval_filter[ 1 ]}')" )
-
-    if len( where_clause ) > 0:
-        where_clause = ' AND '.join( where_clause )
-        where_clause = f'WHERE {where_clause}'
-    else:
-        where_clause = ''
-
-    return f'''
-        SELECT id, date, factory_id, quantity 
-        FROM production
-        {where_clause}
-    '''
-
-
-def expand_query_with_factory_aggregation( query ):
-
-    return f'''
-        SELECT 
-        a.date AS date, '' AS factory_id, SUM(a.quantity) AS quantity 
-        FROM (
-        {query}
-        ) a 
-        GROUP BY 
-        a.date
-    '''
+        self.__expand_query_with_order()
 
 
-def expand_query_with_month_aggregation( query, aggregation_method ):
-
-    aggregation_method = "ROUND(AVG(b.quantity),2)" if aggregation_method == 'avg' else "SUM(b.quantity)"
-
-    return f'''
-        SELECT 
-        SUBSTR(b.date,1,7) AS month, 
-        b.factory_id AS factory_id, 
-        {aggregation_method} AS quantity 
-        FROM (
-        {query}
-        ) b 
-        GROUP BY 
-        SUBSTR(b.date,1,7), 
-        b.factory_id
-    '''
-
-def expand_query_with_year_aggregation( query, aggregation_method ):
-
-    aggregation_method = "ROUND(AVG(b.quantity),2)" if aggregation_method == 'avg' else "SUM(b.quantity)"
-
-    return f'''
-        SELECT
-        SUBSTR(b.date,1,4) AS year, 
-        b.factory_id AS factory_id, 
-        {aggregation_method} AS quantity 
-        FROM (
-        {query}
-        ) b 
-        GROUP BY 
-        SUBSTR(b.date,1,4), 
-        b.factory_id
-    '''
+    def get_query( self ):
+        return self.query
 
 
-def expand_query_with_custom_year_aggregation( query, year_start, aggregation_method ):
+    def __create_base_query( self ):
 
-    custom_year = f'''
-        CASE WHEN SUBSTR(b.date,6,5)>='{year_start}'
-        THEN SUBSTR(b.date,1,4) || '-' || CAST(SUBSTR(b.date,1,4) AS INTEGER)+1
-        ELSE CAST(SUBSTR(b.date,1,4) AS INTEGER)-1 || '-' || SUBSTR(b.date,1,4) 
-        END'''
+        from_time, to_time = self.time_range if self.time_range else ( None, None )
+        from_date = get_first_date( from_time )
+        to_date = get_last_date( to_time )
 
-    query = f'''
-        SELECT 
-        {custom_year} AS custom_year,
-        b.factory_id AS factory_id, b.quantity AS quantity 
-        FROM (
-        {query}
-        ) b
-    '''
+        where_clause = [ 'quantity>0' ]
 
-    aggregation_method = "ROUND(AVG(c.quantity),2)" if aggregation_method == 'avg' else "SUM(c.quantity)"
+        if from_date:
+            where_clause.append( f"date>='{from_date}'" )
 
-    return f'''
-        SELECT 
-        c.custom_year AS custom_year, 
-        c.factory_id AS factory_id, 
-        {aggregation_method} AS quantity 
-        FROM (
-        {query}
-        ) c
-        GROUP BY 
-        c.custom_year, 
-        c.factory_id
-    '''
+        if to_date:
+            where_clause.append( f"date<='{to_date}'" )
+
+        if self.factory_filter:
+            where_clause.append( f"factory_id IN ({self.factory_filter})" )
+
+        if self.interval_filter:
+            op = 'AND' if self.interval_filter[ 0 ] <= self.interval_filter[ 1 ] else 'OR'
+            text = f"(SUBSTR(date,6,5)>='{self.interval_filter[ 0 ]}' {op} SUBSTR(date,6,5)<='{self.interval_filter[ 1 ]}')"
+            where_clause.append( text )
+
+        if len( where_clause ) > 0:
+            where_clause = ' AND '.join( where_clause )
+            where_clause = f'WHERE {where_clause}'
+        else:
+            where_clause = ''
+
+        self.query = f'''
+            SELECT id, date, factory_id, quantity 
+            FROM production
+            {where_clause}'''
 
 
-def expand_query_with_order( query, order ):
+    def __expand_query_with_factory_aggregation(self,  alias ):
 
-    return f'''
-        {query}
-        ORDER BY 
-        {order}
-    '''
+        self.query = f'''
+            SELECT 
+            {alias}.date AS date, SUM({alias}.quantity) AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias} 
+            GROUP BY 
+            {alias}.date'''
+
+
+    def __expand_query_with_month_aggregation( self, alias ):
+
+        method = self.time_aggregation[ 1 ]
+        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else "SUM({alias}.quantity)"
+
+        if self.factory_aggregation:
+            self.query = f'''
+            SELECT 
+            SUBSTR({alias}.date,1,7) AS month, 
+            {quantity} AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias} 
+            GROUP BY 
+            SUBSTR({alias}.date,1,7)'''
+
+        else:
+            self.query = f'''
+            SELECT 
+            SUBSTR({alias}.date,1,7) AS month, 
+            {alias}.factory_id AS factory_id, 
+            {quantity} AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias} 
+            GROUP BY 
+            SUBSTR({alias}.date,1,7), 
+            {alias}.factory_id'''
+
+
+    def __expand_query_with_year_aggregation( self, alias ):
+
+        method = self.time_aggregation[ 1 ]
+        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else "SUM({alias}.quantity)"
+
+        if self.factory_aggregation:
+            self.query = f'''
+            SELECT
+            SUBSTR({alias}.date,1,4) AS year, 
+            {quantity} AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias} 
+            GROUP BY 
+            SUBSTR({alias}.date,1,4)'''
+
+        else:
+            self.query = f'''
+            SELECT
+            SUBSTR({alias}.date,1,4) AS year, 
+            {alias}.factory_id AS factory_id, 
+            {quantity} AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias} 
+            GROUP BY 
+            SUBSTR({alias}.date,1,4), 
+            {alias}.factory_id'''
+
+
+    def __expand_query_with_custom_year_header( self, alias ):
+
+        custom_year = f'''
+            CASE WHEN SUBSTR({alias}.date,6,5)>='{self.year_start}'
+            THEN SUBSTR({alias}.date,1,4) || '-' || CAST(SUBSTR({alias}.date,1,4) AS INTEGER)+1
+            ELSE CAST(SUBSTR({alias}.date,1,4) AS INTEGER)-1 || '-' || SUBSTR({alias}.date,1,4) 
+            END'''
+
+        if self.factory_aggregation:
+            self.query = f'''
+            SELECT 
+            {custom_year} AS custom_year,
+            {alias}.quantity AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias}'''
+        else:
+            self.query = f'''
+            SELECT 
+            {custom_year} AS custom_year,
+            {alias}.factory_id AS factory_id, 
+            {alias}.quantity AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias}'''
+
+    def __expand_query_with_custom_year_aggregation( self, alias ):
+
+        method = self.time_aggregation[ 1 ]
+        quantity = f"ROUND(AVG({alias}.quantity),2)" if method == 'avg' else "SUM({alias}.quantity)"
+
+        if self.factory_aggregation:
+            self.query = f'''
+            SELECT 
+            {alias}.custom_year AS custom_year, 
+            {quantity} AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias}
+            GROUP BY 
+            {alias}.custom_year'''
+
+        else:
+            self.query = f'''
+            SELECT 
+            {alias}.custom_year AS custom_year, 
+            {alias}.factory_id AS factory_id, 
+            {quantity} AS quantity 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias}
+            GROUP BY 
+            {alias}.custom_year, 
+            {alias}.factory_id'''
+
+
+    def __expand_query_with_order( self ):
+
+        headers = get_query_headers( self.query )
+        order = headers[ 0 ]
+        if not self.factory_aggregation:
+            order = f"{order},{headers[ 1 ]}"
+
+        self.query =f'''
+            {self.query}
+            ORDER BY 
+            {order}
+        '''
 
 
 async def select_all( 
@@ -150,41 +244,15 @@ async def select_all(
     year_start: str | None
 ):
 
-    query = create_base_query( time_range, factory_filter, interval_filter )
-    # print( 'base_query:', query )
-    order = 'date,factory_id'
+    query = QueryMaker( 
+        time_range, factory_filter, interval_filter, 
+        factory_aggregation, time_aggregation, year_start 
+    ).get_query()
 
-    if factory_aggregation:
-        query = expand_query_with_factory_aggregation( query )
-        # print( 'with_factory_aggregation:', query )
-
-    if time_aggregation and time_aggregation[ 0 ] == 'month':
-
-        aggregation_method = time_aggregation[ 1 ]
-
-        query = expand_query_with_month_aggregation( query, aggregation_method )
-        # print( 'with_month_aggregation:', query )
-        order = 'month,factory_id'
-
-    if time_aggregation and time_aggregation[ 0 ] == 'year':
-
-        aggregation_method = time_aggregation[ 1 ]
-
-        if not year_start:
-            query = expand_query_with_year_aggregation( query, aggregation_method )
-            # print( 'with_year_aggregation:', query )
-            order = 'year,factory_id'
-
-        else:
-            query = expand_query_with_custom_year_aggregation( query, year_start, aggregation_method )
-            # print( 'with_custom_year_aggregation:', query )
-            order = 'custom_year,factory_id'
-
-    query = expand_query_with_order( query, order )
     print( 'query:', query )
 
     headers = get_query_headers( query )
-    data =[]
+    data = []
 
     async with pool.connection() as conn, conn.cursor() as cur:
         await cur.execute( query )
