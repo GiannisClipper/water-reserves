@@ -17,3 +17,9 @@ VS Code extension: Intelligent Tailwind CSS (to propose/autocomplete directives)
 VS code extension: PostCSS Language Support (to fix error: Unknown at rule @apply css)
 
 https://tailwindcss.com/docs
+
+
+Icons
+
+npm install react-icons --save
+https://react-icons.github.io/react-icons/

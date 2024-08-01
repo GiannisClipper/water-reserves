@@ -1,25 +1,65 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { FaChartLine, FaWater, FaFaucet, FaCloudRain } from "react-icons/fa";
+
+const LinkIcon = ({ children }) =>
+    <div className='LinkIcon'>
+        {children}
+    </div>
+
+const LinkText = ({ children }) =>
+    <div className='LinkText'>
+        {children}
+    </div>
 
 export default function Home() {
     return (
+        <div className="app-options">
+            
+            <Link className="option" href="/current-status">
+                <LinkIcon>
+                    <FaChartLine />
+                </LinkIcon>
+                <LinkText>
+                    Τρέχουσα κατάσταση
+                </LinkText>
+            </Link>
 
-    <main className="max-w-full flex min-h-screen flex-col items-stretch justify-between p-12">
+            <Link className="option" href="/savings">
+                <LinkIcon>
+                    <FaWater />
+                </LinkIcon>
+                <LinkText>
+                    Αποθέματα νερού
+                </LinkText>
+            </Link>
 
-        <div className="border-2 border-indigo-300 bg-indigo-200 p-6">
+            <Link className="option" href="/production">
+                <LinkIcon>
+                    <FaFaucet />
+                </LinkIcon>
+                <LinkText>
+                    Παραγωγή πόσιμου νερού
+                </LinkText>
+            </Link>
 
-            <div className="app-title">
-                <code>Water reserves</code>
-            </div>
+            <Link className="option" href="/ratio">
+                <LinkIcon>
+                    <FaWater />
+                </LinkIcon>
+                <LinkText>
+                    Λόγος αποθεμάτων / παραγωγής
+                </LinkText>
+            </Link>
 
-            <div className="app-options">
-                <div className="app-option">Αποθέματα νερού</div>
-                <div className="app-option">Παραγωγή πόσιμου νερού</div>
-                <div className="app-option">Λόγος αποθεμάτων / παραγωγής</div>
-                <div className="app-option">Ποσότητες υετού</div>
-            </div>
+            <Link className="option" href="/precipitation">
+                <LinkIcon>
+                    <FaCloudRain />
+                </LinkIcon>
+                <LinkText>
+                    Ποσότητες υετού
+                </LinkText>
+            </Link>
         </div>
-    </main>
-
     );
 }
 
