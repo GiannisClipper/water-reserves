@@ -1,0 +1,19 @@
+Next.js
+
+setup automatically: npx create-next-app@latest
+start the development server: npm run dev
+call the app in browser: http://localhost:3000
+
+Start building with Next.js
+https://nextjs.org/learn
+
+Next.js Tutorial for Beginners 
+https://www.youtube.com/playlist?list=PLC3y8-rFHvwgC9mj0qv972IO5DmD-H0ZH
+
+
+Tailwind CSS
+
+VS Code extension: Intelligent Tailwind CSS (to propose/autocomplete directives) 
+VS code extension: PostCSS Language Support (to fix error: Unknown at rule @apply css)
+
+https://tailwindcss.com/docs

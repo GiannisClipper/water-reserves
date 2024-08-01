@@ -31,3 +31,19 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .app-title {
+    @apply min-w-full p-4 px-6 text-3xl font-semibold text-indigo-300
+    hover:text-indigo-400
+  }
+
+  .app-options {
+    @apply flex flex-row flex-wrap items-stretch justify-around min-w-full
+  }
+
+  .app-option {
+    @apply w-full md:w-[calc(50%-1rem)] lg:w-[calc(25%-1rem)] border-2 border-indigo-300 my-4 p-4 font-semibold text-indigo-600
+    hover:bg-indigo-300
+  }
+}
