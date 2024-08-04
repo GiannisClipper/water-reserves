@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import { FaChartLine, FaWater, FaFaucet, FaCloudRain } from "react-icons/fa";
 
-const LinkIcon = ({ children }) =>
+type ChildrenProps = {
+    children: React.ReactNode
+}
+
+const LinkIcon = ( { children }: ChildrenProps ) =>
     <div className='LinkIcon'>
         {children}
     </div>
 
-const LinkText = ({ children }) =>
+const LinkText = ( { children }: ChildrenProps ) =>
     <div className='LinkText'>
         {children}
     </div>

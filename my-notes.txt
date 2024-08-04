@@ -7,8 +7,8 @@ call the app in browser: http://localhost:3000
 Start building with Next.js
 https://nextjs.org/learn
 
-Next.js Tutorial for Beginners 
-https://www.youtube.com/playlist?list=PLC3y8-rFHvwgC9mj0qv972IO5DmD-H0ZH
+Next.js 14 Tutorial 
+https://www.youtube.com/playlist?list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI
 
 
 Tailwind CSS
@@ -23,3 +23,10 @@ Icons
 
 npm install react-icons --save
 https://react-icons.github.io/react-icons/
+
+
+
+Typescript
+
+Learn Typescript with React | Quick Crash Course
+https://www.youtube.com/watch?v=kq6IhAZVNh8
