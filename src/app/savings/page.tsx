@@ -2,7 +2,11 @@ import ParamSection from "./ParamSection";
 import DataSection from "./DataSection";
 import { Suspense } from "react";
 
-export default function Savings() {
+type propsType = {
+    searchParams: {}[]
+}
+
+export default function Savings( { searchParams }: propsType ) {
 
     console.log( "rendering: Savings (page)..." )
 
@@ -12,9 +16,9 @@ export default function Savings() {
             Savings page
         </div>
         <div className="page-sections">
-            <ParamSection />
+            <ParamSection searchParams={searchParams} />
             <Suspense fallback="<p>Loading...</p>">
-                <DataSection />
+                <DataSection searchParams={searchParams} />
             </Suspense>
         </div>
         </>

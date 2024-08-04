@@ -2,12 +2,25 @@ import { Suspense } from "react";
 import ChartSection from "./ChartSection";
 import ListSection from "./ListSection";
 
-const DataSection = async () => {
+type propsType = {
+    searchParams: { time_range?: string }
+}
 
-    // await new Promise( resolve => setTimeout( resolve, 2000 ) )
-    // const result: number = Math.floor( Math.random() * 10 );
-    const response = await fetch( "http://localhost:8000/api/v1/savings?time_range=2022-07&reservoir_aggregation=sum" );
-    const result = await response.json();
+const DataSection = async ( { searchParams }: propsType ) => {
+
+    let result;
+
+    if ( searchParams ) {
+        const url: string = "http://localhost:8000/api/v1/savings?reservoir_aggregation=sum&" +
+        `time_range=${searchParams.time_range}`
+        // Object.keys( searchParams )
+        //     .map( ( key: string ) => `${key}=${searchParams[key]}` )
+        //     .join( '&' );
+
+        console.log( url );
+        const response = await fetch( url );
+        result = await response.json();
+    }
 
     console.log( "rendering: DataSection..." )
 
