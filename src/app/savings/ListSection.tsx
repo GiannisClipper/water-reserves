@@ -14,7 +14,6 @@ const ListSection = async ( { result }: propsType ) => {
 
     return (
         <div className="ListSection">
-            <span>List section...</span>
             <ListLabel />
             <ListContent result={result} />
         </div>

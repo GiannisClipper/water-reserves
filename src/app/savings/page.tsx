@@ -2,8 +2,12 @@ import ParamSection from "./ParamSection";
 import DataSection from "./DataSection";
 import { Suspense } from "react";
 
+type searchParamsType = {
+    time_range?: string
+}
+
 type propsType = {
-    searchParams: {}[]
+    searchParams: searchParamsType
 }
 
 export default function Savings( { searchParams }: propsType ) {

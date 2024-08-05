@@ -30,3 +30,19 @@ Typescript
 
 Learn Typescript with React | Quick Crash Course
 https://www.youtube.com/watch?v=kq6IhAZVNh8
+
+
+
+Download
+
+How to create a file and generate a download with Javascript in the Browser (without a server)
+https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
+
+
+
+Recharts
+
+https://recharts.org/
+
+How to use Next.js and Recharts to build an information dashboard
+https://ably.com/blog/informational-dashboard-with-nextjs-and-recharts

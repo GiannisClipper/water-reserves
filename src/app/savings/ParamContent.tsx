@@ -3,13 +3,17 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+type searchParamsType = {
+    time_range?: string
+}
+
 type propsType = {
-    searchParams: { time_range?: string }
+    searchParams: searchParamsType
 }
 
 const ParamContent = ( { searchParams }: propsType ) => {
 
-    const { time_range }: { time_range?: string } = searchParams || {};
+    const { time_range }: searchParamsType = searchParams || {};
 
     const [ timeRange, setTimeRange ] = useState( time_range || '' );
 

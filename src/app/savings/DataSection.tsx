@@ -26,9 +26,8 @@ const DataSection = async ( { searchParams }: propsType ) => {
 
     return (
         <div className="DataSection">
-            <span>Data section...</span>
             <Suspense fallback="<p>Loading...</p>">
-                <ChartSection />
+                <ChartSection result={result} />
             </Suspense>
             <Suspense fallback="<p>Loading...</p>">
                 <ListSection result={result} />
