@@ -11,7 +11,6 @@ const ParamSection = async ( { searchParams }: propsType ) => {
 
     return (
         <div className="ParamSection">
-            <span>Param section...</span>
             <ParamLabel />
             <ParamContent searchParams={searchParams} />
         </div>
