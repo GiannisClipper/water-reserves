@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from src.helpers.time import has_year_format, has_year_month_format, has_date_format
 from src.helpers.time import is_year, is_year_month, is_month_day, is_date
 
-def validate_time_range( value: str | None ):
+def validate_time_range( value: str | None ) -> list[ str, str ]:
 
     if value == '':
         value = None

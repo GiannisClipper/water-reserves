@@ -288,7 +288,6 @@ def test_get_prev_date_results():
     assert get_prev_date( '2024-01-01' ) == '2023-12-31'
     assert get_prev_date( '2023-03-01' ) == '2023-02-28'
 
-
 # get_past_date
 
 def test_get_past_date_results():

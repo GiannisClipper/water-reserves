@@ -242,12 +242,12 @@ class QueryMaker:
 
 
 async def select_all( 
-    time_range: str | None, 
-    location_filter: str | None,
-    interval_filter: str | None,
-    location_aggregation: str | None,
-    time_aggregation: str | None,
-    year_start: str | None
+    time_range: list[ str ] | None = None, 
+    location_filter: str | None = None,
+    interval_filter: str | None = None,
+    location_aggregation: str | None = None,
+    time_aggregation: str | None = None,
+    year_start: str | None = None
 ):
 
     query = QueryMaker( 
