@@ -1,3 +1,5 @@
+import math
+
 # to check formats
 
 def has_year_format( val: str ):
@@ -167,4 +169,32 @@ def get_last_date( val: str ):
     if has_date_format( val ) and is_date( val ):
         return val
 
-    raise ValueError( 'Invalid value (no year or yera-month).' )
+    raise ValueError( 'Invalid value (no year or year-month).' )
+
+
+def get_prev_date( date ):
+
+    assert is_date( date ) == True 
+
+    year, month, day = date.split( '-' )
+
+    day = int( day ) - 1
+    if day >= 1:
+        day = str( day ).rjust( 2, '0' )
+        return f'{year}-{month}-{day}'
+
+    month = int( month ) - 1
+    if month >= 1:
+        month = str( month ).rjust( 2, '0' )
+        day = get_month_days( month, year )[ -1 ]
+        return f'{year}-{month}-{day}'
+
+    year = int( year ) - 1
+    return f'{year}-{12}-{31}'
+
+def get_past_date( date, days: int ):
+
+    for i in range( 0, days ):
+        date = get_prev_date( date )
+    return date
+
