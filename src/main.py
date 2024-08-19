@@ -1,10 +1,5 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from psycopg_pool import AsyncConnectionPool
-
-# from starlette.requests import Request
-# from starlette.responses import JSONResponse
-# from traceback import print_exception
 
 import src.db as db
 
@@ -18,15 +13,22 @@ from src.routers import weather as weather_router
 from .settings import get_settings
 settings = get_settings()
 
+print( "Starting water reserves back-end..." )
+if not db.check_db():
+    print( "Unable to start water reserves back-end." )
+    quit( -1 )
+
 @asynccontextmanager
 async def lifespan( app: FastAPI ):
     # Lifespan Events
     # https://fastapi.tiangolo.com/advanced/events/
+    print( 'Opening DB pool...' )
     await db.pool.open()
     await db.pool.wait()
     # print( db.pool.get_stats() )
     yield
     # print( db.pool.get_stats() )
+    print( 'Closing DB pool...' )
     await db.pool.close()
 
 app = FastAPI( lifespan=lifespan )

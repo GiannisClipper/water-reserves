@@ -49,6 +49,12 @@ Pytest with async tests: test setup before and after
 https://stackoverflow.com/questions/74351637/pytest-with-async-tests-test-setup-before-and-after
 
 
+# Async/Await
+
+Demystifying Asynchronous Programming in Python: Practical Examples with Async and Await
+https://blog.marzeta.pl/demystifying-asynchronous-programming-in-python-practical-examples-with-async-and-await/
+
+
 # Python virtual environment
 
 $ python -m venv venv
@@ -58,6 +64,7 @@ $ source ./venv/bin/activate
 (venv) $ pip install -r requirements.txt
 
 $ uvicorn main:app --port=8000 --reload
+$ uvicorn src.main:app --port=8000 --reload
 
 $ http://localhost:8000
 
