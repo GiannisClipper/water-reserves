@@ -1,5 +1,5 @@
 import os
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup  # type: ignore
 
 def read_html( htmlfile ):
 

@@ -24,6 +24,8 @@ services:
 
   water_reserves_pgadmin:
     image: dpage/pgadmin4:8.9
+    depends_on:
+      - water_reserves_db
     container_name: water_reserves_pgadmin
     restart: always
     expose:

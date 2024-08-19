@@ -3,6 +3,7 @@ from fastapi import FastAPI
 
 import src.db as db
 
+from src.routers import status as status_router
 from src.routers import reservoirs as reservoirs_router
 from src.routers import savings as savings_router
 from src.routers import factories as factories_router
@@ -50,6 +51,7 @@ async def home():
     settings.db_name = 'already printed'
     return { "message": "Water-reserves back-end is up and running..." }
 
+app.include_router( status_router.router )
 app.include_router( reservoirs_router.router )
 app.include_router( savings_router.router )
 app.include_router( factories_router.router )

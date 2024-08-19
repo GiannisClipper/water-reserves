@@ -265,3 +265,11 @@ async def select_all(
         data = await cur.fetchall()
 
     return headers, data
+
+
+async def select_last_date():
+    result = None
+    async with pool.connection() as conn, conn.cursor() as cur:
+        await cur.execute( "SELECT MAX(date) last_date FROM weather" )
+        result = await cur.fetchone()
+    return result[ 0 ]
