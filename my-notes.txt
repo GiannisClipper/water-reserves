@@ -55,6 +55,21 @@ Demystifying Asynchronous Programming in Python: Practical Examples with Async a
 https://blog.marzeta.pl/demystifying-asynchronous-programming-in-python-practical-examples-with-async-and-await/
 
 
+# Global variables
+
+# How can I define global variables that are accessible across different requests?
+# https://github.com/fastapi/fastapi/issues/592
+
+# How to share variables between HTTP requests in FastAPI?
+# https://stackoverflow.com/questions/71260288/how-to-share-variables-between-http-requests-in-fastapi
+
+
+# Cron jobs
+
+Everything You Need To Know To Use Cron Expressions Like a Pro
+https://tech.forums.softwareag.com/t/everything-you-need-to-know-to-use-cron-expressions-like-a-pro/294852
+
+
 # Python virtual environment
 
 $ python -m venv venv

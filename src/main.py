@@ -19,6 +19,8 @@ if not db.check_db():
     print( "Unable to start water reserves back-end." )
     quit( -1 )
 
+from .status import load_status
+
 @asynccontextmanager
 async def lifespan( app: FastAPI ):
     # Lifespan Events
@@ -27,6 +29,10 @@ async def lifespan( app: FastAPI ):
     await db.pool.open()
     await db.pool.wait()
     # print( db.pool.get_stats() )
+
+    print( 'Loading status...' )
+    app.status = await load_status()
+
     yield
     # print( db.pool.get_stats() )
     print( 'Closing DB pool...' )

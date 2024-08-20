@@ -235,8 +235,6 @@ async def select_all(
     year_start: str | None = None
 ):
 
-    print( 'time_range', time_range )
-
     query = QueryMaker( 
         time_range, reservoir_filter, interval_filter, 
         reservoir_aggregation, time_aggregation, year_start 
