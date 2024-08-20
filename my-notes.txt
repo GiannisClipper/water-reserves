@@ -76,6 +76,15 @@ Everything You Need To Know To Use Cron Expressions Like a Pro
 https://tech.forums.softwareag.com/t/everything-you-need-to-know-to-use-cron-expressions-like-a-pro/294852
 
 
+# Http requests
+
+Httpx
+https://www.python-httpx.org/
+
+Httpx vs Requests: What’s the Difference & Benefits
+https://netnut.io/httpx-vs-requests/?utm_medium=organic&utm_source=google
+
+
 # Python virtual environment
 
 $ python -m venv venv

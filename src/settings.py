@@ -1,8 +1,11 @@
 from functools import lru_cache
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
+
+cert_file = f'{os.getcwd()}/resources/eydap.gr.cert'
 
 class Settings( BaseSettings ):
+    cert_file: str = cert_file
     db_host: str = ""
     db_port: str = ""
     db_name: str = ""
