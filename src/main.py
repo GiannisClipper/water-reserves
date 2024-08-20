@@ -1,15 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from datetime import datetime
 
 import src.db as db
-
-from src.routers import status as status_router
-from src.routers import reservoirs as reservoirs_router
-from src.routers import savings as savings_router
-from src.routers import factories as factories_router
-from src.routers import production as production_router
-from src.routers import locations as locations_router
-from src.routers import weather as weather_router
 
 from .settings import get_settings
 settings = get_settings()
@@ -19,7 +12,8 @@ if not db.check_db():
     print( "Unable to start water reserves back-end." )
     quit( -1 )
 
-from .status import load_status
+from src.status import load_status
+from src.cron import scheduler
 
 @asynccontextmanager
 async def lifespan( app: FastAPI ):
@@ -33,7 +27,14 @@ async def lifespan( app: FastAPI ):
     print( 'Loading status...' )
     app.status = await load_status()
 
+    print( datetime.now(), "Starting scheduler..." )
+    scheduler.start()
+
     yield
+
+    print( datetime.now(), "Shutting down scheduler..." )
+    scheduler.shutdown()
+
     # print( db.pool.get_stats() )
     print( 'Closing DB pool...' )
     await db.pool.close()
@@ -56,6 +57,14 @@ async def home():
     print( repr( settings ) )
     settings.db_name = 'already printed'
     return { "message": "Water-reserves back-end is up and running..." }
+
+from src.routers import status as status_router
+from src.routers import reservoirs as reservoirs_router
+from src.routers import savings as savings_router
+from src.routers import factories as factories_router
+from src.routers import production as production_router
+from src.routers import locations as locations_router
+from src.routers import weather as weather_router
 
 app.include_router( status_router.router )
 app.include_router( reservoirs_router.router )

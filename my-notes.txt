@@ -66,6 +66,12 @@ https://blog.marzeta.pl/demystifying-asynchronous-programming-in-python-practica
 
 # Cron jobs
 
+Advanced Python Scheduler
+https://apscheduler.readthedocs.io/en/3.x/index.html
+
+Implementing Background Job Scheduling in FastAPI with APScheduler
+https://rajansahu713.medium.com/implementing-background-job-scheduling-in-fastapi-with-apscheduler-6f5fdabf3186
+
 Everything You Need To Know To Use Cron Expressions Like a Pro
 https://tech.forums.softwareag.com/t/everything-you-need-to-know-to-use-cron-expressions-like-a-pro/294852
 
