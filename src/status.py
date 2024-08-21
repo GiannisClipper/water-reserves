@@ -4,28 +4,7 @@ from src.db import savings, production, weather
 from src.db import reservoirs, factories, locations
 from src.helpers.time import get_past_date
 
-@dataclass
-class TableStatus:
-    last_date: str
-    last_entries: list[ list ]
-
-@dataclass
-class SavingsStatus( TableStatus ):
-    reservoirs: list[ object ]
-
-@dataclass
-class ProductionStatus( TableStatus ):
-    factories: list[ object ]
-
-@dataclass
-class WeatherStatus( TableStatus ):
-    locations: list[ object ]
-
-@dataclass
-class Status:
-    savings: SavingsStatus
-    production: ProductionStatus
-    weather: WeatherStatus
+from .settings import get_settings, Status, SavingsStatus, ProductionStatus, WeatherStatus
 
 async def load_status():
 
@@ -56,7 +35,7 @@ async def load_status():
     last_entries = await weather.select_all( time_range=time_range )
     location_entries = await locations.select_all()
 
-    return Status( 
+    get_settings().status = Status( 
         savings=SavingsStatus( last_date, last_entries, reservoir_entries ),
         production=ProductionStatus( last_date, last_entries, factory_entries ),
         weather=WeatherStatus( last_date, last_entries, location_entries ) 

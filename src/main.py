@@ -25,7 +25,7 @@ async def lifespan( app: FastAPI ):
     # print( db.pool.get_stats() )
 
     print( 'Loading status...' )
-    app.status = await load_status()
+    await load_status()
 
     print( datetime.now(), "Starting scheduler..." )
     scheduler.start()
