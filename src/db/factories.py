@@ -12,7 +12,7 @@ class Factory( BaseModel ):
 
 async def select_all():
     async with pool.connection() as conn, conn.cursor( row_factory=class_row( Factory ) ) as cur:
-        await cur.execute( "SELECT * FROM factories" )
+        await cur.execute( "SELECT * FROM factories ORDER BY id" )
         return await cur.fetchall()
 
 async def select_one_by_id( id: int ):

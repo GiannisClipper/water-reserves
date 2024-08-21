@@ -13,7 +13,7 @@ class Reservoir( BaseModel ):
 async def select_all():
     result = None
     async with pool.connection() as conn, conn.cursor( row_factory=class_row( Reservoir ) ) as cur:
-        await cur.execute( "SELECT * FROM reservoirs" )
+        await cur.execute( "SELECT * FROM reservoirs ORDER BY id" )
         result = await cur.fetchall()
     return result
 

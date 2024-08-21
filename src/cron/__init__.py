@@ -27,7 +27,7 @@ async def cron_job(
         if ( request_date > limit_date ):
             break;
 
-        # request to update
+        # make request to update
 
         URL = get_url( request_date )
         print( f'Tries: {tries}, Request: {URL}' )
@@ -52,13 +52,14 @@ async def cron_job(
                     print( "Data source not updated yet." )
                     break
 
-                # store in DB
+                # store in DB and update status
+
                 print( "Updating data..." )
                 await store_values( values )
                 print( "Loading status..." )
                 await load_status()
 
-                # initialize variables and go to request next date
+                # initialize variables and go request next date
                 last_date = request_date
                 tries = 0
 

@@ -12,7 +12,7 @@ class Location( BaseModel ):
 
 async def select_all():
     async with pool.connection() as conn, conn.cursor( row_factory=class_row( Location ) ) as cur:
-        await cur.execute( "SELECT * FROM locations" )
+        await cur.execute( "SELECT * FROM locations ORDER BY id" )
         return await cur.fetchall()
 
 async def select_one_by_id( id: int ):

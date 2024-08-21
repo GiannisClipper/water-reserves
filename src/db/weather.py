@@ -268,8 +268,20 @@ async def select_all(
 
 
 async def select_last_date():
-    result = None
     async with pool.connection() as conn, conn.cursor() as cur:
         await cur.execute( "SELECT MAX(date) last_date FROM weather" )
         result = await cur.fetchone()
-    return result[ 0 ]
+        return result[ 0 ]
+
+
+async def insert_date( values: list[ list ] ):
+    async with pool.connection() as conn, conn.cursor() as cur:
+        rows = ""
+        for i, row in enumerate( values ):
+            location_id = i + 1
+            date, weather_code, temperature_2m_min, temperature_2m_mean, temperature_2m_max, precipitation_sum, rain_sum, snowfall_sum = row
+            rows += f"('{date}',{location_id},{weather_code},{temperature_2m_min},{temperature_2m_mean},{temperature_2m_max},{precipitation_sum},{rain_sum},{snowfall_sum}),"
+        sql = f"INSERT INTO weather (date,location_id,weather_code,temperature_2m_min,temperature_2m_mean,temperature_2m_max,precipitation_sum,rain_sum,snowfall_sum) VALUES {rows}"
+        sql = sql[ 0:-1 ] + ';' # semicolon replaces last comma
+        # print( sql )
+        await cur.execute( sql )
