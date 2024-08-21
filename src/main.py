@@ -13,7 +13,7 @@ if not db.check_db():
     quit( -1 )
 
 from src.status import load_status
-from src.cron import scheduler
+from src.cron.scheduler import scheduler
 
 @asynccontextmanager
 async def lifespan( app: FastAPI ):

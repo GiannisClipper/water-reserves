@@ -1,28 +1,12 @@
-import os
-from bs4 import BeautifulSoup  # type: ignore
+from bs4 import BeautifulSoup
 
-def read_html( htmlfile ):
-
-    # Read html file
-
-    if not os.path.exists( htmlfile ):
-        raise Exception( f'Error: {htmlfile} not found.' )
-
-    text = None
-    try: 
-        print( f'Read from: {htmlfile}' )
-        with open( htmlfile, 'r' ) as f:
-            text = f.read()
-    except Exception as error:
-        raise
-
-    # Parse html with BeautifulSoup
+def scrape_html( text ):
 
     try: 
         headers = []
         data = []
 
-        soup = BeautifulSoup( text, 'html5lib' )
+        soup = BeautifulSoup( text, 'html.parser' )
         # print( soup.prettify() ) 
 
         table = soup.find( 'table' )

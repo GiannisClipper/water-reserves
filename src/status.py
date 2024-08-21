@@ -16,6 +16,7 @@ async def load_status():
     time_range = ( from_date, to_date )
     last_entries = await savings.select_all( time_range=time_range )
     reservoir_entries = await reservoirs.select_all()
+    savingsStatus = SavingsStatus( last_date, last_entries, reservoir_entries )
 
     # production
 
@@ -25,6 +26,7 @@ async def load_status():
     time_range = ( from_date, to_date )
     last_entries = await production.select_all( time_range=time_range )
     factory_entries = await factories.select_all()
+    productionStatus = ProductionStatus( last_date, last_entries, factory_entries )
 
     # weather
 
@@ -34,9 +36,12 @@ async def load_status():
     time_range = ( from_date, to_date )
     last_entries = await weather.select_all( time_range=time_range )
     location_entries = await locations.select_all()
+    weatherStatus = WeatherStatus( last_date, last_entries, location_entries )
+
+    # overall status
 
     get_settings().status = Status( 
-        savings=SavingsStatus( last_date, last_entries, reservoir_entries ),
-        production=ProductionStatus( last_date, last_entries, factory_entries ),
-        weather=WeatherStatus( last_date, last_entries, location_entries ) 
+        savings=savingsStatus,
+        production=productionStatus,
+        weather=weatherStatus 
     )
