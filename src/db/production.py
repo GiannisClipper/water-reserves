@@ -267,3 +267,15 @@ async def select_last_date():
         await cur.execute( "SELECT MAX(date) last_date FROM production" )
         result = await cur.fetchone()
     return result[ 0 ]
+
+
+async def insert_date( values: list[ any ] ):
+    result = None
+    async with pool.connection() as conn, conn.cursor() as cur:
+        date, q1, q2, q3, q4, total = values
+        rows = f"('{date}',1,{q1}),('{date}',2,{q2}),('{date}',3,{q3}),('{date}',4,{q4}),"
+        sql = f"INSERT INTO production ( date, factory_id, quantity ) VALUES {rows}"
+        sql = sql[ 0:-1 ] + ';' # semicolon replaces last comma
+        # print( sql )
+        await cur.execute( sql )
+
