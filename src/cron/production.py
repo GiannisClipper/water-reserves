@@ -4,6 +4,7 @@ from . import cron_job
 from src.settings import get_settings
 from src.helpers.html import scrape_html
 from src.db.production import insert_date
+from src.status import set_production_status
 
 async def production_cron_job() -> None:
 
@@ -31,4 +32,6 @@ async def production_cron_job() -> None:
 
     store_values: callable = insert_date
 
-    await cron_job( last_date, get_url, cert_file, parse_response, store_values )
+    set_status = set_production_status
+
+    await cron_job( last_date, get_url, cert_file, parse_response, store_values, set_status )

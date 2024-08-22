@@ -12,7 +12,7 @@ if not db.check_db():
     print( "Unable to start water reserves back-end." )
     quit( -1 )
 
-from src.status import load_status
+from src.status import set_status
 from src.cron.scheduler import scheduler
 
 @asynccontextmanager
@@ -24,8 +24,8 @@ async def lifespan( app: FastAPI ):
     await db.pool.wait()
     # print( db.pool.get_stats() )
 
-    print( 'Loading status...' )
-    await load_status()
+    print( 'Setting status...' )
+    await set_status()
 
     print( datetime.now(), "Starting scheduler..." )
     scheduler.start()

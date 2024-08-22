@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 import httpx
 import asyncio
-from src.status import load_status
 
 MAX_TRIES: int = 3
 LIMIT_DAYS: int = -1
@@ -12,7 +11,8 @@ async def cron_job(
     get_url: callable, 
     cert_file: str | None, 
     parse_response: callable, 
-    store_values: callable 
+    store_values: callable,
+    set_status
 ) -> None:
 
     tries: int = 0
@@ -54,10 +54,11 @@ async def cron_job(
 
                 # store in DB and update status
 
-                print( "Updating data..." )
+                print( "Saving data..." )
                 await store_values( values )
-                print( "Loading status..." )
-                await load_status()
+
+                print( "Setting status..." )
+                await set_status()
 
                 # initialize variables and go request next date
                 last_date = request_date

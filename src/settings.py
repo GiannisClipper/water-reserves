@@ -24,9 +24,9 @@ class WeatherStatus( TableStatus ):
 
 @dataclass
 class Status:
-    savings: SavingsStatus
-    production: ProductionStatus
-    weather: WeatherStatus
+    savings: SavingsStatus | None
+    production: ProductionStatus | None
+    weather: WeatherStatus | None
 
 class Settings( BaseSettings ):
     db_host: str = ""
