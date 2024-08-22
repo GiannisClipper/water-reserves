@@ -1,7 +1,7 @@
 from src.helpers.time import has_year_format, has_month_format, has_day_format, has_year_month_format, has_month_day_format, has_date_format
 from src.helpers.time import is_year, is_leap, is_month, get_month_days, is_day, is_year_month, is_month_day, is_date
 from src.helpers.time import get_first_date, get_last_date
-from src.helpers.time import get_prev_date, get_past_date
+from src.helpers.time import get_prev_date, get_past_date, get_prev_month_day, get_past_month_day
 
 # has_year_format
 
@@ -296,3 +296,27 @@ def test_get_past_date_results():
     assert get_past_date( '2024-07-01', 30 ) == '2024-06-01'
     assert get_past_date( '2024-03-01', 366 ) == '2023-03-01'
     assert get_past_date( '2023-03-01', 365 ) == '2022-03-01'
+
+# get_prev_month_day
+
+def test_get_prev_month_day_valueerror():
+    try:
+        get_prev_month_day( '12' )
+        assert False
+    except ValueError:
+        assert True
+
+def test_get_prev_month_day_results():
+    assert get_prev_month_day( '08-19' ) == '08-18'
+    assert get_prev_month_day( '08-01' ) == '07-31'
+    assert get_prev_month_day( '07-01' ) == '06-30'
+    assert get_prev_month_day( '03-01' ) == '02-29'
+    assert get_prev_month_day( '01-01' ) == '12-31'
+
+# get_past_month_day
+
+def test_get_past_month_day_results():
+    assert get_past_month_day( '08-19', 1 ) == '08-18'
+    assert get_past_month_day( '08-01', 3 ) == '07-29'
+    assert get_past_month_day( '07-01', 30 ) == '06-01'
+    assert get_past_month_day( '03-01', 366 ) == '03-01'

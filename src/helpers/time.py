@@ -1,17 +1,15 @@
-import math
-
 # to check formats
 
-def has_year_format( val: str ):
+def has_year_format( val: str ) -> bool:
     return len( val ) == 4 and val.isdigit()
 
-def has_month_format( val: str ):
+def has_month_format( val: str ) -> bool:
     return len( val ) == 2 and val.isdigit()
 
-def has_day_format( val: str ):
+def has_day_format( val: str ) -> bool:
     return len( val ) == 2 and val.isdigit()
 
-def has_year_month_format( val: str ):
+def has_year_month_format( val: str ) -> bool:
     arr = val.split( '-' )
     if len( arr ) != 2:
         return False
@@ -19,7 +17,7 @@ def has_year_month_format( val: str ):
     year, month = arr
     return has_year_format( year ) and has_month_format( month )
 
-def has_month_day_format( val: str ):
+def has_month_day_format( val: str ) -> bool:
     arr = val.split( '-' )
     if len( arr ) != 2:
         return False
@@ -27,7 +25,7 @@ def has_month_day_format( val: str ):
     month, day = arr
     return has_month_format( month ) and has_day_format( day )
 
-def has_date_format( val: str ):
+def has_date_format( val: str ) -> bool:
 
     arr = val.split( '-' )
     if len( arr ) != 3:
@@ -39,14 +37,14 @@ def has_date_format( val: str ):
 
 # to check values
 
-def is_year( year: str ):
+def is_year( year: str ) -> bool:
 
     if not has_year_format( year ):
         raise ValueError( 'Invalid year format.' )
 
     return int( year ) >=1900 and int( year ) <= 2100
 
-def is_leap( year: str ):
+def is_leap( year: str ) -> bool:
 
     if not is_year( year ):
         raise ValueError( 'Invalid year value.' )
@@ -60,7 +58,7 @@ def is_leap( year: str ):
         return True
     return False
 
-def is_month( month: str ):
+def is_month( month: str ) -> bool:
 
     if not has_month_format( month ):
         raise ValueError( 'Invalid month format.' )
@@ -68,7 +66,7 @@ def is_month( month: str ):
     return month in ( '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' )
 
 
-def get_month_days( month: str, year: str | None = None ):
+def get_month_days( month: str, year: str | None = None ) -> list[ str ]:
 
     if not is_month( month ):
         raise ValueError( 'Invalid month value.' )
@@ -100,7 +98,7 @@ def get_month_days( month: str, year: str | None = None ):
             days.pop()
             return days
 
-def is_day( day: str, month: str, year: str | None = None ):
+def is_day( day: str, month: str, year: str | None = None ) -> bool:
 
     if not has_day_format( day ):
         raise ValueError( 'Invalid day format.' )
@@ -113,7 +111,7 @@ def is_day( day: str, month: str, year: str | None = None ):
 
     return day in get_month_days( month, year )
 
-def is_year_month( val: str ):
+def is_year_month( val: str ) -> bool:
 
     if not has_year_month_format( val ):
         raise ValueError( 'Invalid year-month format.' )
@@ -121,7 +119,7 @@ def is_year_month( val: str ):
     year, month = val.split( '-' )
     return is_year( year ) and is_month( month )
 
-def is_month_day( val: str ):
+def is_month_day( val: str ) -> bool:
 
     if not has_month_day_format( val ):
         raise ValueError( 'Invalid month-day format.' )
@@ -129,7 +127,7 @@ def is_month_day( val: str ):
     month, day = val.split( '-' )
     return is_month( month ) and is_day( day, month )
 
-def is_date( val: str ):
+def is_date( val: str ) -> bool:
 
     if not has_date_format( val ):
         raise ValueError( 'Invalid date format.' )
@@ -137,7 +135,9 @@ def is_date( val: str ):
     year, month, day = val.split( '-' )
     return is_year( year ) and is_month( month ) and is_day( day, month, year )
 
-def get_first_date( val: str ):
+# to handle values
+
+def get_first_date( val: str ) -> str:
 
     if val == None:
         return val
@@ -153,7 +153,7 @@ def get_first_date( val: str ):
 
     raise ValueError( 'Invalid value (no year or yera-month).' )
 
-def get_last_date( val: str ):
+def get_last_date( val: str ) -> str :
 
     if val == None:
         return val
@@ -172,7 +172,7 @@ def get_last_date( val: str ):
     raise ValueError( 'Invalid value (no year or year-month).' )
 
 
-def get_prev_date( date ):
+def get_prev_date( date ) -> str:
 
     assert is_date( date ) == True 
 
@@ -192,9 +192,35 @@ def get_prev_date( date ):
     year = int( year ) - 1
     return f'{year}-{12}-{31}'
 
-def get_past_date( date, days: int ):
+def get_past_date( date, days: int ) -> str:
 
     for i in range( 0, days ):
         date = get_prev_date( date )
     return date
 
+
+def get_prev_month_day( val: str ) -> str:
+
+    assert is_month_day( val ) == True 
+
+    month, day = val.split( '-' )
+
+    day = int( day ) - 1
+    if day >= 1:
+        day = str( day ).rjust( 2, '0' )
+        return f'{month}-{day}'
+
+    month = int( month ) - 1
+    if month >= 1:
+        month = str( month ).rjust( 2, '0' )
+        day = get_month_days( month )[ -1 ]
+        return f'{month}-{day}'
+
+    return f'{12}-{31}'
+
+
+def get_past_month_day( val, days: int ) -> str:
+
+    for i in range( 0, days ):
+        val = get_prev_month_day( val )
+    return val
