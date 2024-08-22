@@ -3,16 +3,14 @@ from fastapi import FastAPI
 from datetime import datetime
 
 import src.db as db
-
 from .settings import get_settings
-settings = get_settings()
 
 print( "Starting water reserves back-end..." )
 if not db.check_db():
     print( "Unable to start water reserves back-end." )
     quit( -1 )
 
-from src.status import set_status
+from src.status import Status
 from src.cron.scheduler import scheduler
 
 @asynccontextmanager
@@ -25,7 +23,9 @@ async def lifespan( app: FastAPI ):
     # print( db.pool.get_stats() )
 
     print( 'Setting status...' )
-    await set_status()
+    settings = get_settings()
+    settings.status = Status( None, None, None )
+    await settings.status.update()
 
     print( datetime.now(), "Starting scheduler..." )
     scheduler.start()
@@ -54,8 +54,6 @@ app = FastAPI( lifespan=lifespan )
 
 @app.get( '/', description="This is the home endpoint." )
 async def home():
-    print( repr( settings ) )
-    settings.db_name = 'already printed'
     return { "message": "Water-reserves back-end is up and running..." }
 
 from src.routers import status as status_router

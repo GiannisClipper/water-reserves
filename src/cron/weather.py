@@ -1,9 +1,7 @@
 from datetime import datetime
-
-from . import cron_job
 from src.settings import get_settings
 from src.db.weather import insert_date
-from src.status import set_weather_status
+from . import cron_job
 
 async def weather_cron_job() -> None:
 
@@ -63,6 +61,6 @@ async def weather_cron_job() -> None:
 
     store_values: callable = insert_date
 
-    set_status = set_weather_status
+    update_status = settings.status.weather.update
 
-    await cron_job( last_date, get_url, cert_file, parse_response, store_values, set_status )
+    await cron_job( last_date, get_url, cert_file, parse_response, store_values, update_status )

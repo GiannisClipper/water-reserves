@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from typing import Annotated
-from pydantic.dataclasses import dataclass
+from dataclasses import dataclass
 from pydantic.functional_validators import AfterValidator
 
 from src.validators import validate_time_range, validate_interval_filter, validate_time_aggregation, validate_year_start

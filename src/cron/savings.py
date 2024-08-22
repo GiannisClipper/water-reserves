@@ -1,10 +1,8 @@
 from datetime import datetime
-
-from . import cron_job
 from src.settings import get_settings
 from src.helpers.html import scrape_html
 from src.db.savings import insert_date
-from src.status import set_savings_status
+from . import cron_job
 
 async def savings_cron_job() -> None:
 
@@ -32,6 +30,6 @@ async def savings_cron_job() -> None:
 
     store_values: callable = insert_date
 
-    set_status = set_savings_status
+    update_status = settings.status.savings.update
 
-    await cron_job( last_date, get_url, cert_file, parse_response, store_values, set_status )
+    await cron_job( last_date, get_url, cert_file, parse_response, store_values, update_status )

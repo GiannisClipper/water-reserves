@@ -12,7 +12,7 @@ async def cron_job(
     cert_file: str | None, 
     parse_response: callable, 
     store_values: callable,
-    set_status
+    update_status
 ) -> None:
 
     tries: int = 0
@@ -57,8 +57,8 @@ async def cron_job(
                 print( "Saving data..." )
                 await store_values( values )
 
-                print( "Setting status..." )
-                await set_status()
+                print( "Updating status..." )
+                await update_status()
 
                 # initialize variables and go request next date
                 last_date = request_date
