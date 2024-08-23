@@ -2,13 +2,10 @@ from fastapi import HTTPException
 from src.helpers.time import has_year_format, has_year_month_format, has_date_format
 from src.helpers.time import is_year, is_year_month, is_month_day, is_date
 
-def validate_time_range( value: str | None ) -> list[ str, str ]:
+def validate_time_range( value: str | None ) -> list[ str, str ] | None:
 
-    if value == '':
-        value = None
-
-    if value == None:
-        return value
+    if value in ( None, '' ):
+        return None
 
     try:
         value = value.split( ',' )
@@ -31,13 +28,10 @@ def validate_time_range( value: str | None ) -> list[ str, str ]:
         raise HTTPException( 400, "Invalid parameter value (time_range)." )
 
 
-def validate_id_filter( value: str | None ):
+def validate_id_filter( value: str | None ) -> str | None:
 
-    if value == '':
-        value = None
-
-    if value == None:
-        return value
+    if value in ( None, '' ):
+        return None
 
     value = value.split( ',' )
     value = list( map( lambda x: int( x ), value ) )
@@ -46,13 +40,10 @@ def validate_id_filter( value: str | None ):
     return value
 
 
-def validate_interval_filter( value: str | None ):
+def validate_interval_filter( value: str | None ) -> list[ str, str ] | None:
 
-    if value == '':
-        value = None
-
-    if value == None:
-        return value
+    if value in ( None, '' ):
+        return None
 
     try:
         value = value.split( ',' )
@@ -67,13 +58,10 @@ def validate_interval_filter( value: str | None ):
         raise HTTPException( 400, "Invalid parameter value (interval_filter)." )
 
 
-def validate_time_aggregation( value: str | None ):
+def validate_time_aggregation( value: str | None ) -> list[ str, str ] | None:
 
-    if value == '':
-        value = None
-
-    if value == None:
-        return value
+    if value in ( None, '' ):
+        return None
     
     try:
         value = value.split( ',' )
@@ -92,7 +80,7 @@ def validate_time_aggregation( value: str | None ):
         raise HTTPException( 400, "Invalid parameter value (time_aggregation)." )
 
 
-def validate_year_start( value: str | None ):
+def validate_year_start( value: str | None ) -> str | None:
 
     try:
         if value == None or is_month_day( value ):

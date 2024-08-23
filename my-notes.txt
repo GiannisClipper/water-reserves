@@ -85,6 +85,15 @@ Httpx vs Requests: What’s the Difference & Benefits
 https://netnut.io/httpx-vs-requests/?utm_medium=organic&utm_source=google
 
 
+# KMeans clusteting
+
+KMeans
+https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
+
+Data Clustering Algorithms that can be used for 1D dataset
+https://dev.to/abdulrehman2050/data-clustering-algorithms-that-can-be-used-for-1d-dataset-1pe9
+
+
 # Python virtual environment
 
 $ python -m venv venv

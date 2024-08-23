@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from src.validators import validate_id_filter
 
 
-def validate_reservoir_filter( value: str | None ):
+def validate_reservoir_filter( value: str | None ) -> str | None:
 
     try:
         return validate_id_filter( value )
@@ -11,7 +11,7 @@ def validate_reservoir_filter( value: str | None ):
         raise HTTPException( 400, "Invalid parameter value (reservoir_filter)." )
 
 
-def validate_reservoir_aggregation( value: str | None ):
+def validate_reservoir_aggregation( value: str | None ) -> str | None:
 
     if value in ( None, '' ):
         return None

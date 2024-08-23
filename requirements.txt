@@ -8,3 +8,5 @@ pytest-asyncio
 asgi-lifespan
 apscheduler
 beautifulsoup4
+numpy
+scikit-learn
