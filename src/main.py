@@ -3,12 +3,19 @@ from fastapi import FastAPI
 from datetime import datetime
 
 import src.db as db
+from src.db_setup.make_tables import make_tables
 from .settings import get_settings
 
 print( "Starting water reserves back-end..." )
-if not db.check_db():
-    print( "Unable to start water reserves back-end." )
-    quit( -1 )
+if not db.tables_exists( db.tables ):
+    try:
+        print( "Initializing DB tables..." )
+        make_tables( db.tables )
+
+    except Exception as error:
+        print( 'Error: ' + repr( error ) )
+        print( "Unable to start water reserves back-end." )
+        quit( -1 )
 
 from src.status import Status
 from src.cron.scheduler import scheduler

@@ -4,8 +4,11 @@ from psycopg_pool import AsyncConnectionPool
 from src.settings import get_settings
 settings = get_settings()
 
-conninfo=f"user={settings.db_user} password={settings.db_password} host={settings.db_host} port={settings.db_port} dbname={settings.db_name}"
+conninfo = f"user={settings.db_user} password={settings.db_password} host={settings.db_host} port={settings.db_port} dbname={settings.db_name}"
+
 pool = AsyncConnectionPool( conninfo=conninfo, open=False )
+
+tables: tuple[ str ] = ( 'reservoirs', 'savings', 'factories', 'production', 'locations', 'weather' )
 
 def table_exists( table_name: str ):
     query = '''
@@ -19,16 +22,11 @@ def table_exists( table_name: str ):
         cur.execute( query, [ table_name ] )
         return cur.fetchone()
 
-def check_db():
+def tables_exists( table_names: tuple ):
     final_result = True
-    print( "Checking the existence of DB tables..." )
-    tables = ( 'reservoirs', 'savings', 'factories', 'production', 'locations', 'weather' )
-    for table_name in tables:
+    for table_name in table_names:
         table_result = table_exists( table_name )[ 0 ]
-        print( table_name + ":", table_result )
+        print( f"Table {table_name} {'exists' if table_result else 'not exists'}." )
         final_result = final_result and table_result
-
-    if not final_result:
-        print( "Checking DB failed." )
 
     return final_result

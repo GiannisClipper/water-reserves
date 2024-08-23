@@ -19,8 +19,8 @@ def read_html( htmlfile ):
     # Parse html with BeautifulSoup
 
     try: 
-        headers = []
-        data = []
+        headers: list[ str ] = []
+        data: list[ list[ str | int ] ] = []
 
         soup = BeautifulSoup( text, 'html.parser' )
         # print( soup.prettify() ) 

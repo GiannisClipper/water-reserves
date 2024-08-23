@@ -1,6 +1,6 @@
 import sys
 import psycopg
-from src.db import conninfo
+import src.db as db
 
 from .create_tables import create_reservoirs, create_savings
 from .create_tables import create_factories, create_production
@@ -10,30 +10,10 @@ from .insert_rows import insert_reservoirs, insert_savings
 from .insert_rows import insert_factories, insert_production
 from .insert_rows import insert_locations, insert_weather
 
-if __name__ == "__main__":
-
-    try:
-        n = len( sys.argv )
-        if n < 2:
-            raise Exception( 'No tables defined.' )
-
-        tables = [ 'reservoirs', 'savings', 'factories', 'production', 'locations', 'weather' ]
-        names = sys.argv[ 1: ]
-        for name in names:
-            if not name in tables:
-               raise Exception( f'No table: {name}' )
-
-    except Exception as error:
-        print( 'Error: ' + repr( error ) )
-        print ( 'Syntax example: python make_tables.py reservoirs' )
-        print ( 'Syntax example: python make_tables.py reservoirs savings' )
-        print ( 'Syntax example: python make_tables.py factories production' )
-        print ( 'Syntax example: python make_tables.py locations weather' )
-        exit( -1 )
-    
+def make_tables( names ):
     try:
     
-        with psycopg.connect( conninfo=conninfo ) as conn:
+        with psycopg.connect( conninfo=db.conninfo ) as conn:
 
             for name in names:
                 print( f'- Table: {name}' )
@@ -65,3 +45,25 @@ if __name__ == "__main__":
     except Exception as error:
         print( 'Error: ' + repr( error ) )
 
+
+if __name__ == "__main__":
+
+    try:
+        n = len( sys.argv )
+        if n < 2:
+            raise Exception( 'No tables defined.' )
+
+        names = sys.argv[ 1: ]
+        for name in names:
+            if not name in db.tables:
+               raise Exception( f'No table: {name}' )
+
+    except Exception as error:
+        print( 'Error: ' + repr( error ) )
+        print ( 'Syntax example: python make_tables.py reservoirs' )
+        print ( 'Syntax example: python make_tables.py reservoirs savings' )
+        print ( 'Syntax example: python make_tables.py factories production' )
+        print ( 'Syntax example: python make_tables.py locations weather' )
+        exit( -1 )
+    
+    make_tables( names )
