@@ -1,9 +1,8 @@
 import os
-import requests # type: ignore
-
+import httpx
 import sys
-
-from read_csv import read_locations
+from src.settings import get_settings
+from .read_csv import read_locations
 
 def request_yearly( year, location ):
 
@@ -11,30 +10,35 @@ def request_yearly( year, location ):
 
     print( f'- Year (location): {year} ({name_en})' )
 
+    settings = get_settings()
+
     # Check if data already exists (as JSON file) 
 
-    jsonfile = f'./weather/json/{name_en}/{year}.json'
+    jsonfile = f'{settings.weather_json_path}/{name_en}/{year}.json'
     if os.path.exists( jsonfile ):
         print( f'Found: {jsonfile}' )
         return
 
     # Request data 
 
-    URL = f'https://archive-api.open-meteo.com/v1/archive?latitude={lat}&longitude={lon}&start_date={year}-01-01&end_date={year}-12-31&timezone=Europe/Athens&daily=weather_code,temperature_2m_min,temperature_2m_mean,temperature_2m_max,precipitation_sum,rain_sum,snowfall_sum';
+    URL = f'{settings.weather_url}?latitude={lat}&longitude={lon}&start_date={year}-01-01&end_date={year}-12-31&timezone=Europe/Athens&daily=weather_code,temperature_2m_min,temperature_2m_mean,temperature_2m_max,precipitation_sum,rain_sum,snowfall_sum';
     print( f'Request: {URL}' )
-    r = requests.get( URL )
-    if r.status_code != 200:
-        print( f'Error: {r.status_code} {r.reason}' )
-        return
 
-    # Save data into JSON file
+    with httpx.Client() as client:
+        r = client.get( URL )
 
-    try: 
-        print( f'Write into: {jsonfile}' )
-        with open( jsonfile, 'w' ) as f:
-            f.writelines( r.text )
-    except Exception as error:
-        print( f'Error: {error}' )
+        if r.status_code != 200:
+            print( f'Error: {r.status_code} {r.reason_phrase}' )
+            return
+
+        # Save data into JSON file
+
+        try: 
+            print( f'Write into: {jsonfile}' )
+            with open( jsonfile, 'w' ) as f:
+                f.writelines( r.text )
+        except Exception as error:
+            print( f'Error: {error}' )
 
 
 if __name__ == "__main__":
@@ -60,4 +64,3 @@ if __name__ == "__main__":
         print( 'Error: ' + repr( error ) )
         print ( 'Syntax example: python request_weather.py 2021' )
         print ( 'Syntax example: python request_weather.py 2021 2024' )
-

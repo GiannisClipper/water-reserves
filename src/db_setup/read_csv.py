@@ -1,4 +1,5 @@
 import os
+from src.settings import get_settings
 
 def read_csv( csvfile ):
 
@@ -25,7 +26,7 @@ def read_csv( csvfile ):
 
 def read_reservoirs():
 
-    csvfile = './savings/reservoirs.csv'
+    csvfile = f'{get_settings().savings_csv_path}/reservoirs.csv'
 
     try:
         return read_csv( csvfile )
@@ -34,7 +35,7 @@ def read_reservoirs():
 
 def read_factories():
 
-    csvfile = './production/factories.csv'
+    csvfile = f'{get_settings().production_csv_path}/factories.csv'
 
     try:
         return read_csv( csvfile )
@@ -43,7 +44,7 @@ def read_factories():
 
 def read_locations():
 
-    csvfile = './weather/locations.csv'
+    csvfile = f'{get_settings().weather_csv_path}/locations.csv'
 
     try:
         return read_csv( csvfile )

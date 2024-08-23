@@ -1,36 +1,43 @@
 import os
-import requests # type: ignore
-
+import httpx
 import sys
+from src.settings import get_settings
 
 def request_yearly( year ):
 
     print( f'- Year: {year}' )
 
+    settings = get_settings()
+
     # Check if data already exists (as html file) 
 
-    htmlfile = f'./production/html/{year}.html'
+    htmlfile = f'{settings.production_html_path}/{year}.html'
     if os.path.exists( htmlfile ):
         print( f'Found: {htmlfile}' )
         return
 
     # Request data 
 
-    URL = f'https://www.eydap.gr/el/Controls/GeneralControls/DrinkingWaterProductionDetails.aspx?DaysSpan=Year&Date=31-12-{year}'
+    cert_file = settings.cert_file
+
+    URL = f'{settings.production_url}?DaysSpan=Year&Date=31-12-{year}'
     print( f'Request: {URL}' )
-    r = requests.get( URL, verify='../resources/eydap.gr.cert' )
-    if r.status_code != 200:
-        print( f'Error: {r.status_code} {r.reason}' )
-        return
 
-    # Save data into HTML file
+    with httpx.Client( verify=cert_file ) as client:
+        r = client.get( URL )
 
-    try: 
-        print( f'Write into: {htmlfile}' )
-        with open( htmlfile, 'w' ) as f:
-            f.writelines( r.text )
-    except Exception as error:
-        print( f'Error: {error}' )
+        if r.status_code != 200:
+            print( f'Error: {r.status_code} {r.reason_phrase}' )
+            return
+
+        # Save data into HTML file
+
+        try: 
+            print( f'Write into: {htmlfile}' )
+            with open( htmlfile, 'w' ) as f:
+                f.writelines( r.text )
+        except Exception as error:
+            print( f'Error: {error}' )
 
 
 if __name__ == "__main__":
