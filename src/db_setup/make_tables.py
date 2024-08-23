@@ -1,14 +1,14 @@
 import sys
+import psycopg
+from src.db import conninfo
 
-from connect_db import connectDB
+from .create_tables import create_reservoirs, create_savings
+from .create_tables import create_factories, create_production
+from .create_tables import create_locations, create_weather
 
-from create_tables import create_reservoirs, create_savings
-from create_tables import create_factories, create_production
-from create_tables import create_locations, create_weather
-
-from insert_rows import insert_reservoirs, insert_savings
-from insert_rows import insert_factories, insert_production
-from insert_rows import insert_locations, insert_weather
+from .insert_rows import insert_reservoirs, insert_savings
+from .insert_rows import insert_factories, insert_production
+from .insert_rows import insert_locations, insert_weather
 
 if __name__ == "__main__":
 
@@ -32,36 +32,35 @@ if __name__ == "__main__":
         exit( -1 )
     
     try:
-        conn = connectDB()
+    
+        with psycopg.connect( conninfo=conninfo ) as conn:
 
-        for name in names:
-            print( f'- Table: {name}' )
+            for name in names:
+                print( f'- Table: {name}' )
 
-            if name == 'reservoirs':
-                create_reservoirs( conn )
-                insert_reservoirs( conn )
+                if name == 'reservoirs':
+                    create_reservoirs( conn )
+                    insert_reservoirs( conn )
 
-            elif name == 'savings':
-                create_savings( conn )
-                insert_savings( conn )
+                elif name == 'savings':
+                    create_savings( conn )
+                    insert_savings( conn )
 
-            elif name == 'factories':
-                create_factories( conn )
-                insert_factories( conn )
+                elif name == 'factories':
+                    create_factories( conn )
+                    insert_factories( conn )
 
-            elif name == 'production':
-                create_production( conn )
-                insert_production( conn )
+                elif name == 'production':
+                    create_production( conn )
+                    insert_production( conn )
 
-            elif name == 'locations':
-                create_locations( conn )
-                insert_locations( conn )
+                elif name == 'locations':
+                    create_locations( conn )
+                    insert_locations( conn )
 
-            elif name == 'weather':
-                create_weather( conn )
-                insert_weather( conn )
-
-        conn.close()
+                elif name == 'weather':
+                    create_weather( conn )
+                    insert_weather( conn )
         
     except Exception as error:
         print( 'Error: ' + repr( error ) )

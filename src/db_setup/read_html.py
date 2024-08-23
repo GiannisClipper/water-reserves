@@ -1,5 +1,5 @@
 import os
-from bs4 import BeautifulSoup  # type: ignore
+from bs4 import BeautifulSoup
 
 def read_html( htmlfile ):
 
@@ -22,7 +22,7 @@ def read_html( htmlfile ):
         headers = []
         data = []
 
-        soup = BeautifulSoup( text, 'html5lib' )
+        soup = BeautifulSoup( text, 'html.parser' )
         # print( soup.prettify() ) 
 
         table = soup.find( 'table' )

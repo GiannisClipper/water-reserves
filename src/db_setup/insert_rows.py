@@ -1,8 +1,9 @@
 from os import listdir
 from os.path import isfile, join
-from read_csv import read_reservoirs, read_factories, read_locations
-from read_html import read_html
-from read_json import read_weather
+from src.settings import get_settings
+from .read_csv import read_reservoirs, read_factories, read_locations
+from .read_html import read_html
+from .read_json import read_weather
 
 def insert_reservoirs( conn ):
 
@@ -26,7 +27,7 @@ def insert_reservoirs( conn ):
 
 def insert_savings( conn ):
 
-    path = './savings/html'
+    path = get_settings().savings_html_path
     htmlfiles = [ f for f in listdir( path ) if isfile( join( path, f ) ) ]
     htmlfiles.sort()
 
@@ -71,7 +72,7 @@ def insert_factories( conn ):
 
 def insert_production( conn ):
 
-    path = './production/html'
+    path = get_settings().production_html_path
     htmlfiles = [ f for f in listdir( path ) if isfile( join( path, f ) ) ]
     htmlfiles.sort()
 
@@ -123,7 +124,7 @@ def insert_weather( conn ):
         location_id = ilocation + 1
         name_el, name_en, lat, lon = location
 
-        path = f'./weather/json/{name_en}'
+        path = f'{get_settings().weather_json_path}/{name_en}'
         jsonfiles = [ f for f in listdir( path ) if isfile( join( path, f ) ) ]
         jsonfiles.sort()
 

@@ -1,5 +1,3 @@
-from connect_db import connectDB
-
 def create_reservoirs( conn ):
 
     # Create a cursor object
@@ -23,6 +21,7 @@ def create_reservoirs( conn ):
     print( f'Create table reservoirs' )
     cursor.execute( sql )
     conn.commit()
+
 
 def create_savings( conn ):
 
@@ -48,6 +47,7 @@ def create_savings( conn ):
     cursor.execute( sql )
     conn.commit()
 
+
 def create_factories( conn ):
 
     # Create a cursor object
@@ -71,6 +71,7 @@ def create_factories( conn ):
     print( f'Create table factories' )
     cursor.execute( sql )
     conn.commit()
+
 
 def create_production( conn ):
 
@@ -96,6 +97,7 @@ def create_production( conn ):
     cursor.execute( sql )
     conn.commit()
 
+
 def create_locations( conn ):
 
     # Create a cursor object
@@ -119,6 +121,7 @@ def create_locations( conn ):
     print( f'Create table locations' )
     cursor.execute( sql )
     conn.commit()
+
 
 def create_weather( conn ):
 
