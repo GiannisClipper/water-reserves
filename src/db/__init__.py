@@ -26,7 +26,7 @@ def tables_exists( table_names: tuple ):
     final_result = True
     for table_name in table_names:
         table_result = table_exists( table_name )[ 0 ]
-        print( f"Table {table_name} {'exists' if table_result else 'not exists'}." )
+        print( f"Table {table_name} {'already exists' if table_result else 'NOT exists'}." )
         final_result = final_result and table_result
 
     return final_result

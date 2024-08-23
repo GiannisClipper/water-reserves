@@ -6,7 +6,11 @@ import src.db as db
 from src.db_setup.make_tables import make_tables
 from .settings import get_settings
 
-print( "Starting water reserves back-end..." )
+print( datetime.now(), "Starting water reserves back-end..." )
+print()
+print( "+-----------------------+" )
+print( "|  1. Data initializer  |" )
+print( "+-----------------------+" )
 if not db.tables_exists( db.tables ):
     try:
         print( "Initializing DB tables..." )
@@ -24,22 +28,36 @@ from src.cron.scheduler import scheduler
 async def lifespan( app: FastAPI ):
     # Lifespan Events
     # https://fastapi.tiangolo.com/advanced/events/
+
     print( 'Opening DB pool...' )
     await db.pool.open()
     await db.pool.wait()
     # print( db.pool.get_stats() )
 
-    print( 'Setting status...' )
+    print( 'Loading status...' )
     settings = get_settings()
     settings.status = Status( None, None, None )
     await settings.status.update()
 
-    print( datetime.now(), "Starting scheduler..." )
+    print()
+    print( "+--------------------------+" )
+    print( "|  2. Cron jobs scheduler  |" )
+    print( "+--------------------------+" )
+
+    print( "Savings cron:", settings.savings_cron )
+    print( "Production cron:", settings.production_cron )
+    print( "Weather cron:", settings.weather_cron )
+
     scheduler.start()
+
+    print()
+    print( "+----------------------+" )
+    print( "|  3. REST API server  |" )
+    print( "+----------------------+" )
 
     yield
 
-    print( datetime.now(), "Shutting down scheduler..." )
+    print( "Shutting down scheduler..." )
     scheduler.shutdown()
 
     # print( db.pool.get_stats() )
@@ -61,7 +79,7 @@ app = FastAPI( lifespan=lifespan )
 
 @app.get( '/', description="This is the home endpoint." )
 async def home():
-    return { "message": "Water-reserves back-end is up and running..." }
+    return { "message": "Water reserves back-end is up and running..." }
 
 from src.routers import status as status_router
 from src.routers import reservoirs as reservoirs_router

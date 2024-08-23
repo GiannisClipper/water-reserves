@@ -18,6 +18,10 @@ class Settings( BaseSettings ):
     production_csv_path: str = 'resources/db_setup/production'
     weather_csv_path: str = 'resources/db_setup/weather'
 
+    savings_cron: str = "5,25,45 8-21 * * *"
+    production_cron: str = "10,30,50 8-21 * * *"
+    weather_cron: str = "15,35,55 8-21 * * *"
+
     db_host: str = ""
     db_port: str = ""
     db_name: str = ""
