@@ -1,16 +1,10 @@
 import ChartLabel from "./ChartLabel";
 import ChartContent from "./ChartContent";
+import type { RequestResultType } from "@/types/requestResult";
 
-interface resultType {
-    headers: string[];
-    data: any[];
-}[]
+type PropsType = { result: RequestResultType | null }
 
-type propsType = {
-    result: resultType
-}
-
-const ChartSection = async ( { result }: propsType  ) => {
+const ChartSection = async ( { result }: PropsType  ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )
     // const result: number = Math.floor( Math.random() * 10 );

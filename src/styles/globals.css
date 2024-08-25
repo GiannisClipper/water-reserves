@@ -134,3 +134,7 @@ body {
     max-height: 45vh;
   }
 }
+
+.Form {
+  @apply min-w-full min-h-full border-2 border-indigo-600
+}

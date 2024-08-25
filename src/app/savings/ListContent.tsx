@@ -1,11 +1,8 @@
-type propsType = {
-    result: {
-        headers: string[]
-        data: {}[]
-    }[]
-}
+import type { RequestResultType } from "@/types/requestResult";
 
-const ListContent = ( { result }: any ) => {
+type PropsType = { result: RequestResultType | null }
+
+const ListContent = ( { result }: PropsType ) => {
 
     const headers: string[] = result && result.headers || [];
     const data: [][] = result && result.data || [];

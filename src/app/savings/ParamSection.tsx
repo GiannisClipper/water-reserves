@@ -1,11 +1,12 @@
 import ParamLabel from "./ParamLabel";
 import ParamContent from "./ParamContent";
+import type { SearchParamsType } from "./page";
 
-type propsType = {
-    searchParams: { time_range?: string }
+type PropsType = {
+    searchParams: SearchParamsType
 }
 
-const ParamSection = async ( { searchParams }: propsType ) => {
+const ParamSection = async ( { searchParams }: PropsType ) => {
 
     console.log( "rendering: ParamSection..." )
 

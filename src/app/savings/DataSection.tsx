@@ -1,22 +1,23 @@
 import { Suspense } from "react";
 import ChartSection from "./ChartSection";
 import ListSection from "./ListSection";
+import type { SearchParamsType } from "@/types/searchParams";
+import type { SavingsQueryParamsType } from "@/types/queryParams";
+import type { RequestResultType } from "@/types/requestResult";
+import { parseSavingsQueryParams } from "@/helpers/params";
+import { REST_API_BASE_URL } from '../settings';
 
-type propsType = {
-    searchParams: { time_range?: string }
-}
+type PropsType = { searchParams: SearchParamsType }
 
-const DataSection = async ( { searchParams }: propsType ) => {
+const DataSection = async ( { searchParams }: PropsType ) => {
 
-    let result;
+    let result: RequestResultType | null = null;
 
-    if ( searchParams ) {
-        const url: string = "http://localhost:8000/api/v1/savings?reservoir_aggregation=sum&" +
-        `time_range=${searchParams.time_range}`
-        // Object.keys( searchParams )
-        //     .map( ( key: string ) => `${key}=${searchParams[key]}` )
-        //     .join( '&' );
+    const queryParams: SavingsQueryParamsType = parseSavingsQueryParams( searchParams );
 
+    if ( queryParams.time_range ) {
+        const queryParamsString: string = Object.entries( queryParams ).map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
+        const url: string = `${REST_API_BASE_URL}/savings?${queryParamsString}`;
         console.log( url );
         const response = await fetch( url );
         result = await response.json();

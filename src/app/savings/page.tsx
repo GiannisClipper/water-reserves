@@ -1,16 +1,11 @@
 import ParamSection from "./ParamSection";
 import DataSection from "./DataSection";
 import { Suspense } from "react";
+import type { SearchParamsType } from "@/types/searchParams";
 
-type searchParamsType = {
-    time_range?: string
-}
+type PropsType = { searchParams: SearchParamsType }
 
-type propsType = {
-    searchParams: searchParamsType
-}
-
-export default function Savings( { searchParams }: propsType ) {
+export default function Savings( { searchParams }: PropsType ) {
 
     console.log( "rendering: Savings (page)..." )
 
@@ -26,6 +21,6 @@ export default function Savings( { searchParams }: propsType ) {
             </Suspense>
         </div>
         </>
-);
+    );
 }
 

@@ -1,11 +1,10 @@
 import ListLabel from "./ListLabel";
 import ListContent from "./ListContent";
+import type { RequestResultType } from "@/types/requestResult";
 
-type propsType = {
-    result: Object[]
-}
+type PropsType = { result: RequestResultType | null }
 
-const ListSection = async ( { result }: propsType ) => {
+const ListSection = async ( { result }: PropsType ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 2000 ) )
     // const result: number = Math.floor( Math.random() * 10 );

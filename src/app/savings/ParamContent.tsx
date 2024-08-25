@@ -2,19 +2,15 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import type { SearchParamsType } from "./page";
 
-type searchParamsType = {
-    time_range?: string
-    chart_type?: string
+type PropsType = {
+    searchParams: SearchParamsType
 }
 
-type propsType = {
-    searchParams: searchParamsType
-}
+const ParamContent = ( { searchParams }: PropsType ) => {
 
-const ParamContent = ( { searchParams }: propsType ) => {
-
-    const { time_range, chart_type }: searchParamsType = searchParams || {};
+    const { time_range, chart_type }: SearchParamsType = searchParams || {};
 
     const [ timeRange, setTimeRange ] = useState( time_range || '' );
     const [ chartType, setChartType ] = useState( chart_type || '' );

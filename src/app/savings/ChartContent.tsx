@@ -5,17 +5,11 @@ import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import type { RequestResultType } from "@/types/requestResult";
 
-interface resultType {
-    headers: string[];
-    data: any[];
-}[]
+type PropsType = { result: RequestResultType | null }
 
-type propsType = {
-    result: resultType
-}
-
-const ChartContent = ( { result }: propsType ) => {
+const ChartContent = ( { result }: PropsType ) => {
 
     const [ chartType, setChartType ] = useState<string | null>( null );
 
