@@ -1,24 +1,33 @@
 "use client"
+
 import { useState } from "react";
 import ParamModal from "./ParamModal";
+import type { SearchParamsType } from "@/types/searchParams";
 
-export default function ParamLabel() {
+type PropsType = {
+    searchParams: SearchParamsType
+}
 
-    const [ openModal, setOpenModal ] = useState( false )
+export default function ParamLabel( { searchParams }: PropsType ) {
+
+    const [ openModal, setOpenModal ] = useState( false );
 
     console.log( "rendering: ParamLabel..." )
 
     return (
         <>
         <div className="ParamLabel">
-            [ParamLabel]
+            [Παράμετροι]
             <button onClick={ e => setOpenModal( true ) }>
                 [Modal]
             </button>
         </div>
         { 
             openModal 
-            ? <ParamModal onClose={ () => setOpenModal( false ) }/> 
+            ? <ParamModal 
+                onClose={ () => setOpenModal( false ) }
+                searchParams={ searchParams }
+            /> 
             : null 
         }
         </>    

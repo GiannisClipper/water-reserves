@@ -6,7 +6,7 @@ export default function ListLabel() {
 
     return (
         <div className="ListLabel">
-            [ListLabel]
+            [Λίστα δεδομένων]
         </div>
     );
 }

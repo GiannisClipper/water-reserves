@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { SearchParamsType } from "./page";
+import { 
+    Form, 
+    FormSectionTimeRange, FormSectionIntervalFilter, FormSectionTimeAggregation,
+    FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay, FieldTimeAggregation
+} from "@/components/Form";
+import type { SearchParamsType } from "@/types/searchParams";
+import { SavingsSelfRequest } from "@/helpers/SelfRequests";
 
 type PropsType = {
     searchParams: SearchParamsType
@@ -10,44 +16,74 @@ type PropsType = {
 
 const ParamContent = ( { searchParams }: PropsType ) => {
 
-    const { time_range, chart_type }: SearchParamsType = searchParams || {};
+    const [ params, setParams ] = useState( searchParams || {} );
 
-    const [ timeRange, setTimeRange ] = useState( time_range || '' );
-    const [ chartType, setChartType ] = useState( chart_type || '' );
+    const setFromDate = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        setParams( { ...params, from_date: e.target.value } )
+    }
+
+    const setToDate = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        setParams( { ...params, to_date: e.target.value } )
+    }
+
+    const setFromMonthDay = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        setParams( { ...params, from_month_day: e.target.value } )
+    }
+
+    const setToMonthDay = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        setParams( { ...params, to_month_day: e.target.value } )
+    }
+
+    const setTimeAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        setParams( { ...params, time_aggregation: e.target.value } )
+    }
 
     const router = useRouter();
 
     const onClickProcess = () => {
-        const queryParams: string = `?time_range=${timeRange}&chart_type=${chartType}`;
-        if ( timeRange && timeRange !== time_range ) {
-            const url: string = "http://localhost:3000/savings" + queryParams;
-            location.href = url;
-        }
 
-        if ( chartType && chartType !== chart_type ) {    
-            const path: string = "savings" + queryParams;
-            router.push( path );
-        }
+        const savingsSelfRequest = new SavingsSelfRequest( params );
+        location.href = savingsSelfRequest.url;
+
+        // if ( chartType && chartType !== chart_type ) {    
+        //     const path: string = "savings" + requestParams;
+        //     router.push( path );
+        // }
     }
 
     console.log( "rendering: ParamContent..." )
 
     return (
-        <div className="ParamContent">
-            <div>
-                Time range
-                <input 
-                    value={ timeRange }
-                    onChange={ e => setTimeRange( e.target.value ) }
+        <Form className="ParamContent">
+            <FormSectionTimeRange>
+                <FieldFromDate
+                    value={ params.from_date }
+                    onChange={ setFromDate }
                 />
-            </div>
-            <div>
-                Chart type
-                <input 
-                    value={ chartType }
-                    onChange={ e => setChartType( e.target.value ) }
+                <FieldToDate 
+                    value={ params.to_date }
+                    onChange={ setToDate }
                 />
-            </div>
+            </FormSectionTimeRange>
+
+            <FormSectionIntervalFilter>
+                <FieldFromMonthDay
+                    value={ params.from_month_day }
+                    onChange={ setFromMonthDay }
+                />
+                <FieldToMonthDay
+                    value={ params.to_month_day }
+                    onChange={ setToMonthDay }
+                />
+            </FormSectionIntervalFilter>
+
+            <FormSectionTimeAggregation>
+                <FieldTimeAggregation
+                    value={ params.time_aggregation }
+                    onChange={ setTimeAggregation }
+                />
+            </FormSectionTimeAggregation>
+
             <div>
                 <button
                     onClick={ e => onClickProcess() }
@@ -55,7 +91,7 @@ const ParamContent = ( { searchParams }: PropsType ) => {
                     Process params
                 </button>
             </div>
-        </div>
+        </Form>
     );
 }
 

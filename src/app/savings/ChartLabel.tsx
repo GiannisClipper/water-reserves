@@ -6,7 +6,7 @@ export default function ChartLabel() {
 
     return (
         <div className="ChartLabel">
-            [ChartLabel]
+            [Γραφήματα]
         </div>
     );
 }

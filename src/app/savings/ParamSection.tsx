@@ -1,6 +1,6 @@
 import ParamLabel from "./ParamLabel";
 import ParamContent from "./ParamContent";
-import type { SearchParamsType } from "./page";
+import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = {
     searchParams: SearchParamsType
@@ -12,7 +12,7 @@ const ParamSection = async ( { searchParams }: PropsType ) => {
 
     return (
         <div className="ParamSection">
-            <ParamLabel />
+            <ParamLabel searchParams={searchParams} />
             <ParamContent searchParams={searchParams} />
         </div>
     );
