@@ -79,16 +79,16 @@ ul {
     hover:bg-indigo-300
   }
 
-  .app-options .option .LinkIcon {
-    @apply min-h-full p-4 bg-indigo-300 text-4xl text-indigo-200
+  .app-options .option .icon {
+    @apply w-16 min-h-full p-4 bg-indigo-300 text-indigo-200
   }
 
-  /* .app-options .option:hover .LinkIcon {
+  .app-options .option:hover .icon {
     @apply text-indigo-400
-  } */
+  }
 
-  .app-options .option .LinkText {
-    @apply min-h-full p-4 font-semibold text-indigo-600
+  .app-options .option .Right {
+    @apply min-h-24 p-4 font-semibold text-indigo-600
   }
 
   .page-title {

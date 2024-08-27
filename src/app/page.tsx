@@ -1,67 +1,67 @@
 import Link from 'next/link';
-import { FaChartLine, FaWater, FaFaucet, FaCloudRain } from "react-icons/fa";
+import { Left, Right } from "@/components/Generics";
+import { GaugeIcon, WaterIcon, FaucetIcon, RainIcon, CompareIcon } from "@/components/Icons";
 
 type ChildrenProps = {
     children: React.ReactNode
 }
 
-const LinkIcon = ( { children }: ChildrenProps ) =>
-    <div className='LinkIcon'>
-        {children}
-    </div>
+// const LinkIcon = ( { children }: ChildrenProps ) =>
+//     <div className='LinkIcon'>
+//         {children}
+//     </div>
 
-const LinkText = ( { children }: ChildrenProps ) =>
-    <div className='LinkText'>
-        {children}
-    </div>
+// const LinkText = ( { children }: ChildrenProps ) =>
+//     <div className='LinkText'>
+//         {children}
+//     </div>
 
 export default function Home() {
     return (
-        <div className="app-options">
-            
+        <div className="app-options">            
             <Link className="option" href="/current-status">
-                <LinkIcon>
-                    <FaChartLine />
-                </LinkIcon>
-                <LinkText>
+                <Left className='icon'>
+                    <GaugeIcon />
+                </Left>
+                <Right>
                     Τρέχουσα κατάσταση
-                </LinkText>
+                </Right>
             </Link>
 
             <Link className="option" href="/savings">
-                <LinkIcon>
-                    <FaWater />
-                </LinkIcon>
-                <LinkText>
+                <Left className='icon'>
+                    <WaterIcon />
+                </Left>
+                <Right>
                     Αποθέματα νερού
-                </LinkText>
+                </Right>
             </Link>
 
             <Link className="option" href="/production">
-                <LinkIcon>
-                    <FaFaucet />
-                </LinkIcon>
-                <LinkText>
+                <Left className='icon'>
+                   <FaucetIcon />
+                </Left>
+                <Right>
                     Παραγωγή πόσιμου νερού
-                </LinkText>
+                </Right>
             </Link>
 
             <Link className="option" href="/ratio">
-                <LinkIcon>
-                    <FaWater />
-                </LinkIcon>
-                <LinkText>
+                <Left className='icon'>
+                    <CompareIcon />
+                </Left>
+                <Right>
                     Λόγος αποθεμάτων / παραγωγής
-                </LinkText>
+                </Right>
             </Link>
 
             <Link className="option" href="/precipitation">
-                <LinkIcon>
-                    <FaCloudRain />
-                </LinkIcon>
-                <LinkText>
+                <Left className='icon'>
+                    <RainIcon />
+                </Left>
+                <Right>
                     Ποσότητες υετού
-                </LinkText>
+                </Right>
             </Link>
         </div>
     );

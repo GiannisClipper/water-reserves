@@ -1,5 +1,6 @@
 import { Top, Bottom } from "./Generics";
-import { FaTimes } from "react-icons/fa";
+import { CloseIcon } from "@/components/Icons";
+
 import "@/styles/modal.css";
 
 
@@ -24,7 +25,7 @@ function ModalContent( { onClose, children }: ModalPropsType ) {
     return (
         <div className="ModalContent" onClick={ e => e.stopPropagation() }>
             <Top>
-                <button onClick={ onClose }><FaTimes /></button>
+                <button onClick={ onClose }><CloseIcon /></button>
             </Top>
             <Bottom>
                 { children }

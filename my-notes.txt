@@ -21,9 +21,10 @@ https://tailwindcss.com/docs
 
 Icons
 
-npm install react-icons --save
-https://react-icons.github.io/react-icons/
-
+Font Awesome Docs: Set Up with React
+https://docs.fontawesome.com/web/use-with/react/
+to search fonts
+https://fontawesome.com/search?q=profile&o=r&m=free
 
 
 Typescript
@@ -38,6 +39,9 @@ Download
 How to create a file and generate a download with Javascript in the Browser (without a server)
 https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
 
+
+How to download CSV and JSON files in React
+https://theroadtoenterprise.com/blog/how-to-download-csv-and-json-files-in-react
 
 
 Recharts
