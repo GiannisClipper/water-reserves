@@ -1,18 +1,28 @@
-type ChartType = 'line' | 'area' | 'bar';
-
 type ViewType = 'overall' | 'chart' | 'list';
+
+type ChartType = 'line' | 'area' | 'bar';
 
 interface SearchParamsType {
     // [key: string]: string
 
-    from_date?: string
-    to_date?: string
-    from_month_day?: string
-    to_month_day?: string
-    time_aggregation?: string
-
-    chart_type?: ChartType
     view_type?: ViewType
+    chart_type?: ChartType
+
+    time_range?: string
+    interval_filter?: string
+
+    time_aggregation?: string
+    year_start?: string
 }
 
-export type { SearchParamsType };
+interface SavingsSearchParamsType extends SearchParamsType {
+    reservoir_aggregation?: string
+    reservoir_filter?: string
+}
+
+export type { 
+    ViewType, 
+    ChartType, 
+    SearchParamsType,
+    SavingsSearchParamsType
+};

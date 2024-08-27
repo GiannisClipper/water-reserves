@@ -2,47 +2,52 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+
+import type { SavingsSearchParamsType } from "@/types/searchParams";
+import type { SavingsFormParamsType } from "@/types/formParams";
+import { savingsFormParamsParser } from "@/helpers/parsers/formParams";
+import { savingsSearchParamsParser } from "@/helpers/parsers/searchParams";
+import { SavingsSelfRequest } from "@/helpers/requests/SelfRequests";
+
 import { 
     Form, 
     FormSectionTimeRange, FormSectionIntervalFilter, FormSectionTimeAggregation,
     FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay, FieldTimeAggregation
 } from "@/components/Form";
-import type { SearchParamsType } from "@/types/searchParams";
-import { SavingsSelfRequest } from "@/helpers/SelfRequests";
 
 type PropsType = {
-    searchParams: SearchParamsType
+    searchParams: SavingsSearchParamsType
 }
 
 const ParamContent = ( { searchParams }: PropsType ) => {
 
-    const [ params, setParams ] = useState( searchParams || {} );
+    const [ formParams, setFormParams ] = useState( savingsFormParamsParser( searchParams ) );
 
     const setFromDate = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, from_date: e.target.value } )
+        setFormParams( { ...formParams, from_date: e.target.value } )
     }
 
     const setToDate = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, to_date: e.target.value } )
+        setFormParams( { ...formParams, to_date: e.target.value } )
     }
 
     const setFromMonthDay = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, from_month_day: e.target.value } )
+        setFormParams( { ...formParams, from_month_day: e.target.value } )
     }
 
     const setToMonthDay = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, to_month_day: e.target.value } )
+        setFormParams( { ...formParams, to_month_day: e.target.value } )
     }
 
     const setTimeAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, time_aggregation: e.target.value } )
+        setFormParams( { ...formParams, time_aggregation: e.target.value } )
     }
 
     const router = useRouter();
 
     const onClickProcess = () => {
 
-        const savingsSelfRequest = new SavingsSelfRequest( params );
+        const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParamsParser( formParams ) );
         location.href = savingsSelfRequest.url;
 
         // if ( chartType && chartType !== chart_type ) {    
@@ -51,35 +56,35 @@ const ParamContent = ( { searchParams }: PropsType ) => {
         // }
     }
 
-    console.log( "rendering: ParamContent..." )
+    console.log( "rendering: ParamContent...", formParams )
 
     return (
         <Form className="ParamContent">
             <FormSectionTimeRange>
                 <FieldFromDate
-                    value={ params.from_date }
+                    value={ formParams.from_date }
                     onChange={ setFromDate }
                 />
                 <FieldToDate 
-                    value={ params.to_date }
+                    value={ formParams.to_date }
                     onChange={ setToDate }
                 />
             </FormSectionTimeRange>
 
             <FormSectionIntervalFilter>
                 <FieldFromMonthDay
-                    value={ params.from_month_day }
+                    value={ formParams.from_month_day }
                     onChange={ setFromMonthDay }
                 />
                 <FieldToMonthDay
-                    value={ params.to_month_day }
+                    value={ formParams.to_month_day }
                     onChange={ setToMonthDay }
                 />
             </FormSectionIntervalFilter>
 
             <FormSectionTimeAggregation>
                 <FieldTimeAggregation
-                    value={ params.time_aggregation }
+                    value={ formParams.time_aggregation }
                     onChange={ setTimeAggregation }
                 />
             </FormSectionTimeAggregation>

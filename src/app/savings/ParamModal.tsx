@@ -9,7 +9,7 @@ import {
     FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay
 } from "@/components/Form";
 import type { SearchParamsType } from "@/types/searchParams";
-import { SavingsSelfRequest } from "@/helpers/SelfRequests";
+import { SavingsSelfRequest } from "@/helpers/requests/SelfRequests";
 
 type PropsType = {
     onClose: () => void

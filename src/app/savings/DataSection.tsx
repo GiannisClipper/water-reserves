@@ -1,45 +1,38 @@
 import { Suspense } from "react";
+
+import type { SavingsSearchParamsType } from "@/types/searchParams";
+import { SavingsApiRequest } from "@/helpers/requests/ApiRequests";
+import { RequestErrorType, RequestResultType } from '@/types/requestResult';
+
+import Error from "./Error";
 import ChartSection from "./ChartSection";
 import ListSection from "./ListSection";
-import type { SearchParamsType } from "@/types/searchParams";
-import type { RequestResultType } from "@/types/requestResult";
-import { SavingsRequest } from "@/helpers/ApiRequests";
 
-type PropsType = { searchParams: SearchParamsType }
+type PropsType = { searchParams: SavingsSearchParamsType }
 
 const DataSection = async ( { searchParams }: PropsType ) => {
 
-    let response: any = null;
-    let result: RequestResultType | null = null;
+    const savingsApiRequest = new SavingsApiRequest( searchParams );
 
-    const savingsRequest = new SavingsRequest( searchParams );
+    type Props = [ error: RequestErrorType | null, result: RequestResultType | null ];
 
-    if ( savingsRequest.getRequestParams().time_range ) {
-        console.log( savingsRequest.url );
-        response = await fetch( savingsRequest.url );
-        console.log( response.status, response.statusText )
-        result = await response.json();
-        console.log( result )
-    }
+    const [ error, result ]: Props = await savingsApiRequest.request();
 
     console.log( "rendering: DataSection..." )
 
-    if ( response && response.status !== 200 ) {
-        return (
-            <div className="DataSection">
-                { `${response.status}, ${response.statusText}` }
-            </div>
-        )
-    }
-
     return (
         <div className="DataSection">
+
+            { error ? <Error error={error} /> : null }
+
             <Suspense fallback="<p>Loading...</p>">
                 <ChartSection result={result} />
             </Suspense>
+
             <Suspense fallback="<p>Loading...</p>">
                 <ListSection result={result} />
             </Suspense>
+
         </div>
     );
 }

@@ -91,7 +91,7 @@ const ChartContent = ( { result }: PropsType ) => {
                 }
                 
             </ResponsiveContainer>
-            <span>-</span>
+            {/* <span>-</span> */}
         </div>
     );
 

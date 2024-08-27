@@ -57,7 +57,7 @@ ul {
 
 @layer components {
   body {
-    @apply bg-neutral-100 text-indigo-400
+    @apply bg-yellow-50 text-indigo-400
   }
 
   .app-border {
@@ -120,6 +120,10 @@ ul {
   .DataSection {
     @apply flex flex-col justify-items-start
     w-full md:w-[calc(75%-2rem)] my-4
+  }
+
+  .Error {
+    @apply mb-6 bg-red-100 text-red-400 p-3
   }
 
   .ChartSection, .ListSection {
