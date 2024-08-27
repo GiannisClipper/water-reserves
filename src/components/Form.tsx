@@ -49,7 +49,7 @@ type FormSectionType_ = {
 
 const FormSectionTimeRange = ( { children }: FormSectionType_ ) => {
     return (
-        <FormSection label="Περίοδος αναζήτησης δεδομένων">
+        <FormSection label="Περίοδος δεδομένων">
             { children }
         </FormSection>
     );
@@ -57,7 +57,7 @@ const FormSectionTimeRange = ( { children }: FormSectionType_ ) => {
 
 const FormSectionIntervalFilter = ( { children }: FormSectionType_ ) => {
     return (
-        <FormSection label="Περιορισμένο διάστημα ενδιαφέροντος">
+        <FormSection label="Διάστημα ενδιαφέροντος">
             { children }
         </FormSection>
     );
@@ -65,7 +65,7 @@ const FormSectionIntervalFilter = ( { children }: FormSectionType_ ) => {
 
 const FormSectionTimeAggregation = ( { children }: FormSectionType_ ) => {
     return (
-        <FormSection label="Ανά μονάδα χρόνου">
+        <FormSection label="Μονάδα χρόνου">
             { children }
         </FormSection>
     );

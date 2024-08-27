@@ -18,13 +18,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <main>
-        {/* <main className="max-w-full flex min-h-screen flex-col items-stretch justify-between p-12">
-          <div className="app-border"> */}
             <div className="app-title">
               Water reserves
             </div>
             {children}
-          {/* </div> */}
         </main>
       </body>
     </html>

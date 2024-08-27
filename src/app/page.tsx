@@ -23,7 +23,7 @@ export default function Home() {
                 <Left className='icon'>
                     <GaugeIcon />
                 </Left>
-                <Right>
+                <Right className='text'>
                     Τρέχουσα κατάσταση
                 </Right>
             </Link>
@@ -32,7 +32,7 @@ export default function Home() {
                 <Left className='icon'>
                     <WaterIcon />
                 </Left>
-                <Right>
+                <Right className='text'>
                     Αποθέματα νερού
                 </Right>
             </Link>
@@ -41,7 +41,7 @@ export default function Home() {
                 <Left className='icon'>
                    <FaucetIcon />
                 </Left>
-                <Right>
+                <Right className='text'>
                     Παραγωγή πόσιμου νερού
                 </Right>
             </Link>
@@ -50,7 +50,7 @@ export default function Home() {
                 <Left className='icon'>
                     <CompareIcon />
                 </Left>
-                <Right>
+                <Right className='text'>
                     Λόγος αποθεμάτων / παραγωγής
                 </Right>
             </Link>
@@ -59,7 +59,7 @@ export default function Home() {
                 <Left className='icon'>
                     <RainIcon />
                 </Left>
-                <Right>
+                <Right className='text'>
                     Ποσότητες υετού
                 </Right>
             </Link>

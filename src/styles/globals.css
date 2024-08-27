@@ -57,43 +57,37 @@ ul {
 
 @layer components {
   body {
-    @apply bg-yellow-50 text-indigo-400
-  }
-
-  .app-border {
-    @apply border-2 border-indigo-300 bg-indigo-200 p-6
+    @apply bg-sky-900 text-sky-400
   }
 
   .app-title {
-    @apply min-w-full p-4 px-6 text-3xl font-semibold text-indigo-300
-    hover:text-indigo-400
+    @apply min-w-full p-4 px-6 text-3xl font-semibold text-sky-300
+    hover:text-sky-400
   }
 
   .app-options {
-    @apply flex flex-row flex-wrap items-stretch justify-items-start min-w-full
+    @apply flex flex-col items-center
+    min-w-full bg-sky-200 p-6
   }
 
   .app-options .option {
     @apply flex flex-row justify-items-start
-    w-full md:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] border-2 border-indigo-300 m-4
-    hover:bg-indigo-300
+    w-full md:w-[calc(66%-2rem)] lg:w-[calc(50%-2rem)] border-2 border-sky-500 m-4
+    hover:bg-sky-500
   }
 
   .app-options .option .icon {
-    @apply w-16 min-h-full p-4 bg-indigo-300 text-indigo-200
+    @apply w-12 p-2 bg-sky-500 text-sky-200
   }
 
-  .app-options .option:hover .icon {
-    @apply text-indigo-400
-  }
-
-  .app-options .option .Right {
-    @apply min-h-24 p-4 font-semibold text-indigo-600
+  .app-options .option .text {
+    @apply min-h-12 p-4 font-semibold text-sky-600 
+    hover:text-sky-200
   }
 
   .page-title {
-    @apply min-w-full p-4 px-6 text-xl font-semibold text-indigo-300
-    hover:text-indigo-400
+    @apply min-w-full p-4 px-6 text-xl font-semibold text-sky-300
+    hover:text-sky-400
   }
 
   .page-sections {
@@ -102,11 +96,11 @@ ul {
 
   .ParamSection {
     @apply flex flex-col justify-items-start
-    w-full md:w-[calc(25%-2rem)] border-2 border-indigo-300 md:m-4
+    w-full md:w-[calc(25%-2rem)] border-2 border-sky-200 md:m-4
   }
 
   .ParamLabel {
-    @apply text-indigo-50
+    @apply text-sky-100
   }
 
   .ParamContent {
@@ -123,20 +117,16 @@ ul {
   }
 
   .Error {
-    @apply mb-6 bg-red-100 text-red-400 p-3
+    @apply mb-6 bg-rose-300 text-rose-600 p-3
   }
 
   .ChartSection, .ListSection {
     @apply flex flex-col justify-items-start
-    w-full border-2 border-indigo-300
+    w-full border-2 border-sky-200
   }
 
   .ChartSection {
     @apply mb-6
-  }
-
-  .ChartLabel, .ListLabel {
-    @apply text-indigo-50
   }
 
   .ChartContent {
@@ -154,7 +144,7 @@ ul {
   }
 
   .ParamLabel, .ChartLabel, .ListLabel {
-    @apply bg-indigo-300 p-2
+    @apply bg-sky-200 p-2 text-sky-900
   }
 
   .ChartContent {
@@ -173,7 +163,7 @@ ul {
 }
 
 .FormSection {
-  @apply m-2 bg-indigo-100
+  @apply m-2 bg-sky-200 text-sky-800
 }
 
 .FormSection > * {
@@ -196,14 +186,16 @@ ul {
 }
 
 .Field > :nth-child( 1 ) {
-  @apply inline-block w-1/4 bg-indigo-200 p-1
+  @apply inline-block w-1/4 bg-sky-800 p-1 text-sky-500 
+
 }
 
 .Field > :nth-child( 2 ) {
-  @apply w-3/4 border-indigo-200 p-1
+  @apply w-3/4 border-sky-800 p-1
 }
 
 input, select, button {
-  /* @apply outline-none border border-dashed border-transparent focus:border-indigo-300 */
-  @apply outline-none focus:bg-yellow-50 focus:border-dashed
+  @apply outline-none placeholder-gray-400
+  bg-gray-100 text-sky-800 
+  focus:bg-yellow-100 focus:border-dashed
 }
