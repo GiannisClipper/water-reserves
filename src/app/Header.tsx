@@ -1,7 +1,15 @@
+"use client"
+
 import Link from 'next/link';
+import { useState } from "react";
+
 import { Top, Bottom, Left, Right } from "@/components/Generics";
 import { WaterIcon, InfoIcon  } from "@/components/Icons";
+import InfoModal from "./InfoModal";
+
 import { APP_TITLE } from "./settings";
+
+import "@/styles/header.css";
 
 type PropsType = { subTitle: string }
 
@@ -9,7 +17,10 @@ const Header = ( { subTitle }: PropsType ) => {
 
     subTitle = `:: ${subTitle} ::`;
 
+    const [ openModal, setOpenModal ] = useState( false );
+
     return (
+        <>
         <div className="Header">
 
             <Top>
@@ -24,7 +35,7 @@ const Header = ( { subTitle }: PropsType ) => {
                 </Link>
 
                 <Right>
-                    <Right className="icon">
+                    <Right className="icon" onClick={ () => setOpenModal( true ) }>
                         <InfoIcon />
                     </Right>
                 </Right>
@@ -42,6 +53,12 @@ const Header = ( { subTitle }: PropsType ) => {
             </Bottom>
 
         </div>
+
+        { openModal ? 
+            <InfoModal onClose={ () => setOpenModal( false ) } /> 
+        : null }
+
+        </>
     );
 
 }

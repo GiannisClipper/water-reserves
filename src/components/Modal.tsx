@@ -5,25 +5,28 @@ import "@/styles/modal.css";
 
 
 type ModalPropsType = {
+    className?: string
     onClose: () => void
     children: React.ReactNode
 }
 
-function Modal( { onClose, children }: ModalPropsType ) {
+function Modal( { className, onClose, children }: ModalPropsType ) {
+
+    className = ( "Modal " + ( className ? className : "" ) ).trim();
 
     return (
-        <div className="Modal" onClick={ onClose }>
-            <ModalContent onClose={ onClose }>
+        <div className={ className } onClick={ onClose }>
+            <ModalWindow onClose={ onClose }>
                 { children }
-            </ModalContent>
+            </ModalWindow>
         </div>
     )
 }
 
-function ModalContent( { onClose, children }: ModalPropsType ) {
+function ModalWindow( { onClose, children }: ModalPropsType ) {
 
     return (
-        <div className="ModalContent" onClick={ e => e.stopPropagation() }>
+        <div className="ModalWindow" onClick={ e => e.stopPropagation() }>
             <Top>
                 <button onClick={ onClose }><CloseIcon /></button>
             </Top>
@@ -34,4 +37,4 @@ function ModalContent( { onClose, children }: ModalPropsType ) {
     )
 }
 
-export { Modal, ModalContent };
+export default Modal;

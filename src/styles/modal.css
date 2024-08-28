@@ -21,7 +21,7 @@
     animation-iteration-count: 1;
 }
 
-.ModalContent {
+.ModalWindow {
     width: 800px;
     height: 600px;
     max-width: 95vw;
@@ -29,18 +29,18 @@
     background: white;
 }
 
-.ModalContent > .Top {
+.ModalWindow > .Top {
     text-align: right;
     border-bottom: 1px solid lightgrey;
 }
 
-.ModalContent > .Top > * {
+.ModalWindow > .Top > * {
     font-size: 1.5em;
     color: lightgrey;
 }
 
-.ModalContent > .Top,
-.ModalContent > .Bottom {
+.ModalWindow > .Top,
+.ModalWindow > .Bottom {
     padding: 1.5em;
 }
 
