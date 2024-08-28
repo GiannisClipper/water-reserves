@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Header from "./Header";
 import { Left, Right } from "@/components/Generics";
 import { GaugeIcon, WaterIcon, FaucetIcon, RainIcon, CompareIcon } from "@/components/Icons";
 
@@ -18,7 +19,10 @@ type ChildrenProps = {
 
 export default function Home() {
     return (
-        <div className="app-options">            
+        <>
+        <Header subTitle="Σύστημα παρακολούθησης υδάτινων πόρων" />
+
+        <div className="app-options"> 
             <Link className="option" href="/current-status">
                 <Left className='icon'>
                     <GaugeIcon />
@@ -64,6 +68,7 @@ export default function Home() {
                 </Right>
             </Link>
         </div>
+        </>
     );
 }
 

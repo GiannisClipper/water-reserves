@@ -18,9 +18,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <main>
-            <div className="app-title">
-              Water reserves
-            </div>
             {children}
         </main>
       </body>

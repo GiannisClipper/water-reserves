@@ -1,3 +1,4 @@
+import Header from "../Header";
 import ParamSection from "./ParamSection";
 import DataSection from "./DataSection";
 import { Suspense } from "react";
@@ -11,9 +12,8 @@ export default function Savings( { searchParams }: PropsType ) {
 
     return (
         <>
-        <div className="page-title">
-            Savings page
-        </div>
+        <Header subTitle="Δεδομένα αποθεμάτων νερού" />
+    
         <div className="page-sections">
             <ParamSection searchParams={searchParams} />
             <Suspense fallback="<p>Loading...</p>">

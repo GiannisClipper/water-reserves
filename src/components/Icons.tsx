@@ -12,6 +12,7 @@ import { faFaucetDrip } from '@fortawesome/free-solid-svg-icons';
 import { faCloudRain } from '@fortawesome/free-solid-svg-icons';
 import{ faDownLeftAndUpRightToCenter } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
@@ -22,6 +23,7 @@ const RainIcon = () => <FontAwesomeIcon icon={faCloudRain} />
 const CompareIcon = () => <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} />
 
 const CloseIcon = () => <FontAwesomeIcon icon={faXmark} />
+const InfoIcon = () => <FontAwesomeIcon icon={faCircleInfo} />
 const SpinnerIcon = () => <FontAwesomeIcon icon={faSpinner} />
 
 type PropsType = {
@@ -31,5 +33,5 @@ type PropsType = {
 
 export { 
     GaugeIcon, WaterIcon, FaucetIcon, RainIcon, CompareIcon,
-    CloseIcon, SpinnerIcon,
+    CloseIcon, InfoIcon, SpinnerIcon,
 };

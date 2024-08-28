@@ -56,14 +56,48 @@ ul {
 /* * { border: 1px dotted grey } */
 
 @layer components {
+
   body {
     @apply bg-sky-900 text-sky-400
   }
 
-  .app-title {
-    @apply min-w-full p-4 px-6 text-3xl font-semibold text-sky-300
-    hover:text-sky-400
+  /* Header */
+
+  .Header {
+      @apply flex flex-col space-y-0
+      p-2 pb-4
+    }
+
+  .Header * {
+    /* @apply border border-white border-dotted */
   }
+
+  .Header .Top,
+  .Header .Bottom {
+    @apply flex flex-row justify-between
+  }
+
+  .Header > .Top > *,
+  .Header > .Bottom > * {
+    @apply flex flex-row
+  }
+
+  .Header > .Top > * {
+    @apply hover:text-yellow-100
+  }
+
+  .Header .icon {
+    @apply w-12 p-2 pt-3
+  }
+
+  .Header > .Top .text {
+    @apply p-2 text-3xl font-semibold
+  }
+
+  .Header > .Bottom .text {
+    @apply ml-2 text-sm font-semibold 
+  }
+
 
   .app-options {
     @apply flex flex-col items-center
@@ -77,11 +111,11 @@ ul {
   }
 
   .app-options .option .icon {
-    @apply w-12 p-2 bg-sky-500 text-sky-200
+    @apply w-12 bg-sky-500 text-sky-200 p-2 pt-3
   }
 
   .app-options .option .text {
-    @apply min-h-12 p-4 font-semibold text-sky-600 
+    @apply w-full min-h-12 p-4 font-semibold text-sky-600 
     hover:text-sky-200
   }
 
