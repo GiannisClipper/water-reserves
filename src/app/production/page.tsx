@@ -1,8 +1,17 @@
-export default function Savings() {
+import type { SearchParamsType } from "@/types/searchParams";
+import Header from "../Header";
+import { PRODUCTION } from "../settings";
+
+type PropsType = { searchParams: SearchParamsType }
+
+export default function Page( { searchParams }: PropsType ) {
+
+    console.log( "rendering: Page (production)..." )
+
     return (
-        <div className="app-title">
-            Production page
-        </div>
+        <>
+        <Header subTitle={PRODUCTION} />
+        </>
     );
 }
 

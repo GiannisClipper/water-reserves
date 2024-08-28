@@ -119,11 +119,6 @@ ul {
     hover:text-sky-200
   }
 
-  .page-title {
-    @apply min-w-full p-4 px-6 text-xl font-semibold text-sky-300
-    hover:text-sky-400
-  }
-
   .page-sections {
     @apply flex flex-row flex-wrap items-stretch justify-items-start min-w-full text-sm
   }

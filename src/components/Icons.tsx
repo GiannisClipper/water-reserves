@@ -20,7 +20,7 @@ const GaugeIcon = () => <FontAwesomeIcon icon={faGaugeHigh} />
 const WaterIcon = () => <FontAwesomeIcon icon={faWater} />
 const FaucetIcon = () => <FontAwesomeIcon icon={faFaucetDrip} />
 const RainIcon = () => <FontAwesomeIcon icon={faCloudRain} />
-const CompareIcon = () => <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} />
+const ComposeIcon = () => <FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} />
 
 const CloseIcon = () => <FontAwesomeIcon icon={faXmark} />
 const InfoIcon = () => <FontAwesomeIcon icon={faCircleInfo} />
@@ -32,6 +32,6 @@ type PropsType = {
 }
 
 export { 
-    GaugeIcon, WaterIcon, FaucetIcon, RainIcon, CompareIcon,
+    GaugeIcon, WaterIcon, FaucetIcon, RainIcon, ComposeIcon,
     CloseIcon, InfoIcon, SpinnerIcon,
 };

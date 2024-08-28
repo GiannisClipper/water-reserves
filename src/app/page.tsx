@@ -1,26 +1,25 @@
 import Link from 'next/link';
 import Header from "./Header";
 import { Left, Right } from "@/components/Generics";
-import { GaugeIcon, WaterIcon, FaucetIcon, RainIcon, CompareIcon } from "@/components/Icons";
+import { GaugeIcon, WaterIcon, FaucetIcon, RainIcon, ComposeIcon } from "@/components/Icons";
+
+import { 
+    APP_SUBTITLE,
+    CURRENT_STATUS,
+    SAVINGS, SAVINGS_RESERVOIR,
+    PRODUCTION, PRODUCTiON_FACTORY,
+    PRECIPITATION,
+    SAVINGS_PRODUCTION, SAVINGS_PRECIPITATION,    
+} from "./settings";
 
 type ChildrenProps = {
     children: React.ReactNode
 }
 
-// const LinkIcon = ( { children }: ChildrenProps ) =>
-//     <div className='LinkIcon'>
-//         {children}
-//     </div>
-
-// const LinkText = ( { children }: ChildrenProps ) =>
-//     <div className='LinkText'>
-//         {children}
-//     </div>
-
 export default function Home() {
     return (
         <>
-        <Header subTitle="Σύστημα παρακολούθησης υδάτινων πόρων" />
+        <Header subTitle={APP_SUBTITLE} />
 
         <div className="app-options"> 
             <Link className="option" href="/current-status">
@@ -28,7 +27,7 @@ export default function Home() {
                     <GaugeIcon />
                 </Left>
                 <Right className='text'>
-                    Τρέχουσα κατάσταση
+                    { CURRENT_STATUS }
                 </Right>
             </Link>
 
@@ -37,7 +36,16 @@ export default function Home() {
                     <WaterIcon />
                 </Left>
                 <Right className='text'>
-                    Αποθέματα νερού
+                    { SAVINGS }
+                </Right>
+            </Link>
+
+            <Link className="option" href="/savings-reservoir">
+                <Left className='icon'>
+                    <WaterIcon />
+                </Left>
+                <Right className='text'>
+                    { SAVINGS_RESERVOIR }
                 </Right>
             </Link>
 
@@ -46,16 +54,16 @@ export default function Home() {
                    <FaucetIcon />
                 </Left>
                 <Right className='text'>
-                    Παραγωγή πόσιμου νερού
+                    { PRODUCTION }
                 </Right>
             </Link>
 
-            <Link className="option" href="/ratio">
+            <Link className="option" href="/production-factory">
                 <Left className='icon'>
-                    <CompareIcon />
+                   <FaucetIcon />
                 </Left>
                 <Right className='text'>
-                    Λόγος αποθεμάτων / παραγωγής
+                    { PRODUCTiON_FACTORY }
                 </Right>
             </Link>
 
@@ -64,7 +72,25 @@ export default function Home() {
                     <RainIcon />
                 </Left>
                 <Right className='text'>
-                    Ποσότητες υετού
+                    { PRECIPITATION }
+                </Right>
+            </Link>
+
+            <Link className="option" href="/savings-production">
+                <Left className='icon'>
+                    <ComposeIcon />
+                </Left>
+                <Right className='text'>
+                    { SAVINGS_PRODUCTION }
+                </Right>
+            </Link>
+
+            <Link className="option" href="/savings-precipitation">
+                <Left className='icon'>
+                    <ComposeIcon />
+                </Left>
+                <Right className='text'>
+                    { SAVINGS_PRECIPITATION }
                 </Right>
             </Link>
         </div>

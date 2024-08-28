@@ -6,9 +6,9 @@ import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = { searchParams: SearchParamsType }
 
-export default function Savings( { searchParams }: PropsType ) {
+export default function Page( { searchParams }: PropsType ) {
 
-    console.log( "rendering: Savings (page)..." )
+    console.log( "rendering: Page (savings)..." )
 
     return (
         <>

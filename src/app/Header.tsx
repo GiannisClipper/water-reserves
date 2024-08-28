@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Top, Bottom, Left, Right } from "@/components/Generics";
 import { WaterIcon, InfoIcon  } from "@/components/Icons";
+import { APP_TITLE } from "./settings";
 
 type PropsType = { subTitle: string }
 
@@ -18,7 +19,7 @@ const Header = ( { subTitle }: PropsType ) => {
                         <WaterIcon />
                     </Left>
                     <Right className="text">
-                        Water reserves
+                        { APP_TITLE }
                     </Right>
                 </Link>
 
