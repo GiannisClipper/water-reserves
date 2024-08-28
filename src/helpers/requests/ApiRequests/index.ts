@@ -28,7 +28,7 @@ abstract class ApiRequest {
 
         if ( ! this.searchParams.time_range ) {
             const error: RequestErrorType = {
-                message: "Time range not defined."
+                message: "Δεν έχει οριστεί χρονική περίοδος δεδομένων."
             }
             return [ error, null ];
         }

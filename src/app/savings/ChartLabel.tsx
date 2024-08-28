@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Left, Right } from "@/components/Generics";
 import type { SearchParamsType } from "@/types/searchParams";
@@ -6,12 +6,14 @@ import { ChartLineIcon, ChartAreaIcon, ChartBarIcon, LinkIcon, ExpandIcon } from
 
 import "@/styles/label.css"
 
-type PropsType = {
-    searchParams: SearchParamsType
-}
+type PropsType = { setChartType: CallableFunction }
 
-export default function ChartLabel( { searchParams }: PropsType ) {
+export default function ChartLabel( { setChartType }: PropsType ) {
 
+    const setChartLine = () => setChartType( 'line' );
+    const setChartArea = () => setChartType( 'area' );
+    const setChartBar = () => setChartType( 'bar' );
+    
     console.log( "rendering: ChartLabel..." )
 
     return (
@@ -20,9 +22,9 @@ export default function ChartLabel( { searchParams }: PropsType ) {
                 Γραφήματα
             </Left>
             <Right>
-                <ChartLineIcon className="icon" title="Γράφημα γραμμής" />
-                <ChartAreaIcon className="icon" title="Γράφημα περιοχής" />
-                <ChartBarIcon className="icon" title="Γράφημα με μπάρες" />
+                <ChartLineIcon className="icon" title="Γράφημα γραμμής" onClick={ setChartLine } />
+                <ChartAreaIcon className="icon" title="Γράφημα περιοχής" onClick={ setChartArea } />
+                <ChartBarIcon className="icon" title="Γράφημα με μπάρες" onClick={ setChartBar } />
                 <ExpandIcon className="icon" title="Πλήρης οθόνη" />
                 <LinkIcon className="icon" title="Σύνδεσμος γραφήματος" />
             </Right>

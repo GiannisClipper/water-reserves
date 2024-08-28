@@ -26,7 +26,10 @@ const DataSection = async ( { searchParams }: PropsType ) => {
             { error ? <Error error={error} /> : null }
 
             <Suspense fallback="<p>Loading...</p>">
-                <ChartSection result={result} />
+                <ChartSection 
+                    searchParams={searchParams}
+                    result={result} 
+                />
             </Suspense>
 
             <Suspense fallback="<p>Loading...</p>">

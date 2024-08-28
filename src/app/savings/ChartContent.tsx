@@ -7,18 +7,12 @@ import { BarChart, Bar, Rectangle } from 'recharts';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import type { RequestResultType } from "@/types/requestResult";
 
-type PropsType = { result: RequestResultType | null }
+type PropsType = { 
+    result: RequestResultType | null
+    chartType: string | undefined
+}
 
-const ChartContent = ( { result }: PropsType ) => {
-
-    const [ chartType, setChartType ] = useState<string | null>( null );
-
-    useEffect( () => {
-        const urlSearchString = window.location.search;
-        const params = new URLSearchParams( urlSearchString );
-        setChartType( params.get( 'chart_type' ) );
-        console.log( chartType );
-    } );
+const ChartContent = ( { result, chartType }: PropsType ) => {
 
     const headers: string[] = result && result.headers || [];
     const data: [][] = result && result.data || [];
