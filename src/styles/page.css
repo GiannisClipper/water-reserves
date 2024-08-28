@@ -1,0 +1,48 @@
+@tailwind components;
+
+@layer components {
+
+  * {
+    /* @apply border border-white border-dotted */
+  }
+    
+  .Header {
+    @apply flex flex-col space-y-0
+    m-4 p-2 pb-4 
+    border-2 border-sky-400
+  }
+
+  .Content {
+    @apply flex 
+    flex-col md:flex-row 
+    space-x-0 md:space-x-4
+    space-y-4 md:space-y-0
+    m-4 text-sm
+  }
+
+  .Header .Top,
+  .Header .Bottom {
+    @apply flex flex-row justify-between
+  }
+
+  .Header > .Top > *,
+  .Header > .Bottom > * {
+    @apply flex flex-row
+  }
+
+  .Header > .Top > * {
+    @apply hover:text-yellow-100
+  }
+
+  .Header .icon {
+    @apply w-12 p-2 pt-3 text-2xl
+  }
+
+  .Header > .Top .text {
+    @apply p-2 text-3xl font-semibold
+  }
+
+  .Header > .Bottom .text {
+    @apply ml-2 text-sm font-semibold 
+  }
+}

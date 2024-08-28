@@ -9,7 +9,7 @@ import InfoModal from "./InfoModal";
 
 import { APP_TITLE } from "./settings";
 
-import "@/styles/header.css";
+import "@/styles/page.css";
 
 type PropsType = { subTitle: string }
 
