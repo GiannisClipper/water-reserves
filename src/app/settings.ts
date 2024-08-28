@@ -1,5 +1,5 @@
-const SELF_BASE_URL: string | undefined = process.env.SELF_BASE_URL; 
-const REST_API_BASE_URL: string | undefined = process.env.REST_API_BASE_URL;
+const NEXT_PUBLIC_SELF_BASE_URL: string | undefined = process.env.NEXT_PUBLIC_SELF_BASE_URL; 
+const NEXT_PUBLIC_REST_API_BASE_URL: string | undefined = process.env.NEXT_PUBLIC_REST_API_BASE_URL;
 
 const APP_TITLE: string = "Water reserves";
 const APP_SUBTITLE: string = "Σύστημα παρακολούθησης υδάτινων πόρων";
@@ -13,8 +13,8 @@ const SAVINGS_PRODUCTION: string = "Συνδυασμός αποθεμάτων κ
 const SAVINGS_PRECIPITATION: string = "Συνδυασμός αποθεμάτων νερού και ποσοτήτων υετού";
 
 export { 
-    REST_API_BASE_URL, 
-    SELF_BASE_URL,
+    NEXT_PUBLIC_REST_API_BASE_URL, 
+    NEXT_PUBLIC_SELF_BASE_URL,
 
     APP_TITLE, 
     APP_SUBTITLE,

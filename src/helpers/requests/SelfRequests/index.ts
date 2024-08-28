@@ -1,4 +1,4 @@
-import { SELF_BASE_URL } from '@/app/settings';
+import { NEXT_PUBLIC_SELF_BASE_URL } from '@/app/settings';
 
 import type { 
     SearchParamsType,
@@ -48,7 +48,7 @@ class SavingsSelfRequest extends SelfRequest {
     }
 
     public get url(): string {
-        return `${SELF_BASE_URL}/${this.endpoint}?${this.urlParams}`;
+        return `${NEXT_PUBLIC_SELF_BASE_URL}/${this.endpoint}?${this.urlParams}`;
     }
 }
 

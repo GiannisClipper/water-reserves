@@ -1,4 +1,4 @@
-import { REST_API_BASE_URL } from '@/app/settings';
+import { NEXT_PUBLIC_REST_API_BASE_URL } from '@/app/settings';
 import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 
 import type { 
@@ -21,7 +21,7 @@ abstract class ApiRequest {
     }
 
     public get url(): string {
-        return `${REST_API_BASE_URL}/${this.endpoint}?${this.urlParams}`;
+        return `${NEXT_PUBLIC_REST_API_BASE_URL}/${this.endpoint}?${this.urlParams}`;
     }
 
     public async request(): Promise<[ RequestErrorType | null, RequestResultType | null ]> {

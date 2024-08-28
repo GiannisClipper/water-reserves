@@ -12,6 +12,14 @@ type PropsType = {
 
 export default function ListLabel( { searchParams }: PropsType ) {
 
+    const getTable = () => {
+        const table: HTMLCollection = document.body.getElementsByClassName( 'ListContent' );
+        const trs: HTMLCollectionOf<Element> = table[ 0 ].getElementsByTagName( 'tr' );
+        const tds: HTMLCollectionOf<Element> = trs[ 1 ].getElementsByTagName( 'td' );
+        console.log( 'tds[0]', tds[ 0 ].innerHTML );
+        console.log( 'tds[1]', tds[ 1 ].innerHTML );
+    }
+
     console.log( "rendering: ListLabel..." )
 
     return (
@@ -21,7 +29,7 @@ export default function ListLabel( { searchParams }: PropsType ) {
             </Left>
             <Right>
                 <ExpandIcon className="icon" title="Πλήρης οθόνη" />
-                <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" />
+                <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" onClick={ getTable } />
                 <LinkIcon className="icon" title="Σύνδεσμος λίστας" />
             </Right>
         </div>
