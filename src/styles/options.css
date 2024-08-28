@@ -1,0 +1,29 @@
+@tailwind components;
+
+@layer components {
+
+  .Options {
+    @apply flex flex-col items-center
+    min-w-full p-6
+  }
+
+  .Options .Option {
+    @apply flex flex-row justify-items-start
+    w-[calc(100%-1rem)] md:w-[calc(70%-2rem)] lg:w-[calc(60%-2rem)]
+    m-4 border-2 
+    border-transparent active:border-sky-200
+    bg-sky-200 hover:bg-sky-500 
+    text-sky-500 hover:text-sky-200 
+  }
+
+  .Options .Option .icon {
+    @apply w-12 p-3 pr-10 text-2xl
+    bg-sky-500 text-sky-200
+  }
+
+  .Options .Option .text {
+    @apply w-full min-h-12 p-4 font-semibold
+    
+  }
+
+}

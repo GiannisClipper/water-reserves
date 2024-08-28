@@ -1,0 +1,23 @@
+@tailwind components;
+
+@layer components {
+
+  * {
+    /* @apply border border-white border-dotted */
+  }
+    
+  .Label {
+    @apply flex flex-row justify-between
+    text-sm text-sky-700 
+  }
+
+  .Label > .Left {
+    @apply font-semibold 
+  }
+
+  .Label > .Right > * {
+    @apply mx-1 p-1 border border-sky-700
+    hover:bg-sky-700 hover:text-sky-200
+  }
+
+}

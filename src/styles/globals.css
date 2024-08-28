@@ -61,24 +61,8 @@ ul {
     @apply bg-sky-900 text-sky-400
   }
 
-  .app-options {
-    @apply flex flex-col items-center
-    min-w-full bg-sky-200 p-6
-  }
-
-  .app-options .option {
-    @apply flex flex-row justify-items-start
-    w-full md:w-[calc(66%-2rem)] lg:w-[calc(50%-2rem)] border-2 border-sky-500 m-4
-    hover:bg-sky-500
-  }
-
-  .app-options .option .icon {
-    @apply w-12 bg-sky-500 text-sky-200 p-3 pr-10 text-2xl
-  }
-
-  .app-options .option .text {
-    @apply w-full min-h-12 p-4 font-semibold text-sky-600 
-    hover:text-sky-200
+  .icon {
+    @apply cursor-pointer
   }
 
   .page-sections {
