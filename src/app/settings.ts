@@ -1,5 +1,5 @@
-const SELF_BASE_URL: string = "http://localhost:3000";
-const REST_API_BASE_URL: string = "http://localhost:8000/api/v1";
+const SELF_BASE_URL: string | undefined = process.env.SELF_BASE_URL; 
+const REST_API_BASE_URL: string | undefined = process.env.REST_API_BASE_URL;
 
 const APP_TITLE: string = "Water reserves";
 const APP_SUBTITLE: string = "Σύστημα παρακολούθησης υδάτινων πόρων";
