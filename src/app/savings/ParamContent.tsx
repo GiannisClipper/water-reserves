@@ -58,6 +58,13 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
         setParams( { ...params, timeAggregation: e.target.value } )
     }
 
+    const setReservoirFilter = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        const { reservoirFilter } = params;
+        reservoirFilter[ e.target.name ] = e.target.checked;
+        setParams( { ...params, reservoirFilter } );
+        // console.log( e.target.name, e.target )
+    }
+
     useEffect( () => {
 
         if ( onSearch ) {
@@ -72,7 +79,7 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
     }, [ onSearch ] );
 
-    console.log( "rendering: ParamContent...", reservoirs )
+    console.log( "rendering: ParamContent...", params )
 
     return (
         <Form className="ParamContent">
@@ -116,7 +123,10 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
                 { reservoirs?.map( r => 
                     <FieldCheckBox
                         key={ r.id }
+                        name={ r.id }
                         label={ r.name_en }
+                        checked={ params.reservoirFilter[ r.id ] }
+                        onChange={ setReservoirFilter }
                     /> 
                 ) }
             </FormSectionReservoirs>

@@ -204,7 +204,7 @@ const FieldTimeAggregation = ( props: any ) => (
     />
 );
 
-const FieldCheckBox = ( { label, props }: any ) => {
+const FieldCheckBox = ( { label, ...props }: any ) => {
 
     return (
         <Field
