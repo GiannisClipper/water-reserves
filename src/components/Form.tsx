@@ -79,6 +79,14 @@ const FormSectionTimeAggregation = ( { children }: FormSectionType_ ) => {
     );
 }
 
+const FormSectionReservoirs = ( { children }: FormSectionType_ ) => {
+    return (
+        <FormSection label="Ταμιευτήρες">
+            { children }
+        </FormSection>
+    );
+}
+
 // Field...
 
 type FieldPropsType = {
@@ -124,7 +132,7 @@ const FieldToDate = ( props: any ) => {
     );
 }
 
-const FieldFromMonthDay = ( props: any ) => {
+const FieldFromInterval = ( props: any ) => {
 
     props = { placeholder: 'MM-HH', ...props }
 
@@ -136,7 +144,7 @@ const FieldFromMonthDay = ( props: any ) => {
     );
 }
 
-const FieldToMonthDay = ( props: any ) => {
+const FieldToInterval = ( props: any ) => {
 
     props = { placeholder: 'MM-HH', ...props }
 
@@ -196,8 +204,25 @@ const FieldTimeAggregation = ( props: any ) => (
     />
 );
 
+const FieldCheckBox = ( { label, props }: any ) => {
+
+    return (
+        <Field
+            label = { <span>{ label }</span> }
+            value = { <input {...props} type="checkbox" /> }
+        />
+    );
+}
+
 export { 
-    Form, 
-    FormSection, FormSectionTimeRange, FormSectionIntervalFilter, FormSectionValueAggregation, FormSectionTimeAggregation,
-    Field, FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay, FieldValueAggregation, FieldTimeAggregation
+    Form, FormSection, 
+    FormSectionTimeRange, FormSectionIntervalFilter,
+    FormSectionValueAggregation, FormSectionTimeAggregation,
+    FormSectionReservoirs,
+
+    Field, 
+    FieldFromDate, FieldToDate, 
+    FieldFromInterval, FieldToInterval, 
+    FieldValueAggregation, FieldTimeAggregation,
+    FieldCheckBox
 };

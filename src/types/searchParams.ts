@@ -3,7 +3,6 @@ type ViewType = 'overall' | 'chart' | 'list';
 type ChartType = 'line' | 'area' | 'bar';
 
 interface SearchParamsType {
-    // [key: string]: string
 
     view_type?: ViewType
     chart_type?: ChartType
@@ -13,6 +12,8 @@ interface SearchParamsType {
 
     time_aggregation?: string
     year_start?: string
+
+    value_aggregation?: string
 }
 
 interface SavingsSearchParamsType extends SearchParamsType {

@@ -10,7 +10,7 @@ import type { RequestResultType } from "@/types/requestResult";
 
 type PropsType = { result: RequestResultType | null }
 
-const ListLabel = async ( { result }: PropsType ) => {
+const ListLabel = ( { result }: PropsType ) => {
 
     const getTable = () => {
         const table: HTMLCollection = document.body.getElementsByClassName( 'ListContent' );

@@ -3,23 +3,23 @@ type ViewType = 'overall' | 'chart' | 'list';
 type ChartType = 'line' | 'area' | 'bar';
 
 interface FormParamsType {
-    // [key: string]: string
 
-    view_type: ViewType
-    chart_type: ChartType
+    viewType: ViewType
+    chartType: ChartType
 
-    from_date: string
-    to_date: string
+    fromDate: string
+    toDate: string
 
-    from_month_day: string
-    to_month_day: string
+    fromInterval: string
+    toInterval: string
 
-    value_aggregation: string
-    time_aggregation: string
+    timeAggregation: string
+    valueAggregation: string
 }
 
 interface SavingsFormParamsType extends FormParamsType {
-    reservoir_filter: { [ key: string ]: boolean }
+    reservoirAggregation: string
+    reservoirFilter: { [ key: string ]: boolean }
 }
 
 export type { 
