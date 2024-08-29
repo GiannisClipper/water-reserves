@@ -11,8 +11,8 @@ import { SavingsSelfRequest } from "@/helpers/requests/SelfRequests";
 
 import { 
     Form, 
-    FormSectionTimeRange, FormSectionIntervalFilter, FormSectionTimeAggregation,
-    FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay, FieldTimeAggregation
+    FormSectionTimeRange, FormSectionIntervalFilter, FormSectionValueAggregation, FormSectionTimeAggregation,
+    FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay, FieldValueAggregation, FieldTimeAggregation
 } from "@/components/Form";
 
 import "@/styles/form.css";
@@ -40,6 +40,10 @@ const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
 
     const setToMonthDay = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
         setFormParams( { ...formParams, to_month_day: e.target.value } )
+    }
+
+    const setValueAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        setFormParams( { ...formParams, value_aggregation: e.target.value } )
     }
 
     const setTimeAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
@@ -92,20 +96,19 @@ const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
                 />
             </FormSectionIntervalFilter>
 
+            <FormSectionValueAggregation>
+                <FieldValueAggregation
+                    value={ formParams.value_aggregation }
+                    onChange={ setValueAggregation }
+                />
+            </FormSectionValueAggregation>
+
             <FormSectionTimeAggregation>
                 <FieldTimeAggregation
                     value={ formParams.time_aggregation }
                     onChange={ setTimeAggregation }
                 />
             </FormSectionTimeAggregation>
-
-            {/* <div>
-                <button
-                    onClick={ e => onClickProcess() }
-                >
-                    Process params
-                </button>
-            </div> */}
         </Form>
     );
 }

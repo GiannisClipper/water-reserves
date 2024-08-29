@@ -13,7 +13,7 @@ const ListSection = async ( { result }: PropsType ) => {
 
     return (
         <div className="ListSection">
-            <ListLabel />
+            <ListLabel result={result} />
             <ListContent result={result} />
         </div>
     );

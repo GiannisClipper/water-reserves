@@ -34,8 +34,14 @@ function formParamsParser( searchParams: SearchParamsType ): FormParamsType {
 
     let time_aggregation: string = 'day';
     if ( searchParams.time_aggregation ) {
-        const _: string = searchParams.time_aggregation.split( ',' )[ 0 ];
-        time_aggregation = _;
+        const _: string = searchParams.time_aggregation.split( ',' );
+        time_aggregation = _[ 0 ];
+    }
+
+    let value_aggregation: string = 'avg';
+    if ( searchParams.time_aggregation ) {
+        const _: string = searchParams.time_aggregation.split( ',' );
+        if ( _.length > 1 ) value_aggregation = _[ 1 ];
     }
 
     const formParams: FormParamsType = {
@@ -44,6 +50,7 @@ function formParamsParser( searchParams: SearchParamsType ): FormParamsType {
         from_date, to_date,
         from_month_day, to_month_day,
         time_aggregation,
+        value_aggregation,
     }
     return formParams;
 }

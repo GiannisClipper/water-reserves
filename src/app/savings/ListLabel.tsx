@@ -6,7 +6,11 @@ import { DownloadIcon, ScreenIcon, LinkIcon } from "@/components/Icons";
 
 import "@/styles/label.css"
 
-export default function ListLabel() {
+import type { RequestResultType } from "@/types/requestResult";
+
+type PropsType = { result: RequestResultType | null }
+
+const ListLabel = async ( { result }: PropsType ) => {
 
     const getTable = () => {
         const table: HTMLCollection = document.body.getElementsByClassName( 'ListContent' );
@@ -23,14 +27,21 @@ export default function ListLabel() {
             <Left>
                 Λίστα δεδομένων
             </Left>
+            { 
+            result
+            ?
             <Right>
                 <ScreenIcon className="icon" title="Ευρεία οθόνη" />
                 <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" onClick={ getTable } />
                 <LinkIcon className="icon" title="Σύνδεσμος λίστας" />
             </Right>
+            :
+            null
+            }
         </div>
     );
 }
 
+export default ListLabel;
 
 

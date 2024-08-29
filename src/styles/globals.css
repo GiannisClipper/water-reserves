@@ -86,7 +86,7 @@ ul {
   }
 
   .Error {
-    @apply mb-6 
+    @apply
     bg-white bg-opacity-65 p-3
     text-red-600
   }

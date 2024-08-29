@@ -6,9 +6,12 @@ import { WriteIcon, SearchIcon, LinkIcon } from "@/components/Icons";
 
 import "@/styles/label.css"
 
-type PropsType = { setOnSearch: CallableFunction }
+type PropsType = { 
+    searchParams: SearchParamsType
+    setOnSearch: CallableFunction 
+}
 
-export default function ParamLabel( { setOnSearch }: PropsType ) {
+export default function ParamLabel( { searchParams, setOnSearch }: PropsType ) {
 
     console.log( "rendering: ParamLabel..." )
 
@@ -20,7 +23,13 @@ export default function ParamLabel( { setOnSearch }: PropsType ) {
             <Right>
                 {/* <WriteIcon className="icon" title="Ορισμός παραμέτρων" /> */}
                 <SearchIcon onClick={ () => setOnSearch( true ) } className="icon" title="Αναζήτηση δεδομένων" />
+                { 
+                Object.keys( searchParams ).length > 0
+                ?
                 <LinkIcon className="icon" title="Σύνδεσμος σελίδας" />
+                :
+                null
+                }
             </Right>
         </div>
     );

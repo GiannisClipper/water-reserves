@@ -57,7 +57,15 @@ const FormSectionTimeRange = ( { children }: FormSectionType_ ) => {
 
 const FormSectionIntervalFilter = ( { children }: FormSectionType_ ) => {
     return (
-        <FormSection label="Διάστημα ενδιαφέροντος">
+        <FormSection label="Περιορισμένο διάστημα ενδιαφέροντος">
+            { children }
+        </FormSection>
+    );
+}
+
+const FormSectionValueAggregation = ( { children }: FormSectionType_ ) => {
+    return (
+        <FormSection label="Ανάλυση ποσότητας">
             { children }
         </FormSection>
     );
@@ -65,7 +73,7 @@ const FormSectionIntervalFilter = ( { children }: FormSectionType_ ) => {
 
 const FormSectionTimeAggregation = ( { children }: FormSectionType_ ) => {
     return (
-        <FormSection label="Μονάδα χρόνου">
+        <FormSection label="Ανάλυση χρόνου">
             { children }
         </FormSection>
     );
@@ -141,15 +149,37 @@ const FieldToMonthDay = ( props: any ) => {
     );
 }
 
+const reprValueAggregation = ( key: string ): string => {
+
+    // const values: { [key: string]: string } = { 'avg': 'Μέση ημερήσια τιμή' };
+
+    // if ( key in values ) {
+    //     return values[ key ];
+    // }
+    return 'Μέση ημερήσια τιμή';
+}
+
 const reprTimeAggregation = ( key: string ): string => {
 
-    const values: { [key: string]: string } = { 'month': 'Μήνας', 'year': 'Έτος', 'custom_year': 'Υδρολογικό έτος' };
+    const values: { [key: string]: string } = { 'month': 'Ανά μήνα', 'year': 'Ανά έτος', 'custom_year': 'Ανά υδρολογικό έτος' };
 
     if ( key in values ) {
         return values[ key ];
     }
-    return "Ημέρα";
+    return "Ανά ημέρα";
 }
+
+const FieldValueAggregation = ( props: any ) => (
+
+    <Field
+        label = {<span>[]</span>}
+        value = {
+            <select {...props}>
+                <option value="avg">{reprValueAggregation( "avg" )}</option>
+            </select>
+        }
+    />
+);
 
 const FieldTimeAggregation = ( props: any ) => (
 
@@ -157,7 +187,7 @@ const FieldTimeAggregation = ( props: any ) => (
         label = {<span>[]</span>}
         value = {
             <select {...props}>
-                <option value="">{reprTimeAggregation( "" )}</option>
+                <option value="day">{reprTimeAggregation( "day" )}</option>
                 <option value="month">{reprTimeAggregation( "month" )}</option>
                 <option value="year">{reprTimeAggregation( "year" )}</option>
                 <option value="custom_year">{reprTimeAggregation( "custom_year" )}</option>
@@ -165,8 +195,9 @@ const FieldTimeAggregation = ( props: any ) => (
         }
     />
 );
+
 export { 
     Form, 
-    FormSection, FormSectionTimeRange, FormSectionIntervalFilter, FormSectionTimeAggregation,
-    Field, FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay, FieldTimeAggregation
+    FormSection, FormSectionTimeRange, FormSectionIntervalFilter, FormSectionValueAggregation, FormSectionTimeAggregation,
+    Field, FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay, FieldValueAggregation, FieldTimeAggregation
 };

@@ -14,6 +14,7 @@ interface FormParamsType {
     from_month_day: string
     to_month_day: string
 
+    value_aggregation: string
     time_aggregation: string
 }
 

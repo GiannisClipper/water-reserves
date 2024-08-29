@@ -22,10 +22,11 @@ function searchParamsParser( formParams: FormParamsType ): SearchParamsType {
     }
 
     if ( formParams.from_month_day && formParams.to_month_day ) {
-        searchParams.interval_filter = `interval_filter=${formParams.from_month_day},${formParams.to_month_day}`;
+        searchParams.interval_filter = `${formParams.from_month_day},${formParams.to_month_day}`;
     }
 
-    searchParams.time_aggregation = `${formParams.time_aggregation}`;
+    searchParams.time_aggregation = `${formParams.time_aggregation},${formParams.value_aggregation}`;
+
     if ( formParams.time_aggregation === 'custom_year' ) {
         searchParams.year_start = '10-01';
     }
@@ -44,8 +45,6 @@ function savingsSearchParamsParser( savingsFormParams: SavingsFormParamsType ): 
     if ( searchParams.time_aggregation ) { 
         if ( searchParams.time_aggregation.startsWith( 'day' ) ) {
             delete searchParams.time_aggregation;
-        } else {
-            searchParams.time_aggregation += ',avg';
         }
     }
 

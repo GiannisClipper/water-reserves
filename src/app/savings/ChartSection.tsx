@@ -12,7 +12,7 @@ type PropsType = {
     result: RequestResultType | null 
 }
 
-const ChartSection = async ( { searchParams, result }: PropsType  ) => {
+const ChartSection = ( { searchParams, result }: PropsType  ) => {
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
@@ -44,6 +44,7 @@ const ChartSection = async ( { searchParams, result }: PropsType  ) => {
     return (
         <div className="ChartSection">
             <ChartLabel 
+                result={ result } 
                 setChartType={ setChartType }
             />
             <ChartContent 
