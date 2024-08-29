@@ -20,18 +20,20 @@ const ChartSection = async ( { searchParams, result }: PropsType  ) => {
         // get search params from browser
         const urlSearchString: string = window.location.search;
 
-        // replace param if already exists
-        const params: string[] = urlSearchString
-            .split( '&' )
-            .map( p => p.startsWith( 'chart_type=' ) ? `chart_type=${chartType}` : p );
+        if ( urlSearchString ) {
+            // replace param if already exists
+            const params: string[] = urlSearchString
+                .split( '&' )
+                .map( p => p.startsWith( 'chart_type=' ) ? `chart_type=${chartType}` : p );
 
-        // add param if not exists
-        if ( params.filter( p => p.startsWith( 'chart_type=' ) ).length === 0 ) {
-            params.push( `chart_type=${chartType}` );
+            // add param if not exists
+            if ( params.filter( p => p.startsWith( 'chart_type=' ) ).length === 0 ) {
+                params.push( `chart_type=${chartType}` );
+            }
+
+            // update url on browser
+            window.history.replaceState( {} , '', params.join( '&' ) );
         }
-
-        // update url on browser
-        window.history.replaceState( {} , '', params.join( '&' ) );        
     } );
 
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )

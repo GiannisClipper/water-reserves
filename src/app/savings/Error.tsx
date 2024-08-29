@@ -1,4 +1,5 @@
 import { RequestErrorType } from "@/types/requestResult"
+import { ErrorIcon } from "@/components/Icons";
 
 type PropsType = { error: RequestErrorType }
 
@@ -6,6 +7,8 @@ const Error = ( { error }: PropsType ) => {
 
     return (
         <div className="Error">
+
+            <ErrorIcon className="icon" />
 
             { error.statusCode 
             ? <div>{ `${error.statusCode} ${error.statusText}` }</div>

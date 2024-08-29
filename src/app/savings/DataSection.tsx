@@ -12,11 +12,23 @@ type PropsType = { searchParams: SavingsSearchParamsType }
 
 const DataSection = async ( { searchParams }: PropsType ) => {
 
-    const savingsApiRequest = new SavingsApiRequest( searchParams );
+    // required: search params in url 
+    // const urlSearchString = window.location.search;
+    // const params = new URLSearchParams( urlSearchString );
+    // if ( params.values.length === 0 ) {
+    //     return [ null, null ];
+    // }
 
     type Props = [ error: RequestErrorType | null, result: RequestResultType | null ];
 
-    const [ error, result ]: Props = await savingsApiRequest.request();
+    let [ error, result ]: Props = [ null, null ];
+    
+    if ( Object.keys( searchParams ).length > 0 ) {
+
+        const savingsApiRequest = new SavingsApiRequest( searchParams );
+
+        [ error, result ] = await savingsApiRequest.request();
+    }
 
     console.log( "rendering: DataSection..." )
 

@@ -1,0 +1,48 @@
+@tailwind components;
+
+@layer components {
+
+  .Form {
+    @apply min-w-full min-h-full
+    text-xs
+  }
+
+  .FormSection {
+    @apply m-2 bg-white bg-opacity-65 text-sky-800
+    pb-1
+  }
+
+  .FormSection > * {
+    @apply min-w-full text-inherit
+  }
+
+  .FormSection > .Top {
+    @apply p-1
+  }
+
+  .FormSection > .Bottom {
+  }
+
+  .Field {
+    @apply m-2 border border-sky-800
+  }
+
+  .Field > * {
+    @apply box-border border border-transparent
+  }
+
+  .Field > :nth-child( 1 ) {
+    @apply inline-block w-1/4 p-1
+  }
+
+  .Field > :nth-child( 2 ) {
+    @apply w-3/4 p-1
+  }
+
+  input, select, button {
+    @apply outline-none placeholder-gray-400
+    bg-gray-100 text-sky-800 
+    focus:bg-yellow-100 focus:border-dashed
+  }
+    
+}

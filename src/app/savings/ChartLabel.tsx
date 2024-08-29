@@ -1,8 +1,7 @@
 "use client";
 
 import { Left, Right } from "@/components/Generics";
-import type { SearchParamsType } from "@/types/searchParams";
-import { ChartLineIcon, ChartAreaIcon, ChartBarIcon, LinkIcon, ExpandIcon } from "@/components/Icons";
+import { ChartLineIcon, ChartAreaIcon, ChartBarIcon, LinkIcon, ScreenIcon } from "@/components/Icons";
 
 import "@/styles/label.css"
 
@@ -25,7 +24,7 @@ export default function ChartLabel( { setChartType }: PropsType ) {
                 <ChartLineIcon className="icon" title="Γράφημα γραμμής" onClick={ setChartLine } />
                 <ChartAreaIcon className="icon" title="Γράφημα περιοχής" onClick={ setChartArea } />
                 <ChartBarIcon className="icon" title="Γράφημα με μπάρες" onClick={ setChartBar } />
-                <ExpandIcon className="icon" title="Πλήρης οθόνη" />
+                <ScreenIcon className="icon" title="Ευρεία οθόνη" />
                 <LinkIcon className="icon" title="Σύνδεσμος γραφήματος" />
             </Right>
         </div>

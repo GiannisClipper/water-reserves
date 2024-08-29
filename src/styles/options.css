@@ -4,12 +4,12 @@
 
   .Options {
     @apply flex flex-col items-center
-    min-w-full p-6
+    min-w-full p-4
   }
 
   .Options .Option {
     @apply flex flex-row justify-items-start
-    w-[calc(100%-1rem)] md:w-[calc(70%-2rem)] lg:w-[calc(60%-2rem)]
+    w-[calc(100%)] md:w-[calc(70%)] lg:w-[calc(60%)]
     m-4 border-4
     border-transparent active:border-sky-200
     bg-sky-200 hover:bg-sky-500 

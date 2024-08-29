@@ -20,11 +20,14 @@ import { faChartArea } from '@fortawesome/free-solid-svg-icons';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { faExpand } from '@fortawesome/free-solid-svg-icons';
 import { faCompress } from '@fortawesome/free-solid-svg-icons';
+import { faDisplay } from '@fortawesome/free-solid-svg-icons';
 
 import{ faPencil } from '@fortawesome/free-solid-svg-icons';
+import{ faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import{ faDownload } from '@fortawesome/free-solid-svg-icons';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 type PropsType = { [ key: string ]:any };
@@ -41,19 +44,24 @@ const ChartBarIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props 
 
 const ExpandIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faExpand} />
 const CompressIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faCompress} />
+const ScreenIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faDisplay} />
 
 const WriteIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faPencil} />
+const SearchIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faMagnifyingGlass} />
 const DownloadIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faDownload} />
 const LinkIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } { ...props } icon={faLink} />
 
 const CloseIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faXmark} />
 const InfoIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faCircleInfo} />
+const ErrorIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faTriangleExclamation} />
+
 const SpinnerIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faSpinner} />
 
 export { 
     GaugeIcon, WaterIcon, FaucetIcon, RainIcon, ComposeIcon,
     ChartLineIcon, ChartAreaIcon, ChartBarIcon,
-    ExpandIcon, CompressIcon,
-    WriteIcon, DownloadIcon, LinkIcon, 
-    CloseIcon, InfoIcon, SpinnerIcon,
+    ExpandIcon, CompressIcon, ScreenIcon,
+    WriteIcon, SearchIcon, DownloadIcon, LinkIcon, 
+    CloseIcon, InfoIcon, ErrorIcon, 
+    SpinnerIcon,
 };

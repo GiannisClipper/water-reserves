@@ -3,6 +3,7 @@ import ParamSection from "./ParamSection";
 import DataSection from "./DataSection";
 import { Suspense } from "react";
 import type { SearchParamsType } from "@/types/searchParams";
+import { SAVINGS } from "../settings";
 
 import "@/styles/page.css";
 
@@ -14,7 +15,7 @@ export default function Page( { searchParams }: PropsType ) {
 
     return (
         <>
-        <Header subTitle="Δεδομένα αποθεμάτων νερού" />
+        <Header subTitle={ SAVINGS } />
     
         <div className="Content">
             <ParamSection searchParams={searchParams} />

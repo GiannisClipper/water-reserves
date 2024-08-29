@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import type { SavingsSearchParamsType } from "@/types/searchParams";
@@ -15,11 +15,14 @@ import {
     FieldFromDate, FieldToDate, FieldFromMonthDay, FieldToMonthDay, FieldTimeAggregation
 } from "@/components/Form";
 
+import "@/styles/form.css";
+
 type PropsType = {
     searchParams: SavingsSearchParamsType
+    onSearch: boolean
 }
 
-const ParamContent = ( { searchParams }: PropsType ) => {
+const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
 
     const [ formParams, setFormParams ] = useState( savingsFormParamsParser( searchParams ) );
 
@@ -43,18 +46,25 @@ const ParamContent = ( { searchParams }: PropsType ) => {
         setFormParams( { ...formParams, time_aggregation: e.target.value } )
     }
 
-    const router = useRouter();
+    // const router = useRouter();
 
-    const onClickProcess = () => {
+    // const onClickProcess = () => {
 
-        const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParamsParser( formParams ) );
-        location.href = savingsSelfRequest.url;
+    //     const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParamsParser( formParams ) );
+    //     location.href = savingsSelfRequest.url;
 
         // if ( chartType && chartType !== chart_type ) {    
         //     const path: string = "savings" + requestParams;
         //     router.push( path );
         // }
-    }
+    // }
+
+    useEffect( () => {
+        if ( onSearch ) {
+            const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParamsParser( formParams ) );
+            location.href = savingsSelfRequest.url;    
+        }
+    }, [ onSearch ] );
 
     console.log( "rendering: ParamContent...", formParams )
 
@@ -89,13 +99,13 @@ const ParamContent = ( { searchParams }: PropsType ) => {
                 />
             </FormSectionTimeAggregation>
 
-            <div>
+            {/* <div>
                 <button
                     onClick={ e => onClickProcess() }
                 >
                     Process params
                 </button>
-            </div>
+            </div> */}
         </Form>
     );
 }

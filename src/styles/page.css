@@ -9,7 +9,8 @@
   .Header {
     @apply flex flex-col space-y-0
     m-4 p-2 pb-4 
-    border-2 border-sky-400
+    border-2 border-sky-700
+    text-sky-700
   }
 
   .Content {
@@ -31,15 +32,19 @@
   }
 
   .Header > .Top > * {
-    @apply hover:text-yellow-100
+    @apply hover:text-sky-300
   }
 
   .Header .icon {
     @apply w-12 p-2 pt-3 text-2xl
   }
 
+  .Header > .Top > .Right > .icon {
+    @apply text-3xl
+  }
+
   .Header > .Top .text {
-    @apply p-2 text-3xl font-semibold
+    @apply p-2 text-3xl font-bold
   }
 
   .Header > .Bottom .text {

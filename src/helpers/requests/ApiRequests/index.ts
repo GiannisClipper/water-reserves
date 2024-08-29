@@ -26,6 +26,7 @@ abstract class ApiRequest {
 
     public async request(): Promise<[ RequestErrorType | null, RequestResultType | null ]> {
 
+        // time range definition is required
         if ( ! this.searchParams.time_range ) {
             const error: RequestErrorType = {
                 message: "Δεν έχει οριστεί χρονική περίοδος δεδομένων."

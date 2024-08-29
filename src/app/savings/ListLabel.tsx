@@ -1,16 +1,12 @@
-"use client"
+"use client";
 
 import { Left, Right } from "@/components/Generics";
 import type { SearchParamsType } from "@/types/searchParams";
-import { DownloadIcon, ExpandIcon, LinkIcon } from "@/components/Icons";
+import { DownloadIcon, ScreenIcon, LinkIcon } from "@/components/Icons";
 
 import "@/styles/label.css"
 
-type PropsType = {
-    searchParams: SearchParamsType
-}
-
-export default function ListLabel( { searchParams }: PropsType ) {
+export default function ListLabel() {
 
     const getTable = () => {
         const table: HTMLCollection = document.body.getElementsByClassName( 'ListContent' );
@@ -28,7 +24,7 @@ export default function ListLabel( { searchParams }: PropsType ) {
                 Λίστα δεδομένων
             </Left>
             <Right>
-                <ExpandIcon className="icon" title="Πλήρης οθόνη" />
+                <ScreenIcon className="icon" title="Ευρεία οθόνη" />
                 <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" onClick={ getTable } />
                 <LinkIcon className="icon" title="Σύνδεσμος λίστας" />
             </Right>
