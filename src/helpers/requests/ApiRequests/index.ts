@@ -16,7 +16,7 @@ abstract class ApiRequest {
         return `${NEXT_PUBLIC_REST_API_BASE_URL}/${this.endpoint}`;
     }
 
-    public async request(): Promise<[ RequestErrorType | null, RequestResultType | null ]> {
+    public async request(): Promise<[ RequestErrorType | null, any | null ]> {
 
         console.log( this.url );
         const response = await fetch( this.url );

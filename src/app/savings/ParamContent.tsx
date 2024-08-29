@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { SavingsFormParamsType } from "@/types/formParams";
+import type { RequestErrorType } from "@/types/requestResult";
 import { savingsFormParamsParser } from "@/helpers/parsers/formParams";
 import { savingsSearchParamsParser } from "@/helpers/parsers/searchParams";
 import { SavingsSelfRequest } from "@/helpers/requests/SelfRequests";
@@ -20,9 +20,11 @@ import "@/styles/form.css";
 type PropsType = {
     searchParams: SavingsSearchParamsType
     onSearch: boolean
+    reservoirs: [ { [ key: string ]: any } ] | null
+    error: RequestErrorType | null
 }
 
-const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
+const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
     const [ formParams, setFormParams ] = useState( savingsFormParamsParser( searchParams ) );
 
@@ -50,19 +52,6 @@ const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
         setFormParams( { ...formParams, time_aggregation: e.target.value } )
     }
 
-    // const router = useRouter();
-
-    // const onClickProcess = () => {
-
-    //     const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParamsParser( formParams ) );
-    //     location.href = savingsSelfRequest.url;
-
-        // if ( chartType && chartType !== chart_type ) {    
-        //     const path: string = "savings" + requestParams;
-        //     router.push( path );
-        // }
-    // }
-
     useEffect( () => {
         if ( onSearch ) {
             const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParamsParser( formParams ) );
@@ -70,7 +59,7 @@ const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
         }
     }, [ onSearch ] );
 
-    console.log( "rendering: ParamContent...", formParams )
+    console.log( "rendering: ParamContent...", reservoirs )
 
     return (
         <Form className="ParamContent">
@@ -109,6 +98,10 @@ const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
                     onChange={ setTimeAggregation }
                 />
             </FormSectionTimeAggregation>
+
+            {
+                reservoirs?.map( r => <span>{r.name_en}</span> )
+            }
         </Form>
     );
 }

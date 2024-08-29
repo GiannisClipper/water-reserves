@@ -1,29 +1,27 @@
-"use client";
-
-import { useState } from "react";
-import ParamLabel from "./ParamLabel";
-import ParamContent from "./ParamContent";
+import ParamState from "./ParamState";
 import type { SearchParamsType } from "@/types/searchParams";
+import { ReservoirsApiRequest } from "@/helpers/requests/ApiRequests";
 
 type PropsType = {
     searchParams: SearchParamsType
 }
 
-const ParamSection = ( { searchParams }: PropsType ) => {
+const ParamSection = async ( { searchParams }: PropsType ) => {
 
-    const [ onSearch, setOnSearch ] = useState<boolean>( false );
+    const reservoirsApiRequest = new ReservoirsApiRequest();
+
+    const [ error, reservoirs ] = await reservoirsApiRequest.request();
+
+    console.log( error, reservoirs );
 
     console.log( "rendering: ParamSection..." )
 
     return (
         <div className="ParamSection">
-            <ParamLabel 
+            <ParamState
                 searchParams={ searchParams } 
-                setOnSearch={ setOnSearch }
-            />
-            <ParamContent 
-                searchParams={ searchParams } 
-                onSearch={ onSearch }
+                error={ error }
+                reservoirs={ reservoirs }
             />
         </div>
     );

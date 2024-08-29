@@ -4,19 +4,12 @@ import DataSection from "./DataSection";
 import { Suspense } from "react";
 import type { SearchParamsType } from "@/types/searchParams";
 import { SAVINGS } from "../settings";
-import { ReservoirsApiRequest } from "@/helpers/requests/ApiRequests";
 
 import "@/styles/page.css";
 
 type PropsType = { searchParams: SearchParamsType }
 
-export default async function Page( { searchParams }: PropsType ) {
-
-    const reservoirsApiRequest = new ReservoirsApiRequest();
-
-    const [ error, result ] = await reservoirsApiRequest.request();
-
-    console.log( error, result )
+export default function Page( { searchParams }: PropsType ) {
 
     console.log( "rendering: Page (savings)..." )
 
@@ -25,9 +18,11 @@ export default async function Page( { searchParams }: PropsType ) {
         <Header subTitle={ SAVINGS } />
     
         <div className="Content">
-            <ParamSection 
-                searchParams={searchParams} 
-            />
+
+            <Suspense fallback="<p>Loading...</p>">
+                <ParamSection searchParams={searchParams} />
+            </Suspense>
+
             <Suspense fallback="<p>Loading...</p>">
                 <DataSection searchParams={searchParams} />
             </Suspense>
