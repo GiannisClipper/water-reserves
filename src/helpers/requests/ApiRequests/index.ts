@@ -10,29 +10,13 @@ abstract class ApiRequest {
 
     abstract endpoint: string;
 
-    searchParams: { [ key: string ]: any } = {};
-
     constructor() {};
 
-    get urlParams(): string {
-        return Object
-            .entries( this.searchParams )
-            .map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
-    }
-
     public get url(): string {
-        return `${NEXT_PUBLIC_REST_API_BASE_URL}/${this.endpoint}?${this.urlParams}`;
+        return `${NEXT_PUBLIC_REST_API_BASE_URL}/${this.endpoint}`;
     }
 
     public async request(): Promise<[ RequestErrorType | null, RequestResultType | null ]> {
-
-        // time range definition is required
-        if ( ! this.searchParams.time_range ) {
-            const error: RequestErrorType = {
-                message: "Δεν έχει οριστεί χρονική περίοδος δεδομένων."
-            }
-            return [ error, null ];
-        }
 
         console.log( this.url );
         const response = await fetch( this.url );
@@ -53,9 +37,30 @@ abstract class ApiRequest {
     }
 }
 
-class SavingsApiRequest extends ApiRequest { 
+abstract class ApiRequestWithParams extends ApiRequest {    
+
+    abstract searchParams: { [ key: string ]: any };
+
+    constructor() {
+        super();
+    };
+
+    get urlParams(): string {
+        return Object
+            .entries( this.searchParams )
+            .map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
+    }
+
+    public get url(): string {
+        return `${NEXT_PUBLIC_REST_API_BASE_URL}/${this.endpoint}?${this.urlParams}`;
+    }
+}
+
+class SavingsApiRequest extends ApiRequestWithParams { 
         
     endpoint = 'savings';
+
+    searchParams = {};
 
     constructor( searchParams: SavingsSearchParamsType ) {
         super();
@@ -63,6 +68,14 @@ class SavingsApiRequest extends ApiRequest {
     }
 }
 
+class ReservoirsApiRequest extends ApiRequest { 
+        
+    endpoint = 'reservoirs';
+
+    constructor() { super(); }
+}
+
 export { 
+    ReservoirsApiRequest,
     SavingsApiRequest, 
 };
