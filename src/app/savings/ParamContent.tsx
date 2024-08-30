@@ -12,13 +12,17 @@ import {
     Form, FormSectionTimeRange, FormSectionIntervalFilter, 
     FormSectionValueAggregation, FormSectionTimeAggregation,
     FormSectionReservoirs,
+} from "@/components/Form";
 
+import { 
     FieldFromDate, FieldToDate, FieldFromInterval, FieldToInterval, 
     FieldValueAggregation, FieldTimeAggregation,
     FieldCheckBox
-} from "@/components/Form";
+} from "@/components/Field";
+
 
 import "@/styles/form.css";
+import "@/styles/field.css";
 
 type PropsType = {
     searchParams: SavingsSearchParamsType

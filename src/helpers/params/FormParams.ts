@@ -22,7 +22,6 @@ class FormParams {
     _toInterval: string = '';
 
     _timeAggregation: string = 'day';
-    _valueAggregation: string = 'avg';
 
     constructor( searchParams: SearchParamsType ) {
 
@@ -33,7 +32,6 @@ class FormParams {
         this.convertIntervalFilter( searchParams.interval_filter );
 
         this.timeAggregation = searchParams.time_aggregation;
-        this.valueAggregation = searchParams.value_aggregation;
     }
 
     set viewType( val: ViewType | undefined ) {
@@ -62,10 +60,6 @@ class FormParams {
 
     set timeAggregation( val: string | undefined ) {
         this._timeAggregation = val ? val : this._timeAggregation;
-    }
-
-    set valueAggregation( val: string | undefined ) {
-        this._valueAggregation = val ? val : this._valueAggregation;
     }
 
     convertTimeRange( val: string | undefined ) {
@@ -104,7 +98,6 @@ class FormParams {
         this._toInterval = formParams.toInterval;
     
         this._timeAggregation = formParams.timeAggregation;
-        this._valueAggregation = formParams.valueAggregation;   
         
         return this;
     }
@@ -121,7 +114,6 @@ class FormParams {
             toInterval: this._toInterval,
 
             timeAggregation: this._timeAggregation,
-            valueAggregation: this._valueAggregation,
         };  
     }
 
@@ -140,7 +132,7 @@ class FormParams {
             searchParams.interval_filter = `${this._fromInterval},${this._toInterval}`;
         }
     
-        searchParams.time_aggregation = `${this._timeAggregation},${this._valueAggregation}`;
+        searchParams.time_aggregation = `${this._timeAggregation.split( ',' )[ 0 ]},avg`;
     
         if ( this._timeAggregation === 'custom_year' ) {
             searchParams.year_start = '10-01';

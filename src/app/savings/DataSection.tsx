@@ -13,13 +13,15 @@ type PropsType = { searchParams: SavingsSearchParamsType }
 
 const DataSection = async ( { searchParams }: PropsType ) => {
 
-    // await new Promise( resolve => setTimeout( resolve, 3000 ) )
+    // await new Promise( resolve => setTimeout( resolve, 2000 ) )
 
     type Props = [ RequestErrorType | null, RequestResultType | null ];
 
     let [ error, result ]: Props = [ null, null ];
 
-    if ( Object.keys( searchParams ).length > 0 ) {
+    const blankPage: boolean = Object.keys( searchParams ).length === 0;
+
+    if ( ! blankPage ) {
 
         if ( ! searchParams.time_range ) {
             error = {
@@ -34,9 +36,17 @@ const DataSection = async ( { searchParams }: PropsType ) => {
 
     console.log( "rendering: DataSection..." )
 
-    return ( error 
+    return ( 
         
+        blankPage
         ?
+        <div className="DataSection">
+            <ChartSectionSkeleton /> 
+            <ListSectionSkeleton />
+        </div>
+
+        : error
+        ? 
         <div className="DataSection">
             <ChartSectionSkeleton>
                 <Error error={error} /> 

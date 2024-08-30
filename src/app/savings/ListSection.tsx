@@ -6,7 +6,7 @@ type PropsType = { result: RequestResultType | null }
 
 const ListSection = async ( { result }: PropsType ) => {
 
-    // await new Promise( resolve => setTimeout( resolve, 2000 ) )
+    // await new Promise( resolve => setTimeout( resolve, 1000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
     console.log( "rendering: ListSection..." )
