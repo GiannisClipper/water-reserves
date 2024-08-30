@@ -32,11 +32,15 @@
   }
 
   .Header > .Top > * {
-    @apply hover:text-sky-300
+    @apply hover:bg-sky-700 hover:bg-opacity-35 hover:text-sky-300
   }
 
   .Header .icon {
-    @apply w-12 p-2 pt-3 text-2xl
+    @apply w-12 h-8 p-2 text-2xl
+  }
+
+  .Header > .Top > .Left .icon {
+    @apply pt-3
   }
 
   .Header > .Top > .Right > .icon {

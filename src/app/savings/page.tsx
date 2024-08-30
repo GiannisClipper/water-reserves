@@ -6,7 +6,7 @@ import { DataSectionSkeleton } from "@/components/Skeletons";
 import type { SearchParamsType } from "@/types/searchParams";
 import { SAVINGS } from "../settings";
 
-import "@/styles/page.css";
+import "@/styles/header.css";
 
 type PropsType = { searchParams: SearchParamsType }
 

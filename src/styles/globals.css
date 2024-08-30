@@ -65,7 +65,7 @@ ul {
   }
 
   .icon {
-    @apply cursor-pointer inline-block;
+    @apply cursor-pointer
   }
 
   .ParamSection {
@@ -102,7 +102,7 @@ ul {
   }
 
   .Error .icon {
-    @apply text-lg
+    @apply w-4 h-4 text-lg
   }
 
   .ChartSection, .ListSection {
@@ -119,10 +119,10 @@ ul {
 
   .ListContent {
     @apply flex flex-row justify-center
-   min-h-[calc(50vh)]
-   max-h-[calc(50vh)]
-   overflow-scroll
-   bg-gray-700 text-gray-300 text-xs
+    min-h-[calc(50vh)]
+    max-h-[calc(50vh)]
+    overflow-scroll
+    bg-gray-700 text-gray-300 text-xs
   }
 
   .ListContent td {

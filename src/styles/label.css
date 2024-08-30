@@ -13,7 +13,7 @@
 
   .Label {
     @apply flex flex-row justify-between
-    p-2 text-sm
+    h-10 p-2 text-sm
     bg-sky-700  text-sky-300 
   }
 
