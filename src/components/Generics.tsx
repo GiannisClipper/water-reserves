@@ -1,6 +1,6 @@
 type PropsType = {
     className?: string
-    children: React.ReactNode
+    children?: React.ReactNode
     [ key: string ]: any
 }
 

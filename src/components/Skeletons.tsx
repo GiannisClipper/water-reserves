@@ -1,31 +1,21 @@
+import { ReactNode } from "react";
+
 const DataSectionSkeleton = () => 
     <div className="DataSectionSkeleton">
         <ChartSectionSkeleton />
         <ListSectionSkeleton />
     </div>
 
-const ChartSectionSkeleton = () => 
+type PropsType = { children?: ReactNode };
+
+const ChartSectionSkeleton = ( { children }: PropsType ) => 
     <div className="ChartSectionSkeleton">
-        <LabelSkeleton />
-        <ChartContentSkeleton />
+        { children }
     </div>;
 
-const ChartContentSkeleton = () => 
-    <div className="ChartContentSkeleton">
-    </div>;
-
-const ListSectionSkeleton = () => 
+const ListSectionSkeleton = ( { children }: PropsType ) => 
     <div className="ListSectionSkeleton">
-        <LabelSkeleton />
-        <ListContentSkeleton />
-    </div>
-
-const ListContentSkeleton = () => 
-    <div className="ListContentSkeleton">
-    </div>
-
-const LabelSkeleton = () => 
-    <div className="LabelSkeleton">
+        { children }
     </div>;
 
 export { DataSectionSkeleton, ChartSectionSkeleton, ListSectionSkeleton };

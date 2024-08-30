@@ -13,7 +13,7 @@ type PropsType = { searchParams: SavingsSearchParamsType }
 
 const DataSection = async ( { searchParams }: PropsType ) => {
 
-    await new Promise( resolve => setTimeout( resolve, 3000 ) )
+    // await new Promise( resolve => setTimeout( resolve, 3000 ) )
 
     type Props = [ RequestErrorType | null, RequestResultType | null ];
 
@@ -34,20 +34,25 @@ const DataSection = async ( { searchParams }: PropsType ) => {
 
     console.log( "rendering: DataSection..." )
 
-    return (
+    return ( error 
+        
+        ?
         <div className="DataSection">
+            <ChartSectionSkeleton>
+                <Error error={error} /> 
+            </ChartSectionSkeleton>
+            <ListSectionSkeleton />
+        </div>
 
-            { error ? <Error error={error} /> : null }
-
+        :
+        <div className="DataSection">
             <ChartSection 
                 searchParams={searchParams}
                 result={result} 
             />
-
             <Suspense fallback={<ListSectionSkeleton />}>
                 <ListSection result={result} />
             </Suspense>
-
         </div>
     );
 }

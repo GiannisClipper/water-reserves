@@ -35,8 +35,9 @@ body {
   padding: 0;
 
   outline: none;
-}
+} */
 
+/*
 a, a:hover, a:focus, a:active {
   text-decoration: none;
   color: inherit;
@@ -64,7 +65,7 @@ ul {
   }
 
   .icon {
-    @apply cursor-pointer
+    @apply cursor-pointer inline-block;
   }
 
   .ParamSection {
@@ -86,53 +87,42 @@ ul {
     w-full md:w-[calc(75%)]
   }
 
+  .ChartSectionSkeleton, .ListSectionSkeleton {
+    @apply bg-white bg-opacity-65 p-3
+    min-h-[calc(3rem+55vh)] /* min label height + content height */
+  }
+
+  .ListSectionSkeleton {
+    @apply 
+    min-h-[calc(3rem+45vh)] /* min label height + content height */
+  }
+
   .Error {
-    @apply
-    bg-white bg-opacity-65 p-3
-    text-red-600
+    @apply bg-transparent p-3 text-red-600
   }
 
   .Error .icon {
     @apply text-lg
   }
 
-  .ChartSectionSkeleton, .ListSectionSkeleton {
-    @apply bg-white bg-opacity-65 p-3
-  }
-
-  .ChartContentSkeleton, .ListContentSkeleton {
-    @apply bg-transparent
-  }
-
-  .ChartSection, .ListSection,
-  .ChartSectionSkeleton, .ListSectionSkeleton {
+  .ChartSection, .ListSection {
     @apply flex flex-col justify-items-start
     w-full 
   }
 
-  .ChartContent,
-  .ChartContentSkeleton {
-    @apply 
-    min-h-[calc(55vh)]
-    max-h-[calc(55vh)]
-  }
-
   .ChartContent {
     @apply
+    min-h-[calc(55vh)]
+    max-h-[calc(55vh)]
     bg-sky-100 text-gray-600 text-xs
-  }
-
-  .ListContent,
-  .ListContentSkeleton {
-    @apply
-    min-h-[calc(50vh)]
-    max-h-[calc(50vh)]
   }
 
   .ListContent {
     @apply flex flex-row justify-center
+   min-h-[calc(50vh)]
+   max-h-[calc(50vh)]
+   overflow-scroll
    bg-gray-700 text-gray-300 text-xs
-    overflow-scroll
   }
 
   .ListContent td {

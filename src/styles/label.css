@@ -8,8 +8,7 @@
     
   .Label,
   .LabelSkeleton {
-    @apply
-    min-h-10
+    @apply min-h-12
   }
 
   .Label {
