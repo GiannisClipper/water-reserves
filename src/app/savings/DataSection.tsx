@@ -12,22 +12,21 @@ type PropsType = { searchParams: SavingsSearchParamsType }
 
 const DataSection = async ( { searchParams }: PropsType ) => {
 
-    // required: search params in url 
-    // const urlSearchString = window.location.search;
-    // const params = new URLSearchParams( urlSearchString );
-    // if ( params.values.length === 0 ) {
-    //     return [ null, null ];
-    // }
-
-    type Props = [ error: RequestErrorType | null, result: RequestResultType | null ];
+    type Props = [ RequestErrorType | null, RequestResultType | null ];
 
     let [ error, result ]: Props = [ null, null ];
-    
+
     if ( Object.keys( searchParams ).length > 0 ) {
 
-        const savingsApiRequest = new SavingsApiRequest( searchParams );
+        if ( ! searchParams.time_range ) {
+            error = {
+                message: "Δεν έχει οριστεί χρονική περίοδος δεδομένων."
+            }
 
-        [ error, result ] = await savingsApiRequest.request();
+        } else {
+            const savingsApiRequest = new SavingsApiRequest( searchParams );
+            [ error, result ] = await savingsApiRequest.request();
+        }
     }
 
     console.log( "rendering: DataSection..." )
