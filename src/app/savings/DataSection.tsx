@@ -4,6 +4,7 @@ import type { SavingsSearchParamsType } from "@/types/searchParams";
 import { SavingsApiRequest } from "@/helpers/requests/ApiRequests";
 import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 
+import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/Skeletons";
 import Error from "./Error";
 import ChartSection from "./ChartSection";
 import ListSection from "./ListSection";
@@ -11,6 +12,8 @@ import ListSection from "./ListSection";
 type PropsType = { searchParams: SavingsSearchParamsType }
 
 const DataSection = async ( { searchParams }: PropsType ) => {
+
+    await new Promise( resolve => setTimeout( resolve, 3000 ) )
 
     type Props = [ RequestErrorType | null, RequestResultType | null ];
 
@@ -36,14 +39,12 @@ const DataSection = async ( { searchParams }: PropsType ) => {
 
             { error ? <Error error={error} /> : null }
 
-            <Suspense fallback="<p>Loading...</p>">
-                <ChartSection 
-                    searchParams={searchParams}
-                    result={result} 
-                />
-            </Suspense>
+            <ChartSection 
+                searchParams={searchParams}
+                result={result} 
+            />
 
-            <Suspense fallback="<p>Loading...</p>">
+            <Suspense fallback={<ListSectionSkeleton />}>
                 <ListSection result={result} />
             </Suspense>
 

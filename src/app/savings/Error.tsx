@@ -8,7 +8,9 @@ const Error = ( { error }: PropsType ) => {
     return (
         <div className="Error">
 
-            <ErrorIcon className="icon" />
+            <div>
+                <ErrorIcon className="icon" />
+            </div>
 
             { error.statusCode 
             ? <div>{ `${error.statusCode} ${error.statusText}` }</div>

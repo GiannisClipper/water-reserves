@@ -6,6 +6,12 @@
     /* @apply border border-white border-dotted */
   }
     
+  .Label,
+  .LabelSkeleton {
+    @apply
+    min-h-10
+  }
+
   .Label {
     @apply flex flex-row justify-between
     p-2 text-sm

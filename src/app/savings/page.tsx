@@ -1,7 +1,8 @@
+import { Suspense } from "react";
 import Header from "../Header";
 import ParamSection from "./ParamSection";
 import DataSection from "./DataSection";
-import { Suspense } from "react";
+import { DataSectionSkeleton } from "@/components/Skeletons";
 import type { SearchParamsType } from "@/types/searchParams";
 import { SAVINGS } from "../settings";
 
@@ -23,7 +24,8 @@ export default function Page( { searchParams }: PropsType ) {
                 <ParamSection searchParams={searchParams} />
             </Suspense>
 
-            <Suspense fallback="<p>Loading...</p>">
+            {/* <DataSectionSkeleton /> */}
+            <Suspense fallback={ <DataSectionSkeleton /> }>
                 <DataSection searchParams={searchParams} />
             </Suspense>
         </div>
