@@ -25,6 +25,7 @@ async def cron_job(
         # no need to update
 
         if ( request_date > limit_date ):
+            print( "No updates required." )
             break;
 
         # make request to update
@@ -32,36 +33,45 @@ async def cron_job(
         URL = get_url( request_date )
         print( f'Tries: {tries}, Request: {URL}' )
 
-        async with httpx.AsyncClient( verify=cert_file ) as client:
-            response = await client.get( URL )
+        try:
+            async with httpx.AsyncClient( verify=cert_file ) as client:
+                response = await client.get( URL )
+                
 
-            # request failure
+                # request failure
 
-            if response.status_code != 200:
-                print( f'Error: {response.status_code} {response}' )
+                if response.status_code != 200:
+                    print( f'Error: {response.status_code} {response}' )
 
-            # request success
+                # request success
 
-            else:
-                print( f'Success: {response.status_code} {response}' )
-                values: list[ any ] | None = parse_response( request_date, response )
+                else:
+                    print( f'Success: {response.status_code} {response}' )
+                    values: list[ any ] | None = parse_response( request_date, response )
 
-                # no updated data found
+                    # no updated data found
 
-                if ( values == None ):
-                    print( "Data source not updated yet." )
-                    break
+                    if ( values == None ):
+                        print( "No updates available yet." )
+                        break
 
-                # store in DB and update status
+                    # store in DB and update status
 
-                print( "Saving data..." )
-                await store_values( values )
+                    print( "Saving data..." )
+                    await store_values( values )
 
-                print( "Updating status..." )
-                await update_status()
+                    print( "Updating status..." )
+                    await update_status()
 
-                # initialize variables and go request next date
-                last_date = request_date
-                tries = 0
+                    # initialize variables and go request next date
+                    last_date = request_date
+                    tries = 0
+
+        except Exception as ex: # for example: httpx.ConnectTimeout
+
+            # How do I print an exception in Python?
+            # https://stackoverflow.com/a/67112173/12138247
+            print( f"{type( ex ).__name__} at line { ex.__traceback__.tb_lineno } of { __file__ }: { ex }")
+
 
         await asyncio.sleep( LOOP_DELAY )

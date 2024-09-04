@@ -75,6 +75,12 @@ https://rajansahu713.medium.com/implementing-background-job-scheduling-in-fastap
 Everything You Need To Know To Use Cron Expressions Like a Pro
 https://tech.forums.softwareag.com/t/everything-you-need-to-know-to-use-cron-expressions-like-a-pro/294852
 
+Python APScheduler Tutorial: Advanced Scheduling in Python
+https://www.youtube.com/watch?v=sRnsR-T0Lxc
+
+Call async function in scheduler – Python
+https://www.iotcolon.com/?p=938
+
 
 # Http requests
 

@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from datetime import datetime
+import os
 
 import src.db as db
 from src.db_setup.make_tables import make_tables
@@ -44,11 +45,22 @@ async def lifespan( app: FastAPI ):
     print( "|  2. Cron jobs scheduler  |" )
     print( "+--------------------------+" )
 
+    # try: 
+    #     file = 'apscheduler.sqlite3'
+    #     os.remove( file )
+    #     print( f"File '{file}' removed.")
+
+    # except FileNotFoundError: 
+    #     print( f"File '{file}' not found." )
+
     print( "Savings cron:", settings.savings_cron )
     print( "Production cron:", settings.production_cron )
     print( "Weather cron:", settings.weather_cron )
 
+    # print( 'scheduler.get_jobs()', scheduler.get_jobs() )
+    scheduler.print_jobs()
     scheduler.start()
+    scheduler.print_jobs()
 
     print()
     print( "+----------------------+" )
@@ -79,6 +91,9 @@ app = FastAPI( lifespan=lifespan )
 
 @app.get( '/', description="This is the home endpoint." )
 async def home():
+    # for debugging/control purposes
+    print( scheduler.print_jobs() )
+
     return { "message": "Water reserves back-end is up and running..." }
 
 from src.routers import status as status_router
