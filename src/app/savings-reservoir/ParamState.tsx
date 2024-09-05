@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ParamLabel from "./ParamLabel";
+import ParamLabel from "../savings/ParamLabel";
 import ParamContent from "./ParamContent";
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType } from "@/types/requestResult";

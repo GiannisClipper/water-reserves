@@ -21,9 +21,14 @@ interface SavingsSearchParamsType extends SearchParamsType {
     reservoir_filter?: string
 }
 
+interface SavingsReservoirSearchParamsType extends SearchParamsType {
+    reservoir_filter?: string
+}
+
 export type { 
     ViewType, 
     ChartType, 
     SearchParamsType,
-    SavingsSearchParamsType
+    SavingsSearchParamsType,
+    SavingsReservoirSearchParamsType,
 };

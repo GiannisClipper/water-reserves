@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from "react";
 
-import type { SavingsSearchParamsType } from "@/types/searchParams";
-import type { SavingsFormParamsType } from "@/types/formParams";
+import type { SavingsReservoirSearchParamsType } from "@/types/searchParams";
+import type { SavingsReservoirFormParamsType } from "@/types/formParams";
 import type { RequestErrorType } from "@/types/requestResult";
-import SavingsFormParams from "@/helpers/params/SavingsFormParams";
-
-import { SavingsSelfRequest } from "@/helpers/requests/SelfRequests";
+import SavingsReservoirFormParams from "@/helpers/params/SavingsReservoirFormParams";
+import { SavingsReservoirSelfRequest } from "@/helpers/requests/SelfRequests";
 
 import { 
     Form, FormSectionTimeRange, FormSectionIntervalFilter, 
@@ -21,12 +20,11 @@ import {
     FieldCheckBox
 } from "@/components/Field";
 
-
 import "@/styles/form.css";
 import "@/styles/field.css";
 
 type PropsType = {
-    searchParams: SavingsSearchParamsType
+    searchParams: SavingsReservoirFormParamsType
     onSearch: boolean
     reservoirs: { [ key: string ]: any }[] | null
     error: RequestErrorType | null
@@ -34,10 +32,10 @@ type PropsType = {
 
 const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
-    const savingsFormParams: SavingsFormParamsType = 
-        new SavingsFormParams( searchParams, reservoirs || [] ).getAsObject();
+    const savingsReservoirFormParams: SavingsReservoirFormParamsType = 
+        new SavingsReservoirFormParams( searchParams, reservoirs || [] ).getAsObject();
 
-    const [ params, setParams ] = useState( savingsFormParams );
+    const [ params, setParams ] = useState( savingsReservoirFormParams );
 
     const setFromDate = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
         setParams( { ...params, fromDate: e.target.value } )
@@ -73,12 +71,12 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
     useEffect( () => {
 
         if ( onSearch ) {
-            const savingsSearchParams: SavingsSearchParamsType = 
-                new SavingsFormParams( searchParams, reservoirs || [] )
+            const savingsReservoirSearchParams: SavingsReservoirSearchParamsType = 
+                new SavingsReservoirFormParams( searchParams, reservoirs || [] )
                     .setFromObject( params )
                     .getAsSearchObject();
 
-            const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParams );
+            const savingsSelfRequest = new SavingsReservoirSelfRequest( savingsReservoirSearchParams );
             location.href = savingsSelfRequest.url; 
         }
 

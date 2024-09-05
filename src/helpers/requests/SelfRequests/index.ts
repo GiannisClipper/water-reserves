@@ -3,34 +3,20 @@ import { NEXT_PUBLIC_SELF_BASE_URL } from '@/app/settings';
 import type { 
     SearchParamsType,
     SavingsSearchParamsType,
+    SavingsReservoirSearchParamsType,
 } from "@/types/searchParams";
 
 abstract class SelfRequest {
 
+    abstract endpoint: string;
+    abstract searchParams: SearchParamsType;
+
     constructor() {};
 
-    protected static urlParams( params: { [ key: string ]: any } ): string {
-        return Object
-            .entries( params )
-            .map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
-    }
-
-    abstract get url(): string;
-}
-
-class SavingsSelfRequest extends SelfRequest { 
-
-    public endpoint: string = 'savings';
-    
-    public searchParams: SavingsSearchParamsType;
-    
-    constructor( searchParams: SavingsSearchParamsType ) {
-        super();
-        this.searchParams = searchParams;
-    }
-
     public get urlParams(): string {
-        return SelfRequest.urlParams( this.searchParams );
+        return Object
+            .entries( this.searchParams )
+            .map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
     }
 
     public get url(): string {
@@ -38,6 +24,28 @@ class SavingsSelfRequest extends SelfRequest {
     }
 }
 
+class SavingsSelfRequest extends SelfRequest { 
+
+    public endpoint: string = 'savings';
+    public searchParams: SavingsSearchParamsType;
+    
+    constructor( searchParams: SavingsSearchParamsType ) {
+        super();
+        this.searchParams = searchParams;
+    }
+}
+
+class SavingsReservoirSelfRequest extends SelfRequest { 
+
+    public endpoint: string = 'savings-reservoir';
+    public searchParams: SavingsReservoirSearchParamsType;
+    
+    constructor( searchParams: SavingsReservoirSearchParamsType ) {
+        super();
+        this.searchParams = searchParams;
+    }
+}
+
 export { 
-    SavingsSelfRequest 
+    SavingsSelfRequest, SavingsReservoirSelfRequest,
 };

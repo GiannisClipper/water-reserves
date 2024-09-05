@@ -22,9 +22,14 @@ interface SavingsFormParamsType extends FormParamsType {
     reservoirFilter: { [ key: string ]: boolean }
 }
 
+interface SavingsReservoirFormParamsType extends FormParamsType {
+    reservoirFilter: { [ key: string ]: boolean }
+}
+
 export type { 
     ViewType, 
     ChartType,
     FormParamsType,
     SavingsFormParamsType,
+    SavingsReservoirFormParamsType,
 };
