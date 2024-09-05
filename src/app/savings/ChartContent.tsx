@@ -8,6 +8,7 @@ import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recha
 import type { RequestResultType } from "@/types/requestResult";
 import { getYTicks } from '@/helpers/charts';
 import { commaView } from '@/helpers/numbers';
+import { CustomizedXAxisTick } from '@/components/Charts';
 
 type PropsType = { 
     result: RequestResultType | null
@@ -45,7 +46,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" ticks={xTicks} interval={0} angle={-90} tickMargin={45}/>
+                    <XAxis dataKey="time" interval={0} tick={<CustomizedXAxisTick />} />
                     <YAxis domain={[ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ]} ticks={yTicks} interval={0} tickFormatter={ x=> commaView( x ) } />
                     <Tooltip />
                     <Bar dataKey="Ποσότητα" stroke="#00bbee" fill="#00ccff" activeBar={<Rectangle fill="#11ddff" />} />
@@ -58,7 +59,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" ticks={xTicks} interval={0} angle={-90} tickMargin={45}/>
+                    <XAxis dataKey="time" interval={0} tick={<CustomizedXAxisTick />} />
                     <YAxis domain={[ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ]} ticks={yTicks} interval={0} tickFormatter={ x=> commaView( x ) } />
                     <Tooltip />
                     <Area dataKey="Ποσότητα" stroke="#00bbee" fill="#00ccff" />
@@ -69,10 +70,11 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" ticks={xTicks} interval={0} angle={-90} tickMargin={45}/>
+                    <XAxis dataKey="time" interval={0} tick={<CustomizedXAxisTick />} />
+                    {/* ticks={xTicks}  interval={0} angle={-90} tickMargin={45}/> */}
                     <YAxis domain={[ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ]} ticks={yTicks} interval={0} tickFormatter={ x=> commaView( x ) } />
                     <Tooltip />
-                    <Line type="monotone" dataKey="Ποσότητα" stroke="#00bbee" strokeWidth={2} />
+                    <Line type="linear" dataKey="Ποσότητα" stroke="#00bbee" strokeWidth={2} />
                 </LineChart>
                 }
                 
