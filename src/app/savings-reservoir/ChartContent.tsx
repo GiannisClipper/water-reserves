@@ -10,6 +10,7 @@ import { getYTicks, getXTicks } from '@/helpers/charts';
 import { commaView } from '@/helpers/numbers';
 import { CustomizedXAxisTick } from '@/components/Charts';
 import { timeLabel } from '@/helpers/time';
+import { GREENISH_COLOR, BLUEISH_COLOR, YELLOWISH_COLOR, REDISH_COLOR } from '../settings';
 
 import "@/styles/chart.css";
 
@@ -106,10 +107,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         content={ <CustomTooltip /> } 
                     />
 
-                    <Bar type="monotone" dataKey="q1" fill="#00ffff" stroke="#00ffff" strokeWidth={2} />
-                    <Bar type="monotone" dataKey="q2" fill="#ff00ff" stroke="#ff00ff" strokeWidth={2} />
-                    <Bar type="monotone" dataKey="q3" fill="#ffff00" stroke="#ffff00" strokeWidth={2} />
-                    <Bar type="monotone" dataKey="q4" fill="#000000" stroke="#000000" strokeWidth={2} />
+                    <Bar type="monotone" dataKey="q1" fill={YELLOWISH_COLOR} stroke={YELLOWISH_COLOR} strokeWidth={2} />
+                    <Bar type="monotone" dataKey="q2" fill={REDISH_COLOR} stroke={REDISH_COLOR} strokeWidth={2} />
+                    <Bar type="monotone" dataKey="q3" fill={GREENISH_COLOR} stroke={GREENISH_COLOR} strokeWidth={2} />
+                    <Bar type="monotone" dataKey="q4" fill={BLUEISH_COLOR} stroke={BLUEISH_COLOR} strokeWidth={2} />
 
                     <Legend align="right" verticalAlign='top' />
                     {/* <Bar dataKey="Ποσότητα" stroke="#00bbee" fill="#00ccff" activeBar={<Rectangle fill="#11ddff" />} /> */}
@@ -120,6 +121,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 <AreaChart
                     data={data2}
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
+                    stackOffset="expand"
                 >
                     <CartesianGrid 
                         strokeDasharray="3 3" 
@@ -132,22 +134,28 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         tick={ <CustomizedXAxisTick data={ data2 } /> } 
                     />
 
-                    <YAxis 
+                    <YAxis tickFormatter={ decimal => `${(decimal * 100).toFixed( 0 )}%` } />
+
+                    {/* <YAxis 
                         domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
                         ticks={ yTicks } 
                         interval={ 0 } 
                         tickFormatter={ x => commaView( x ) } 
-                    />
+                    /> */}
 
                     <Tooltip 
                         content={ <CustomTooltip /> } 
                     />
 
-                    <Area type="monotone" dataKey="q1" stroke="#00ffff" />
-                    <Area type="monotone" dataKey="q2" stroke="#ff00ff" />
-                    <Area type="monotone" dataKey="q3" stroke="#ffff00" />
-                    <Area type="monotone" dataKey="q4" stroke="#000000" />
+                    <Area type="monotone" dataKey="q1" stackId="1" stroke={YELLOWISH_COLOR} fill={YELLOWISH_COLOR} fillOpacity={.5} />
+                    <Area type="monotone" dataKey="q2" stackId="1" stroke={REDISH_COLOR} fill={REDISH_COLOR} fillOpacity={.5} />
+                    <Area type="monotone" dataKey="q3" stackId="1" stroke={GREENISH_COLOR} fill={GREENISH_COLOR} fillOpacity={.5} />
+                    <Area type="monotone" dataKey="q4" stackId="1" stroke={BLUEISH_COLOR} fill={BLUEISH_COLOR} fillOpacity={.5} />
 
+                    <Legend 
+                        align="right" 
+                        verticalAlign='top' 
+                    />
                 </AreaChart>
                 :
                 <LineChart
@@ -176,10 +184,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         content={ <CustomTooltip /> } 
                     />
 
-                    <Line type="monotone" dataKey="q1" stroke="#00ffff" strokeWidth={2} />
-                    <Line type="monotone" dataKey="q2" stroke="#ff00ff" strokeWidth={2} />
-                    <Line type="monotone" dataKey="q3" stroke="#ffff00" strokeWidth={2} />
-                    <Line type="monotone" dataKey="q4" stroke="#000000" strokeWidth={2} />
+                    <Line type="monotone" dataKey="q1" stroke={YELLOWISH_COLOR} strokeWidth={3} />
+                    <Line type="monotone" dataKey="q2" stroke={REDISH_COLOR} strokeWidth={3} />
+                    <Line type="monotone" dataKey="q3" stroke={GREENISH_COLOR} strokeWidth={3} />
+                    <Line type="monotone" dataKey="q4" stroke={BLUEISH_COLOR} strokeWidth={3} />
 
                     <Legend align="right" verticalAlign='top' />
                 </LineChart>

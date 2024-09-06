@@ -12,6 +12,11 @@ const PRECIPITATION: string = "Ποσότητες υετού";
 const SAVINGS_PRODUCTION: string = "Συνδυασμός αποθεμάτων και παραγωγής νερού";
 const SAVINGS_PRECIPITATION: string = "Συνδυασμός αποθεμάτων νερού και ποσοτήτων υετού";
 
+const GREENISH_COLOR: string = "#90EE90"; // Light Green
+const BLUEISH_COLOR: string = "#A7C7E7	"; // Pastel Blue
+const YELLOWISH_COLOR: string = "#FFD580"; // Light Orange 
+const REDISH_COLOR: string = "#FFB6C1"; // Light Pink 
+
 export { 
     NEXT_PUBLIC_REST_API_BASE_URL, 
     NEXT_PUBLIC_SELF_BASE_URL,
@@ -25,5 +30,10 @@ export {
     PRODUCTiON_FACTORY,
     PRECIPITATION,
     SAVINGS_PRODUCTION,
-    SAVINGS_PRECIPITATION,    
+    SAVINGS_PRECIPITATION,
+
+    GREENISH_COLOR,
+    BLUEISH_COLOR,
+    YELLOWISH_COLOR,
+    REDISH_COLOR,
 };
