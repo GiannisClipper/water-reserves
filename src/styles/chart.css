@@ -1,0 +1,17 @@
+@tailwind components;
+
+@layer components {
+
+  * {
+    /* @apply border border-white border-dotted */
+  }
+    
+  .Tooltip {
+    @apply p-2 bg-yellow-100 border border-sky-700
+  }
+
+  .Tooltip > * {
+    @apply mb-1
+  }
+
+}

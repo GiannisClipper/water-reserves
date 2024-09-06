@@ -5,11 +5,13 @@ const CustomizedXAxisTick = props => {
     // set the tick
     let tick: string = payload.value;
 
-    if ( tick.length === 10 && data.length > 31 ) {
-      tick = tick.substring( 0, 7 ); // reduce days to months 
-    }
+    if ( tick.length === 10 && data.length > 366 * 2 ) {
+      tick = tick.substring( 0, 4 ); // reduce days to years 
 
-    if ( tick.length === 7 && data.length > 24 ) {
+    } else if ( tick.length === 10 && data.length > 31 ) {
+      tick = tick.substring( 0, 7 ); // reduce days to months 
+
+    } else if ( tick.length === 7 && data.length > 24 ) {
       tick = tick.substring( 0, 4 ); // reduce months to years
     }
 

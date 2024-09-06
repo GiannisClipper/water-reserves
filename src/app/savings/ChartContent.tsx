@@ -9,6 +9,32 @@ import type { RequestResultType } from "@/types/requestResult";
 import { getXTicks, getYTicks } from '@/helpers/charts';
 import { commaView } from '@/helpers/numbers';
 import { CustomizedXAxisTick } from '@/components/Charts';
+import { timeLabel } from '@/helpers/time';
+
+import "@/styles/chart.css";
+
+type TooltipPropsType = {
+    active?: boolean
+    payload?: any
+    label?: string
+} 
+
+const CustomTooltip = ( { active, payload, label }: TooltipPropsType ) => {
+
+    if ( active && payload && payload.length ) {
+        // console.log( 'label-payload', label, payload );
+        const { time, quantity } = payload[ 0 ].payload;
+
+        return (
+            <div className="Tooltip">
+                <p>{ `${timeLabel( time )}: ${time}` }</p>
+                <p>{ `Ποσότητα: ${commaView( quantity )} κυβικά μέτρα` }</p>
+            </div>
+      );
+    }
+  
+    return null;
+};
 
 type PropsType = { 
     result: RequestResultType | null
@@ -31,7 +57,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
         maxValue + maxValue * .05 
     );
 
-    const data2 = data.map( (row: any[]) => ({ time: row[ 0 ], "Ποσότητα": row[ 1 ] }) );
+    const data2 = data.map( (row: any[]) => ({ time: row[ 0 ], "quantity": row[ 1 ] }) );
 
     console.log( "rendering: ChartContent...", data, data2 )
 
@@ -60,12 +86,14 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
                         ticks={ yTicks } 
                         interval={ 0 } 
-                        tickFormatter={ x=> commaView( x ) } 
+                        tickFormatter={ x => commaView( x ) } 
                     />
 
-                    <Tooltip />
+                    <Tooltip 
+                        content={ <CustomTooltip /> } 
+                    />
 
-                    <Bar dataKey="Ποσότητα" stroke="#00bbee" fill="#00ccff" activeBar={<Rectangle fill="#11ddff" />} />
+                    <Bar dataKey="quantity" stroke="#00bbee" fill="#00ccff" activeBar={<Rectangle fill="#11ddff" />} />
                 </BarChart>
                 :
                 chartType === 'area'
@@ -92,9 +120,11 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         tickFormatter={ x=> commaView( x ) } 
                     />
 
-                    <Tooltip />
+                    <Tooltip 
+                        content={ <CustomTooltip /> } 
+                    />
 
-                    <Area dataKey="Ποσότητα" stroke="#00bbee" fill="#00ccff" />
+                    <Area dataKey="quantity" stroke="#00bbee" fill="#00ccff" />
                 </AreaChart>
                 :
                 <LineChart
@@ -119,9 +149,11 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         tickFormatter={ x=> commaView( x ) } 
                     />
 
-                    <Tooltip />
+                    <Tooltip 
+                        content={ <CustomTooltip /> } 
+                    />
 
-                    <Line type="linear" dataKey="Ποσότητα" stroke="#00bbee" strokeWidth={2} />
+                    <Line type="linear" dataKey="quantity" stroke="#00bbee" strokeWidth={2} />
                 </LineChart>
                 }
                 
