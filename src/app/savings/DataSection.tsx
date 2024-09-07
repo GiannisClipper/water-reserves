@@ -5,7 +5,7 @@ import { SavingsApiRequest } from "@/helpers/requests/ApiRequests";
 import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 
 import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/Page/Skeleton";
-import Error from "./Error";
+import Error from "@/components/Page/Error";
 import ChartSection from "./ChartSection";
 import ListSection from "./ListSection";
 
@@ -34,7 +34,7 @@ const DataSection = async ( { searchParams }: PropsType ) => {
         }
     }
 
-    console.log( "rendering: DataSection..." )
+    console.log( "rendering: DataSection..." );
 
     return ( 
         

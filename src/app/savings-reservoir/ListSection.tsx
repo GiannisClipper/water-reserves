@@ -1,5 +1,5 @@
-import ListLabel from "../savings/ListLabel";
-import ListContent from "../savings/ListContent";
+import ListLabel from "@/components/Page/List/ListLabel";
+import ListContent from "@/components/Page/List/ListContent";
 import type { RequestResultType } from "@/types/requestResult";
 
 type PropsType = { result: RequestResultType | null }

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import ParamLabel from "../savings/ParamLabel";
+import ParamLabel from "@/components/Page/Param/ParamLabel";
 import ParamContent from "./ParamContent";
-import type { SearchParamsType } from "@/types/searchParams";
+import type { SavingsReservoirSearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType } from "@/types/requestResult";
 
 type PropsType = {
-    searchParams: SearchParamsType
+    searchParams: SavingsReservoirSearchParamsType
     reservoirs: [ { [ key: string ]: any } ] | null
     error: RequestErrorType | null
 }

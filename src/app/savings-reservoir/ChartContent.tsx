@@ -48,9 +48,18 @@ type PropsType = {
 const ChartContent = ( { result, chartType }: PropsType ) => {
 
     const headers: string[] = result && result.headers || [];
-    const data: [][] = result && result.data || [];
+    let data: any[][] = result && result.data || [];
 
     // TODO: refactor data2 calculation
+
+    data = data.map( row => {
+        // to exclude the 1st position (id)
+        if ( row.length === 4 ) {
+            return row.slice( 1, );
+        }
+        return row
+    } );
+
     const timeObj: { [ key: string ]: any } = {};
     for ( let row of data ) {
         // console.log( 'row', row );
@@ -62,6 +71,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const data2 = Object.values( timeObj );
 
     const xTicks: string[] = getXTicks( data2.map( ( row: { [ key: string ]: any } ) => row.time ) );
+
+    const lineType: 'linear' | 'monotone' = xTicks.length && xTicks[ 0 ].length === 10 ? 'linear' : 'monotone';
 
     const yValues = data.map( ( row: any[] ) => row[ 2 ] );
 
@@ -174,7 +185,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     />
 
                     <YAxis 
-                        domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
+                        domain={ [ yTicks[ 0 ], yTicks[ yTicks.length - 1 ] ] } 
                         ticks={ yTicks } 
                         interval={ 0 } 
                         tickFormatter={ x => commaView( x ) } 
@@ -184,10 +195,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         content={ <CustomTooltip /> } 
                     />
 
-                    <Line type="monotone" dataKey="q1" stroke={YELLOWISH_COLOR} strokeWidth={2} />
-                    <Line type="monotone" dataKey="q2" stroke={REDISH_COLOR} strokeWidth={2} />
-                    <Line type="monotone" dataKey="q3" stroke={GREENISH_COLOR} strokeWidth={2} />
-                    <Line type="monotone" dataKey="q4" stroke={BLUEISH_COLOR} strokeWidth={2} />
+                    <Line type={ lineType } dataKey="q1" stroke={YELLOWISH_COLOR} strokeWidth={2} dot={ false }/>
+                    <Line type={ lineType } dataKey="q2" stroke={REDISH_COLOR} strokeWidth={2} dot={ false } />
+                    <Line type={ lineType } dataKey="q3" stroke={GREENISH_COLOR} strokeWidth={2} dot={ false } />
+                    <Line type={ lineType } dataKey="q4" stroke={BLUEISH_COLOR} strokeWidth={2} dot={ false } />
 
                     <Legend align="right" verticalAlign='top' />
                 </LineChart>

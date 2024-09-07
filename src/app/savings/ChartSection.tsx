@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import ChartLabel from "./ChartLabel";
+import ChartLabel from "@/components/Page/Chart/ChartLabel";
 import ChartContent from "./ChartContent";
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";

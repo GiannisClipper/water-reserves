@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from 'react';
 import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
@@ -47,6 +46,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const data: [][] = result && result.data || [];
 
     const xTicks: string[] = getXTicks( data.map( ( row: any[] ) => row[ 0 ] ) );
+
+    const lineType: 'linear' | 'monotone' = xTicks.length && xTicks[ 0 ].length === 10 ? 'linear' : 'monotone';
 
     const yValues = data.map( ( row: any[] ) => row[ 1 ] );
     const maxValue = Math.max( ...yValues );
@@ -157,10 +158,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
 
                     <Line 
                         dataKey="quantity" 
-                        type="linear" 
+                        type={ lineType } 
                         stroke="#00bbee" 
-                        strokeWidth={2} 
-                        dot={false}
+                        strokeWidth={ 2 } 
+                        dot={ false }
                     />
                 </LineChart>
                 }

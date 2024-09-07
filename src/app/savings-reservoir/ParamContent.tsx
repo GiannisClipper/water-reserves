@@ -27,7 +27,7 @@ import "@/styles/form.css";
 import "@/styles/field.css";
 
 type PropsType = {
-    searchParams: SavingsReservoirFormParamsType
+    searchParams: SavingsReservoirSearchParamsType
     onSearch: boolean
     reservoirs: { [ key: string ]: any }[] | null
     error: RequestErrorType | null
