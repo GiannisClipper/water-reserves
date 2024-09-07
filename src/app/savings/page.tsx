@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Header from "../Header";
 import ParamSection from "./ParamSection";
 import DataSection from "./DataSection";
-import { DataSectionSkeleton } from "@/components/Skeletons";
+import { DataSectionSkeleton } from "@/components/Page/Skeleton";
 import type { SearchParamsType } from "@/types/searchParams";
 import { SAVINGS } from "../settings";
 

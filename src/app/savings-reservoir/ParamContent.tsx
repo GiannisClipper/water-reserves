@@ -6,16 +6,19 @@ import type { SavingsReservoirSearchParamsType } from "@/types/searchParams";
 import type { SavingsReservoirFormParamsType } from "@/types/formParams";
 import type { RequestErrorType } from "@/types/requestResult";
 import SavingsReservoirFormParams from "@/helpers/params/SavingsReservoirFormParams";
+import { setParamsFactory } from "@/components/Page";
 import { SavingsReservoirSelfRequest } from "@/helpers/requests/SelfRequests";
 
 import { 
-    Form, FormSectionTimeRange, FormSectionIntervalFilter, 
-    FormSectionValueAggregation, FormSectionTimeAggregation,
+    Form, FormSectionTimeRange, 
+    FormSectionIntervalFilter, 
+    FormSectionAggregation,
     FormSectionReservoirs,
 } from "@/components/Form";
 
 import { 
-    FieldFromDate, FieldToDate, FieldFromInterval, FieldToInterval, 
+    FieldFromDate, FieldToDate, 
+    FieldFromInterval, FieldToInterval, 
     FieldValueAggregation, FieldTimeAggregation,
     FieldCheckBox
 } from "@/components/Field";
@@ -37,36 +40,12 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
     const [ params, setParams ] = useState( savingsReservoirFormParams );
 
-    const setFromDate = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, fromDate: e.target.value } )
-    }
-
-    const setToDate = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, toDate: e.target.value } )
-    }
-
-    const setFromInterval = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, fromInterval: e.target.value } )
-    }
-
-    const setToInterval = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, toInterval: e.target.value } )
-    }
-
-    const setValueAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, valueAggregation: e.target.value } )
-    }
-
-    const setTimeAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, timeAggregation: e.target.value } )
-    }
-
-    const setReservoirFilter = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        const { reservoirFilter } = params;
-        reservoirFilter[ e.target.name ] = e.target.checked;
-        setParams( { ...params, reservoirFilter } );
-        // console.log( e.target.name, e.target )
-    }
+    const {
+        setFromDate, setToDate,
+        setFromInterval, setToInterval,
+        setTimeAggregation, setValueAggregation,
+        setReservoirFilter,
+    } = setParamsFactory( { params, setParams } );
 
     useEffect( () => {
 
@@ -108,19 +87,17 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
                 />
             </FormSectionIntervalFilter>
 
-            <FormSectionValueAggregation>
-                <FieldValueAggregation
-                    value={ params.valueAggregation }
-                    onChange={ setValueAggregation }
-                />
-            </FormSectionValueAggregation>
-
-            <FormSectionTimeAggregation>
+            <FormSectionAggregation>
                 <FieldTimeAggregation
                     value={ params.timeAggregation }
                     onChange={ setTimeAggregation }
                 />
-            </FormSectionTimeAggregation>
+                <FieldValueAggregation
+                    values={ [ '', 'avg' ] }
+                    value={ params.valueAggregation }
+                    onChange={ setValueAggregation }
+                />
+            </FormSectionAggregation>
 
             <FormSectionReservoirs>
                 { reservoirs?.map( r => 

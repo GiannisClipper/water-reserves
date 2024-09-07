@@ -4,7 +4,7 @@ import type { SavingsSearchParamsType } from "@/types/searchParams";
 import { SavingsApiRequest } from "@/helpers/requests/ApiRequests";
 import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 
-import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/Skeletons";
+import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/Page/Skeleton";
 import Error from "./Error";
 import ChartSection from "./ChartSection";
 import ListSection from "./ListSection";

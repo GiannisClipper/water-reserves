@@ -98,7 +98,7 @@ const reprTimeAggregation = ( key: string ): string => {
 const FieldTimeAggregation = ( props: any ) => (
 
     <Field
-        label = {<span>[]</span>}
+        label = {<span>Χρονική</span>}
         value = {
             <select {...props}>
                 <option value="">{reprTimeAggregation( "" )}</option>
@@ -113,7 +113,7 @@ const FieldTimeAggregation = ( props: any ) => (
 const FieldValueAggregation = ( { values, ...props } ) => (
 
     <Field
-        label = {<span>[]</span>}
+        label = {<span>Τιμής</span>}
         value = {
             <select {...props}>
                 { values.map( v => <option key={v} value={v}>{reprValueAggregation( v )}</option> ) }
@@ -121,7 +121,6 @@ const FieldValueAggregation = ( { values, ...props } ) => (
         }
     />
 );
-
 
 const FieldCheckBox = ( { label, ...props }: any ) => {
 

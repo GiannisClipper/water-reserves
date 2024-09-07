@@ -8,7 +8,7 @@ import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recha
 import type { RequestResultType } from "@/types/requestResult";
 import { getYTicks, getXTicks } from '@/helpers/charts';
 import { commaView } from '@/helpers/numbers';
-import { CustomizedXAxisTick } from '@/components/Charts';
+import { CustomizedXAxisTick } from '@/components/Page/Chart';
 import { timeLabel } from '@/helpers/time';
 import { GREENISH_COLOR, BLUEISH_COLOR, YELLOWISH_COLOR, REDISH_COLOR } from '../settings';
 
