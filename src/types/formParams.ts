@@ -19,7 +19,6 @@ interface FormParamsType {
 
 interface SavingsFormParamsType extends FormParamsType {
     reservoirAggregation: string
-    reservoirFilter: { [ key: string ]: boolean }
 }
 
 interface SavingsReservoirFormParamsType extends FormParamsType {

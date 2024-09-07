@@ -11,14 +11,12 @@ import { SavingsSelfRequest } from "@/helpers/requests/SelfRequests";
 
 import { 
     Form, FormSectionTimeRange, FormSectionIntervalFilter, 
-    FormSectionValueAggregation, FormSectionTimeAggregation,
-    FormSectionReservoirs,
+    FormSectionTimeAggregation, FormSectionValueAggregation, 
 } from "@/components/Form";
 
 import { 
     FieldFromDate, FieldToDate, FieldFromInterval, FieldToInterval, 
-    FieldValueAggregation, FieldTimeAggregation,
-    FieldCheckBox
+    FieldTimeAggregation, FieldValueAggregation, 
 } from "@/components/Field";
 
 
@@ -28,14 +26,13 @@ import "@/styles/field.css";
 type PropsType = {
     searchParams: SavingsSearchParamsType
     onSearch: boolean
-    reservoirs: { [ key: string ]: any }[] | null
     error: RequestErrorType | null
 }
 
-const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
+const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
 
     const savingsFormParams: SavingsFormParamsType = 
-        new SavingsFormParams( searchParams, reservoirs || [] ).getAsObject();
+        new SavingsFormParams( searchParams ).getAsObject();
 
     const [ params, setParams ] = useState( savingsFormParams );
 
@@ -67,18 +64,11 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
         setParams( { ...params, timeAggregation, valueAggregation } )
     }
 
-    const setReservoirFilter = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        const { reservoirFilter } = params;
-        reservoirFilter[ e.target.name ] = e.target.checked;
-        setParams( { ...params, reservoirFilter } );
-        // console.log( e.target.name, e.target )
-    }
-
     useEffect( () => {
 
         if ( onSearch ) {
             const savingsSearchParams: SavingsSearchParamsType = 
-                new SavingsFormParams( searchParams, reservoirs || [] )
+                new SavingsFormParams( searchParams )
                     .setFromObject( params )
                     .getAsSearchObject();
 
@@ -128,18 +118,6 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
                     onChange={ setValueAggregation }
                 />
             </FormSectionValueAggregation>
-
-            <FormSectionReservoirs>
-                { reservoirs?.map( r => 
-                    <FieldCheckBox
-                        key={ r.id }
-                        name={ r.id }
-                        label={ r.name_en }
-                        checked={ params.reservoirFilter[ r.id ] }
-                        onChange={ setReservoirFilter }
-                    /> 
-                ) }
-            </FormSectionReservoirs>
         </Form>
     );
 }

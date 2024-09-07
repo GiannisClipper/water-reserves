@@ -60,12 +60,6 @@ class SavingsReservoirFormParams extends FormParams {
     getAsSearchObject(): SavingsReservoirSearchParamsType {
 
         const searchParams: SearchParamsType = super.getAsSearchObject();
-
-        if ( searchParams.time_aggregation ) { 
-            if ( searchParams.time_aggregation.startsWith( 'day' ) ) {
-                delete searchParams.time_aggregation;
-            }
-        }
     
         const reservoir_filter: string = Object.entries( this._reservoirFilter )
             .filter( entry => entry[ 1 ] === true )
