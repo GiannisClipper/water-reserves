@@ -8,20 +8,12 @@ type PropsType = {
 
 const ParamSection = async ( { searchParams }: PropsType ) => {
 
-    const reservoirsApiRequest = new ReservoirsApiRequest();
-
-    const [ error, reservoirs ] = await reservoirsApiRequest.request();
-
-    console.log( error, reservoirs );
-
     console.log( "rendering: ParamSection..." )
 
     return (
         <div className="ParamSection">
             <ParamState
                 searchParams={ searchParams } 
-                error={ error }
-                reservoirs={ reservoirs }
             />
         </div>
     );

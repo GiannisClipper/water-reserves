@@ -61,7 +61,7 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
     }, [ onSearch ] );
 
-    console.log( "rendering: ParamContent...", params )
+    console.log( "rendering: ParamContent..." )
 
     return (
         <Form className="ParamContent">

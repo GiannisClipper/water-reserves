@@ -29,7 +29,6 @@ import "@/styles/field.css";
 type PropsType = {
     searchParams: SavingsSearchParamsType
     onSearch: boolean
-    error: RequestErrorType | null
 }
 
 const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
@@ -60,7 +59,7 @@ const ParamContent = ( { searchParams, onSearch }: PropsType ) => {
 
     }, [ onSearch ] );
 
-    console.log( "rendering: ParamContent...", params )
+    console.log( "rendering: ParamContent..." )
 
     return (
         <Form className="ParamContent">

@@ -9,10 +9,9 @@ import type { RequestErrorType } from "@/types/requestResult";
 type PropsType = {
     searchParams: SearchParamsType
     reservoirs: [ { [ key: string ]: any } ] | null
-    error: RequestErrorType | null
 }
 
-const ParamState = ( { searchParams, error, reservoirs }: PropsType ) => {
+const ParamState = ( { searchParams }: PropsType ) => {
 
     const [ onSearch, setOnSearch ] = useState<boolean>( false );
 
@@ -27,8 +26,6 @@ const ParamState = ( { searchParams, error, reservoirs }: PropsType ) => {
             <ParamContent 
                 searchParams={ searchParams }
                 onSearch={ onSearch }
-                reservoirs={ reservoirs }
-                error={ error }
             />
         </div>
     );
