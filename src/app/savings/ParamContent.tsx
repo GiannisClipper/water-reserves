@@ -55,12 +55,16 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
         setParams( { ...params, toInterval: e.target.value } )
     }
 
-    const setValueAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, valueAggregation: e.target.value } )
+    const setTimeAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        const timeAggregation = e.target.value;
+        const valueAggregation = timeAggregation ? params.valueAggregation || 'avg' : '';
+        setParams( { ...params, timeAggregation, valueAggregation } )
     }
 
-    const setTimeAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-        setParams( { ...params, timeAggregation: e.target.value } )
+    const setValueAggregation = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+        const valueAggregation = e.target.value;
+        const timeAggregation = valueAggregation ? params.timeAggregation || 'month' : '';
+        setParams( { ...params, timeAggregation, valueAggregation } )
     }
 
     const setReservoirFilter = ( e: React.ChangeEvent<HTMLInputElement> ): void => {
@@ -110,19 +114,20 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
                 />
             </FormSectionIntervalFilter>
 
-            <FormSectionValueAggregation>
-                <FieldValueAggregation
-                    value={ params.valueAggregation }
-                    onChange={ setValueAggregation }
-                />
-            </FormSectionValueAggregation>
-
             <FormSectionTimeAggregation>
                 <FieldTimeAggregation
                     value={ params.timeAggregation }
                     onChange={ setTimeAggregation }
                 />
             </FormSectionTimeAggregation>
+
+            <FormSectionValueAggregation>
+                <FieldValueAggregation
+                    values={ [ '', 'avg' ] }
+                    value={ params.valueAggregation }
+                    onChange={ setValueAggregation }
+                />
+            </FormSectionValueAggregation>
 
             <FormSectionReservoirs>
                 { reservoirs?.map( r => 

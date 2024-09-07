@@ -21,7 +21,8 @@ abstract class ApiRequest {
 
         console.log( this.url );
         const response = await fetch( this.url );
-        console.log( response.status, response.statusText )
+        console.log( "response, response.status, response.statusText" )
+        console.log( response, response.status, response.statusText )
         const result: any = await response.json();
         console.log( result )
 

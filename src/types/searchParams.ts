@@ -12,8 +12,6 @@ interface SearchParamsType {
 
     time_aggregation?: string
     year_start?: string
-
-    value_aggregation?: string
 }
 
 interface SavingsSearchParamsType extends SearchParamsType {

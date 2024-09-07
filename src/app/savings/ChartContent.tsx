@@ -95,7 +95,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
 
                     <Bar dataKey="quantity" stroke="#00bbee" fill="#00ccff" activeBar={<Rectangle fill="#11ddff" />} />
                 </BarChart>
-                :
+
+                :   
                 chartType === 'area'
                 ?
                 <AreaChart
@@ -117,7 +118,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
                         ticks={ yTicks } 
                         interval={ 0 } 
-                        tickFormatter={ x=> commaView( x ) } 
+                        tickFormatter={ x => commaView( x ) } 
                     />
 
                     <Tooltip 
@@ -126,6 +127,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
 
                     <Area dataKey="quantity" stroke="#00bbee" fill="#00ccff" />
                 </AreaChart>
+
                 :
                 <LineChart
                     data={data2}
@@ -153,7 +155,13 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         content={ <CustomTooltip /> } 
                     />
 
-                    <Line type="linear" dataKey="quantity" stroke="#00bbee" strokeWidth={2} />
+                    <Line 
+                        dataKey="quantity" 
+                        type="linear" 
+                        stroke="#00bbee" 
+                        strokeWidth={2} 
+                        dot={false}
+                    />
                 </LineChart>
                 }
                 

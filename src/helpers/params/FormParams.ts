@@ -21,7 +21,8 @@ class FormParams {
     _fromInterval: string = '';
     _toInterval: string = '';
 
-    _timeAggregation: string = 'day';
+    _timeAggregation: string = '';
+    _valueAggregation: string = '';
 
     constructor( searchParams: SearchParamsType ) {
 
@@ -32,6 +33,9 @@ class FormParams {
         this.convertIntervalFilter( searchParams.interval_filter );
 
         this.timeAggregation = searchParams.time_aggregation;
+        this.yearStart = searchParams.year_start;
+
+        this.valueAggregation = searchParams.time_aggregation;
     }
 
     set viewType( val: ViewType | undefined ) {
@@ -59,7 +63,30 @@ class FormParams {
     }
 
     set timeAggregation( val: string | undefined ) {
-        this._timeAggregation = val ? val : this._timeAggregation;
+
+        if ( val && val.includes( ',' ) ) {
+            val = val.split( ',' )[ 0 ];
+        }
+
+        this._timeAggregation = val && [ "month", "year" ].includes( val )
+            ? val 
+            : '';
+    }
+
+    set yearStart( val: string | undefined ) {
+
+        if ( val ) {
+            this._timeAggregation = 'custom_year';
+        }
+    }
+
+    set valueAggregation( val: string | undefined ) {
+
+        if ( val && val.includes( ',' ) ) {
+            val = val.split( ',' )[ 1 ];
+        }
+
+        this._valueAggregation = val ? val : "";
     }
 
     convertTimeRange( val: string | undefined ) {
@@ -86,6 +113,15 @@ class FormParams {
         }
     }
 
+    convertTimeAggregation( val: string | undefined ) {
+
+        if ( val && val.includes( ',' ) ) {
+            this._valueAggregation = val.split( ',' )[ 1 ];
+        } else {
+            this._valueAggregation = '';
+        }
+    }
+
     setFromObject( formParams: FormParamsType ): FormParams {
 
         this._viewType = formParams.viewType;
@@ -98,6 +134,7 @@ class FormParams {
         this._toInterval = formParams.toInterval;
     
         this._timeAggregation = formParams.timeAggregation;
+        this._valueAggregation = formParams.valueAggregation;
         
         return this;
     }
@@ -114,6 +151,7 @@ class FormParams {
             toInterval: this._toInterval,
 
             timeAggregation: this._timeAggregation,
+            valueAggregation: this._valueAggregation,
         };  
     }
 
@@ -132,12 +170,19 @@ class FormParams {
             searchParams.interval_filter = `${this._fromInterval},${this._toInterval}`;
         }
     
-        searchParams.time_aggregation = `${this._timeAggregation.split( ',' )[ 0 ]},avg`;
-    
+        if ( this._timeAggregation ) {
+            searchParams.time_aggregation = this._timeAggregation;
+        }
+
         if ( this._timeAggregation === 'custom_year' ) {
+            searchParams.time_aggregation = 'year';
             searchParams.year_start = '10-01';
         }
-    
+
+        if ( this._valueAggregation ) {
+            searchParams.time_aggregation += `,${this._valueAggregation}`;
+        }
+
         return searchParams;
     }
 }

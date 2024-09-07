@@ -68,35 +68,32 @@ const FieldToInterval = ( props: any ) => {
 
 const reprValueAggregation = ( key: string ): string => {
 
-    // const values: { [key: string]: string } = { 'avg': 'Μέση ημερήσια τιμή' };
-
-    // if ( key in values ) {
-    //     return values[ key ];
-    // }
-    return 'Μέση ημερήσια τιμή';
-}
-
-const reprTimeAggregation = ( key: string ): string => {
-
-    const values: { [key: string]: string } = { 'month': 'Ανά μήνα', 'year': 'Ανά έτος', 'custom_year': 'Ανά υδρολογικό έτος' };
+    const values: { [key: string]: string } = { 
+        '': 'Ημερήσια τιμή',
+        'avg': 'Μέση ημερήσια τιμή',
+        'sum': 'Συνολική τιμή', 
+    };
 
     if ( key in values ) {
         return values[ key ];
     }
-    return "Ανά ημέρα";
+    return "";
 }
 
-const FieldValueAggregation = ( props: any ) => (
+const reprTimeAggregation = ( key: string ): string => {
 
-    <Field
-        label = {<span>[]</span>}
-        value = {
-            <select {...props}>
-                <option value="avg">{reprValueAggregation( "avg" )}</option>
-            </select>
-        }
-    />
-);
+    const values: { [key: string]: string } = { 
+        '': 'Ανά ημέρα',
+        'month': 'Ανά μήνα', 
+        'year': 'Ανά έτος', 
+        'custom_year': 'Ανά υδρολογικό έτος' 
+    };
+
+    if ( key in values ) {
+        return values[ key ];
+    }
+    return "";
+}
 
 const FieldTimeAggregation = ( props: any ) => (
 
@@ -104,7 +101,7 @@ const FieldTimeAggregation = ( props: any ) => (
         label = {<span>[]</span>}
         value = {
             <select {...props}>
-                <option value="day">{reprTimeAggregation( "day" )}</option>
+                <option value="">{reprTimeAggregation( "" )}</option>
                 <option value="month">{reprTimeAggregation( "month" )}</option>
                 <option value="year">{reprTimeAggregation( "year" )}</option>
                 <option value="custom_year">{reprTimeAggregation( "custom_year" )}</option>
@@ -112,6 +109,19 @@ const FieldTimeAggregation = ( props: any ) => (
         }
     />
 );
+
+const FieldValueAggregation = ( { values, ...props } ) => (
+
+    <Field
+        label = {<span>[]</span>}
+        value = {
+            <select {...props}>
+                { values.map( v => <option key={v} value={v}>{reprValueAggregation( v )}</option> ) }
+            </select>
+        }
+    />
+);
+
 
 const FieldCheckBox = ( { label, ...props }: any ) => {
 
@@ -127,6 +137,6 @@ export {
     Field, 
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
-    FieldValueAggregation, FieldTimeAggregation,
+    FieldTimeAggregation, FieldValueAggregation, 
     FieldCheckBox
 };
