@@ -1,7 +1,7 @@
 const CustomizedXAxisTick = props => {
 
     const { x, y, payload, data } = props;
-    console.log( 'data.length', data.length )
+
     // set the tick
     let tick: string = payload.value;
 

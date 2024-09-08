@@ -44,7 +44,7 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
     return (
         <div className="ChartSection">
             <ChartLabel 
-                result={ result } 
+                result={ result }
                 setChartType={ setChartType }
             />
             <ChartContent 

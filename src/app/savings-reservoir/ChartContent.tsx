@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from 'react';
 import { LineChart, Line, Legend } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
@@ -11,6 +10,8 @@ import { commaView } from '@/helpers/numbers';
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
 import { timeLabel } from '@/helpers/time';
 import { GREENISH_COLOR, BLUEISH_COLOR, YELLOWISH_COLOR, REDISH_COLOR } from '../settings';
+import { ObjectType } from '@/types';
+import ObjectList from '@/helpers/ObjectList';
 
 import "@/styles/chart.css";
 
@@ -18,21 +19,23 @@ type TooltipPropsType = {
     active?: boolean
     payload?: any
     label?: string
+    reservoirs: ObjectType[]
 } 
 
-const CustomTooltip = ( { active, payload, label }: TooltipPropsType ) => {
+const CustomTooltip = ( { active, payload, label, reservoirs }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
-        // console.log( 'label-payload', label, payload );
-        const { time, q1, q2, q3, q4 } = payload[ 0 ].payload;
+
+        const { time, ...quantities } = payload[ 0 ].payload;
 
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
-                { q1 ? <p>{ `Ποσότητα 1: ${commaView( q1 )} κμ` }</p> : null }
-                { q2 ? <p>{ `Ποσότητα 2: ${commaView( q2 )} κμ` }</p> : null }
-                { q3 ? <p>{ `Ποσότητα 3: ${commaView( q3 )} κμ` }</p> : null }
-                { q4 ? <p>{ `Ποσότητα 4: ${commaView( q4 )} κμ` }</p> : null }
+                { reservoirs.map( ( r, i ) => 
+                    Object.keys( quantities ).includes( r.name_el )
+                        ? <p key={ i }>{ `${ r.name_el}: ${commaView( quantities[ r.name_el ] )} κμ` }</p> 
+                        : null
+                ) }
             </div>
       );
     }
@@ -49,11 +52,13 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
 
     const headers: string[] = result && result.headers || [];
     let data: any[][] = result && result.data || [];
+    let reservoirs: ObjectType[] = result && result.legend && result.legend.reservoirs || [];
+    reservoirs = new ObjectList( reservoirs ).sortBy( 'start' );
 
     // TODO: refactor data2 calculation
 
     data = data.map( row => {
-        // to exclude the 1st position (id)
+        // to exclude the 1st position (id) if exists
         if ( row.length === 4 ) {
             return row.slice( 1, );
         }
@@ -66,7 +71,9 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
         if ( ! timeObj[ row[ 0 ] ] ) {
             timeObj[ row[ 0 ] ] = { time: row[ 0 ] };
         }
-        timeObj[ row[ 0 ] ][ `q${row[ 1 ]}` ] = row[ 2 ];
+        const reservoir: ObjectType | null = new ObjectList( reservoirs ).findOne( 'id', row[ 1 ] );
+        const qLabel: string = ( reservoir && reservoir.name_el ) || ( `q${row[ 1 ]}` );
+        timeObj[ row[ 0 ] ][ qLabel ] = row[ 2 ];
     }
     const data2 = Object.values( timeObj );
 
@@ -83,6 +90,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
         minValue - minValue * .10, 
         maxValue + maxValue * .05 
     );
+
+    const COLORS: string[] = [ YELLOWISH_COLOR, REDISH_COLOR, GREENISH_COLOR, BLUEISH_COLOR ];
 
     console.log( "rendering: ChartContent...", data, data2 )
 
@@ -115,17 +124,27 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     />
 
                     <Tooltip 
-                        content={ <CustomTooltip /> } 
+                        content={ <CustomTooltip reservoirs={ reservoirs } /> } 
                     />
 
-                    <Bar type="monotone" dataKey="q1" stackId="a" fill={YELLOWISH_COLOR} stroke={YELLOWISH_COLOR} strokeWidth={2} />
-                    <Bar type="monotone" dataKey="q2" stackId="a" fill={REDISH_COLOR} stroke={REDISH_COLOR} strokeWidth={2} />
-                    <Bar type="monotone" dataKey="q3" stackId="a" fill={GREENISH_COLOR} stroke={GREENISH_COLOR} strokeWidth={2} />
-                    <Bar type="monotone" dataKey="q4" stackId="a" fill={BLUEISH_COLOR} stroke={BLUEISH_COLOR} strokeWidth={2} />
+                    { reservoirs.map( ( r, i ) =>
+                        <Bar 
+                            key={ i } 
+                            type={ lineType } 
+                            dataKey={ r.name_el }
+                            stackId="a"
+                            stroke={ COLORS[ i ] } 
+                            strokeWidth={ 2 }
+                            fill={ COLORS[ i ] } 
+                        />
+                    ) }
 
-                    <Legend align="right" verticalAlign='top' />
-                    {/* <Bar dataKey="Ποσότητα" stroke="#00bbee" fill="#00ccff" activeBar={<Rectangle fill="#11ddff" />} /> */}
+                    <Legend 
+                        align="right" 
+                        verticalAlign='top' 
+                    />
                 </BarChart>
+
                 :
                 chartType === 'area'
                 ?
@@ -155,19 +174,26 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     {/* <YAxis tickFormatter={ decimal => `${(decimal * 100).toFixed( 0 )}%` } /> */}
 
                     <Tooltip 
-                        content={ <CustomTooltip /> } 
+                        content={ <CustomTooltip reservoirs={ reservoirs } /> } 
                     />
 
-                    <Area type="monotone" dataKey="q1" stackId="1" stroke={YELLOWISH_COLOR} fill={YELLOWISH_COLOR} fillOpacity={.5} />
-                    <Area type="monotone" dataKey="q2" stackId="1" stroke={REDISH_COLOR} fill={REDISH_COLOR} fillOpacity={.5} />
-                    <Area type="monotone" dataKey="q3" stackId="1" stroke={GREENISH_COLOR} fill={GREENISH_COLOR} fillOpacity={.5} />
-                    <Area type="monotone" dataKey="q4" stackId="1" stroke={BLUEISH_COLOR} fill={BLUEISH_COLOR} fillOpacity={.5} />
+                    { reservoirs.map( ( r, i ) =>
+                        <Area 
+                            key={ i } 
+                            type={ lineType } 
+                            dataKey={ r.name_el }
+                            stackId="a"
+                            stroke={ COLORS[ i ] } 
+                            fill={ COLORS[ i ] } 
+                            fillOpacity={ .5 }                        />
+                    ) }
 
                     <Legend 
                         align="right" 
                         verticalAlign='top' 
                     />
                 </AreaChart>
+
                 :
                 <LineChart
                     data={data2}
@@ -192,15 +218,24 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     />
 
                     <Tooltip 
-                        content={ <CustomTooltip /> } 
+                        content={ <CustomTooltip reservoirs={ reservoirs } /> } 
                     />
 
-                    <Line type={ lineType } dataKey="q1" stroke={YELLOWISH_COLOR} strokeWidth={2} dot={ false }/>
-                    <Line type={ lineType } dataKey="q2" stroke={REDISH_COLOR} strokeWidth={2} dot={ false } />
-                    <Line type={ lineType } dataKey="q3" stroke={GREENISH_COLOR} strokeWidth={2} dot={ false } />
-                    <Line type={ lineType } dataKey="q4" stroke={BLUEISH_COLOR} strokeWidth={2} dot={ false } />
+                    { reservoirs.map( ( r, i ) =>
+                        <Line 
+                            key={ i } 
+                            type={ lineType } 
+                            dataKey={ r.name_el } 
+                            stroke={ COLORS[ i ] } 
+                            strokeWidth={2} 
+                            dot={ false }
+                        />
+                    ) }
 
-                    <Legend align="right" verticalAlign='top' />
+                    <Legend 
+                        align="right" 
+                        verticalAlign='top' 
+                    />
                 </LineChart>
                 }
                 

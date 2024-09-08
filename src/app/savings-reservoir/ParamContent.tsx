@@ -35,6 +35,8 @@ type PropsType = {
 
 const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
+    console.log( "rendering: ParamContent..." )
+
     const savingsReservoirFormParams: SavingsReservoirFormParamsType = 
         new SavingsReservoirFormParams( searchParams, reservoirs || [] ).getAsObject();
 
@@ -60,8 +62,6 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
         }
 
     }, [ onSearch ] );
-
-    console.log( "rendering: ParamContent..." )
 
     return (
         <Form className="ParamContent">

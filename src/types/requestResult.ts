@@ -4,12 +4,14 @@ interface RequestErrorType {
     message?: string;
 }
 
-interface RequestErrorDetailType {
+type LegendType = {
+    [ key: string ]: { [ key: string ]: any }[]
 }
 
 interface RequestResultType {
     headers: string[];
     data: any[];
+    legend: LegendType | null;
 }[]
 
 export type { 
