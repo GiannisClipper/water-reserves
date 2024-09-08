@@ -9,6 +9,7 @@ class Reservoir( BaseModel ):
     name_en: str
     lat: float | None
     lon: float | None
+    start: str
 
 async def select_all():
     result = None

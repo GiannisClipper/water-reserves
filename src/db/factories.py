@@ -9,6 +9,7 @@ class Factory( BaseModel ):
     name_en: str
     lat: float | None
     lon: float | None
+    start: str
 
 async def select_all():
     async with pool.connection() as conn, conn.cursor( row_factory=class_row( Factory ) ) as cur:

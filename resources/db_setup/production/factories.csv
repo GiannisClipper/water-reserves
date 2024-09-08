@@ -1,5 +1,5 @@
-name_el,name_en,lat,lon
-Ασπρόπυργος,Aspropyrgos,NULL,NULL
-Γαλάτσι,Galatsi,NULL,NULL
-Κιούρκα,Kiourka,NULL,NULL
-Μενίδι,Menidi,NULL,NULL
+name_el,name_en,lat,lon,start
+Ασπρόπυργος,Aspropyrgos,38.1230,23.5626,1997
+Γαλάτσι,Galatsi,38.0278,23.7550,1931
+Κιούρκα,Kiourka,38.1877,23.8663,1986
+Μενίδι,Menidi,38.1040,23.7279,1978

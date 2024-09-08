@@ -14,7 +14,8 @@ def create_reservoirs( conn ):
             name_el VARCHAR(30) UNIQUE NOT NULL,
             name_en VARCHAR(30) UNIQUE NOT NULL,
             lat REAL,
-            lon REAL
+            lon REAL,
+            start VARCHAR(10)
         );
     '''
 
@@ -64,7 +65,8 @@ def create_factories( conn ):
             name_el VARCHAR(30) UNIQUE NOT NULL,
             name_en VARCHAR(30) UNIQUE NOT NULL,
             lat REAL,
-            lon REAL
+            lon REAL,
+            start VARCHAR(10)
         );
     '''
 

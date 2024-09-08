@@ -13,10 +13,10 @@ def insert_reservoirs( conn ):
     # Create a cursor object
     cursor = conn.cursor()
 
-    sql = '''INSERT INTO reservoirs ( name_el, name_en, lat, lon ) VALUES '''
+    sql = '''INSERT INTO reservoirs ( name_el, name_en, lat, lon, start ) VALUES '''
     for row in data:
-        name_el, name_en, lat, lon = row
-        row = f"('{name_el}','{name_en}',{lat},{lon}),"
+        name_el, name_en, lat, lon, start = row
+        row = f"('{name_el}','{name_en}',{lat},{lon},'{start}'),"
         sql += row
     sql = sql[ 0:-1 ] + ';'
     # print( sql )
@@ -58,10 +58,10 @@ def insert_factories( conn ):
     # Create a cursor object
     cursor = conn.cursor()
 
-    sql = '''INSERT INTO factories ( name_el, name_en, lat, lon ) VALUES '''
+    sql = '''INSERT INTO factories ( name_el, name_en, lat, lon, start ) VALUES '''
     for row in data:
-        name_el, name_en, lat, lon = row
-        row = f"('{name_el}','{name_en}',{lat},{lon}),"
+        name_el, name_en, lat, lon, start = row
+        row = f"('{name_el}','{name_en}',{lat},{lon},'{start}'),"
         sql += row
     sql = sql[ 0:-1 ] + ';'
     # print( sql )
