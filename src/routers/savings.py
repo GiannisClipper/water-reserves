@@ -7,11 +7,17 @@ from src.validators import validate_time_range, validate_interval_filter, valida
 from src.validators.savings import validate_reservoir_filter, validate_reservoir_aggregation
 
 from src.db.savings import select_all
+from src.db.reservoirs import select_all as select_all_reservoirs
+
+@dataclass
+class Legend:
+    reservoirs: list[ any ] = None
 
 @dataclass
 class SavingsResponse:
     headers: list[ str ]
     data: list[ list ]
+    legend: Legend | None = None
 
 router = APIRouter( prefix="/api/v1/savings" )
 
@@ -30,4 +36,9 @@ async def get_all(
         reservoir_aggregation, time_aggregation, year_start
     )
 
-    return SavingsResponse( headers, data )
+    if reservoir_aggregation != None:
+        return SavingsResponse( headers, data )
+    
+    reservoirs = await select_all_reservoirs()
+    legend = Legend( reservoirs )
+    return SavingsResponse( headers, data, legend )

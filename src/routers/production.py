@@ -7,11 +7,17 @@ from src.validators import validate_time_range, validate_interval_filter, valida
 from src.validators.production import validate_factory_aggregation, validate_factory_filter
 
 from src.db.production import select_all
+from src.db.factories import select_all as select_all_factories
+
+@dataclass
+class Legend:
+    factories: list[ any ] = None
 
 @dataclass
 class ProductionResponse:
     headers: list[ str ]
     data: list[ list ]
+    legend: Legend | None = None
 
 router = APIRouter( prefix="/api/v1/production" )
 
@@ -30,4 +36,9 @@ async def get_all(
         factory_aggregation, time_aggregation, year_start
     )
 
-    return ProductionResponse( headers, data )
+    if factory_aggregation != None:
+        return ProductionResponse( headers, data )
+    
+    factories = await select_all_factories()
+    legend = Legend( factories )
+    return ProductionResponse( headers, data, legend )

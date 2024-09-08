@@ -8,10 +8,17 @@ from src.validators.weather import validate_location_aggregation, validate_locat
 
 from src.db.weather import select_all
 
+from src.db.locations import select_all as select_all_locations
+
+@dataclass
+class Legend:
+    locations: list[ any ] = None
+
 @dataclass
 class WeatherResponse:
     headers: list[ str ]
     data: list[ list ]
+    legend: Legend | None = None
 
 router = APIRouter( prefix="/api/v1/weather" )
 
@@ -30,4 +37,9 @@ async def get_all(
         location_aggregation, time_aggregation, year_start
     )
 
-    return WeatherResponse( headers, data )
+    if location_aggregation != None:
+        return WeatherResponse( headers, data )
+    
+    locations = await select_all_locations()
+    legend = Legend( locations )
+    return WeatherResponse( headers, data, legend )

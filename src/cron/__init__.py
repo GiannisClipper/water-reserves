@@ -2,9 +2,9 @@ from datetime import datetime, timedelta
 import httpx
 import asyncio
 
-MAX_TRIES: int = 3
-LIMIT_DAYS: int = -1
-LOOP_DELAY: int = 20
+MAX_REQUEST_TRIES: int = 3
+REQUEST_DAYS_LIMIT: int = -1
+LOOP_DELAY_SECONDS: int = 20
 
 async def cron_job( 
     last_date: str, 
@@ -16,11 +16,11 @@ async def cron_job(
 ) -> None:
 
     tries: int = 0
-    while tries < MAX_TRIES:
+    while tries < MAX_REQUEST_TRIES:
         tries += 1
 
         request_date: str = str( datetime.strptime( last_date, '%Y-%m-%d' ).date() + timedelta( days=1 ) )
-        limit_date: str = str( datetime.now().date() + timedelta( days=LIMIT_DAYS ) )
+        limit_date: str = str( datetime.now().date() + timedelta( days=REQUEST_DAYS_LIMIT ) )
 
         # no need to update
 
@@ -74,4 +74,4 @@ async def cron_job(
             print( f"{type( ex ).__name__} at line { ex.__traceback__.tb_lineno } of { __file__ }: { ex }")
 
 
-        await asyncio.sleep( LOOP_DELAY )
+        await asyncio.sleep( LOOP_DELAY_SECONDS )

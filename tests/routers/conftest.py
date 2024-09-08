@@ -38,6 +38,12 @@ def assert_against_csv():
 
         for i, row in enumerate( data ):
             for j, value in enumerate( row ):
+
+                # to exclude id checking: different db initializations
+                # from different initial data provide different record ids
+                if ( j == 0 and headers[ 0 ] == 'id' ):
+                    continue
+
                 print(data[ i ][ j ], expected_data[ i ][ j ])
                 assert data[ i ][ j ] == expected_data[ i ][ j ]
 
