@@ -9,7 +9,7 @@ import { getYTicks, getXTicks } from '@/helpers/charts';
 import { commaView } from '@/helpers/numbers';
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
 import { timeLabel } from '@/helpers/time';
-import { GREENISH_COLOR, BLUEISH_COLOR, YELLOWISH_COLOR, REDISH_COLOR } from '../settings';
+import { WATER_COLOR } from '../settings';
 import { ObjectType } from '@/types';
 import ObjectList from '@/helpers/ObjectList';
 
@@ -53,7 +53,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const headers: string[] = result && result.headers || [];
     let data: any[][] = result && result.data || [];
     let reservoirs: ObjectType[] = result && result.legend && result.legend.reservoirs || [];
-    reservoirs = new ObjectList( reservoirs ).sortBy( 'start' );
+    reservoirs = new ObjectList( reservoirs ).sortBy( 'start', 'desc' );
 
     // TODO: refactor data2 calculation
 
@@ -90,8 +90,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
         minValue - minValue * .10, 
         maxValue + maxValue * .05 
     );
-
-    const COLORS: string[] = [ YELLOWISH_COLOR, REDISH_COLOR, GREENISH_COLOR, BLUEISH_COLOR ];
+    
+    const STROKES: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
 
     console.log( "rendering: ChartContent...", data, data2 )
 
@@ -133,9 +133,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                             type={ lineType } 
                             dataKey={ r.name_el }
                             stackId="a"
-                            stroke={ COLORS[ i ] } 
-                            strokeWidth={ 2 }
-                            fill={ COLORS[ i ] } 
+                            stroke={ WATER_COLOR[ i ] } 
+                            strokeWidth={ 0 }
+                            fill={ WATER_COLOR[ i ] } 
+                            fillOpacity={ 1 }
                         />
                     ) }
 
@@ -183,9 +184,9 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                             type={ lineType } 
                             dataKey={ r.name_el }
                             stackId="a"
-                            stroke={ COLORS[ i ] } 
-                            fill={ COLORS[ i ] } 
-                            fillOpacity={ .5 }                        />
+                            stroke={ WATER_COLOR[ i ] } 
+                            fill={ WATER_COLOR[ i ] } 
+                            fillOpacity={ .65 }                        />
                     ) }
 
                     <Legend 
@@ -226,9 +227,11 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                             key={ i } 
                             type={ lineType } 
                             dataKey={ r.name_el } 
-                            stroke={ COLORS[ i ] } 
-                            strokeWidth={2} 
+                            stroke={ WATER_COLOR[ 0 ] } 
+                            strokeWidth={ 2 } 
+                            strokeDasharray={ STROKES[ i ] }
                             dot={ false }
+                            legendType="plainline"
                         />
                     ) }
 
