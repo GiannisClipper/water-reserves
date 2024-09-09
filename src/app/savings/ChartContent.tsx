@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
@@ -6,7 +6,7 @@ import { BarChart, Bar, Rectangle } from 'recharts';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import type { RequestResultType } from "@/types/requestResult";
 import { getXTicks, getYTicks } from '@/helpers/charts';
-import { commaView } from '@/helpers/numbers';
+import { commaView, plusView } from '@/helpers/numbers';
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
 import { timeLabel } from '@/helpers/time';
 
@@ -22,12 +22,13 @@ const CustomTooltip = ( { active, payload, label }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
         // console.log( 'label-payload', label, payload );
-        const { time, quantity } = payload[ 0 ].payload;
+        const { time, quantity, diff } = payload[ 0 ].payload;
 
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
-                <p>{ `Ποσότητα: ${commaView( quantity )} κυβικά μέτρα` }</p>
+                <p>{ `Αποθέματα: ${commaView( quantity )}` } m<sup>3</sup></p>
+                <p>{ `Διαφορά: ${plusView( diff )}%` }</p>
             </div>
       );
     }
@@ -58,9 +59,20 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
         maxValue + maxValue * .05 
     );
 
-    const data2 = data.map( (row: any[]) => ({ time: row[ 0 ], "quantity": row[ 1 ] }) );
+    const chartData = data.map( ( row: any[], i: number ) => {
+        const time: string = row[ 0 ];
+        const quantity: number = Math.round( row[ 1 ] );
 
-    console.log( "rendering: ChartContent...", data, data2 )
+        let diff: number = 0;
+        if ( i > 0 ) {
+            const prevQuantity: number = Math.round( data[ i - 1 ][ 1 ] );
+            diff = Math.round( ( quantity - prevQuantity ) / prevQuantity * 100 );
+        }
+
+        return { time, quantity, diff };
+    } );
+
+    console.log( "rendering: ChartContent...", data, chartData, xTicks, yTicks )
 
     return (
         <div className="ChartContent">
@@ -69,7 +81,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 { chartType === 'bar'
                 ?
                 <BarChart
-                    data={data2}
+                    data={ chartData }
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 >
                     <CartesianGrid 
@@ -80,7 +92,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         dataKey="time" 
                         ticks={ xTicks } 
                         interval={ 0 } 
-                        tick={ <CustomizedXAxisTick data={ data2 } /> } 
+                        tick={ <CustomizedXAxisTick data={ chartData } /> } 
                     />
 
                     <YAxis 
@@ -94,14 +106,19 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         content={ <CustomTooltip /> } 
                     />
 
-                    <Bar dataKey="quantity" stroke="#00bbee" fill="#00ccff" activeBar={<Rectangle fill="#11ddff" />} />
+                    <Bar 
+                        dataKey="quantity" 
+                        stroke="#00bbee" 
+                        fill="#00ccff" 
+                        activeBar={<Rectangle fill="#11ddff" />} 
+                    />
                 </BarChart>
 
                 :   
                 chartType === 'area'
                 ?
                 <AreaChart
-                    data={data2}
+                    data={ chartData }
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 >
                     <CartesianGrid 
@@ -112,7 +129,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         dataKey="time" 
                         ticks={ xTicks } 
                         interval={ 0 } 
-                        tick={ <CustomizedXAxisTick data={ data2 } /> } 
+                        tick={ <CustomizedXAxisTick data={ chartData } /> } 
                     />
 
                     <YAxis 
@@ -126,12 +143,16 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         content={ <CustomTooltip /> } 
                     />
 
-                    <Area dataKey="quantity" stroke="#00bbee" fill="#00ccff" />
+                    <Area 
+                        dataKey="quantity" 
+                        stroke="#00bbee" 
+                        fill="#00ccff" 
+                    />
                 </AreaChart>
 
                 :
                 <LineChart
-                    data={data2}
+                    data={ chartData }
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 >
                     <CartesianGrid 
@@ -142,14 +163,14 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         dataKey="time" 
                         ticks={ xTicks } 
                         interval={ 0 } 
-                        tick={ <CustomizedXAxisTick data={ data2 } /> } 
+                        tick={ <CustomizedXAxisTick data={ chartData } /> } 
                     />
 
                     <YAxis 
-                        domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
+                        domain={ [ yTicks[ 0 ], yTicks[ yTicks.length - 1 ] ] } 
                         ticks={ yTicks } 
                         interval={ 0 } 
-                        tickFormatter={ x=> commaView( x ) } 
+                        tickFormatter={ x => commaView( x ) } 
                     />
 
                     <Tooltip 
@@ -157,7 +178,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     />
 
                     <Line 
-                        dataKey="quantity" 
+                        dataKey="quantity"
                         type={ lineType } 
                         stroke="#00bbee" 
                         strokeWidth={ 2 } 

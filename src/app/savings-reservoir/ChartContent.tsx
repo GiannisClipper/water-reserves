@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { LineChart, Line, Legend } from 'recharts';
 import { AreaChart, Area } from 'recharts';
@@ -27,15 +27,36 @@ const CustomTooltip = ( { active, payload, label, reservoirs }: TooltipPropsType
     if ( active && payload && payload.length ) {
 
         const { time, ...quantities } = payload[ 0 ].payload;
+        const values: number[] = Object.values( quantities );
+        const total: number = values.reduce( ( a: number, b: number ) => a + b, 0 );
 
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
-                { reservoirs.map( ( r, i ) => 
-                    Object.keys( quantities ).includes( r.name_el )
-                        ? <p key={ i }>{ `${ r.name_el}: ${commaView( quantities[ r.name_el ] )} κμ` }</p> 
-                        : null
-                ) }
+
+                <table>
+                    <tbody>
+                        { reservoirs.toReversed().map( ( r, i ) => {
+
+                            const quantity: number = quantities[ r.name_el ] || 0;
+                            const ratio: number = Math.round( quantity / total * 100 );
+
+                            return (
+                                <tr key={ i }>
+                                    <td>{ r.name_el }</td>
+                                    <td className='value'>{ commaView( quantity )} m<sup>3</sup></td> 
+                                    <td className='value'>{ `${ratio}%` }</td>
+                                </tr>
+                            );
+                        } ) }
+
+                        <tr className='total'>
+                            <td>Σύνολο</td> 
+                            <td className='value'>{ commaView( total ) } m<sup>3</sup></td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
       );
     }
@@ -53,31 +74,34 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const headers: string[] = result && result.headers || [];
     let data: any[][] = result && result.data || [];
     let reservoirs: ObjectType[] = result && result.legend && result.legend.reservoirs || [];
-    reservoirs = new ObjectList( reservoirs ).sortBy( 'start', 'desc' );
-
-    // TODO: refactor data2 calculation
+    reservoirs = new ObjectList( reservoirs ).sortBy( 'start', 'asc' );
 
     data = data.map( row => {
-        // to exclude the 1st position (id) if exists
         if ( row.length === 4 ) {
+            // excluding id (1st pos) if exists
             return row.slice( 1, );
         }
         return row
     } );
 
     const timeObj: { [ key: string ]: any } = {};
-    for ( let row of data ) {
-        // console.log( 'row', row );
-        if ( ! timeObj[ row[ 0 ] ] ) {
-            timeObj[ row[ 0 ] ] = { time: row[ 0 ] };
-        }
-        const reservoir: ObjectType | null = new ObjectList( reservoirs ).findOne( 'id', row[ 1 ] );
-        const qLabel: string = ( reservoir && reservoir.name_el ) || ( `q${row[ 1 ]}` );
-        timeObj[ row[ 0 ] ][ qLabel ] = row[ 2 ];
-    }
-    const data2 = Object.values( timeObj );
+    data.forEach( ( row: any[] ) => {
+        const time: string = row[ 0 ];
+        timeObj[ time ] = { time } 
+    } );
 
-    const xTicks: string[] = getXTicks( data2.map( ( row: { [ key: string ]: any } ) => row.time ) );
+    data.forEach( ( row: any[] ) => {
+        const time: string = row[ 0 ];
+        const reservoir_id: string = row[ 1 ];
+        const quantity: number = Math.round( row[ 2 ] );
+        const reservoir: ObjectType | null = new ObjectList( reservoirs ).findOne( 'id', reservoir_id );
+        const qLabel: string = ( reservoir && reservoir.name_el ) || ( `q_${reservoir_id}` );
+        timeObj[ time ][ qLabel ] = quantity;
+    } );
+
+    const chartData = Object.values( timeObj );
+
+    const xTicks: string[] = getXTicks( chartData.map( ( row: { [ key: string ]: any } ) => row.time ) );
 
     const lineType: 'linear' | 'monotone' = xTicks.length && xTicks[ 0 ].length === 10 ? 'linear' : 'monotone';
 
@@ -93,7 +117,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     
     const STROKES: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
 
-    console.log( "rendering: ChartContent...", data, data2 )
+    console.log( "rendering: ChartContent...", data, chartData )
 
     return (
         <div className="ChartContent">
@@ -102,7 +126,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 { chartType === 'bar'
                 ?
                 <BarChart
-                    data={data2}
+                    data={ chartData }
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 >
                     <CartesianGrid 
@@ -113,7 +137,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         dataKey="time" 
                         ticks={ xTicks } 
                         interval={ 0 } 
-                        tick={ <CustomizedXAxisTick data={ data2 } /> } 
+                        tick={ <CustomizedXAxisTick data={ chartData } /> } 
                     />
 
                     <YAxis 
@@ -150,7 +174,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 chartType === 'area'
                 ?
                 <AreaChart
-                    data={data2}
+                    data={ chartData }
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                     // stackOffset="expand"
                 >
@@ -162,7 +186,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         dataKey="time" 
                         ticks={ xTicks } 
                         interval={ 0 } 
-                        tick={ <CustomizedXAxisTick data={ data2 } /> } 
+                        tick={ <CustomizedXAxisTick data={ chartData } /> } 
                     />
 
                     <YAxis 
@@ -197,7 +221,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
 
                 :
                 <LineChart
-                    data={data2}
+                    data={ chartData }
                     margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 >
                     <CartesianGrid 
@@ -208,7 +232,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                         dataKey="time" 
                         ticks={ xTicks } 
                         interval={ 0 } 
-                        tick={ <CustomizedXAxisTick data={ data2 } /> } 
+                        tick={ <CustomizedXAxisTick data={ chartData } /> } 
                     />
 
                     <YAxis 

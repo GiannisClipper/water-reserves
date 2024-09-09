@@ -18,4 +18,8 @@ const commaView = ( num: number ): string => {
     return result;
 }
 
-export { commaView };
+const plusView = ( num: number ): string =>
+    num <= 0 ? `${num}` : `+${num}`;
+
+export { commaView, plusView };
+

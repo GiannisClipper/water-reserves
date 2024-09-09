@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { Left, Right } from "@/components/Generics";
 import type { SearchParamsType } from "@/types/searchParams";

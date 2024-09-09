@@ -10,8 +10,24 @@
     @apply p-2 bg-yellow-100 border border-sky-700
   }
 
-  .Tooltip > * {
-    @apply mb-1
+  .Tooltip table {
+    @apply mt-1
+  }
+
+  .Tooltip tr {
+    @apply border border-gray-400
+  }
+
+  .Tooltip tr.total {
+    @apply border-0
+  }
+
+  .Tooltip td {
+    @apply p-1
+  }
+
+  .Tooltip td.value {
+    @apply pl-2 font-mono text-right
   }
 
 }

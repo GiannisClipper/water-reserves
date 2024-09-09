@@ -26,7 +26,7 @@ const getYTicks = ( minValue: number, maxValue: number ): number[] => {
 
 const getXTicks = ( values: string[] ): string[] => {
 
-    console.log('values.length', values.length);
+    console.log('values.length', values.length, values);
     if ( values.length === 0 ) {
         return values;
     }
@@ -34,12 +34,13 @@ const getXTicks = ( values: string[] ): string[] => {
     // reduce days to months
     if ( values[ 0 ].length === 10 && values.length > 31 ) {
         values = values.filter( ( v: string ) => v.substring( 8, 10 ) === '01' );
+        values = values.map( ( v: string ) => v.substring( 0, 8 ) );
     }
 
     // reduce days to years
-    if ( values[ 0 ].length === 10 && values.length > 24 ) {
-        values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
-    }
+    // if ( values[ 0 ].length === 10 && values.length > 24 ) {
+    //         values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
+    // }
 
     // reduce months to years
     if ( values[ 0 ].length === 7 && values.length > 24 ) {
