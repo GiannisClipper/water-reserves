@@ -37,7 +37,7 @@ def create_savings( conn ):
         CREATE TABLE savings (
             id SERIAL PRIMARY KEY,
             reservoir_id SERIAL NOT NULL,
-            date TEXT NOT NULL,
+            date DATE NOT NULL,
             quantity INTEGER,
             FOREIGN KEY( reservoir_id ) REFERENCES reservoirs( id ),
             UNIQUE( reservoir_id, date )
@@ -88,7 +88,7 @@ def create_production( conn ):
         CREATE TABLE production (
             id SERIAL PRIMARY KEY,
             factory_id SERIAL NOT NULL,
-            date TEXT NOT NULL,
+            date DATE NOT NULL,
             quantity INTEGER,
             FOREIGN KEY( factory_id ) REFERENCES factories( id ),
             UNIQUE( factory_id, date )
@@ -138,7 +138,7 @@ def create_weather( conn ):
         CREATE TABLE weather (
             id SERIAL PRIMARY KEY,
             location_id SERIAL NOT NULL,
-            date TEXT NOT NULL,
+            date DATE NOT NULL,
             weather_code INTEGER,
             temperature_2m_mean REAL,
             temperature_2m_min REAL,

@@ -78,7 +78,7 @@ class QueryMaker:
 
         if self.interval_filter:
             op = 'AND' if self.interval_filter[ 0 ] <= self.interval_filter[ 1 ] else 'OR'
-            text = f"(SUBSTR(date,6,5)>='{self.interval_filter[ 0 ]}' {op} SUBSTR(date,6,5)<='{self.interval_filter[ 1 ]}')"
+            text = f"(SUBSTR(date::text,6,5)>='{self.interval_filter[ 0 ]}' {op} SUBSTR(date::text,6,5)<='{self.interval_filter[ 1 ]}')"
             where_clause.append( text )
 
         if len( where_clause ) > 0:
@@ -118,25 +118,25 @@ class QueryMaker:
         if self.location_aggregation:
             self.query = f'''
             SELECT 
-            SUBSTR({alias}.date,1,7) AS month, 
+            SUBSTR({alias}.date::text,1,7) AS month, 
             {precipitation_sum} AS precipitation_sum 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
             GROUP BY 
-            SUBSTR({alias}.date,1,7)'''
+            SUBSTR({alias}.date::text,1,7)'''
 
         else:
             self.query = f'''
             SELECT 
-            SUBSTR({alias}.date,1,7) AS month, 
+            SUBSTR({alias}.date::text,1,7) AS month, 
             {alias}.location_id AS location_id, 
             {precipitation_sum} AS precipitation_sum 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
             GROUP BY 
-            SUBSTR({alias}.date,1,7), 
+            SUBSTR({alias}.date::text,1,7), 
             {alias}.location_id'''
 
 
@@ -148,34 +148,34 @@ class QueryMaker:
         if self.location_aggregation:
             self.query = f'''
             SELECT
-            SUBSTR({alias}.date,1,4) AS year, 
+            SUBSTR({alias}.date::text,1,4) AS year, 
             {precipitation_sum} AS precipitation_sum 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
             GROUP BY 
-            SUBSTR({alias}.date,1,4)'''
+            SUBSTR({alias}.date::text,1,4)'''
 
         else:
             self.query = f'''
             SELECT
-            SUBSTR({alias}.date,1,4) AS year, 
+            SUBSTR({alias}.date::text,1,4) AS year, 
             {alias}.location_id AS location_id, 
             {precipitation_sum} AS precipitation_sum 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
             GROUP BY 
-            SUBSTR({alias}.date,1,4), 
+            SUBSTR({alias}.date::text,1,4), 
             {alias}.location_id'''
 
 
     def __expand_query_with_custom_year_header( self, alias ):
 
         custom_year = f'''
-            CASE WHEN SUBSTR({alias}.date,6,5)>='{self.year_start}'
-            THEN SUBSTR({alias}.date,1,4) || '-' || CAST(SUBSTR({alias}.date,1,4) AS INTEGER)+1
-            ELSE CAST(SUBSTR({alias}.date,1,4) AS INTEGER)-1 || '-' || SUBSTR({alias}.date,1,4) 
+            CASE WHEN SUBSTR({alias}.date::text,6,5)>='{self.year_start}'
+            THEN SUBSTR({alias}.date::text,1,4) || '-' || CAST(SUBSTR({alias}.date::text,1,4) AS INTEGER)+1
+            ELSE CAST(SUBSTR({alias}.date::text,1,4) AS INTEGER)-1 || '-' || SUBSTR({alias}.date::text,1,4) 
             END'''
 
         if self.location_aggregation:
@@ -269,7 +269,7 @@ async def select_all(
 
 async def select_last_date():
     async with pool.connection() as conn, conn.cursor() as cur:
-        await cur.execute( "SELECT MAX(date) last_date FROM weather" )
+        await cur.execute( "SELECT MAX(date)::text last_date FROM weather" )
         result = await cur.fetchone()
         return result[ 0 ]
 
