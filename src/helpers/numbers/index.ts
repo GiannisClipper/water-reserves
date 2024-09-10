@@ -1,4 +1,4 @@
-const commaView = ( num: number ): string => {
+const withCommas = ( num: number ): string => {
 
     const asStr: string = `${num}`;
     const asArr: string[] = asStr.split( '.' ); 
@@ -18,8 +18,8 @@ const commaView = ( num: number ): string => {
     return result;
 }
 
-const plusView = ( num: number ): string =>
+const withPlusSign = ( num: number ): string =>
     num <= 0 ? `${num}` : `+${num}`;
 
-export { commaView, plusView };
+export { withCommas, withPlusSign };
 
