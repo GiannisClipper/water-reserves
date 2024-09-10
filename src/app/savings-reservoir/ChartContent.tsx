@@ -15,20 +15,42 @@ import ObjectList from '@/helpers/ObjectList';
 
 import "@/styles/chart.css";
 
+const makeReservoirsRepr = ( reservoirs: ObjectType[], quantities: ObjectType ): ObjectType[] => {
+
+    // toReversed: considering the order of lines in chart (from bottom to top)
+    const result: ObjectType[] = reservoirs.toReversed().map( ( reservoir: ObjectType, i: number ) => {
+
+        const { name_el: name } = reservoir;
+        const quantity: number = quantities[ name ] || 0;
+        const percentage: number = Math.round( quantity / quantities[ 'total' ] * 100 );
+        return { name, quantity, percentage };
+    } );
+
+    return result;
+}
+
+const makeReservoirsOrderedRepr = ( reservoirs: ObjectType[], quantities: ObjectType ): ObjectType[] => {
+
+    let result: ObjectType[] = makeReservoirsRepr( reservoirs, quantities );
+    result = new ObjectList( result ).sortBy( 'quantity', 'desc' );
+    return result;
+}
+
 type TooltipPropsType = {
     active?: boolean
     payload?: any
     label?: string
     reservoirs: ObjectType[]
+    makeReservoirsRepr: CallableFunction
 } 
 
-const CustomTooltip = ( { active, payload, label, reservoirs }: TooltipPropsType ) => {
+const CustomTooltip = ( { active, payload, label, reservoirs, makeReservoirsRepr }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         const { time, ...quantities } = payload[ 0 ].payload;
-        const values: number[] = Object.values( quantities );
-        const total: number = values.reduce( ( a: number, b: number ) => a + b, 0 );
+        const { total } = quantities;
+        const reservoirsRepr: ObjectType[] = makeReservoirsRepr( reservoirs, quantities );
 
         return (
             <div className="Tooltip">
@@ -36,24 +58,17 @@ const CustomTooltip = ( { active, payload, label, reservoirs }: TooltipPropsType
 
                 <table>
                     <tbody>
-                        { reservoirs.toReversed().map( ( r, i ) => {
-
-                            const quantity: number = quantities[ r.name_el ] || 0;
-                            const ratio: number = Math.round( quantity / total * 100 );
-
-                            return (
-                                <tr key={ i }>
-                                    <td>{ r.name_el }</td>
-                                    <td className='value'>{ commaView( quantity )} m<sup>3</sup></td> 
-                                    <td className='value'>{ `${ratio}%` }</td>
-                                </tr>
-                            );
-                        } ) }
-
                         <tr className='total'>
                             <td>Σύνολο</td> 
                             <td className='value'>{ commaView( total ) } m<sup>3</sup></td>
                         </tr>
+                        { reservoirsRepr.map( ( reservoir, i ) =>
+                            <tr key={ i }>
+                                <td>{ reservoir.name }</td>
+                                <td className='value'>{ commaView( reservoir.quantity )} m<sup>3</sup></td> 
+                                <td className='value'>{ `${reservoir.percentage}%` }</td>
+                            </tr>
+                        ) }
                     </tbody>
                 </table>
 
@@ -87,7 +102,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const timeObj: { [ key: string ]: any } = {};
     data.forEach( ( row: any[] ) => {
         const time: string = row[ 0 ];
-        timeObj[ time ] = { time } 
+        timeObj[ time ] = { time, total: 0 } 
     } );
 
     data.forEach( ( row: any[] ) => {
@@ -97,6 +112,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
         const reservoir: ObjectType | null = new ObjectList( reservoirs ).findOne( 'id', reservoir_id );
         const qLabel: string = ( reservoir && reservoir.name_el ) || ( `q_${reservoir_id}` );
         timeObj[ time ][ qLabel ] = quantity;
+        timeObj[ time ].total += quantity;
     } );
 
     const chartData = Object.values( timeObj );
@@ -105,14 +121,19 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
 
     const lineType: 'linear' | 'monotone' = xTicks.length && xTicks[ 0 ].length === 10 ? 'linear' : 'monotone';
 
-    const yValues = data.map( ( row: any[] ) => row[ 2 ] );
+    const minYValues = chartData.map( ( row: { [ key: string ]: any } ) => {
+        const { time, total, ...quantities } = row;
+        return Math.min( ...Object.values( quantities ) );
+    } );
 
-    const maxValue = Math.max( ...yValues );
-    const minValue = Math.min( ...yValues );
+    const maxYValues = chartData.map( ( row: { [ key: string ]: any } ) => row.total );
+
+    const minYValue = Math.min( ...minYValues );
+    const maxYValue = Math.max( ...maxYValues );
 
     const yTicks = getYTicks( 
-        minValue - minValue * .10, 
-        maxValue + maxValue * .05 
+        minYValue - minYValue * .10, 
+        maxYValue + maxYValue * .05 
     );
     
     const STROKES: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
@@ -149,7 +170,12 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
 
                     <Tooltip 
                         cursor={{ fill: '#0369a1' }}
-                        content={ <CustomTooltip reservoirs={ reservoirs } /> } 
+                        content={ 
+                            <CustomTooltip 
+                                reservoirs={ reservoirs } 
+                                makeReservoirsRepr={ makeReservoirsRepr }
+                            /> 
+                        } 
                     />
 
                     { reservoirs.map( ( r, i ) =>
@@ -198,7 +224,12 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     {/* <YAxis tickFormatter={ decimal => `${(decimal * 100).toFixed( 0 )}%` } /> */}
 
                     <Tooltip 
-                        content={ <CustomTooltip reservoirs={ reservoirs } /> } 
+                        content={ 
+                            <CustomTooltip 
+                                reservoirs={ reservoirs } 
+                                makeReservoirsRepr={ makeReservoirsRepr }
+                            /> 
+                        } 
                     />
 
                     { reservoirs.map( ( r, i ) =>
@@ -243,7 +274,12 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     />
 
                     <Tooltip 
-                        content={ <CustomTooltip reservoirs={ reservoirs } /> } 
+                        content={ 
+                            <CustomTooltip 
+                                reservoirs={ reservoirs } 
+                                makeReservoirsRepr={ makeReservoirsOrderedRepr }
+                            /> 
+                        } 
                     />
 
                     { reservoirs.map( ( r, i ) =>
@@ -258,6 +294,15 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                             legendType="plainline"
                         />
                     ) }
+
+                    <Line 
+                        type={ lineType } 
+                        dataKey="total"
+                        stroke={ SKY[ 600 ] } 
+                        strokeWidth={ 2 } 
+                        dot={ false }
+                        legendType="plainline"
+                    />
 
                     <Legend 
                         align="right" 

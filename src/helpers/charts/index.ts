@@ -1,6 +1,6 @@
 const getYLimits = ( minValue: number, maxValue: number ): [ number, number ] => {
 
-    const log: number = Math.floor( Math.log10( minValue ) );
+    const log: number = Math.floor( Math.log10( ( maxValue - minValue ) / 10 ) );
     const baseUnit: number = Math.pow( 10, log );
     return [
         Math.floor( minValue / baseUnit ) * baseUnit,
