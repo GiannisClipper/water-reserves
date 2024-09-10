@@ -1,6 +1,7 @@
 const withCommas = ( num: number ): string => {
 
-    const asStr: string = `${num}`;
+    const isNegative = num < 0;
+    const asStr: string = `${Math.abs( num )}`;
     const asArr: string[] = asStr.split( '.' ); 
     const intPart: string[] = asArr[ 0 ].split( '' ).reverse();
 
@@ -13,7 +14,7 @@ const withCommas = ( num: number ): string => {
     }
 
     asArr[ 0 ] = intPartWithCommas.reverse().join( '' );
-    const result: string = asArr.join( '.' );
+    const result: string = ( isNegative ? '-' : '' ) + asArr.join( '.' );
 
     return result;
 }
