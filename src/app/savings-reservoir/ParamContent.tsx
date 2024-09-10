@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import type { SavingsReservoirSearchParamsType } from "@/types/searchParams";
 import type { SavingsReservoirFormParamsType } from "@/types/formParams";
 import type { RequestErrorType } from "@/types/requestResult";
-import SavingsReservoirFormParams from "@/helpers/params/SavingsReservoirFormParams";
+import SavingsReservoirFormParams from "@/logic/savings-reservoir/params/SavingsReservoirFormParams";
 import { setParamsFactory } from "@/components/Page";
-import { SavingsReservoirSelfRequest } from "@/helpers/requests/SelfRequests";
+import { SavingsReservoirSelfRequest } from "@/logic/SelfRequests";
 
 import { 
     Form, FormSectionTimeRange, 

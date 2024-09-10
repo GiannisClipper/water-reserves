@@ -1,6 +1,4 @@
-type ViewType = 'overall' | 'chart' | 'list';
-
-type ChartType = 'line' | 'area' | 'bar';
+import type { ViewType, ChartType } from "./searchParams";
 
 interface FormParamsType {
 

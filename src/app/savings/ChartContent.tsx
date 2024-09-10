@@ -5,13 +5,13 @@ import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import type { RequestResultType } from "@/types/requestResult";
-import { getAggregatedData, getXTicks, getYTicks, getLineType } from '@/helpers/charts';
+import { getAggregatedData, getXTicks, getYTicks, getLineType } from '@/logic/savings/chart';
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
 import { timeLabel } from '@/helpers/time';
 
 import type { ObjectType } from '@/types';
-import type { LineType } from '@/helpers/charts';
+import type { LineType } from '@/logic/savings/chart';
 
 import "@/styles/chart.css";
 import { SKY } from '@/styles/colors';
@@ -24,12 +24,9 @@ type PropsType = {
 const ChartContent = ( { result, chartType }: PropsType ) => {
 
     const data: ObjectType[] = getAggregatedData( result );
-    
     const xTicks: string[] = getXTicks( data );
-
-    const lineType: LineType = getLineType( xTicks );
-
     const yTicks: number[] = getYTicks( data );
+    const lineType: LineType = getLineType( xTicks );
 
     console.log( "rendering: ChartContent...", data, xTicks, yTicks )
 

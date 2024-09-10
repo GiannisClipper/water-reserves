@@ -78,5 +78,4 @@ class SavingsApiRequest extends ApiRequestWithParams {
 export { 
     ReservoirsApiRequest,
     SavingsApiRequest, 
-
 };

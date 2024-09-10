@@ -7,17 +7,17 @@ import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recha
 
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
 
+import { getXTicks, getYTicks, getLineType } from '@/logic/savings/chart';
 import { 
-    getReservoirs, getNonAggregatedData, getYTicks, getXTicks, getLineType,
-    makeReservoirsRepr, makeReservoirsOrderedRepr,
-} from '@/helpers/charts';
+    getReservoirs, getNonAggregatedData, makeReservoirsRepr, makeReservoirsOrderedRepr
+} from '@/logic/savings-reservoir/chart';
 
 import { withCommas } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { ObjectType } from '@/types';
 
 import type { RequestResultType } from "@/types/requestResult";
-import type { LineType } from '@/helpers/charts';
+import type { LineType } from '@/logic/savings/chart';
 
 import "@/styles/chart.css";
 import { SKY } from '@/styles/colors';

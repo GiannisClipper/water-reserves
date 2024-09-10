@@ -1,12 +1,12 @@
-import FormParams from "./FormParams";
+import FormParams from "@/logic/savings/params/FormParams";
 
 import type { 
+    ViewType, ChartType,
     SearchParamsType, 
     SavingsReservoirSearchParamsType 
 } from "@/types/searchParams";
 
 import type {
-    ViewType, ChartType,
     FormParamsType, 
     SavingsReservoirFormParamsType 
 } from "@/types/formParams";

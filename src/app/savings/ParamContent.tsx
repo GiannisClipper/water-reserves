@@ -6,9 +6,9 @@ import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { SavingsFormParamsType } from "@/types/formParams";
 import type { RequestErrorType } from "@/types/requestResult";
 import { setParamsFactory } from "@/components/Page";
-import SavingsFormParams from "@/helpers/params/SavingsFormParams";
+import SavingsFormParams from "@/logic/savings/params/SavingsFormParams";
 
-import { SavingsSelfRequest } from "@/helpers/requests/SelfRequests";
+import { SavingsSelfRequest } from "@/logic/SelfRequests";
 
 import { 
     Form, FormSectionTimeRange, 
