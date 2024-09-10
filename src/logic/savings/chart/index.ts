@@ -16,12 +16,14 @@ const getAggregatedData = ( responseResult: any ): ObjectType[] => {
         const quantity: number = Math.round( row[ 1 ] );
 
         let diff: number = 0;
+        let percentage: number = 0;
         if ( i > 0 ) {
             const prevQuantity: number = Math.round( data[ i - 1 ][ 1 ] );
-            diff = Math.round( ( quantity - prevQuantity ) / prevQuantity * 10000 ) / 100;
+            diff = quantity - prevQuantity
+            percentage = Math.round( diff / prevQuantity * 10000 ) / 100;
         }
 
-        return { time, quantity, diff };
+        return { time, quantity, diff, percentage };
     } );
 
     return result;

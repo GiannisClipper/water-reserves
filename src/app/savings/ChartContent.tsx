@@ -216,13 +216,13 @@ const CustomTooltip = ( { active, payload, label }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
-        const { time, quantity, diff } = payload[ 0 ].payload;
+        const { time, quantity, diff, percentage } = payload[ 0 ].payload;
 
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
                 <p>{ `Αποθέματα: ${withCommas( quantity )}` } m<sup>3</sup></p>
-                <p>{ `Διαφορά: ${withPlusSign( diff )}%` }</p>
+                <p>{ `Διαφορά: ${withCommas( diff )} (${withPlusSign( percentage )}%)` }</p>
             </div>
       );
     }
