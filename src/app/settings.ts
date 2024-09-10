@@ -12,19 +12,6 @@ const PRECIPITATION: string = "Ποσότητες υετού";
 const SAVINGS_PRODUCTION: string = "Συνδυασμός αποθεμάτων και παραγωγής νερού";
 const SAVINGS_PRECIPITATION: string = "Συνδυασμός αποθεμάτων νερού και ποσοτήτων υετού";
 
-const GREENISH_COLOR: string = "#90EE90"; // Light Green
-const BLUEISH_COLOR: string = "#A7C7E7	"; // Pastel Blue
-const YELLOWISH_COLOR: string = "#FFD580"; // Light Orange 
-const REDISH_COLOR: string = "#FFB6C1"; // Light Pink 
-
-// from darker (blueish) to lighter (greenish)
-// convert from hsl to rgb hex values:
-// https://www.rapidtables.com/convert/color/hsl-to-rgb.html
-const WATER_COLOR: string[] = [ 
-    // hue: 206,201,196,191 saturation: 100% lightness: 50%
-    "#0091FF", "#00A6FF", "#00BBFF", "#00D0FF"
-];
-
 export { 
     NEXT_PUBLIC_REST_API_BASE_URL, 
     NEXT_PUBLIC_SELF_BASE_URL,
@@ -39,11 +26,4 @@ export {
     PRECIPITATION,
     SAVINGS_PRODUCTION,
     SAVINGS_PRECIPITATION,
-
-    GREENISH_COLOR,
-    BLUEISH_COLOR,
-    YELLOWISH_COLOR,
-    REDISH_COLOR,
-
-    WATER_COLOR,
 };

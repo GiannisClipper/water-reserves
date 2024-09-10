@@ -19,6 +19,15 @@ VS code extension: PostCSS Language Support (to fix error: Unknown at rule @appl
 https://tailwindcss.com/docs
 
 
+Colors 
+
+Tailwind CSS Colors
+https://uicolors.app/browse/tailwind-colors
+
+HSL to RGB color conversion
+https://www.rapidtables.com/convert/color/hsl-to-rgb.html
+
+
 Icons
 
 Font Awesome Docs: Set Up with React

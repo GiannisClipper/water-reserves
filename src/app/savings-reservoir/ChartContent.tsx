@@ -9,7 +9,7 @@ import { getYTicks, getXTicks } from '@/helpers/charts';
 import { commaView } from '@/helpers/numbers';
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
 import { timeLabel } from '@/helpers/time';
-import { WATER_COLOR } from '../settings';
+import { SKY } from '@/styles/colors';
 import { ObjectType } from '@/types';
 import ObjectList from '@/helpers/ObjectList';
 
@@ -148,6 +148,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     />
 
                     <Tooltip 
+                        cursor={{ fill: '#0369a1' }}
                         content={ <CustomTooltip reservoirs={ reservoirs } /> } 
                     />
 
@@ -157,9 +158,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                             type={ lineType } 
                             dataKey={ r.name_el }
                             stackId="a"
-                            stroke={ WATER_COLOR[ i ] } 
-                            strokeWidth={ 0 }
-                            fill={ WATER_COLOR[ i ] } 
+                            fill={ SKY[ 600 - i * 100 ] } 
                             fillOpacity={ 1 }
                         />
                     ) }
@@ -208,9 +207,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                             type={ lineType } 
                             dataKey={ r.name_el }
                             stackId="a"
-                            stroke={ WATER_COLOR[ i ] } 
-                            fill={ WATER_COLOR[ i ] } 
-                            fillOpacity={ .65 }                        />
+                            stroke={ SKY[ 600 - i * 100 ] } 
+                            fill={ SKY[ 600 - i * 100 ] } 
+                            fillOpacity={ .65 } 
+                        />
                     ) }
 
                     <Legend 
@@ -251,7 +251,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                             key={ i } 
                             type={ lineType } 
                             dataKey={ r.name_el } 
-                            stroke={ WATER_COLOR[ 0 ] } 
+                            stroke={ SKY[ 600 ] } 
                             strokeWidth={ 2 } 
                             strokeDasharray={ STROKES[ i ] }
                             dot={ false }

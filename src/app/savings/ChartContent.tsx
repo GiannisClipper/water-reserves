@@ -9,6 +9,7 @@ import { getXTicks, getYTicks } from '@/helpers/charts';
 import { commaView, plusView } from '@/helpers/numbers';
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
 import { timeLabel } from '@/helpers/time';
+import { SKY } from '@/styles/colors';
 
 import "@/styles/chart.css";
 
@@ -103,14 +104,18 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     />
 
                     <Tooltip 
+                        // cursor={{fill: 'transparent'}}
+                        cursor={{ fill: '#0369a1' }}
                         content={ <CustomTooltip /> } 
                     />
 
                     <Bar 
                         dataKey="quantity" 
-                        stroke="#00bbee" 
-                        fill="#00ccff" 
-                        activeBar={<Rectangle fill="#11ddff" />} 
+                        // stroke="#00bbee" 
+                        // fill="#00ccff" 
+                        stroke={ SKY[ 400 ] } 
+                        fill={ SKY[ 300 ] } 
+                        // activeBar={ <Rectangle fill="#11ddff" stroke="#999" /> } 
                     />
                 </BarChart>
 
@@ -144,9 +149,12 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     />
 
                     <Area 
-                        dataKey="quantity" 
-                        stroke="#00bbee" 
-                        fill="#00ccff" 
+                        dataKey="quantity"
+                        type={ lineType } 
+                        // stroke="#00bbee" 
+                        // fill="#00ccff" 
+                        stroke={ SKY[ 400 ] } 
+                        fill={ SKY[ 300 ] } 
                     />
                 </AreaChart>
 
@@ -180,7 +188,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                     <Line 
                         dataKey="quantity"
                         type={ lineType } 
-                        stroke="#00bbee" 
+                        // stroke="#00bbee" 
+                        stroke={ SKY[ 500 ] } 
                         strokeWidth={ 2 } 
                         dot={ false }
                     />
