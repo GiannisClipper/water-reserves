@@ -20,7 +20,7 @@ import type { RequestResultType } from "@/types/requestResult";
 import type { LineType } from '@/logic/savings/chart';
 
 import "@/styles/chart.css";
-import { SKY } from '@/styles/colors';
+import { SKY } from '@/helpers/colors';
 
 type PropsType = { 
     result: RequestResultType | null
