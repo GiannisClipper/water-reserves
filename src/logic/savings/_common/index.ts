@@ -25,7 +25,7 @@ const addDiff = ( data: ObjectType[] ): ObjectType[] => {
         let diff: number = 0;
         let percent: number = 0;
         if ( i > 0 ) {
-            const prevQuantity: number = Math.round( row[ i - 1 ].quantity );
+            const prevQuantity: number = Math.round( data[ i - 1 ].quantity );
             diff = quantity - prevQuantity
             percent = Math.round( diff / prevQuantity * 10000 ) / 100;
         }

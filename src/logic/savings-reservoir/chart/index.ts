@@ -5,14 +5,17 @@ import type { ObjectType } from '@/types';
 const makeReservoirsRepr = ( reservoirs: ObjectType[], quantities: ObjectType ): ObjectType[] => {
 
     // toReversed: considering the order of lines in chart (from bottom to top)
-    const result: ObjectType[] = reservoirs.toReversed().map( ( reservoir: ObjectType, i: number ) => {
+    const result: ObjectType[] = reservoirs.toReversed()
+        .map( ( reservoir: ObjectType, i: number ) => {
 
-        const { id, name_el: name } = reservoir;
-        const quantity: number = quantities[ id ] || 0;
-        const total = Object.values( quantities ).reduce( ( a, b ) => a + b, 0 );
-        const percent: number = Math.round( quantity / total * 100 );
-        return { name, quantity, percent };
-    } );
+            const { id, name_el: name } = reservoir;
+            if ( quantities[ id ] ) {
+                const { quantity=0, percent=0 } = quantities[ id ];
+                return { name, quantity, percent };
+            }
+            return null;
+        } )
+        .filter( ( reservoir: ObjectType | null ) => reservoir !== null );
 
     return result;
 }

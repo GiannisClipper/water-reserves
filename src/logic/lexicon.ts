@@ -1,14 +1,22 @@
 import type { ObjectType } from "@/types";
 
-const lexicon: ObjectType[] = [
-    { text: 'date', repr: 'Ημ/νία' },
-    { text: 'month', repr: 'Μήνας' },
-    { text: 'year', repr: 'Έτος' },
-    { text: 'reservoir', repr: 'Ταμιευτήρας' },
-    { text: 'quantity', repr: 'Ποσότητα' },
-    { text: 'diff', repr: 'Διαφορά' },
-    { text: 'percent', repr: '%' },
+const lexicon: ObjectType = {
+    date: 'Ημ/νία',
+    month: 'Μήνας',
+    year: 'Έτος',
+    custom_year: 'Υδρολογικό έτος',
+    reservoir: 'Ταμιευτήρας',
+    quantity: 'Ποσότητα',
+    diff: 'Διαφορά',
+    percent: '%',
+    total: 'Σύνολο',
+};
 
-];
+const translate = ( key: string ): string => {
+    if ( lexicon[ key ] ) {
+        return lexicon[ key ];
+    }
+    return key;
+}
 
-export default lexicon;
+export { lexicon, translate };

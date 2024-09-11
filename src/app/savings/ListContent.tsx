@@ -1,14 +1,18 @@
 import { CubicMeters } from "@/components/Symbols";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
+import { getHeaders } from '@/logic/savings/list';
+import { getAggregatedData } from '@/logic/savings/_common';
+import { translate } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
+import type { RequestResultType } from "@/types/requestResult";
 
-type PropsType = { 
-    headers: string[]
-    data: ObjectType[]
-}
+type PropsType = { result: RequestResultType | null }
 
-const ListContent = ( { headers, data }: PropsType ) => {
+const ListContent = ( { result }: PropsType ) => {
+
+    const data: ObjectType[] = getAggregatedData( result );
+    const headers: string[] = getHeaders( data );
 
     console.log( `rendering: ListContent...` )
 
@@ -17,7 +21,7 @@ const ListContent = ( { headers, data }: PropsType ) => {
             <tbody>
                 <tr>
                 { headers.map( ( header: string, i: number ) =>
-                    <th key={i}>{ header }</th>
+                    <th key={i}>{ translate( header ) }</th>
                 ) }
                 </tr>
 

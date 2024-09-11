@@ -121,9 +121,13 @@ ul {
     @apply flex flex-row justify-center
     min-h-[calc(50vh)]
     max-h-[calc(50vh)]
-    overflow-scroll
     bg-gray-700 text-gray-300 text-xs
     font-mono
+  }
+
+  .ListContent tbody {
+    @apply w-full h-full
+    overflow-scroll
   }
 
   .ListContent th {
@@ -132,6 +136,7 @@ ul {
 
   .ListContent td {
     @apply border-2 border-gray-600 p-2 px-6
+    whitespace-nowrap
   }
 
   .ListContent td.number {

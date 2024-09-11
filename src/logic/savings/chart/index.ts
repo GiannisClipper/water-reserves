@@ -15,7 +15,7 @@ const getYTicks = ( data: ObjectType[] ): number[] => {
     const minYValues = data.map( ( row: ObjectType ) => {
         const { time, quantity, quantities } = row;
         if ( quantities !== undefined ) {
-            return Math.min( ...Object.values( quantities ) );
+            return Math.min( ...Object.values( quantities ).map( q => q.quantity ) );
         }
         return quantity;
     } );
@@ -26,7 +26,7 @@ const getYTicks = ( data: ObjectType[] ): number[] => {
             return total;
         }
         if ( quantities !== undefined ) {
-            return Math.max( ...Object.values( quantities ) );
+            return Math.max( ...Object.values( quantities ).map( q => q.quantity ) );
         }
         return quantity;
     } );
