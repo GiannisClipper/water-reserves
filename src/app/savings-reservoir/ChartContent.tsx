@@ -14,13 +14,13 @@ import {
 
 import { withCommas } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
-import { ObjectType } from '@/types';
+import { SKY } from '@/helpers/colors';
 
-import type { RequestResultType } from "@/types/requestResult";
+import type { ObjectType } from '@/types';
 import type { LineType } from '@/logic/savings/chart';
+import type { RequestResultType } from "@/types/requestResult";
 
 import "@/styles/chart.css";
-import { SKY } from '@/helpers/colors';
 
 type PropsType = { 
     result: RequestResultType | null
@@ -307,7 +307,7 @@ const CustomTooltip = ( { active, payload, label, reservoirs, makeReservoirsRepr
                             <tr key={ i }>
                                 <td>{ reservoir.name }</td>
                                 <td className='value'>{ withCommas( reservoir.quantity )} m<sup>3</sup></td> 
-                                <td className='value'>{ `${reservoir.percentage}%` }</td>
+                                <td className='value'>{ `${reservoir.percent}%` }</td>
                             </tr>
                         ) }
                     </tbody>

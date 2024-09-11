@@ -4,17 +4,21 @@ import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import type { RequestResultType } from "@/types/requestResult";
-import { getAggregatedData, getXTicks, getYTicks, getLineType } from '@/logic/savings/chart';
-import { withCommas, withPlusSign } from '@/helpers/numbers';
+
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
+
+import { getAggregatedData, getLineType } from '@/logic/savings/_common';
+import { getXTicks, getYTicks } from '@/logic/savings/chart';
+
+import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
+import { SKY } from '@/helpers/colors';
 
 import type { ObjectType } from '@/types';
 import type { LineType } from '@/logic/savings/chart';
+import type { RequestResultType } from "@/types/requestResult";
 
 import "@/styles/chart.css";
-import { SKY } from '@/helpers/colors';
 
 type PropsType = { 
     result: RequestResultType | null
@@ -216,13 +220,13 @@ const CustomTooltip = ( { active, payload, label }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
-        const { time, quantity, diff, percentage } = payload[ 0 ].payload;
+        const { time, quantity, diff, percent } = payload[ 0 ].payload;
 
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
                 <p>{ `Αποθέματα: ${withCommas( quantity )}` } m<sup>3</sup></p>
-                <p>{ `Διαφορά: ${withCommas( diff )} (${withPlusSign( percentage )}%)` }</p>
+                <p>{ `Διαφορά: ${withCommas( diff )} (${withPlusSign( percent )}%)` }</p>
             </div>
       );
     }

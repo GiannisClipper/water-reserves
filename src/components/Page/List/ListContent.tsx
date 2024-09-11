@@ -1,28 +1,32 @@
-import type { RequestResultType } from "@/types/requestResult";
+import { CubicMeters } from "@/components/Symbols";
+import { withCommas, withPlusSign } from "@/helpers/numbers";
 
-type PropsType = { result: RequestResultType | null }
+import type { ObjectType } from "@/types";
 
-const ListContent = ( { result }: PropsType ) => {
+type PropsType = { 
+    headers: string[]
+    data: ObjectType[]
+}
 
-    const headers: string[] = result && result.headers || [];
-    const data: [][] = result && result.data || [];
+const ListContent = ( { headers, data }: PropsType ) => {
 
     console.log( `rendering: ListContent...` )
 
     return (
         <table className="ListContent">
             <tbody>
-                <tr key={0}>
-                { headers.map( ( val: string | number, i: number ) =>
-                    <th key={i}>{val}</th>
+                <tr>
+                { headers.map( ( header: string, i: number ) =>
+                    <th key={i}>{ header }</th>
                 ) }
                 </tr>
 
-                { data.map( ( row: (string | number)[], j: number ) =>
-                    <tr key={j+1}>
-                        { row.map( ( val: string | number, i: number ) =>
-                            <td key={i}>{val}</td>
-                        ) }
+                { data.map( ( row: ObjectType, i: number ) =>
+                    <tr key={ i }>
+                        <td> { row.time } </td>
+                        <td className='number'> { withCommas( row.quantity ) } <CubicMeters /></td>
+                        <td className='number'> { withCommas( row.diff ) } <CubicMeters /></td>
+                        <td className='number'> { withPlusSign( row.percent.toFixed( 2 ) ) } </td>
                     </tr>
                 ) }
                 </tbody>

@@ -121,8 +121,8 @@ const makeReservoirsRepr = ( reservoirs: ObjectType[], quantities: ObjectType ):
 
         const { name_el: name } = reservoir;
         const quantity: number = quantities[ name ] || 0;
-        const percentage: number = Math.round( quantity / quantities[ 'total' ] * 100 );
-        return { name, quantity, percentage };
+        const percent: number = Math.round( quantity / quantities[ 'total' ] * 100 );
+        return { name, quantity, percent };
     } );
 
     return result;
