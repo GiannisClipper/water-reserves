@@ -21,7 +21,12 @@ const ListContent = ( { result }: PropsType ) => {
             <tbody>
                 <tr>
                 { headers.map( ( header: string, i: number ) =>
-                    <th key={i}>{ translate( header ) }</th>
+                    <th 
+                        key={ i }
+                        data-key={ header }
+                    >
+                        { translate( header ) }
+                    </th>
                 ) }
                 </tr>
 

@@ -13,8 +13,8 @@ const getHeaders = ( data: ObjectType[], reservoirs: ObjectType[] ): string[] =>
         const ids: string[] = Object.keys( quantities );
         reservoirs = reservoirs.filter( r => ids.includes( `${r.id}` ) );
         reservoirs.forEach( r => {
-            headers.push( r.name_el ) 
-            headers.push( '%' ) 
+            headers.push( r.name_en ) 
+            headers.push( 'percent' ) 
         } );
     }
 
