@@ -13,15 +13,22 @@ const _getYLimits = ( minValue: number, maxValue: number ): [ number, number ] =
 const getYTicks = ( data: ObjectType[] ): number[] => {
 
     const minYValues = data.map( ( row: ObjectType ) => {
-        const { time, total, ...quantities } = row;
-        return Math.min( ...Object.values( quantities ) );
+        const { time, quantity, quantities } = row;
+        if ( quantities !== undefined ) {
+            return Math.min( ...Object.values( quantities ) );
+        }
+        return quantity;
     } );
 
     const maxYValues = data.map( ( row: ObjectType ) => {
-        const { time, total, ...quantities } = row;
-        return total === undefined 
-            ? Math.max( ...Object.values( quantities ) )
-            : total;
+        const { time, quantity, total, quantities } = row;
+        if ( total !== undefined ) {
+            return total;
+        }
+        if ( quantities !== undefined ) {
+            return Math.max( ...Object.values( quantities ) );
+        }
+        return quantity;
     } );
 
     const [ minYValue, maxYValue ] = _getYLimits( 

@@ -21,10 +21,10 @@ const ListSection = async ( { result }: PropsType ) => {
 
     return (
         <div className="ListSection">
-            <ListLabel result={result} />
+            <ListLabel result={ result } />
             <ListContent 
-                headers={headers} 
-                data={data} 
+                headers={ headers } 
+                data={ data } 
             />
         </div>
     );

@@ -7,17 +7,17 @@ import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recha
 
 import { CustomizedXAxisTick } from '@/components/Page/Chart';
 
-import { getXTicks, getYTicks, getLineType } from '@/logic/savings/chart';
-import { 
-    getReservoirs, getNonAggregatedData, makeReservoirsRepr, makeReservoirsOrderedRepr
-} from '@/logic/savings-reservoir/chart';
+import { getXTicks, getYTicks } from '@/logic/savings/chart';
+import { getLineType } from '@/logic/savings/_common';
+import { getReservoirs, getNonAggregatedData } from '@/logic/savings-reservoir/_common';
+import { makeReservoirsRepr, makeReservoirsOrderedRepr } from '@/logic/savings-reservoir/chart';
 
 import { withCommas } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { SKY } from '@/helpers/colors';
 
 import type { ObjectType } from '@/types';
-import type { LineType } from '@/logic/savings/chart';
+import type { LineType } from '@/logic/savings/_common';
 import type { RequestResultType } from "@/types/requestResult";
 
 import "@/styles/chart.css";
@@ -31,13 +31,9 @@ type PropsType = {
 const ChartContent = ( { result, chartType }: PropsType ) => {
 
     const reservoirs: ObjectType[] = getReservoirs( result );
-
     const data = getNonAggregatedData( result, reservoirs );
-
     const xTicks: string[] = getXTicks( data );
-
     const yTicks: number[] = getYTicks( data );
-
     const lineType: LineType = getLineType( xTicks );
 
     const STROKES: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
@@ -135,7 +131,7 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoi
                     <Line 
                         key={ i } 
                         type={ lineType } 
-                        dataKey={ r.name_el } 
+                        dataKey={ `quantities.${r.id}` }
                         stroke={ color[ 600 ] } 
                         strokeWidth={ 2 } 
                         strokeDasharray={ strokeDasharray[ i ] }
@@ -204,7 +200,7 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoi
                     <Area 
                         key={ i } 
                         type={ lineType } 
-                        dataKey={ r.name_el }
+                        dataKey={ `quantities.${r.id}` }
                         stackId="a"
                         stroke={ color[ 600 - i * 100 ] } 
                         fill={ color[ 600 - i * 100 ] } 
@@ -261,7 +257,7 @@ const BarChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoir
                     <Bar 
                         key={ i } 
                         type={ lineType } 
-                        dataKey={ r.name_el }
+                        dataKey={ `quantities.${r.id}` }
                         stackId="a"
                         fill={ color[ 600 - i * 100 ] } 
                         fillOpacity={ 1 }
@@ -289,8 +285,8 @@ const CustomTooltip = ( { active, payload, label, reservoirs, makeReservoirsRepr
 
     if ( active && payload && payload.length ) {
 
-        const { time, ...quantities } = payload[ 0 ].payload;
-        const { total } = quantities;
+        const { time, total, quantities } = payload[ 0 ].payload;
+
         const reservoirsRepr: ObjectType[] = makeReservoirsRepr( reservoirs, quantities );
 
         return (
