@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
 import type { SavingsSearchParamsType } from "@/types/searchParams";
-import { SavingsApiRequest } from "@/logic/ApiRequests";
+import { SavingsApiRequest } from "@/logic/_common/ApiRequests";
 import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 
 import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/Page/Skeleton";

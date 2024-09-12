@@ -7,7 +7,7 @@ import type { SavingsReservoirFormParamsType } from "@/types/formParams";
 import type { RequestErrorType } from "@/types/requestResult";
 import SavingsReservoirFormParams from "@/logic/savings-reservoir/params/SavingsReservoirFormParams";
 import { setParamsFactory } from "@/components/Page";
-import { SavingsReservoirSelfRequest } from "@/logic/SelfRequests";
+import { SavingsReservoirSelfRequest } from "@/logic/_common/SelfRequests";
 
 import { 
     Form, FormSectionTimeRange, 

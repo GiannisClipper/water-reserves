@@ -2,7 +2,7 @@ import { CubicMeters } from "@/components/Symbols";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
 import { getHeaders } from '@/logic/savings/list';
 import { getAggregatedData } from '@/logic/savings/_common';
-import { translate } from "@/logic/lexicon";
+import { translate } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
 import type { RequestResultType } from "@/types/requestResult";

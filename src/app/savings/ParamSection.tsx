@@ -1,6 +1,6 @@
 import ParamState from "./ParamState";
 import type { SearchParamsType } from "@/types/searchParams";
-import { ReservoirsApiRequest } from "@/logic/ApiRequests";
+import { ReservoirsApiRequest } from "@/logic/_common/ApiRequests";
 
 type PropsType = {
     searchParams: SearchParamsType

@@ -5,7 +5,7 @@ import ObjectList from "@/helpers/objects/ObjectList";
 
 import { getReservoirs, getNonAggregatedData } from '@/logic/savings-reservoir/_common';
 import { getHeaders } from '@/logic/savings-reservoir/list';
-import { lexicon, translate } from "@/logic/lexicon";
+import { lexicon, translate } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
 import type { RequestResultType } from "@/types/requestResult";

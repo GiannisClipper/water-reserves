@@ -2,6 +2,7 @@
 
 import { Left, Right } from "@/components/Generics";
 import { ChartLineIcon, ChartAreaIcon, ChartBarIcon, LinkIcon, ScreenIcon, DownloadIcon } from "@/components/Icons";
+import { downloadChart } from "@/logic/_common/download";
 import type { RequestResultType } from "@/types/requestResult";
 
 import "@/styles/label.css"
@@ -33,7 +34,7 @@ export default function ChartLabel( { result, setChartType }: PropsType ) {
                 <ChartBarIcon className="icon" title="Γράφημα με μπάρες" onClick={ setChartBar } />
                 <ScreenIcon className="icon" title="Ευρεία οθόνη" />
                 <LinkIcon className="icon" title="Σύνδεσμος ευρείας οθόνης" />
-                <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" />
+                <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" onClick={ downloadChart } />
             </Right>
             :
             null

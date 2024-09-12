@@ -8,7 +8,7 @@ import type { RequestErrorType } from "@/types/requestResult";
 import { setParamsFactory } from "@/components/Page";
 import SavingsFormParams from "@/logic/savings/params/SavingsFormParams";
 
-import { SavingsSelfRequest } from "@/logic/SelfRequests";
+import { SavingsSelfRequest } from "@/logic/_common/SelfRequests";
 
 import { 
     Form, FormSectionTimeRange, 
