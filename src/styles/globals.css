@@ -116,7 +116,7 @@ ul {
     max-h-[calc(55vh)]
     bg-gray-50 text-gray-600 text-xs
   }
-
+  
   .ListContent {
     @apply flex flex-row justify-center
     min-h-[calc(50vh)]
@@ -141,6 +141,15 @@ ul {
 
   .ListContent td.number {
     @apply text-right
+  }
+
+  .CustomizedLegend {
+    @apply flex flex-row justify-end
+    /* border border-dashed border-black */
+  }
+
+  .CustomizedLegend svg {
+    @apply inline-block ml-2 mr-1
   }
 
 }

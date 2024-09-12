@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react";
 import { LineChart, Line, Legend } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
@@ -16,6 +17,8 @@ import ObjectList from '@/helpers/objects/ObjectList';
 import { withCommas } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { SKY } from '@/helpers/colors';
+import { setFunctionOnDelay } from "@/helpers/time";
+import { getAspect } from "@/logic/_common/chart";
 
 import type { ObjectType } from '@/types';
 import type { LineType } from '@/logic/savings/_common';
@@ -29,7 +32,7 @@ type PropsType = {
 }
 
 const ChartContent = ( { result, chartType }: PropsType ) => {
-
+    
     const data = getNonAggregatedData( result );
     let reservoirs: ObjectType[] = getReservoirs( result, data );
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
@@ -39,9 +42,12 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const yTicks: number[] = getYTicks( data );
     const lineType: LineType = getLineType( xTicks );
 
-    const STROKES: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
+    const colorArray: string[] = [ SKY[ 600 ], SKY[ 500 ], SKY[ 400 ], SKY[ 300 ] ];
 
-    console.log( "rendering: ChartContent...", data, xTicks, yTicks )
+    const [ aspect, setAspect ] = useState( 0 );
+    const onResize = setFunctionOnDelay( () => getAspect( aspect, setAspect ), 100 );
+
+    console.log( "rendering: ChartContent..." )//, data, xTicks, yTicks )
 
     return (
         <div className="ChartContent">
@@ -53,8 +59,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 xTicks={ xTicks }
                 yTicks={ yTicks }
                 lineType={ lineType }
-                color={ SKY }
+                colorArray={ colorArray }
                 reservoirs={ reservoirs }
+                aspect={ aspect }
+                onResize={ onResize }
             />
 
             :
@@ -65,8 +73,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 xTicks={ xTicks }
                 yTicks={ yTicks }
                 lineType={ lineType }
-                color={ SKY }
+                colorArray={ colorArray }
                 reservoirs={ reservoirs }
+                aspect={ aspect }
+                onResize={ onResize }
             />
 
             :
@@ -75,8 +85,10 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 xTicks={ xTicks }
                 yTicks={ yTicks }
                 lineType={ lineType }
-                color={ SKY }
+                colorArray={ colorArray }
                 reservoirs={ reservoirs }
+                aspect={ aspect }
+                onResize={ onResize }
             />
             }
                 
@@ -89,22 +101,26 @@ type ChartCompositionPropsType = {
     xTicks: string[]
     yTicks: number[]
     lineType: LineType
-    color: ObjectType
+    colorArray: string[]
     reservoirs: ObjectType[]
+    aspect: number
+    onResize: CallableFunction
 }
 
-const LineChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoirs }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
-    const strokeDasharray: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
+    const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
+
+    console.log( 'Rerender LineChart...' );
 
     return (
-        <ResponsiveContainer height="100%" width="100%">
+        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <LineChart
                 data={ data }
                 margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
             >
                 <CartesianGrid 
-                    strokeDasharray="3 3" 
+                    strokeDasharray="1 1" 
                 />
 
                 <XAxis 
@@ -132,46 +148,54 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoi
 
                 { reservoirs.map( ( r, i ) =>
                     <Line 
-                        key={ i } 
+                        key={ i }
+                        id={ `${i+1}`} 
                         type={ lineType } 
                         dataKey={ `quantities.${r.id}.quantity` }
-                        stroke={ color[ 600 ] } 
+                        stroke={ colorArray[ 0 ] } 
                         strokeWidth={ 2 } 
-                        strokeDasharray={ strokeDasharray[ i ] }
+                        strokeDasharray={ lineDashes[ i ] }
                         dot={ false }
                         legendType="plainline"
                     />
                 ) }
 
                 <Line 
+                    id="0" 
                     type={ lineType } 
                     dataKey="total"
-                    stroke={ color[ 600 ] } 
-                    strokeWidth={ 2 } 
+                    stroke={ colorArray[ 0 ] } 
+                    strokeWidth={ 2 }
                     dot={ false }
                     legendType="plainline"
                 />
 
                 <Legend 
                     align="right" 
-                    verticalAlign='top' 
+                    verticalAlign='top'
+                    height={ 24 }
+                    content={ <LineLegend 
+                        reservoirs={ reservoirs }
+                        colorsArray={ colorArray }
+                        strokeDasharray={ lineDashes }
+                    /> }
                 />
             </LineChart>
         </ResponsiveContainer>
     );
 }
 
-const AreaChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoirs }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
-        <ResponsiveContainer height="100%" width="100%">
+        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <AreaChart
                 data={ data }
                 margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
                 // stackOffset="expand"
             >
                 <CartesianGrid 
-                    strokeDasharray="3 3" 
+                    strokeDasharray="1 1" 
                 />
 
                 <XAxis 
@@ -205,8 +229,8 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoi
                         type={ lineType } 
                         dataKey={ `quantities.${r.id}.quantity` }
                         stackId="a"
-                        stroke={ color[ 600 - i * 100 ] } 
-                        fill={ color[ 600 - i * 100 ] } 
+                        stroke={ colorArray[ i ] } 
+                        fill={ colorArray[ i ] } 
                         fillOpacity={ .65 } 
                     />
                 ) }
@@ -214,22 +238,27 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoi
                 <Legend 
                     align="right" 
                     verticalAlign='top' 
+                    height={ 24 }
+                    content={ <CustomizedLegend 
+                        reservoirs={ reservoirs }
+                        colorsArray={ colorArray }
+                    /> }
                 />
             </AreaChart>
         </ResponsiveContainer>
     );
 }
 
-const BarChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoirs }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
-        <ResponsiveContainer height="100%" width="100%">
+        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <BarChart
                 data={ data }
                 margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
             >
                 <CartesianGrid 
-                    strokeDasharray="3 3" 
+                    strokeDasharray="1 1" 
                 />
 
                 <XAxis 
@@ -262,7 +291,7 @@ const BarChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoir
                         type={ lineType } 
                         dataKey={ `quantities.${r.id}.quantity` }
                         stackId="a"
-                        fill={ color[ 600 - i * 100 ] } 
+                        fill={ colorArray[ i ] } 
                         fillOpacity={ 1 }
                     />
                 ) }
@@ -270,6 +299,11 @@ const BarChartComposition = ( { data, xTicks, yTicks, lineType, color, reservoir
                 <Legend 
                     align="right" 
                     verticalAlign='top' 
+                    height={ 24 }
+                    content={ <CustomizedLegend 
+                        reservoirs={ reservoirs }
+                        colorsArray={ colorArray }
+                    /> }
                 />
             </BarChart>
         </ResponsiveContainer>
@@ -318,5 +352,70 @@ const CustomTooltip = ( { active, payload, label, reservoirs, makeReservoirsRepr
   
     return null;
 };
+
+type LineLegendPropsType = {
+    payload?: any
+    reservoirs: ObjectType[]
+    colorsArray: string[]
+    strokeDasharray: string[]
+}
+
+const LineLegend = ( { payload, reservoirs, colorsArray, strokeDasharray }: LineLegendPropsType ) => {
+
+    return (
+        <div className='CustomizedLegend'>
+            { reservoirs.map( ( r: ObjectType, i: number ) =>
+                <span 
+                    key={ i }
+                    style={ { color: colorsArray[ 0 ] } }
+                >
+                <svg height="10" width="25" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="none" stroke={ colorsArray[ 0 ] } stroke-width="2">
+                            <path stroke-dasharray={ strokeDasharray[ i ] } d="M5 5 l25 0" />
+                        </g>
+                    </svg>
+                    { r.name_el }
+                </span>
+            ) }
+            <span
+                style={ { color: colorsArray[ 0 ] } }
+            >
+                <svg height="10" width="25" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" stroke={ colorsArray[ 0 ] } stroke-width="2">
+                        <path d="M5 5 l25 0" />
+                    </g>
+                </svg>
+                Σύνολο
+            </span>
+        </div>
+    )
+}
+
+type CustomizedLegendPropsType = {
+    payload?: any
+    reservoirs: ObjectType[]
+    colorsArray: string[]
+}
+
+const CustomizedLegend = ( { payload, reservoirs, colorsArray }: CustomizedLegendPropsType ) => {
+
+    return (
+        <div className='CustomizedLegend'>
+            { reservoirs.map( ( r: ObjectType, i: number ) =>
+                <span 
+                    key={ i }
+                    style={ { color: colorsArray[ i ] } }
+                >
+                    <svg height="10" width="15" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="none" stroke={ colorsArray[ i ] } stroke-width="4">
+                            <path d="M5 5 l15 0" />
+                        </g>
+                    </svg>
+                    { r.name_el }
+                </span>
+            ) }
+        </div>
+    )
+}
 
 export default ChartContent;

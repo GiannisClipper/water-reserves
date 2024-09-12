@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from 'react';
 import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
@@ -13,9 +14,11 @@ import { getXTicks, getYTicks } from '@/logic/savings/chart';
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { SKY } from '@/helpers/colors';
+import { setFunctionOnDelay } from "@/helpers/time";
+import { getAspect } from "@/logic/_common/chart";
 
 import type { ObjectType } from '@/types';
-import type { LineType } from '@/logic/savings/chart';
+import type { LineType } from '@/logic/savings/_common';
 import type { RequestResultType } from "@/types/requestResult";
 
 import "@/styles/chart.css";
@@ -32,6 +35,9 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const yTicks: number[] = getYTicks( data );
     const lineType: LineType = getLineType( xTicks );
 
+    const [ aspect, setAspect ] = useState( 0 );
+    const onResize = setFunctionOnDelay( () => getAspect( aspect, setAspect ), 100 );
+
     console.log( "rendering: ChartContent...", data, xTicks, yTicks )
 
     return (
@@ -45,6 +51,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 yTicks={ yTicks }
                 lineType={ lineType }
                 color={ SKY }
+                aspect={ aspect }
+                onResize={ onResize }
             />
 
             :
@@ -56,6 +64,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 yTicks={ yTicks }
                 lineType={ lineType }
                 color={ SKY }
+                aspect={ aspect }
+                onResize={ onResize }
             />
 
             :
@@ -65,6 +75,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
                 yTicks={ yTicks }
                 lineType={ lineType }
                 color={ SKY }
+                aspect={ aspect }
+                onResize={ onResize }
             />
             }
         </div>
@@ -77,12 +89,14 @@ type ChartCompositionPropsType = {
     yTicks: number[]
     lineType: LineType
     color: ObjectType
+    aspect: number
+    onResize: CallableFunction
 }
 
-const LineChartComposition = ( { data, xTicks, yTicks, lineType, color }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { data, xTicks, yTicks, lineType, color, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
-        <ResponsiveContainer height="100%" width="100%">
+        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <LineChart
                 data={ data }
                 margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
@@ -122,10 +136,10 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, color }: ChartC
     );
 }
 
-const AreaChartComposition = ( { data, xTicks, yTicks, lineType, color }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { data, xTicks, yTicks, lineType, color, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
-        <ResponsiveContainer height="100%" width="100%">
+        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <AreaChart
                 data={ data }
                 margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
@@ -165,10 +179,10 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, color }: ChartC
     );
 }
 
-const BarChartComposition = ( { data, xTicks, yTicks, lineType, color }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { data, xTicks, yTicks, lineType, color, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
-        <ResponsiveContainer height="100%" width="100%">
+        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <BarChart
                 data={ data }
                 margin={{ top: 20, right: 20, bottom: 60, left: 40 }}

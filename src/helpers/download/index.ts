@@ -1,6 +1,5 @@
 function download( filename: string, data: string ): void {
 
-    console.log( data )
     const elem = document.createElement( 'a' );
     elem.setAttribute( 'href', data );
     elem.setAttribute( 'download', filename );

@@ -29,4 +29,19 @@ const timeLabel = ( value: string ): string => {
     return '';
 }
 
-export { timeKey, timeLabel };
+function setFunctionOnDelay( func: CallableFunction, ms: number ) {
+
+    let timer: any;
+
+    return () => {
+        // console.log( 'execute with delay: delay' )
+        clearTimeout( timer );
+        timer = setTimeout( () => { 
+            timer = null; 
+            // console.log( 'executeWithDelay: execute' )
+            func(); 
+        }, ms )
+    };
+}
+
+export { timeKey, timeLabel, setFunctionOnDelay };

@@ -19,7 +19,7 @@ abstract class ApiRequest {
 
     public async request(): Promise<[ RequestErrorType | null, any | null ]> {
 
-        console.log( this.url );
+        // console.log( this.url );
         const response = await fetch( this.url );
         // console.log( response.status, response.statusText )
         const result: any = await response.json();

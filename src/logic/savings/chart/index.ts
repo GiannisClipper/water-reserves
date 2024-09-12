@@ -53,7 +53,7 @@ const getXTicks = ( data: ObjectType[] ): string[] => {
 
     let values = data.map( ( row: { [ key: string ]: any } ) => row.time );
 
-    console.log('values.length', values.length, values);
+    // console.log('values.length', values.length, values);
     if ( values.length === 0 ) {
         return values;
     }
