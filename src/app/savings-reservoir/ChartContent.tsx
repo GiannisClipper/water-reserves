@@ -6,7 +6,7 @@ import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 
-import { CustomizedXAxisTick } from '@/components/Page/Chart';
+import { CustomizedXAxisTick, CustomizedYAxisTick } from '@/components/Page/Chart';
 
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 import { getLineType } from '@/logic/savings/_common';
@@ -135,7 +135,7 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
                     domain={ [ yTicks[ 0 ], yTicks[ yTicks.length - 1 ] ] } 
                     ticks={ yTicks } 
                     interval={ 0 } 
-                    tickFormatter={ x => withCommas( x ) } 
+                    tick={ <CustomizedYAxisTick data={ data } /> }
                 />
 
                 <Tooltip 
@@ -210,10 +210,8 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
                     domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
                     ticks={ yTicks } 
                     interval={ 0 } 
-                    tickFormatter={ x => withCommas( x ) } 
+                    tick={ <CustomizedYAxisTick data={ data } /> }
                 />
-
-                {/* <YAxis tickFormatter={ decimal => `${(decimal * 100).toFixed( 0 )}%` } /> */}
 
                 <Tooltip 
                     content={ 
@@ -273,7 +271,7 @@ const BarChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, rese
                     domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
                     ticks={ yTicks } 
                     interval={ 0 } 
-                    tickFormatter={ x => withCommas( x ) } 
+                    tick={ <CustomizedYAxisTick data={ data } /> }
                 />
 
                 <Tooltip 

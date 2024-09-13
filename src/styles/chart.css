@@ -6,8 +6,8 @@
     /* @apply border border-white border-dotted */
   }
    
-  .XTick {
-    @apply text-xxs md:text-xs
+  .XTick, .YTick {
+    @apply text-xxs md:text-xs font-sans
   }
 
   .Tooltip {
