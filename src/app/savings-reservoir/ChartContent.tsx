@@ -47,7 +47,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const [ aspect, setAspect ] = useState( 0 );
     const onResize = setFunctionOnDelay( () => getAspect( aspect, setAspect ), 100 );
 
-    console.log( "rendering: ChartContent..." )//, data, xTicks, yTicks )
+    console.log( "rendering: ChartContent..." ) 
+    console.log( 'data, xTicks, yTicks', data, xTicks, yTicks )
 
     return (
         <div className="ChartContent">
@@ -370,8 +371,8 @@ const LineLegend = ( { payload, reservoirs, colorsArray, strokeDasharray }: Line
                     style={ { color: colorsArray[ 0 ] } }
                 >
                 <svg height="10" width="25" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="none" stroke={ colorsArray[ 0 ] } stroke-width="2">
-                            <path stroke-dasharray={ strokeDasharray[ i ] } d="M5 5 l25 0" />
+                        <g fill="none" stroke={ colorsArray[ 0 ] } strokeWidth="2">
+                            <path strokeDasharray={ strokeDasharray[ i ] } d="M5 5 l25 0" />
                         </g>
                     </svg>
                     { r.name_el }
@@ -381,7 +382,7 @@ const LineLegend = ( { payload, reservoirs, colorsArray, strokeDasharray }: Line
                 style={ { color: colorsArray[ 0 ] } }
             >
                 <svg height="10" width="25" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="none" stroke={ colorsArray[ 0 ] } stroke-width="2">
+                    <g fill="none" stroke={ colorsArray[ 0 ] } strokeWidth="2">
                         <path d="M5 5 l25 0" />
                     </g>
                 </svg>
@@ -407,7 +408,7 @@ const CustomizedLegend = ( { payload, reservoirs, colorsArray }: CustomizedLegen
                     style={ { color: colorsArray[ i ] } }
                 >
                     <svg height="10" width="15" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="none" stroke={ colorsArray[ i ] } stroke-width="4">
+                        <g fill="none" stroke={ colorsArray[ i ] } strokeWidth="4">
                             <path d="M5 5 l15 0" />
                         </g>
                     </svg>

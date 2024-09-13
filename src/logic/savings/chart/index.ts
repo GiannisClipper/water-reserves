@@ -53,27 +53,29 @@ const getXTicks = ( data: ObjectType[] ): string[] => {
 
     let values = data.map( ( row: { [ key: string ]: any } ) => row.time );
 
-    // console.log('values.length', values.length, values);
     if ( values.length === 0 ) {
         return values;
     }
 
-    // reduce days to months
-    if ( values[ 0 ].length === 10 && values.length > 31 ) {
-        values = values.filter( ( v: string ) => v.substring( 8, 10 ) === '01' );
-        values = values.map( ( v: string ) => v.substring( 0, 8 ) );
+    switch ( values[ 0 ].length ) {
+
+        case 10:
+            // reduce days to months
+            if ( values.length > 62 ) {
+                values = values.filter( ( v: string ) => v.substring( 8, 10 ) === '01' );
+
+                // reduce furthermore to years
+                if ( values.length > 24 ) {
+                        values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
+                }
+            }
+
+        case 7:
+            // reduce months to years
+            if ( values.length > 24 ) {
+                values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
+            }
     }
-
-    // reduce days to years
-    // if ( values[ 0 ].length === 10 && values.length > 24 ) {
-    //         values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
-    // }
-
-    // reduce months to years
-    if ( values[ 0 ].length === 7 && values.length > 24 ) {
-        values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
-    }
-
     return values;
 }
 

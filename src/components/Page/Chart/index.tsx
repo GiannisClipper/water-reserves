@@ -5,13 +5,13 @@ const CustomizedXAxisTick = props => {
     // set the tick
     let tick: string = payload.value;
 
-    if ( tick.length === 10 && data.length > 366 * 2 ) {
+    if ( tick.length === 10 && data.length > 365 + 366 ) {
       tick = tick.substring( 0, 4 ); // reduce days to years 
 
-    } else if ( tick.length === 10 && data.length > 31 ) {
+    } else if ( tick.length === 10 && data.length > 31 * 2 ) {
       tick = tick.substring( 0, 7 ); // reduce days to months 
 
-    } else if ( tick.length === 7 && data.length > 24 ) {
+    } else if ( tick.length === 7 && data.length > 12 * 2 ) {
       tick = tick.substring( 0, 4 ); // reduce months to years
     }
 
@@ -27,8 +27,9 @@ const CustomizedXAxisTick = props => {
     }
 
     return (
-      <g transform={`translate(${x-dx},${y+dy}) rotate(-60)`}>
-        <text dy={ dy } textAnchor='middle' fill='#666'>{ tick }</text>
+      <g transform={ `translate(${x-dx},${y+dy}) rotate(-60)` }>
+        <text className='XTick'
+          dy={ dy } textAnchor='middle' fill='#666'>{ tick }</text>
       </g>
     );
 }

@@ -38,7 +38,8 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
     const [ aspect, setAspect ] = useState( 0 );
     const onResize = setFunctionOnDelay( () => getAspect( aspect, setAspect ), 100 );
 
-    console.log( "rendering: ChartContent...", data, xTicks, yTicks )
+    console.log( "rendering: ChartContent..." )
+    console.log( 'data, xTicks, yTicks', data, xTicks, yTicks )
 
     return (
         <div className="ChartContent">
@@ -109,7 +110,7 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, color, aspect, 
                     dataKey="time" 
                     ticks={ xTicks } 
                     interval={ 0 } 
-                    tick={ <CustomizedXAxisTick data={ data } /> } 
+                    tick={ <CustomizedXAxisTick data={ data } /> }
                 />
 
                 <YAxis 
