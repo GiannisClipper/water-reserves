@@ -8,7 +8,7 @@
   }
 
   .FormSection {
-    @apply m-2 bg-white bg-opacity-65 text-sky-800
+    @apply m-2 bg-white bg-opacity-50 text-sky-800
     pb-1
   }
 

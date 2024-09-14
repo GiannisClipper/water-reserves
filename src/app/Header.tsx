@@ -15,7 +15,7 @@ type PropsType = { subTitle: string }
 
 const Header = ( { subTitle }: PropsType ) => {
 
-    subTitle = `:: ${subTitle} ::`;
+    subTitle = `${subTitle}`;
 
     const [ openModal, setOpenModal ] = useState( false );
 

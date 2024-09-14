@@ -49,8 +49,9 @@ const getYTicks = ( data: ObjectType[] ): number[] => {
 
     let baseUnit: number = Math.pow( 10, log );
     let times = Math.ceil( Math.ceil( diff / baseUnit ) / 10 );
+    times = Math.ceil( times / 2.5 ) * 2.5 // possible values: 2.5, 5, 7.5, 10
     // console.log( 'baseUnit, times', baseUnit, times ) 
-    // for example: 100000000 2
+    // for example: 100000000 2.5
 
     baseUnit *= times;
 

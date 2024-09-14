@@ -118,7 +118,7 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
         <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <LineChart
                 data={ data }
-                margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
+                margin={{ top: 20, right: 20, bottom:40, left: 40 }}
             >
                 <CartesianGrid 
                     strokeDasharray="1 1" 
@@ -192,7 +192,7 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
         <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <AreaChart
                 data={ data }
-                margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
+                margin={{ top: 20, right: 20, bottom:40, left: 40 }}
                 // stackOffset="expand"
             >
                 <CartesianGrid 
@@ -254,10 +254,11 @@ const BarChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, rese
         <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <BarChart
                 data={ data }
-                margin={{ top: 20, right: 20, bottom: 60, left: 40 }}
+                margin={{ top: 20, right: 20, bottom:40, left: 40 }}
             >
                 <CartesianGrid 
                     strokeDasharray="1 1" 
+                    vertical={ false } 
                 />
 
                 <XAxis 
