@@ -21,7 +21,7 @@ import {
 import { 
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
-    FieldValueAggregation, FieldTimeAggregation,
+    FieldReservoirAggregation, FieldValueAggregation, FieldTimeAggregation,
     FieldCheckBox
 } from "@/components/Field";
 
@@ -46,7 +46,7 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
     const {
         setFromDate, setToDate,
         setFromInterval, setToInterval,
-        setTimeAggregation, setValueAggregation,
+        setReservoirAggregation, setTimeAggregation, setValueAggregation,
         setReservoirFilter,
     } = setParamsFactory( { params, setParams } );
 
@@ -70,6 +70,7 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
     return (
         <Form className="ParamContent">
+
             <FormSectionTimeRange>
                 <FieldFromDate
                     value={ params.fromDate }
@@ -79,6 +80,16 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
                     value={ params.toDate }
                     onChange={ setToDate }
                 />
+                <FieldTimeAggregation
+                    value={ params.timeAggregation }
+                    onChange={ setTimeAggregation }
+                />
+                <FieldValueAggregation
+                    values={ [ '', 'avg' ] }
+                    value={ params.valueAggregation }
+                    onChange={ setValueAggregation }
+                />
+
             </FormSectionTimeRange>
 
             <FormSectionReservoirs>
@@ -91,19 +102,13 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
                         onChange={ setReservoirFilter }
                     /> 
                 ) }
-            </FormSectionReservoirs>
+                <FieldReservoirAggregation
+                    values={ [ '', 'sum' ] }
+                    value={ params.reservoirAggregation }
+                    onChange={ setReservoirAggregation }
+                />
 
-            <FormSectionAggregation>
-                <FieldTimeAggregation
-                    value={ params.timeAggregation }
-                    onChange={ setTimeAggregation }
-                />
-                <FieldValueAggregation
-                    values={ [ '', 'avg' ] }
-                    value={ params.valueAggregation }
-                    onChange={ setValueAggregation }
-                />
-            </FormSectionAggregation>
+            </FormSectionReservoirs>
 
             { showMore
                 ? <FormButtonLess onClick={ setLess } />

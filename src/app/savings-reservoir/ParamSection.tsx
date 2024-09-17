@@ -1,5 +1,6 @@
 import ParamState from "./ParamState";
 import type { SearchParamsType } from "@/types/searchParams";
+import ObjectList from "@/helpers/objects/ObjectList";
 import { ReservoirsApiRequest } from "@/logic/_common/ApiRequests";
 
 type PropsType = {
@@ -11,7 +12,8 @@ const ParamSection = async ( { searchParams }: PropsType ) => {
     console.log( "rendering: ParamSection..." )
 
     const reservoirsApiRequest = new ReservoirsApiRequest();
-    const [ error, reservoirs ] = await reservoirsApiRequest.request();
+    let [ error, reservoirs ] = await reservoirsApiRequest.request();
+    reservoirs = new ObjectList( reservoirs ).sortBy( 'start', 'asc' );
     // console.log( error, reservoirs );
 
     return (

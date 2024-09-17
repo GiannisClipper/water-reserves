@@ -26,6 +26,10 @@ const setParamsFactory = ( { params, setParams }: PropsType ): ResultType => {
             setParams( { ...params, toInterval: e.target.value } )
         },
 
+        setReservoirAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+            setParams( { ...params, reservoirAggregation: e.target.value } )
+        },
+
         setTimeAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
             const timeAggregation = e.target.value;
             const valueAggregation = timeAggregation ? params.valueAggregation || 'avg' : '';

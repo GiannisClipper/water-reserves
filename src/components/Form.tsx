@@ -47,7 +47,7 @@ type FormSectionPropsType_ = { children: React.ReactNode }
 
 const FormSectionTimeRange = ( { children }: FormSectionPropsType_ ) => {
     return (
-        <FormSection label="Περίοδος αναζήτησης">
+        <FormSection label="Περίοδος δεδομένων">
             { children }
         </FormSection>
     );
