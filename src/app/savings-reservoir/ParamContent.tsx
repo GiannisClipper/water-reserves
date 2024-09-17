@@ -14,6 +14,8 @@ import {
     FormSectionIntervalFilter, 
     FormSectionAggregation,
     FormSectionReservoirs,
+    FormButtonMore,
+    FormButtonLess
 } from "@/components/Form";
 
 import { 
@@ -41,13 +43,16 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
         new SavingsReservoirFormParams( searchParams, reservoirs || [] ).getAsObject();
 
     const [ params, setParams ] = useState( savingsReservoirFormParams );
-
     const {
         setFromDate, setToDate,
         setFromInterval, setToInterval,
         setTimeAggregation, setValueAggregation,
         setReservoirFilter,
     } = setParamsFactory( { params, setParams } );
+
+    const [ showMore, setShowMore ] = useState( false );
+    const setMore = () => setShowMore( true );
+    const setLess = () => setShowMore( false );
 
     useEffect( () => {
 
@@ -76,16 +81,17 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
                 />
             </FormSectionTimeRange>
 
-            <FormSectionIntervalFilter>
-                <FieldFromInterval
-                    value={ params.fromInterval }
-                    onChange={ setFromInterval }
-                />
-                <FieldToInterval
-                    value={ params.toInterval }
-                    onChange={ setToInterval }
-                />
-            </FormSectionIntervalFilter>
+            <FormSectionReservoirs>
+                { reservoirs?.map( r => 
+                    <FieldCheckBox
+                        key={ r.id }
+                        name={ r.id }
+                        label={ r.name_el }
+                        checked={ params.reservoirFilter[ r.id ] }
+                        onChange={ setReservoirFilter }
+                    /> 
+                ) }
+            </FormSectionReservoirs>
 
             <FormSectionAggregation>
                 <FieldTimeAggregation
@@ -99,17 +105,27 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
                 />
             </FormSectionAggregation>
 
-            <FormSectionReservoirs>
-                { reservoirs?.map( r => 
-                    <FieldCheckBox
-                        key={ r.id }
-                        name={ r.id }
-                        label={ r.name_en }
-                        checked={ params.reservoirFilter[ r.id ] }
-                        onChange={ setReservoirFilter }
-                    /> 
-                ) }
-            </FormSectionReservoirs>
+            { showMore
+                ? <FormButtonLess onClick={ setLess } />
+                : <FormButtonMore onClick={ setMore } />
+            }
+
+            { showMore
+                ?
+                <FormSectionIntervalFilter>
+                    <FieldFromInterval
+                        value={ params.fromInterval }
+                        onChange={ setFromInterval }
+                    />
+                    <FieldToInterval
+                        value={ params.toInterval }
+                        onChange={ setToInterval }
+                    />
+                </FormSectionIntervalFilter>
+                :
+                null
+            }
+
         </Form>
     );
 }

@@ -7,17 +7,22 @@
     text-xs
   }
 
-  .FormSection {
+  .FormSection, .FormButton {
     @apply m-2 bg-white bg-opacity-50 text-sky-800
     pb-1
+  }
+
+  .FormButton {
+    @apply flex flex-row
+    pb-0
   }
 
   .FormSection > * {
     @apply min-w-full text-inherit
   }
 
-  .FormSection > .Top {
-    @apply p-1
+  .FormSection > .Top, .FormButton > * {
+    @apply p-1 text-inherit
   }
 
   .FormSection > .Bottom {

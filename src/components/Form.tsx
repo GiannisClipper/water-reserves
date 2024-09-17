@@ -1,4 +1,6 @@
-import { Top, Bottom } from '@/components/Generics';
+import { Top, Bottom, Left, Right } from '@/components/Generics';
+import { PlusIcon, MinusIcon } from './Icons';
+import { MouseEventHandler } from 'react';
 
 type FormPropsType = {
     className?: string
@@ -16,6 +18,8 @@ const Form = ( { className, children }: FormPropsType ) => {
         </div>
     );
 }
+
+// FormSection
 
 type FormSectionPropsType = {
     className?: string
@@ -39,11 +43,9 @@ const FormSection = ( { className, label, children }: FormSectionPropsType ) => 
     );
 }
 
-type FormSectionType_ = {
-    children: React.ReactNode
-}
+type FormSectionPropsType_ = { children: React.ReactNode }
 
-const FormSectionTimeRange = ( { children }: FormSectionType_ ) => {
+const FormSectionTimeRange = ( { children }: FormSectionPropsType_ ) => {
     return (
         <FormSection label="Περίοδος αναζήτησης">
             { children }
@@ -51,15 +53,15 @@ const FormSectionTimeRange = ( { children }: FormSectionType_ ) => {
     );
 }
 
-const FormSectionIntervalFilter = ( { children }: FormSectionType_ ) => {
+const FormSectionIntervalFilter = ( { children }: FormSectionPropsType_ ) => {
     return (
-        <FormSection label="Ημέρες ενδιαφέροντος">
+        <FormSection label="Παράθυρο ενδιαφέροντος">
             { children }
         </FormSection>
     );
 }
 
-const FormSectionAggregation = ( { children }: FormSectionType_ ) => {
+const FormSectionAggregation = ( { children }: FormSectionPropsType_ ) => {
     return (
         <FormSection label="Συγκέντρωση δεδομένων">
             { children }
@@ -67,11 +69,63 @@ const FormSectionAggregation = ( { children }: FormSectionType_ ) => {
     );
 }
 
-const FormSectionReservoirs = ( { children }: FormSectionType_ ) => {
+const FormSectionReservoirs = ( { children }: FormSectionPropsType_ ) => {
     return (
         <FormSection label="Ταμιευτήρες">
             { children }
         </FormSection>
+    );
+}
+
+// FormButton
+
+type FormButtonPropsType = {
+    className?: string
+    label?: string
+    icon?: React.ReactNode
+    onClick: MouseEventHandler
+}
+
+const FormButton = ( { className, label, icon, onClick }: FormButtonPropsType ) => {
+
+    className = ( "FormButton " + ( className ? className : "" ) ).trim();
+
+    return (
+        <button className={className} onClick={ onClick }>
+            <Left>
+                { icon }
+            </Left>
+            <Right>
+                { label }
+            </Right>
+        </button>
+    );
+}
+
+type FormButtonPropsType_ = { 
+    className?: string 
+    onClick: MouseEventHandler
+}
+
+const FormButtonMore = ( { className, onClick }: FormButtonPropsType_ ) => {
+    return (
+        <FormButton 
+            className={ className }
+            label="Περισσότερα"
+            icon={ <PlusIcon /> }
+            onClick={ onClick }
+        />
+    );
+}
+
+const FormButtonLess = ( { className, onClick }: FormButtonPropsType_ ) => {
+    return (
+        <FormButton 
+        className={ className }
+        label="Λιγότερα"
+        icon={ <MinusIcon /> }
+        onClick={ onClick }
+        />
     );
 }
 
@@ -80,4 +134,5 @@ export {
     FormSectionTimeRange, FormSectionIntervalFilter,
     FormSectionAggregation,
     FormSectionReservoirs,
+    FormButtonMore, FormButtonLess
 };

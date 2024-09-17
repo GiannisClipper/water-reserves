@@ -30,6 +30,9 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
+
 type PropsType = { [ key: string ]:any };
 
 const GaugeIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faGaugeHigh} />
@@ -57,6 +60,9 @@ const ErrorIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } i
 
 const SpinnerIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faSpinner} />
 
+const PlusIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faPlus} />
+const MinusIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faMinus} />
+
 export { 
     GaugeIcon, WaterIcon, FaucetIcon, RainIcon, ComposeIcon,
     ChartLineIcon, ChartAreaIcon, ChartBarIcon,
@@ -64,4 +70,5 @@ export {
     WriteIcon, SearchIcon, DownloadIcon, LinkIcon, 
     CloseIcon, InfoIcon, ErrorIcon, 
     SpinnerIcon,
+    PlusIcon, MinusIcon
 };
