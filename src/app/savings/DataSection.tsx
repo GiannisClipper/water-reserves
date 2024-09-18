@@ -29,8 +29,8 @@ const DataSection = async ( { searchParams }: PropsType ) => {
             }
 
         } else {
-            const savingsApiRequest = new SavingsApiRequest( searchParams );
-            [ error, result ] = await savingsApiRequest.request();
+            const apiRequest = new SavingsApiRequest( searchParams );
+            [ error, result ] = await apiRequest.request();
         }
     }
 
@@ -61,7 +61,10 @@ const DataSection = async ( { searchParams }: PropsType ) => {
                 result={result} 
             />
             <Suspense fallback={<ListSectionSkeleton />}>
-                <ListSection result={result} />
+                <ListSection 
+                    searchParams={searchParams}
+                    result={result} 
+                />
             </Suspense>
         </div>
     );

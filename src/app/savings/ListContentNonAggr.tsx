@@ -3,8 +3,8 @@ import { CubicMeters } from "@/components/Symbols";
 import { withCommas } from "@/helpers/numbers";
 import ObjectList from "@/helpers/objects/ObjectList";
 
-import { getReservoirs, getNonAggregatedData } from '@/logic/savings-reservoir/_common';
-import { getHeaders } from '@/logic/savings-reservoir/list';
+import { getReservoirs, getNonAggregatedData } from '@/logic/savings/_common';
+import { getNonAggregatedHeaders } from '@/logic/savings/list';
 import { lexicon, translate } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
@@ -20,7 +20,7 @@ const ListContent = ( { result }: PropsType ) => {
     reservoirs = new ObjectList( reservoirs ).sortBy( 'start', 'desc' );
     reservoirs.forEach( r => lexicon[ r.name_en ] = r.name_el );
 
-    const headers: string[] = getHeaders( data, reservoirs );
+    const headers: string[] = getNonAggregatedHeaders( data, reservoirs );
 
     console.log( `rendering: ListContent...`, headers, data )
 

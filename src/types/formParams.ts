@@ -16,10 +16,6 @@ interface FormParamsType {
 }
 
 interface SavingsFormParamsType extends FormParamsType {
-    reservoirAggregation: string
-}
-
-interface SavingsReservoirFormParamsType extends FormParamsType {
     reservoirFilter: { [ key: string ]: boolean }
     reservoirAggregation: string | undefined
 }
@@ -29,5 +25,4 @@ export type {
     ChartType,
     FormParamsType,
     SavingsFormParamsType,
-    SavingsReservoirFormParamsType,
 };

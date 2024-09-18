@@ -10,8 +10,8 @@ import { CustomizedXAxisTick, CustomizedYAxisTick } from '@/components/Page/Char
 
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 import { getLineType } from '@/logic/savings/_common';
-import { getReservoirs, getNonAggregatedData } from '@/logic/savings-reservoir/_common';
-import { makeReservoirsRepr, makeReservoirsOrderedRepr } from '@/logic/savings-reservoir/chart';
+import { getReservoirs, getNonAggregatedData } from '@/logic/savings/_common';
+import { makeReservoirsRepr, makeReservoirsOrderedRepr } from '@/logic/savings/chart';
 
 import ObjectList from '@/helpers/objects/ObjectList';
 import { withCommas } from '@/helpers/numbers';

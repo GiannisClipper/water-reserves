@@ -4,10 +4,11 @@ import { GaugeIcon, WaterIcon, FaucetIcon, RainIcon, ComposeIcon } from "@/compo
 
 import { 
     CURRENT_STATUS,
-    SAVINGS, SAVINGS_RESERVOIR,
-    PRODUCTION, PRODUCTiON_FACTORY,
+    SAVINGS,
+    PRODUCTION,
     PRECIPITATION,
-    SAVINGS_PRODUCTION, SAVINGS_PRECIPITATION,    
+    SAVINGS_PRODUCTION, 
+    SAVINGS_PRECIPITATION,    
 } from "./settings";
 
 import "@/styles/options.css";
@@ -38,30 +39,12 @@ export default function Options() {
                 </Right>
             </Link>
 
-            <Link className="Option" href="/savings-reservoir">
-                <Left className='icon'>
-                    <WaterIcon />
-                </Left>
-                <Right className='text'>
-                    { SAVINGS_RESERVOIR }
-                </Right>
-            </Link>
-
             <Link className="Option" href="/production">
                 <Left className='icon'>
                    <FaucetIcon />
                 </Left>
                 <Right className='text'>
                     { PRODUCTION }
-                </Right>
-            </Link>
-
-            <Link className="Option" href="/production-factory">
-                <Left className='icon'>
-                   <FaucetIcon />
-                </Left>
-                <Right className='text'>
-                    { PRODUCTiON_FACTORY }
                 </Right>
             </Link>
 

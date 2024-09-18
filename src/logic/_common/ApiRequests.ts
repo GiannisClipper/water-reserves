@@ -4,7 +4,6 @@ import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 import type { 
     SearchParamsType,
     SavingsSearchParamsType,
-    SavingsReservoirSearchParamsType,
 } from "@/types/searchParams";
 
 abstract class ApiRequest {    
@@ -69,7 +68,7 @@ class SavingsApiRequest extends ApiRequestWithParams {
     endpoint = 'savings';
     searchParams = {};
 
-    constructor( searchParams: SavingsReservoirSearchParamsType ) {
+    constructor( searchParams: SavingsSearchParamsType ) {
         super();
         this.searchParams = searchParams;
     }

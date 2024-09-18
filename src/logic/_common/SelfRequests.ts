@@ -3,7 +3,6 @@ import { NEXT_PUBLIC_SELF_BASE_URL } from '@/app/settings';
 import type { 
     SearchParamsType,
     SavingsSearchParamsType,
-    SavingsReservoirSearchParamsType,
 } from "@/types/searchParams";
 
 abstract class SelfRequest {
@@ -35,17 +34,6 @@ class SavingsSelfRequest extends SelfRequest {
     }
 }
 
-class SavingsReservoirSelfRequest extends SelfRequest { 
-
-    public endpoint: string = 'savings-reservoir';
-    public searchParams: SavingsReservoirSearchParamsType;
-    
-    constructor( searchParams: SavingsReservoirSearchParamsType ) {
-        super();
-        this.searchParams = searchParams;
-    }
-}
-
 export { 
-    SavingsSelfRequest, SavingsReservoirSelfRequest,
+    SavingsSelfRequest,
 };

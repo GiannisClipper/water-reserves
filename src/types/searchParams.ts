@@ -15,10 +15,6 @@ interface SearchParamsType {
 }
 
 interface SavingsSearchParamsType extends SearchParamsType {
-    reservoir_aggregation?: string
-}
-
-interface SavingsReservoirSearchParamsType extends SearchParamsType {
     reservoir_filter?: string
     reservoir_aggregation?: string
 }
@@ -28,5 +24,4 @@ export type {
     ChartType, 
     SearchParamsType,
     SavingsSearchParamsType,
-    SavingsReservoirSearchParamsType,
 };
