@@ -43,6 +43,7 @@ const setParamsFactory = ( { params, setParams }: PropsType ): ResultType => {
         },
 
         setReservoirFilter: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+            console.log( 'setReservoirFilter' )
             const { reservoirFilter } = params;
             reservoirFilter[ e.target.name ] = e.target.checked;
             setParams( { ...params, reservoirFilter } );

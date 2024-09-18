@@ -1,3 +1,5 @@
+import "@/styles/checkbox.css"
+
 type FieldPropsType = {
     className?: string
     label?: React.ReactNode
@@ -164,14 +166,25 @@ const FieldValueAggregation = ( { values, ...props } ) => (
     />
 );
 
-const FieldCheckBox = ( { label, ...props }: any ) => {
+const CheckField = ( { label, ...props }: any ) => {
+
+    const onClick = ( e: React.MouseEvent<HTMLElement> ) => {
+        const target: HTMLElement = e.currentTarget as HTMLElement;
+        const input: HTMLInputElement | null = target.querySelector( 'input' );
+        if ( input ) {
+            // click will change the value and trigger the onChange
+            input.click();
+        }
+    }
 
     return (
-        <Field
-            className="FieldCheckBox"
-            label = { <span>{ label }</span> }
-            value = { <input {...props} type="checkbox" /> }
-        />
+        <div className="CheckField" onClick={ onClick }>
+            <input {...props} type="checkbox" />
+            <span className="CheckBox">
+                <span className="CheckMark"></span>
+            </span>
+            <span>{ label }</span>
+        </div>
     );
 }
 
@@ -180,5 +193,5 @@ export {
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
     FieldReservoirAggregation, FieldTimeAggregation, FieldValueAggregation, 
-    FieldCheckBox
+    CheckField
 };

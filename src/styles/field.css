@@ -18,14 +18,6 @@
     @apply w-3/4 p-1
   }
 
-  .FieldCheckBox > :nth-child( 1 ) {
-    @apply inline-block w-3/4 p-1
-  }
-
-  .FieldCheckBox > :nth-child( 2 ) {
-    @apply w-1/4 p-1
-  }
-
   .FieldSelect > :nth-child( 1 ) {
     @apply inline-block w-full p-1
   }
@@ -38,8 +30,5 @@
 
   select {
     @apply disabled:appearance-none
-  }
-
-  input[type='checkbox'] {
   }
 }

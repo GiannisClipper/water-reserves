@@ -22,7 +22,7 @@ import {
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
     FieldReservoirAggregation, FieldValueAggregation, FieldTimeAggregation,
-    FieldCheckBox
+    CheckField
 } from "@/components/Field";
 
 import "@/styles/form.css";
@@ -94,7 +94,7 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
             <FormSectionReservoirs>
                 { reservoirs?.map( r => 
-                    <FieldCheckBox
+                    <CheckField
                         key={ r.id }
                         name={ r.id }
                         label={ r.name_el }
