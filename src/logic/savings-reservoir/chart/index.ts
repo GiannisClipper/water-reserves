@@ -4,8 +4,8 @@ import type { ObjectType } from '@/types';
 
 const makeReservoirsRepr = ( reservoirs: ObjectType[], quantities: ObjectType ): ObjectType[] => {
 
-    // toReversed: considering the order of lines in chart (from bottom to top)
-    const result: ObjectType[] = reservoirs.toReversed()
+    // toReversed: placing from bottom to top the reservoir lines in chart
+    const result: any[] = reservoirs.toReversed()
         .map( ( reservoir: ObjectType, i: number ) => {
 
             const { id, name_el: name } = reservoir;
@@ -27,6 +27,4 @@ const makeReservoirsOrderedRepr = ( reservoirs: ObjectType[], quantities: Object
     return result;
 }
 
-export { 
-    makeReservoirsRepr, makeReservoirsOrderedRepr
-};
+export { makeReservoirsRepr, makeReservoirsOrderedRepr };

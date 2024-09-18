@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 
 import ChartLabel from "@/components/Page/Chart/ChartLabel";
-import ChartContent from "./ChartContent";
+import ChartContentAggr from "./ChartContentAggr";
+import ChartContentNonAggr from "./ChartContentNonAggr";
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
 
@@ -13,6 +14,8 @@ type PropsType = {
 }
 
 const ChartSection = ( { searchParams, result }: PropsType  ) => {
+
+    const reservoirAggregation: string | undefined = searchParams.reservoir_aggregation;
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
@@ -47,10 +50,20 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
                 result={ result }
                 setChartType={ setChartType }
             />
-            <ChartContent 
+
+            { reservoirAggregation 
+            ? 
+                <ChartContentAggr 
+                    result={ result } 
+                    chartType={ chartType }
+                />
+
+            : 
+                <ChartContentNonAggr
                 result={ result } 
                 chartType={ chartType }
-            />
+                />
+            }
         </div>
     );
 }

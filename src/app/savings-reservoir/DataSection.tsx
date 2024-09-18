@@ -61,7 +61,10 @@ const DataSection = async ( { searchParams }: PropsType ) => {
                 result={result} 
             />
             <Suspense fallback={<ListSectionSkeleton />}>
-                <ListSection result={result} />
+                <ListSection 
+                    searchParams={searchParams}
+                    result={result} 
+                />
             </Suspense>
         </div>
     );

@@ -14,8 +14,9 @@ import type {
 
 class SavingsReservoirFormParams extends FormParams {
 
-    _reservoirFilter: { [ key: string ]: boolean } = {};
     _reservoirs: { [ key: string ]: any }[] = [];
+    _reservoirFilter: { [ key: string ]: boolean } = {};
+    _reservoirAggregation: string | undefined = 'sum';
 
     constructor( savingsReservoirSearchParams: SavingsReservoirSearchParamsType, reservoirs: { [ key: string ]: any }[] ) {
         const searchParams: SearchParamsType = savingsReservoirSearchParams;
@@ -23,6 +24,8 @@ class SavingsReservoirFormParams extends FormParams {
 
         this._reservoirs = reservoirs;
         this.convertReservoirFilter( savingsReservoirSearchParams.reservoir_filter );
+        this._reservoirAggregation = savingsReservoirSearchParams.reservoir_aggregation;
+
     }
 
     // set reservoirFilter( val: { [ key: string ]: boolean } | undefined ) {
@@ -41,12 +44,17 @@ class SavingsReservoirFormParams extends FormParams {
         this._reservoirs.forEach( r => this._reservoirFilter[ r.id ] = true );
     }
 
+    set reservoirAggregation( val: string | undefined ) {
+        this._reservoirAggregation = val ? val : this._reservoirAggregation;
+    }
+
     setFromObject( savingsFormParams: SavingsReservoirFormParamsType ): SavingsReservoirFormParams {
 
         const formParams: FormParamsType = savingsFormParams;
         super.setFromObject( formParams );
         this._reservoirFilter = savingsFormParams.reservoirFilter;
-            
+        this._reservoirAggregation = savingsFormParams.reservoirAggregation;
+
         return this;
     }
 
@@ -54,21 +62,27 @@ class SavingsReservoirFormParams extends FormParams {
         return {
             ...super.getAsObject(),
             reservoirFilter: this._reservoirFilter,
+            reservoirAggregation: this._reservoirAggregation,
         }
     }
 
     getAsSearchObject(): SavingsReservoirSearchParamsType {
 
         const searchParams: SearchParamsType = super.getAsSearchObject();
+
+        const result: SavingsReservoirSearchParamsType = { ...searchParams };
     
         const reservoir_filter: string = Object.entries( this._reservoirFilter )
             .filter( entry => entry[ 1 ] === true )
             .map( entry => entry[ 0 ] )
             .join( ',' );
     
-        const result: SavingsReservoirSearchParamsType = {
-            ...searchParams, 
-            reservoir_filter,
+        if ( reservoir_filter ) {
+            result.reservoir_filter = reservoir_filter
+        }
+
+        if ( this._reservoirAggregation ) {
+            result.reservoir_aggregation = this._reservoirAggregation
         }
     
         return result;    

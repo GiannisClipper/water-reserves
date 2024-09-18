@@ -20,6 +20,7 @@ interface SavingsSearchParamsType extends SearchParamsType {
 
 interface SavingsReservoirSearchParamsType extends SearchParamsType {
     reservoir_filter?: string
+    reservoir_aggregation?: string
 }
 
 export type { 

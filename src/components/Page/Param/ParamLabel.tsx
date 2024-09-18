@@ -21,14 +21,20 @@ export default function ParamLabel( { searchParams, setOnSearch }: PropsType ) {
                 Παράμετροι
             </Left>
             <Right>
-                {/* <WriteIcon className="icon" title="Ορισμός παραμέτρων" /> */}
-                <SearchIcon onClick={ () => setOnSearch( true ) } className="icon" title="Αναζήτηση δεδομένων" />
-                { 
-                Object.keys( searchParams ).length > 0
-                ?
-                <LinkIcon className="icon" title="Σύνδεσμος σελίδας" />
-                :
-                null
+                <SearchIcon 
+                    onClick={ () => setOnSearch( true ) } 
+                    className="icon" 
+                    title="Αναζήτηση δεδομένων" 
+                />
+
+                { Object.keys( searchParams ).length > 0
+                    ?
+                    <LinkIcon 
+                        className="icon" 
+                        title="Σύνδεσμος σελίδας" 
+                    />
+                    :
+                    null
                 }
             </Right>
         </div>
