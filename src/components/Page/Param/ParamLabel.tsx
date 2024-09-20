@@ -2,7 +2,7 @@
 
 import { Left, Right } from "@/components/Generics";
 import type { SearchParamsType } from "@/types/searchParams";
-import { WriteIcon, SearchIcon, LinkIcon } from "@/components/Icons";
+import { RefreshIcon, SearchIcon, LinkIcon } from "@/components/Icons";
 
 import "@/styles/label.css"
 
@@ -24,7 +24,7 @@ export default function ParamLabel( { searchParams, setOnSearch }: PropsType ) {
                 <SearchIcon 
                     onClick={ () => setOnSearch( true ) } 
                     className="icon" 
-                    title="Αναζήτηση δεδομένων" 
+                    title="Αναζήτηση-επεξεργασία δεδομένων" 
                 />
 
                 { Object.keys( searchParams ).length > 0

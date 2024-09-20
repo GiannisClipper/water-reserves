@@ -12,8 +12,10 @@ class BrowserParams {
 
     getParam( key: string ): string | undefined {
 
-        if ( this.params.filter( p => p.startsWith( `${key}=` ) ).length ) {
-            return this.params[ 0 ];
+        const found: string[] = this.params.filter( p => p.startsWith( `${key}=` ) );
+        if ( found.length ) {
+            const [ key, value ] = found[ 0 ].split( '=' );
+            return value;
         }
         return undefined;
     }

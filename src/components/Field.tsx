@@ -183,7 +183,9 @@ const CheckField = ( { label, ...props }: any ) => {
             <span className="CheckBox">
                 <span className="CheckMark"></span>
             </span>
-            <span>{ label }</span>
+            <span className="CheckLabel">
+                { label }
+            </span>
         </div>
     );
 }

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 
-import type { SavingsSearchParamsType } from "@/types/searchParams";
+import type { ChartType, SavingsSearchParamsType } from "@/types/searchParams";
 import type { SavingsFormParamsType } from "@/types/formParams";
 import type { RequestErrorType } from "@/types/requestResult";
+import BrowserParams from "@/helpers/url/BrowserUrl";
 import SavingsFormParams from "@/logic/savings/params/SavingsFormParams";
 import { setParamsFactory } from "@/components/Page";
 import { SavingsSelfRequest } from "@/logic/_common/SelfRequests";
@@ -57,11 +58,18 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
     useEffect( () => {
 
         if ( onSearch ) {
+
+            // update chartType from url
+            const chartType: string | undefined = new BrowserParams( window ).getParam( 'chart_type' );
+            if ( chartType ) {
+                params.chartType = chartType as ChartType;
+            }
+
             const savingsSearchParams: SavingsSearchParamsType = 
                 new SavingsFormParams( searchParams, reservoirs || [] )
                     .setFromObject( params )
                     .getAsSearchObject();
-
+        
             const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParams );
             location.href = savingsSelfRequest.url; 
         }

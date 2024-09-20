@@ -29,6 +29,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -59,6 +60,7 @@ const InfoIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } ic
 const ErrorIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faTriangleExclamation} />
 
 const SpinnerIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faSpinner} />
+const RefreshIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faArrowsRotate} />
 
 const PlusIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faPlus} />
 const MinusIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faMinus} />
@@ -69,6 +71,6 @@ export {
     ExpandIcon, CompressIcon, ScreenIcon,
     WriteIcon, SearchIcon, DownloadIcon, LinkIcon, 
     CloseIcon, InfoIcon, ErrorIcon, 
-    SpinnerIcon,
+    SpinnerIcon, RefreshIcon,
     PlusIcon, MinusIcon
 };

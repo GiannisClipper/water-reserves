@@ -11,15 +11,15 @@
   }
 
   .Field > :nth-child( 1 ) {
-    @apply inline-block w-1/4 p-1
+    @apply inline-block w-1/4 p-2
   }
 
   .Field > :nth-child( 2 ) {
-    @apply w-3/4 p-1
+    @apply w-3/4 p-2
   }
 
   .FieldSelect > :nth-child( 1 ) {
-    @apply inline-block w-full p-1
+    @apply inline-block w-full p-2
   }
 
   input, select, button {

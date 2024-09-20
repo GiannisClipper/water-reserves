@@ -22,7 +22,7 @@
   }
 
   .FormSection > .Top, .FormButton > * {
-    @apply p-1 text-inherit
+    @apply p-2 text-inherit
   }
 
   .FormSection > .Bottom {
