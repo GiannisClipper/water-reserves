@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import ChartLabel from "@/components/Page/Chart/ChartLabel";
 import ChartContentAggr from "./ChartContentAggr";
 import ChartContentNonAggr from "./ChartContentNonAggr";
+import BrowserParams from "@/helpers/url/BrowserUrl";
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
 
@@ -20,23 +21,9 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
     useEffect( () => {
-        // get search params from browser
-        const urlSearchString: string = window.location.search;
-
-        if ( urlSearchString ) {
-            // replace param if already exists
-            const params: string[] = urlSearchString
-                .split( '&' )
-                .map( p => p.startsWith( 'chart_type=' ) ? `chart_type=${chartType}` : p );
-
-            // add param if not exists
-            if ( params.filter( p => p.startsWith( 'chart_type=' ) ).length === 0 ) {
-                params.push( `chart_type=${chartType}` );
-            }
-
-            // update url on browser
-            window.history.replaceState( {} , '', params.join( '&' ) );
-        }
+        new BrowserParams( window )
+            .setParam( 'chart_type', chartType )
+            .update();
     } );
 
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )

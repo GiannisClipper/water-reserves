@@ -57,7 +57,12 @@ const getReservoirs = ( responseResult: any, data: ObjectType[] ): ObjectType[] 
 
 const parseNonAggregatedData = ( responseResult: any ): ObjectType[] => {
 
+    const headers: string[] = responseResult && responseResult.headers || [];
     let data: any[][] = responseResult && responseResult.data || [];
+
+    if ( headers.length && headers[ 0 ] === 'id' ) {
+        data = data.map( ( row: any[], i: number ) => row.slice( 1 ) );
+    }
 
     return data.map( ( row: any[], i: number ) => {
         const time: string = row[ 0 ];

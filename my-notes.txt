@@ -61,3 +61,29 @@ https://theroadtoenterprise.com/blog/how-to-download-csv-and-json-files-in-react
 How to Convert a React Component to an Image
 https://dev.to/saranshk/how-to-convert-a-react-component-to-an-image-2jon
 
+
+
+Chrome long screenshot
+
+1. Open the Inspect Window
+2. Select "Run command" (ctrl+shift+p)
+3. Type "Capture full size"
+
+
+Record screen with audio
+
+How to Install Kazam on Ubuntu?
+https://www.geeksforgeeks.org/how-to-install-kazam-on-ubuntu/
+
+How to Install FFmpeg on Ubuntu 22.04
+https://gcore.com/learning/how-to-install-ffmpeg-on-ubuntu/
+
+Merge video with ffmpeg
+https://stackoverflow.com/a/42859731/12138247
+
+1 Create a text file like:
+file '10.mov'
+file '11.mov'
+
+2 Run on terminal:
+ffmpeg -f concat -i list.txt -c copy merged.mov
