@@ -1,13 +1,39 @@
-import type { ObjectType } from "@/types";
-
-class BrowserParams {
+class BrowserUrl {
 
     window: Window | undefined;
+    origin: string = '';
+    pathname: string = '';
     params: string[] = [];
 
     constructor( window: any ) {
         this.window = window;
+        this.origin = window.location.origin;
+        this.pathname = window.location.pathname;
+
+        // example of window.location.search -> ?par1=something&par2=else&par3=99
         this.params = window.location.search.split( '&' );
+        if ( this.params.length ) {
+            // to remove the leading ? from query parameters
+            this.params[ 0 ] = this.params[ 0 ].slice( 1 );
+        }
+    }
+
+    getPathname(): string {
+        return this.pathname;
+    }
+
+    setPathname( pathname: string ): BrowserUrl {
+        this.pathname = pathname;
+        return this;
+    }
+
+    getParams(): string[] {
+        return this.params;
+    }
+
+    setParams( params: string[] ): BrowserUrl {
+        this.params = params;
+        return this;
     }
 
     getParam( key: string ): string | undefined {
@@ -20,7 +46,7 @@ class BrowserParams {
         return undefined;
     }
 
-    setParam( key: string, value: any ): BrowserParams {
+    setParam( key: string, value: any ): BrowserUrl {
 
         // replace param if exists
         this.params = this.params.map( 
@@ -35,14 +61,29 @@ class BrowserParams {
         return this;
     }
 
-    update(): void {
+    updateQueryString(): void {
 
-        // update url on browser
+        // update query string on browser url
         if ( this.window ) {
-            this.window.history.replaceState( {} , '', this.params.join( '&' ) );
+            this.window.history.replaceState( {} , '', `${this.pathname}?${this.params.join( '&' )}` );
         }
     }
 
+    open(): void { // open in current tab
+
+        if ( this.window ) {
+            const url: string = `${this.origin}${this.pathname}?${this.params.join( '&' )}`;
+            this.window.location.href = url; 
+        }
+    }
+
+    openBlank(): void { // open in new tab
+
+        if ( this.window ) {
+            const url: string = `${this.origin}${this.pathname}?${this.params.join( '&' )}`;
+            this.window.open( url, '_blank' );
+        }
+    }
 }
 
-export default BrowserParams;
+export default BrowserUrl;

@@ -5,10 +5,9 @@ import { useState, useEffect } from "react";
 import type { ChartType, SavingsSearchParamsType } from "@/types/searchParams";
 import type { SavingsFormParamsType } from "@/types/formParams";
 import type { RequestErrorType } from "@/types/requestResult";
-import BrowserParams from "@/helpers/url/BrowserUrl";
+import BrowserUrl from "@/helpers/url/BrowserUrl";
 import SavingsFormParams from "@/logic/savings/params/SavingsFormParams";
 import { setParamsFactory } from "@/components/Page";
-import { SavingsSelfRequest } from "@/logic/_common/SelfRequests";
 
 import { 
     Form, FormSectionTimeRange, 
@@ -59,19 +58,22 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
 
         if ( onSearch ) {
 
+            const url: BrowserUrl = new BrowserUrl( window );
+
             // update chartType from url
-            const chartType: string | undefined = new BrowserParams( window ).getParam( 'chart_type' );
+            const chartType: string | undefined = url.getParam( 'chart_type' );
             if ( chartType ) {
                 params.chartType = chartType as ChartType;
             }
 
-            const savingsSearchParams: SavingsSearchParamsType = 
-                new SavingsFormParams( searchParams, reservoirs || [] )
-                    .setFromObject( params )
-                    .getAsSearchObject();
-        
-            const savingsSelfRequest = new SavingsSelfRequest( savingsSearchParams );
-            location.href = savingsSelfRequest.url; 
+            // convert form params to query string
+            const queryString: string = new SavingsFormParams( searchParams, reservoirs || [] )
+                .setFromObject( params )
+                .getAsQueryString();
+
+            // update browser url and request page
+            url.setParams( queryString.split( '&' ) );
+            url.open();
         }
 
     }, [ onSearch ] );

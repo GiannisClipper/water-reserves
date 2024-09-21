@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import ChartLabel from "@/components/Page/Chart/ChartLabel";
 import ChartContentAggr from "./ChartContentAggr";
 import ChartContentNonAggr from "./ChartContentNonAggr";
-import BrowserParams from "@/helpers/url/BrowserUrl";
+import BrowserUrl from "@/helpers/url/BrowserUrl";
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
 
@@ -21,10 +21,10 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
     useEffect( () => {
-        new BrowserParams( window )
+        new BrowserUrl( window )
             .setParam( 'chart_type', chartType )
-            .update();
-    } );
+            .updateQueryString();
+    }, [ chartType ] );
 
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )
     // const result: number = Math.floor( Math.random() * 10 );

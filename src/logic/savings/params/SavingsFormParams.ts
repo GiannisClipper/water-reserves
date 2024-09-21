@@ -87,6 +87,13 @@ class SavingsFormParams extends FormParams {
     
         return result;    
     }
+
+    getAsQueryString(): string {
+        return Object
+            .entries( this.getAsSearchObject() )
+            .map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
+    }
+
 }
 
 export default SavingsFormParams;
