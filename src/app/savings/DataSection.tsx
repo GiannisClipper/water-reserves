@@ -8,6 +8,7 @@ import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/Page/Ske
 import Error from "@/components/Page/Error";
 import ChartSection from "./ChartSection";
 import ListSection from "./ListSection";
+import { ParamsValidation } from "@/logic/_common/ParamsValidation";
 
 type PropsType = { searchParams: SavingsSearchParamsType }
 
@@ -23,12 +24,9 @@ const DataSection = async ( { searchParams }: PropsType ) => {
 
     if ( ! blankPage ) {
 
-        if ( ! searchParams.time_range ) {
-            error = {
-                message: "Δεν έχει οριστεί χρονική περίοδος δεδομένων."
-            }
+        error = new ParamsValidation( searchParams ).validate();
 
-        } else {
+        if ( ! error ) {
             const apiRequest = new SavingsApiRequest( searchParams );
             [ error, result ] = await apiRequest.request();
         }
