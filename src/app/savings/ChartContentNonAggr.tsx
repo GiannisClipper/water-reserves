@@ -5,8 +5,11 @@ import { LineChart, Line, Legend } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar, Rectangle } from 'recharts';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { Customized, Label } from 'recharts';
 
+import { CustomTitle } from '@/components/Page/Chart';
 import { CustomizedXAxisTick, CustomizedYAxisTick } from '@/components/Page/Chart';
+import { CustomizedYAxisLabel, CustomizedXAxisLabel } from '@/components/Page/Chart';
 
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 import { getLineType } from '@/logic/savings/_common';
@@ -29,9 +32,10 @@ import "@/styles/chart.css";
 type PropsType = { 
     result: RequestResultType | null
     chartType: string | undefined
+    chartLabels: ObjectType
 }
 
-const ChartContent = ( { result, chartType }: PropsType ) => {
+const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
     
     const data = getNonAggregatedData( result );
     let reservoirs: ObjectType[] = getReservoirs( result, data );
@@ -57,6 +61,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
             ?
             <BarChartComposition
                 data={ data }
+                labels={ chartLabels }
                 xTicks={ xTicks }
                 yTicks={ yTicks }
                 lineType={ lineType }
@@ -71,6 +76,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
             ?
             <AreaChartComposition
                 data={ data }
+                labels={ chartLabels }
                 xTicks={ xTicks }
                 yTicks={ yTicks }
                 lineType={ lineType }
@@ -83,6 +89,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
             :
             <LineChartComposition
                 data={ data }
+                labels={ chartLabels }
                 xTicks={ xTicks }
                 yTicks={ yTicks }
                 lineType={ lineType }
@@ -99,6 +106,7 @@ const ChartContent = ( { result, chartType }: PropsType ) => {
 
 type ChartCompositionPropsType = { 
     data: ObjectType[]
+    labels: ObjectType
     xTicks: string[]
     yTicks: number[]
     lineType: LineType
@@ -108,7 +116,7 @@ type ChartCompositionPropsType = {
     onResize: CallableFunction
 }
 
-const LineChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
     const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
 
@@ -118,8 +126,12 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
         <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <LineChart
                 data={ data }
-                margin={{ top: 20, right: 20, bottom:40, left: 40 }}
+                margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
+                <Customized
+                    component={<CustomTitle title={ labels.title } />}
+                />
+
                 <CartesianGrid 
                     strokeDasharray="1 1" 
                 />
@@ -129,6 +141,7 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
                     ticks={ xTicks } 
                     interval={ 0 } 
                     tick={ <CustomizedXAxisTick data={ data } /> } 
+                    label={ <CustomizedXAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
@@ -136,6 +149,7 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
                     ticks={ yTicks } 
                     interval={ 0 } 
                     tick={ <CustomizedYAxisTick data={ data } /> }
+                    label={ <CustomizedYAxisLabel label={ labels.yLabel } /> }
                 />
 
                 <Tooltip 
@@ -186,15 +200,19 @@ const LineChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
     );
 }
 
-const AreaChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <AreaChart
                 data={ data }
-                margin={{ top: 20, right: 20, bottom:40, left: 40 }}
                 // stackOffset="expand"
+                margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
+                <Customized
+                    component={<CustomTitle title={ labels.title } />}
+                />
+
                 <CartesianGrid 
                     strokeDasharray="1 1" 
                 />
@@ -204,6 +222,7 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
                     ticks={ xTicks } 
                     interval={ 0 } 
                     tick={ <CustomizedXAxisTick data={ data } /> } 
+                    label={ <CustomizedXAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
@@ -211,6 +230,7 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
                     ticks={ yTicks } 
                     interval={ 0 } 
                     tick={ <CustomizedYAxisTick data={ data } /> }
+                    label={ <CustomizedYAxisLabel label={ labels.yLabel } /> }
                 />
 
                 <Tooltip 
@@ -248,14 +268,18 @@ const AreaChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, res
     );
 }
 
-const BarChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
             <BarChart
                 data={ data }
-                margin={{ top: 20, right: 20, bottom:40, left: 40 }}
+                margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
+                <Customized
+                    component={<CustomTitle title={ labels.title } />}
+                />
+
                 <CartesianGrid 
                     strokeDasharray="1 1" 
                     vertical={ false } 
@@ -266,6 +290,7 @@ const BarChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, rese
                     ticks={ xTicks } 
                     interval={ 0 } 
                     tick={ <CustomizedXAxisTick data={ data } /> } 
+                    label={ <CustomizedXAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
@@ -273,6 +298,7 @@ const BarChartComposition = ( { data, xTicks, yTicks, lineType, colorArray, rese
                     ticks={ yTicks } 
                     interval={ 0 } 
                     tick={ <CustomizedYAxisTick data={ data } /> }
+                    label={ <CustomizedYAxisLabel label={ labels.yLabel } /> }
                 />
 
                 <Tooltip 

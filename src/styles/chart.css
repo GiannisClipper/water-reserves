@@ -5,8 +5,20 @@
   * {
     /* @apply border border-white border-dotted */
   }
-   
+
+  .ChartTitle {
+    @apply text-sm md:text-lg font-sans
+  }
+
+  .ChartTitle {
+    fill: #666;
+  }
+
   .XTick, .YTick {
+    @apply text-xxs md:text-xs font-sans
+  }
+
+  .XLabel, .YLabel {
     @apply text-xxs md:text-xs font-sans
   }
 

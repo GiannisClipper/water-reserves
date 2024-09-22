@@ -1,5 +1,6 @@
 import ChartContentAggr from "../ChartContentAggr";
 import ChartContentNonAggr from "../ChartContentNonAggr";
+import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
 
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
@@ -15,6 +16,8 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
 
     const chartType = searchParams.chart_type;
 
+    const chartLabels = new SavingsChartLabels( searchParams ).getAsObject();
+
     console.log( "rendering: ChartSection..." )
 
     return (
@@ -25,11 +28,13 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
                 <ChartContentAggr 
                     result={ result } 
                     chartType={ chartType }
+                    chartLabels={ chartLabels }
                 />
             : 
                 <ChartContentNonAggr
                     result={ result } 
                     chartType={ chartType }
+                    chartLabels={ chartLabels }
                 />
             }
         </div>

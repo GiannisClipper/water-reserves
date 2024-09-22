@@ -1,12 +1,10 @@
 import type { 
     ViewType, ChartType,
     SearchParamsType, 
-    SavingsSearchParamsType 
 } from "@/types/searchParams";
 
 import type {
     FormParamsType, 
-    SavingsFormParamsType 
 } from "@/types/formParams";
 
 

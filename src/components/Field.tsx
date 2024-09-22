@@ -88,7 +88,7 @@ const reprReservoirAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
         '': 'Ανά ταμιευτήρα',
-        'sum': 'Συνολική ποσότητα'
+        'sum': 'Συνολικά'
     };
 
     if ( key in values ) {

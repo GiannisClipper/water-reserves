@@ -1,11 +1,12 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import ChartLabel from "@/components/Page/Chart/ChartLabel";
 import ChartContentAggr from "./ChartContentAggr";
 import ChartContentNonAggr from "./ChartContentNonAggr";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
+import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
 
@@ -17,6 +18,8 @@ type PropsType = {
 const ChartSection = ( { searchParams, result }: PropsType  ) => {
 
     const reservoirAggregation: string | undefined = searchParams.reservoir_aggregation;
+
+    const chartLabels = new SavingsChartLabels( searchParams ).getAsObject();
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
@@ -43,12 +46,14 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
                 <ChartContentAggr 
                     result={ result } 
                     chartType={ chartType }
+                    chartLabels={ chartLabels }
                 />
 
             : 
                 <ChartContentNonAggr
-                result={ result } 
-                chartType={ chartType }
+                    result={ result } 
+                    chartType={ chartType }
+                    chartLabels={ chartLabels }
                 />
             }
         </div>

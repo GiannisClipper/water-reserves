@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import { SavingsApiRequest } from "@/logic/_common/ApiRequests";
 import { RequestErrorType, RequestResultType } from '@/types/requestResult';
