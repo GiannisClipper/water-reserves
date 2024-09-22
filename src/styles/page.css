@@ -1,0 +1,79 @@
+@tailwind components;
+
+@layer components {
+
+  .ParamSection {
+    @apply flex flex-col justify-items-start
+    w-full md:w-[calc(25%)]
+  }
+
+  .ParamSection, .ChartSection, .ListSection {
+    @apply border-2 border-sky-700
+  }
+
+  .ParamContent {
+    @apply flex flex-col justify-start p-2
+  }
+
+  .DataSection,
+  .DataSectionSkeleton {
+    @apply flex flex-col justify-items-start space-y-4
+    w-full md:w-[calc(75%)]
+  }
+
+  .DataSection.wide {
+    @apply 
+    min-w-full md:min-w-full
+  }
+
+  .ChartSectionSkeleton, .ListSectionSkeleton {
+    @apply bg-white bg-opacity-50 p-3
+    min-h-[calc(3rem+55vh)] /* min label height + content height */
+  }
+
+  .ListSectionSkeleton {
+    @apply 
+    min-h-[calc(3rem+45vh)] /* min label height + content height */
+  }
+
+  .ChartSection, .ListSection {
+    @apply flex flex-col justify-items-start
+    w-full 
+  }
+
+  .ChartContent {
+    @apply
+    min-h-[calc(55vh)]
+    max-h-[calc(55vh)]
+    bg-gray-50 text-gray-600 text-xs
+  }
+  
+  .ListContent {
+    @apply flex flex-row justify-center
+    min-h-[calc(50vh)]
+    max-h-[calc(50vh)]
+    bg-gray-700 text-gray-300 text-xs
+    font-mono
+  }
+
+  .ListContent table {
+  }
+
+  .ListContent tbody {
+    @apply w-full h-full
+    overflow-scroll
+  }
+
+  .ListContent th {
+    @apply p-2 px-6
+  }
+
+  .ListContent td {
+    @apply border-2 border-gray-600 p-2 px-6
+    whitespace-nowrap
+  }
+
+  .ListContent td.number {
+    @apply text-right
+  }
+}

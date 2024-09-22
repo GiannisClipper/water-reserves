@@ -30,4 +30,13 @@
     @apply pl-2 font-mono text-right
   }
 
+  .CustomizedLegend {
+    @apply flex flex-row justify-end
+    /* border border-dashed border-black */
+  }
+
+  .CustomizedLegend svg {
+    @apply inline-block ml-2 mr-1
+  }
+
 }
