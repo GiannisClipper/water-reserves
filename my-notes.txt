@@ -86,4 +86,15 @@ file '10.mov'
 file '11.mov'
 
 2 Run on terminal:
-ffmpeg -f concat -i list.txt -c copy merged.mov
+ffmpeg -f concat -i list.txt -c copy video.mp4
+
+How to Adjust Volume Using FFmpeg (Volume, DRC, Normalization included)
+https://ottverse.com/how-to-adjust-volume-using-ffmpeg-drc-normalization/
+
+increase by 3 dB: ffmpeg -i input.mp4 -af "volume=3dB" output.mp4
+decrease by 6 dB: ffmpeg -i input.mp4 -af "volume=-6dB" output.mp4
+
+ffmpeg convert without loss quality
+https://stackoverflow.com/a/27878699/12138247
+
+ffmpeg -i input.mp4 -vcodec copy -af "volume=3dB" output.mp4

@@ -1,0 +1,31 @@
+@tailwind components;
+
+@layer components {
+
+  .DataSection,
+  .DataSectionSkeleton {
+    @apply flex flex-row
+    w-full
+    bg-white bg-opacity-50
+    p-8
+  }
+
+  .ChartSectionSkeleton {
+    @apply flex flex-row
+    w-full
+  }
+
+  .ChartSection {
+    @apply flex flex-row justify-center
+    w-full
+  }
+
+  .ChartContent {
+    @apply
+    w-full
+    max-w-[calc(1280px)]
+    aspect-[2]
+    bg-gray-50 text-gray-600 text-xs
+  }
+  
+}
