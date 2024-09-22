@@ -38,15 +38,21 @@
 
   .ChartContent {
     @apply
-    min-h-[calc(55vh)]
-    max-h-[calc(55vh)]
+    min-w-full
+    max-w-full
+    aspect-[2]
+    /* min-h-[calc(55vh)]
+    max-h-[calc(55vh)] */
     bg-gray-50 text-gray-600 text-xs
   }
   
   .ListContent {
     @apply flex flex-row justify-center
-    min-h-[calc(50vh)]
-    max-h-[calc(50vh)]
+    min-w-full
+    max-w-full
+    aspect-[2]
+    /* min-h-[calc(50vh)]
+    max-h-[calc(50vh)] */
     bg-gray-700 text-gray-300 text-xs
     font-mono
   }

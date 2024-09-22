@@ -39,8 +39,8 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
     const yTicks: number[] = getYTicks( data );
     const lineType: LineType = getLineType( xTicks );
 
-    const [ aspect, setAspect ] = useState( 0 );
-    const onResize = setFunctionOnDelay( () => getAspect( aspect, setAspect ), 100 );
+    // const [ aspect, setAspect ] = useState( 0 );
+    // const onResize = setFunctionOnDelay( () => getAspect( aspect, setAspect ), 100 );
 
     console.log( "rendering: ChartContent..." )
     console.log( 'data, xTicks, yTicks', data, xTicks, yTicks )
@@ -57,8 +57,8 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
                 yTicks={ yTicks }
                 lineType={ lineType }
                 color={ SKY }
-                aspect={ aspect }
-                onResize={ onResize }
+                // aspect={ aspect }
+                // onResize={ onResize }
             />
 
             :
@@ -71,8 +71,8 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
                 yTicks={ yTicks }
                 lineType={ lineType }
                 color={ SKY }
-                aspect={ aspect }
-                onResize={ onResize }
+                // aspect={ aspect }
+                // onResize={ onResize }
             />
 
             :
@@ -83,8 +83,8 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
                 yTicks={ yTicks }
                 lineType={ lineType }
                 color={ SKY }
-                aspect={ aspect }
-                onResize={ onResize }
+                // aspect={ aspect }
+                // onResize={ onResize }
             />
             }
         </div>
@@ -98,14 +98,16 @@ type ChartCompositionPropsType = {
     yTicks: number[]
     lineType: LineType
     color: ObjectType
-    aspect: number
-    onResize: CallableFunction
+    // aspect: number
+    // onResize: CallableFunction
 }
 
 const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, aspect, onResize }: ChartCompositionPropsType ) => {
 
+    // <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
+
     return (
-        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
+        <ResponsiveContainer width="100%" height="100%">
             <LineChart
                 data={ data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
@@ -154,7 +156,7 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, 
 const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
-        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
+        <ResponsiveContainer width="100%" height="100%">
             <AreaChart
                 data={ data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
@@ -203,7 +205,7 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, 
 const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
-        <ResponsiveContainer width="100%" height="100%" aspect={ aspect } onResize={ onResize } >
+        <ResponsiveContainer width="100%" height="100%">
             <BarChart
                 data={ data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
