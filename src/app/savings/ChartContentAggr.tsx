@@ -10,7 +10,8 @@ import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels
 import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
 import { SimpleTooltip } from '@/components/Page/Chart/tooltips';
 
-import { getAggregatedData, getLineType } from '@/logic/savings/_common';
+import { SavingsDataParser } from '@/logic/_common/DataParser';
+import { getLineType } from '@/logic/savings/_common';
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 
 import { SKY } from '@/helpers/colors';
@@ -31,7 +32,7 @@ type PropsType = {
 
 const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
 
-    const data: ObjectType[] = getAggregatedData( result );
+    const data: ObjectType[] = new SavingsDataParser( result ).getData();
     const xTicks: string[] = getXTicks( data );
     const yTicks: number[] = getYTicks( data );
     const lineType: LineType = getLineType( xTicks );

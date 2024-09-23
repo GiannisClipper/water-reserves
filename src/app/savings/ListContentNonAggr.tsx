@@ -3,8 +3,7 @@ import { CubicMeters } from "@/components/Symbols";
 import { withCommas } from "@/helpers/numbers";
 import ObjectList from "@/helpers/objects/ObjectList";
 
-import { getReservoirs, getNonAggregatedData } from '@/logic/savings/_common';
-import { getNonAggregatedHeaders } from '@/logic/savings/list';
+import { SavingsReservoirDataParser } from '@/logic/_common/DataParser';
 import { lexicon, translate } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
@@ -14,13 +13,14 @@ type PropsType = { result: RequestResultType | null }
 
 const ListContent = ( { result }: PropsType ) => {
 
-    const data: ObjectType[] = getNonAggregatedData( result );
-    let reservoirs: ObjectType[] = getReservoirs( result, data );
+    const dataParser = new SavingsReservoirDataParser( result );
+    const headers: string[] = dataParser.getHeaders();
+    const data: ObjectType[] = dataParser.getData();
+    const reservoirs = new ObjectList( dataParser.getReservoirs() ).sortBy( 'start', 'desc' );
     // sortBy start: most recent at the beggining
-    reservoirs = new ObjectList( reservoirs ).sortBy( 'start', 'desc' );
-    reservoirs.forEach( r => lexicon[ r.name_en ] = r.name_el );
 
-    const headers: string[] = getNonAggregatedHeaders( data, reservoirs );
+    // update lexicon
+    reservoirs.forEach( r => lexicon[ r.name_en ] = r.name_el );
 
     console.log( `rendering: ListContent...`, headers, data )
 
@@ -51,7 +51,7 @@ const ListContent = ( { result }: PropsType ) => {
                             </Fragment>
                         ) }
                     </tr>
-                 ) }
+                ) }
                 </tbody>
         </table>
     );

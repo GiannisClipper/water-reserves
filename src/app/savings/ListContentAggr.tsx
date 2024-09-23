@@ -1,7 +1,6 @@
 import { CubicMeters } from "@/components/Symbols";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
-import { getAggregatedHeaders } from '@/logic/savings/list';
-import { getAggregatedData } from '@/logic/savings/_common';
+import { SavingsDataParser } from '@/logic/_common/DataParser';
 import { translate } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
@@ -11,8 +10,9 @@ type PropsType = { result: RequestResultType | null }
 
 const ListContent = ( { result }: PropsType ) => {
 
-    const data: ObjectType[] = getAggregatedData( result );
-    const headers: string[] = getAggregatedHeaders( data );
+    const dataParser = new SavingsDataParser( result );
+    const headers: string[] = dataParser.getHeaders();
+    const data: ObjectType[] = dataParser.getData();
 
     console.log( `rendering: ListContent...` )
 

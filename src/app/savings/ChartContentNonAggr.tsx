@@ -14,7 +14,7 @@ import { LineLegend, ColorLegend } from "@/components/Page/Chart/legends";
 
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 import { getLineType } from '@/logic/savings/_common';
-import { getReservoirs, getNonAggregatedData } from '@/logic/savings/_common';
+import { SavingsReservoirDataParser } from '@/logic/_common/DataParser';
 import { makeReservoirsRepr, makeReservoirsOrderedRepr } from '@/logic/savings/chart';
 
 import ObjectList from '@/helpers/objects/ObjectList';
@@ -36,10 +36,10 @@ type PropsType = {
 
 const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
     
-    const data = getNonAggregatedData( result );
-    let reservoirs: ObjectType[] = getReservoirs( result, data );
+    const dataParser = new SavingsReservoirDataParser( result );
+    const data = dataParser.getData();
+    const reservoirs = new ObjectList( dataParser.getReservoirs() ).sortBy( 'start', 'asc' );
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
-    reservoirs = new ObjectList( reservoirs ).sortBy( 'start', 'asc' );
 
     const xTicks: string[] = getXTicks( data );
     const yTicks: number[] = getYTicks( data );
