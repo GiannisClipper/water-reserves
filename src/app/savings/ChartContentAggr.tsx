@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from 'react';
 import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar } from 'recharts';
@@ -10,12 +9,11 @@ import { Customized, Label } from 'recharts';
 import { CustomTitle } from '@/components/Page/Chart';
 import { CustomizedXAxisTick, CustomizedYAxisTick } from '@/components/Page/Chart';
 import { CustomizedYAxisLabel, CustomizedXAxisLabel } from '@/components/Page/Chart';
+import { SimpleTooltip } from '@/components/Page/Chart/tooltips';
 
 import { getAggregatedData, getLineType } from '@/logic/savings/_common';
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 
-import { withCommas, withPlusSign } from '@/helpers/numbers';
-import { timeLabel } from '@/helpers/time';
 import { SKY } from '@/helpers/colors';
 import { setFunctionOnDelay } from "@/helpers/time";
 import { getAspect } from "@/logic/_common/chart";
@@ -137,7 +135,7 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, 
                 />
 
                 <Tooltip 
-                    content={ <CustomTooltip /> } 
+                    content={ <SimpleTooltip /> } 
                 />
 
                 <Line 
@@ -186,7 +184,7 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, 
                 />
 
                 <Tooltip 
-                    content={ <CustomTooltip /> } 
+                    content={ <SimpleTooltip /> } 
                 />
 
                 <Area 
@@ -238,7 +236,7 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, a
                 <Tooltip 
                     // cursor={{fill: 'transparent'}}
                     cursor={{ fill: '#0369a1' }}
-                    content={ <CustomTooltip /> } 
+                    content={ <SimpleTooltip /> } 
                 />
 
                 <Bar 
@@ -253,29 +251,5 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, a
         </ResponsiveContainer>
     );
 }
-
-type TooltipPropsType = {
-    active?: boolean
-    payload?: any
-    label?: string
-} 
-
-const CustomTooltip = ( { active, payload, label }: TooltipPropsType ) => {
-
-    if ( active && payload && payload.length ) {
-
-        const { time, quantity, diff, percent } = payload[ 0 ].payload;
-
-        return (
-            <div className="Tooltip">
-                <p>{ `${timeLabel( time )}: ${time}` }</p>
-                <p>{ `Αποθέματα: ${withCommas( quantity )}` } m<sup>3</sup></p>
-                <p>{ `Διαφορά: ${withCommas( diff )} (${withPlusSign( percent )}%)` }</p>
-            </div>
-      );
-    }
-  
-    return null;
-};
 
 export default ChartContent;

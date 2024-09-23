@@ -10,6 +10,7 @@ import { Customized, Label } from 'recharts';
 import { CustomTitle } from '@/components/Page/Chart';
 import { CustomizedXAxisTick, CustomizedYAxisTick } from '@/components/Page/Chart';
 import { CustomizedYAxisLabel, CustomizedXAxisLabel } from '@/components/Page/Chart';
+import { ComplexTooltip } from '@/components/Page/Chart/tooltips';
 
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 import { getLineType } from '@/logic/savings/_common';
@@ -17,8 +18,6 @@ import { getReservoirs, getNonAggregatedData } from '@/logic/savings/_common';
 import { makeReservoirsRepr, makeReservoirsOrderedRepr } from '@/logic/savings/chart';
 
 import ObjectList from '@/helpers/objects/ObjectList';
-import { withCommas } from '@/helpers/numbers';
-import { timeLabel } from '@/helpers/time';
 import { SKY } from '@/helpers/colors';
 import { setFunctionOnDelay } from "@/helpers/time";
 import { getAspect } from "@/logic/_common/chart";
@@ -156,7 +155,7 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
 
                 <Tooltip 
                     content={ 
-                        <CustomTooltip 
+                        <ComplexTooltip 
                             reservoirs={ reservoirs } 
                             makeReservoirsRepr={ makeReservoirsOrderedRepr }
                         /> 
@@ -237,7 +236,7 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
 
                 <Tooltip 
                     content={ 
-                        <CustomTooltip 
+                        <ComplexTooltip 
                             reservoirs={ reservoirs } 
                             makeReservoirsRepr={ makeReservoirsRepr }
                         /> 
@@ -306,7 +305,7 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArr
                 <Tooltip 
                     cursor={{ fill: '#0369a1' }}
                     content={ 
-                        <CustomTooltip 
+                        <ComplexTooltip 
                             reservoirs={ reservoirs } 
                             makeReservoirsRepr={ makeReservoirsRepr }
                         /> 
@@ -337,49 +336,6 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArr
         </ResponsiveContainer>
     );
 }
-
-type TooltipPropsType = {
-    active?: boolean
-    payload?: any
-    label?: string
-    reservoirs: ObjectType[]
-    makeReservoirsRepr: CallableFunction
-} 
-
-const CustomTooltip = ( { active, payload, label, reservoirs, makeReservoirsRepr }: TooltipPropsType ) => {
-
-    if ( active && payload && payload.length ) {
-
-        const { time, total, quantities } = payload[ 0 ].payload;
-
-        const reservoirsRepr: ObjectType[] = makeReservoirsRepr( reservoirs, quantities );
-
-        return (
-            <div className="Tooltip">
-                <p>{ `${timeLabel( time )}: ${time}` }</p>
-
-                <table>
-                    <tbody>
-                        <tr className='total'>
-                            <td>Σύνολο</td> 
-                            <td className='value'>{ withCommas( total ) } m<sup>3</sup></td>
-                        </tr>
-                        { reservoirsRepr.map( ( reservoir, i ) =>
-                            <tr key={ i }>
-                                <td>{ reservoir.name }</td>
-                                <td className='value'>{ withCommas( reservoir.quantity )} m<sup>3</sup></td> 
-                                <td className='value'>{ `${reservoir.percent}%` }</td>
-                            </tr>
-                        ) }
-                    </tbody>
-                </table>
-
-            </div>
-      );
-    }
-  
-    return null;
-};
 
 type LineLegendPropsType = {
     payload?: any
