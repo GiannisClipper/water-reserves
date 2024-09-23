@@ -6,9 +6,8 @@ import { BarChart, Bar } from 'recharts';
 import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { Customized, Label } from 'recharts';
 
-import { CustomTitle } from '@/components/Page/Chart';
-import { CustomizedXAxisTick, CustomizedYAxisTick } from '@/components/Page/Chart';
-import { CustomizedYAxisLabel, CustomizedXAxisLabel } from '@/components/Page/Chart';
+import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels';
+import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
 import { SimpleTooltip } from '@/components/Page/Chart/tooltips';
 
 import { getAggregatedData, getLineType } from '@/logic/savings/_common';
@@ -111,7 +110,7 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, 
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<CustomTitle title={ labels.title } />}
+                    component={<TopTitle title={ labels.title } />}
                 />
                 
                 <CartesianGrid 
@@ -122,16 +121,16 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, 
                     dataKey="time" 
                     ticks={ xTicks } 
                     interval={ 0 } 
-                    tick={ <CustomizedXAxisTick data={ data } /> }
-                    label={ <CustomizedXAxisLabel label={ labels.xLabel } /> }
+                    tick={ <XAxisTick data={ data } /> }
+                    label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
                     domain={ [ yTicks[ 0 ], yTicks[ yTicks.length - 1 ] ] } 
                     ticks={ yTicks } 
                     interval={ 0 } 
-                    tick={ <CustomizedYAxisTick data={ data } /> }
-                    label={ <CustomizedYAxisLabel label={ labels.yLabel } /> }
+                    tick={ <YAxisTick data={ data } /> }
+                    label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
                 <Tooltip 
@@ -160,7 +159,7 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, 
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<CustomTitle title={ labels.title } />}
+                    component={<TopTitle title={ labels.title } />}
                 />
 
                 <CartesianGrid 
@@ -171,16 +170,16 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, 
                     dataKey="time" 
                     ticks={ xTicks } 
                     interval={ 0 } 
-                    tick={ <CustomizedXAxisTick data={ data } /> } 
-                    label={ <CustomizedXAxisLabel label={ labels.xLabel } /> }
+                    tick={ <XAxisTick data={ data } /> } 
+                    label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
                     domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
                     ticks={ yTicks } 
                     interval={ 0 } 
-                    tick={ <CustomizedYAxisTick data={ data } /> }
-                    label={ <CustomizedYAxisLabel label={ labels.yLabel } /> }
+                    tick={ <YAxisTick data={ data } /> }
+                    label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
                 <Tooltip 
@@ -209,7 +208,7 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, a
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<CustomTitle title={ labels.title } />}
+                    component={<TopTitle title={ labels.title } />}
                 />
 
                 <CartesianGrid 
@@ -221,16 +220,16 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, color, a
                     dataKey="time" 
                     ticks={ xTicks } 
                     interval={ 0 } 
-                    tick={ <CustomizedXAxisTick data={ data } /> } 
-                    label={ <CustomizedXAxisLabel label={ labels.xLabel } /> }
+                    tick={ <XAxisTick data={ data } /> } 
+                    label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
                     domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
                     ticks={ yTicks } 
                     interval={ 0 } 
-                    tick={ <CustomizedYAxisTick data={ data } /> }
-                    label={ <CustomizedYAxisLabel label={ labels.yLabel } /> }
+                    tick={ <YAxisTick data={ data } /> }
+                    label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
                 <Tooltip 
