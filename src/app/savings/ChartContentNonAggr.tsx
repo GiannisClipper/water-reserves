@@ -15,6 +15,7 @@ import { LineLegend, ColorLegend } from "@/components/Page/Chart/legends";
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 import { getLineType } from '@/logic/savings/_common';
 import { SavingsReservoirDataParser } from '@/logic/_common/DataParser';
+import { ChartHandler } from "@/logic/_common/ChartHandler";
 import { makeReservoirsRepr, makeReservoirsOrderedRepr } from '@/logic/savings/chart';
 
 import ObjectList from '@/helpers/objects/ObjectList';
@@ -40,10 +41,7 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
     const data = dataParser.getData();
     const reservoirs = new ObjectList( dataParser.getReservoirs() ).sortBy( 'start', 'asc' );
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
-
-    const xTicks: string[] = getXTicks( data );
-    const yTicks: number[] = getYTicks( data );
-    const lineType: LineType = getLineType( xTicks );
+    const chartHandler = new ChartHandler( data );
 
     const colorArray: string[] = [ SKY[ 600 ], SKY[ 500 ], SKY[ 400 ], SKY[ 300 ] ];
 
@@ -51,7 +49,6 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
     // const onResize = setFunctionOnDelay( () => getAspect( aspect, setAspect ), 100 );
 
     console.log( "rendering: ChartContent..." ) 
-    console.log( 'data, xTicks, yTicks', data, xTicks, yTicks )
 
     return (
         <div className="ChartContent">
@@ -59,11 +56,8 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
             { chartType === 'bar'
             ?
             <BarChartComposition
-                data={ data }
+                chartHandler={ chartHandler }
                 labels={ chartLabels }
-                xTicks={ xTicks }
-                yTicks={ yTicks }
-                lineType={ lineType }
                 colorArray={ colorArray }
                 reservoirs={ reservoirs }
                 // aspect={ aspect }
@@ -74,11 +68,8 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
             chartType === 'area'
             ?
             <AreaChartComposition
-                data={ data }
+                chartHandler={ chartHandler }
                 labels={ chartLabels }
-                xTicks={ xTicks }
-                yTicks={ yTicks }
-                lineType={ lineType }
                 colorArray={ colorArray }
                 reservoirs={ reservoirs }
                 // aspect={ aspect }
@@ -87,11 +78,8 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
 
             :
             <LineChartComposition
-                data={ data }
+                chartHandler={ chartHandler }
                 labels={ chartLabels }
-                xTicks={ xTicks }
-                yTicks={ yTicks }
-                lineType={ lineType }
                 colorArray={ colorArray }
                 reservoirs={ reservoirs }
                 // aspect={ aspect }
@@ -104,18 +92,15 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
 }
 
 type ChartCompositionPropsType = { 
-    data: ObjectType[]
+    chartHandler: ChartHandler
     labels: ObjectType
-    xTicks: string[]
-    yTicks: number[]
-    lineType: LineType
     colorArray: string[]
     reservoirs: ObjectType[]
     // aspect: number
     // onResize: CallableFunction
 }
 
-const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { chartHandler, labels, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
     const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
 
@@ -126,7 +111,7 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart
-                data={ data }
+                data={ chartHandler.getData() }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -139,17 +124,17 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
 
                 <XAxis 
                     dataKey="time" 
-                    ticks={ xTicks } 
+                    ticks={ chartHandler.getXTicks() } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ data } /> } 
+                    tick={ <XAxisTick data={ chartHandler.getData() } /> } 
                     label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ yTicks[ 0 ], yTicks[ yTicks.length - 1 ] ] } 
-                    ticks={ yTicks } 
+                    domain={ [ chartHandler.minYTick(), chartHandler.maxYTick() ] } 
+                    ticks={ chartHandler.getYTicks() } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ data } /> }
+                    tick={ <YAxisTick data={ chartHandler.getData() } /> }
                     label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
@@ -166,7 +151,7 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
                     <Line 
                         key={ i }
                         id={ `${i+1}`} 
-                        type={ lineType } 
+                        type={ chartHandler.getLineType() } 
                         dataKey={ `quantities.${r.id}.quantity` }
                         stroke={ colorArray[ 0 ] } 
                         strokeWidth={ 2 } 
@@ -178,7 +163,7 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
 
                 <Line 
                     id="0" 
-                    type={ lineType } 
+                    type={ chartHandler.getLineType() } 
                     dataKey="total"
                     stroke={ colorArray[ 0 ] } 
                     strokeWidth={ 2 }
@@ -201,12 +186,12 @@ const LineChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
     );
 }
 
-const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { chartHandler, labels, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-                data={ data }
+                data={ chartHandler.getData() }
                 // stackOffset="expand"
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
@@ -220,17 +205,17 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
 
                 <XAxis 
                     dataKey="time" 
-                    ticks={ xTicks } 
+                    ticks={ chartHandler.getXTicks() } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ data } /> } 
+                    tick={ <XAxisTick data={ chartHandler.getData() } /> } 
                     label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
-                    ticks={ yTicks } 
+                    domain={ [ chartHandler.minYTick(), chartHandler.maxYTick() ] } 
+                    ticks={ chartHandler.getYTicks() } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ data } /> }
+                    tick={ <YAxisTick data={ chartHandler.getData() } /> }
                     label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
@@ -246,7 +231,7 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
                 { reservoirs.map( ( r, i ) =>
                     <Area 
                         key={ i } 
-                        type={ lineType } 
+                        type={ chartHandler.getLineType() } 
                         dataKey={ `quantities.${r.id}.quantity` }
                         stackId="a"
                         stroke={ colorArray[ i ] } 
@@ -269,12 +254,12 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
     );
 }
 
-const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { chartHandler, labels, colorArray, reservoirs, aspect, onResize }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
-                data={ data }
+                data={ chartHandler.getData() }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -288,17 +273,17 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArr
 
                 <XAxis 
                     dataKey="time" 
-                    ticks={ xTicks } 
+                    ticks={ chartHandler.getXTicks() } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ data } /> } 
+                    tick={ <XAxisTick data={ chartHandler.getData() } /> } 
                     label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ yTicks[ 0 ], yTicks[ yTicks.length -1 ] ] } 
-                    ticks={ yTicks } 
+                    domain={ [ chartHandler.minYTick(), chartHandler.maxYTick() ] } 
+                    ticks={ chartHandler.getYTicks() } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ data } /> }
+                    tick={ <YAxisTick data={ chartHandler.getData() } /> }
                     label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
@@ -315,7 +300,7 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArr
                 { reservoirs.map( ( r, i ) =>
                     <Bar 
                         key={ i } 
-                        type={ lineType } 
+                        type={ chartHandler.getLineType() } 
                         dataKey={ `quantities.${r.id}.quantity` }
                         stackId="a"
                         fill={ colorArray[ i ] } 
