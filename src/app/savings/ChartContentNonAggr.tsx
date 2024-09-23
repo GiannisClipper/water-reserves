@@ -11,6 +11,7 @@ import { CustomTitle } from '@/components/Page/Chart';
 import { CustomizedXAxisTick, CustomizedYAxisTick } from '@/components/Page/Chart';
 import { CustomizedYAxisLabel, CustomizedXAxisLabel } from '@/components/Page/Chart';
 import { ComplexTooltip } from '@/components/Page/Chart/tooltips';
+import { LineLegend, ColorLegend } from "@/components/Page/Chart/legends";
 
 import { getXTicks, getYTicks } from '@/logic/savings/chart';
 import { getLineType } from '@/logic/savings/_common';
@@ -259,7 +260,7 @@ const AreaChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorAr
                     align="right" 
                     verticalAlign='top' 
                     height={ 24 }
-                    content={ <CustomizedLegend 
+                    content={ <ColorLegend 
                         reservoirs={ reservoirs }
                         colorsArray={ colorArray }
                     /> }
@@ -327,7 +328,7 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArr
                     align="right" 
                     verticalAlign='top' 
                     height={ 24 }
-                    content={ <CustomizedLegend 
+                    content={ <ColorLegend 
                         reservoirs={ reservoirs }
                         colorsArray={ colorArray }
                     /> }
@@ -335,71 +336,6 @@ const BarChartComposition = ( { data, labels, xTicks, yTicks, lineType, colorArr
             </BarChart>
         </ResponsiveContainer>
     );
-}
-
-type LineLegendPropsType = {
-    payload?: any
-    reservoirs: ObjectType[]
-    colorsArray: string[]
-    strokeDasharray: string[]
-}
-
-const LineLegend = ( { payload, reservoirs, colorsArray, strokeDasharray }: LineLegendPropsType ) => {
-
-    return (
-        <div className='CustomizedLegend'>
-            { reservoirs.map( ( r: ObjectType, i: number ) =>
-                <span 
-                    key={ i }
-                    style={ { color: colorsArray[ 0 ] } }
-                >
-                <svg height="10" width="25" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="none" stroke={ colorsArray[ 0 ] } strokeWidth="2">
-                            <path strokeDasharray={ strokeDasharray[ i ] } d="M5 5 l25 0" />
-                        </g>
-                    </svg>
-                    { r.name_el }
-                </span>
-            ) }
-            <span
-                style={ { color: colorsArray[ 0 ] } }
-            >
-                <svg height="10" width="25" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="none" stroke={ colorsArray[ 0 ] } strokeWidth="2">
-                        <path d="M5 5 l25 0" />
-                    </g>
-                </svg>
-                Σύνολο
-            </span>
-        </div>
-    )
-}
-
-type CustomizedLegendPropsType = {
-    payload?: any
-    reservoirs: ObjectType[]
-    colorsArray: string[]
-}
-
-const CustomizedLegend = ( { payload, reservoirs, colorsArray }: CustomizedLegendPropsType ) => {
-
-    return (
-        <div className='CustomizedLegend'>
-            { reservoirs.map( ( r: ObjectType, i: number ) =>
-                <span 
-                    key={ i }
-                    style={ { color: colorsArray[ i ] } }
-                >
-                    <svg height="10" width="15" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="none" stroke={ colorsArray[ i ] } strokeWidth="4">
-                            <path d="M5 5 l15 0" />
-                        </g>
-                    </svg>
-                    { r.name_el }
-                </span>
-            ) }
-        </div>
-    )
 }
 
 export default ChartContent;
