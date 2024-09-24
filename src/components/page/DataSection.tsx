@@ -6,7 +6,7 @@ import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/page/Ske
 import Error from "@/components/page/Error";
 import ChartSection from "./chart/ChartSection";
 import ListSection from "./list/ListSection";
-import { RequestHandler } from "@/logic/_common/RequestHandler";
+import { DataRequestHandler } from "@/logic/_common/DataRequestHandler";
 
 type PropsType = { 
     endpoint: string
@@ -15,7 +15,7 @@ type PropsType = {
 
 const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
-    const requestHandler = await new RequestHandler( endpoint, searchParams );
+    const requestHandler = await new DataRequestHandler( endpoint, searchParams );
     const { error, result } = requestHandler.toJSON();
     
     console.log( "rendering: DataSection..." );

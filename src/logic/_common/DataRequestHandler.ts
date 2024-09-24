@@ -1,11 +1,11 @@
 import type { ObjectType } from '@/types';
-import { ParamsValidation } from "@/logic/_common/ParamsValidation";
+import { ParamValidation } from "@/logic/_common/ParamValidation";
 import { SavingsApiRequest } from "@/logic/_common/ApiRequests";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType, RequestResultType } from '@/types/requestResult';
 
-class RequestHandler {    
+class DataRequestHandler {    
 
     _error: RequestErrorType | null = null;
     _result: RequestResultType | null = null;
@@ -17,7 +17,7 @@ class RequestHandler {
                 return this;
             }
 
-            this._error = new ParamsValidation( searchParams ).validate();
+            this._error = new ParamValidation( searchParams ).validate();
 
             if ( ! this._error ) {
                 const apiRequest = new SavingsApiRequest( searchParams );
@@ -43,4 +43,4 @@ class RequestHandler {
     }
 }
 
-export { RequestHandler };
+export { DataRequestHandler };

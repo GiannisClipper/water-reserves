@@ -2,7 +2,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 import { ChartSectionSkeleton } from "@/components/page/Skeleton";
 import Error from "@/components/page/Error";
 import ChartSection from "./chart/ChartSection";
-import { RequestHandler } from "@/logic/_common/RequestHandler";
+import { DataRequestHandler } from "@/logic/_common/DataRequestHandler";
 
 type PropsType = { 
     endpoint: string
@@ -13,7 +13,7 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 2000 ) )
 
-    const requestHandler = await new RequestHandler( endpoint, searchParams );
+    const requestHandler = await new DataRequestHandler( endpoint, searchParams );
     const { error, result } = requestHandler.toJSON();
 
     console.log( "rendering: DataSection..." );

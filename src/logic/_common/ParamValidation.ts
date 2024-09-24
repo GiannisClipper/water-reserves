@@ -2,7 +2,7 @@ import { ObjectType } from '@/types';
 
 type ErrorType = { message: string };
 
-class ParamsValidation {    
+class ParamValidation {    
 
     time_range: string | undefined;
 
@@ -22,4 +22,4 @@ class ParamsValidation {
     };
 }
 
-export { ParamsValidation };
+export { ParamValidation };
