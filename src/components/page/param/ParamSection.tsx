@@ -1,27 +1,28 @@
 import ParamState from "./ParamState";
+import { ParamRequestHandler } from "@/logic/_common/ParamRequestHandler";
 import type { SearchParamsType } from "@/types/searchParams";
-import ObjectList from "@/helpers/objects/ObjectList";
-import { ReservoirsApiRequest } from "@/logic/_common/ApiRequests";
 
 type PropsType = {
+    endpoint: string
     searchParams: SearchParamsType
 }
 
-const ParamSection = async ( { searchParams }: PropsType ) => {
+const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     console.log( "rendering: ParamSection..." )
 
-    const reservoirsApiRequest = new ReservoirsApiRequest();
-    let [ error, reservoirs ] = await reservoirsApiRequest.request();
-    reservoirs = new ObjectList( reservoirs ).sortBy( 'start', 'asc' );
+    const requestHandler = await new ParamRequestHandler( endpoint );
+    const { error, items } = requestHandler.toJSON();
+
     // console.log( error, reservoirs );
 
     return (
         <div className="ParamSection">
             <ParamState
+                endpoint={ endpoint }
                 searchParams={ searchParams } 
                 error={ error }
-                reservoirs={ reservoirs }
+                items={ items }
             />
         </div>
     );

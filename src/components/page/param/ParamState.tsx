@@ -2,17 +2,18 @@
 
 import { useState } from "react";
 import ParamLabel from "@/components/page/param/ParamLabel";
-import ParamContent from "./ParamContent";
+import ParamContent from "@/app/savings/ParamContent";
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType } from "@/types/requestResult";
 
 type PropsType = {
+    endpoint: string
     searchParams: SavingsSearchParamsType
-    reservoirs: [ { [ key: string ]: any } ] | null
+    items: [ { [ key: string ]: any } ] | null
     error: RequestErrorType | null
 }
 
-const ParamState = ( { searchParams, error, reservoirs }: PropsType ) => {
+const ParamState = ( { endpoint, searchParams, error, items }: PropsType ) => {
 
     const [ onSearch, setOnSearch ] = useState<boolean>( false );
 
@@ -24,11 +25,12 @@ const ParamState = ( { searchParams, error, reservoirs }: PropsType ) => {
                 searchParams={ searchParams } 
                 setOnSearch={ setOnSearch }
             />
-            <ParamContent 
+            <ParamContent
+                endpoint={ endpoint }
                 searchParams={ searchParams }
-                onSearch={ onSearch }
-                reservoirs={ reservoirs }
+                items={ items }
                 error={ error }
+                onSearch={ onSearch }
             />
         </div>
     );

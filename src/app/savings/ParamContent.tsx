@@ -12,7 +12,6 @@ import { setParamsFactory } from "@/components/page";
 import { 
     Form, FormSectionTimeRange, 
     FormSectionIntervalFilter, 
-    FormSectionAggregation,
     FormSectionReservoirs,
     FormButtonMore,
     FormButtonLess
@@ -29,18 +28,19 @@ import "@/styles/form.css";
 import "@/styles/field.css";
 
 type PropsType = {
+    endpoint: string
     searchParams: SavingsSearchParamsType
     onSearch: boolean
-    reservoirs: { [ key: string ]: any }[] | null
+    items: { [ key: string ]: any }[] | null
     error: RequestErrorType | null
 }
 
-const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
+const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) => {
 
     console.log( "rendering: ParamContent..." )
 
     const savingsFormParams: SavingsFormParamsType = 
-        new SavingsFormParams( searchParams, reservoirs || [] ).getAsObject();
+        new SavingsFormParams( searchParams, items || [] ).getAsObject();
 
     const [ params, setParams ] = useState( savingsFormParams );
     const {
@@ -67,7 +67,7 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
             }
 
             // convert form params to query string
-            const queryString: string = new SavingsFormParams( searchParams, reservoirs || [] )
+            const queryString: string = new SavingsFormParams( searchParams, items || [] )
                 .setFromObject( params )
                 .getAsQueryString();
 
@@ -103,7 +103,7 @@ const ParamContent = ( { searchParams, onSearch, reservoirs }: PropsType ) => {
             </FormSectionTimeRange>
 
             <FormSectionReservoirs>
-                { reservoirs?.map( r => 
+                { items?.map( r => 
                     <CheckField
                         key={ r.id }
                         name={ r.id }
