@@ -1,5 +1,5 @@
-import ChartContentAggr from "../ChartContentAggr";
-import ChartContentNonAggr from "../ChartContentNonAggr";
+import SingleChartContent from "../SingleChartContent";
+import StackChartContent from "../StackChartContent";
 import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
 
 import type { SavingsSearchParamsType } from "@/types/searchParams";
@@ -25,13 +25,13 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
 
             { reservoirAggregation 
             ? 
-                <ChartContentAggr 
+                <SingleChartContent 
                     result={ result } 
                     chartType={ chartType }
                     chartLabels={ chartLabels }
                 />
             : 
-                <ChartContentNonAggr
+                <StackChartContent
                     result={ result } 
                     chartType={ chartType }
                     chartLabels={ chartLabels }
