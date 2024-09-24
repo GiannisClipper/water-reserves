@@ -11,9 +11,9 @@ import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
 import { ComplexTooltip } from '@/components/Page/Chart/tooltips';
 import { LineLegend, ColorLegend } from "@/components/Page/Chart/legends";
 
-import { SavingsReservoirDataParser } from '@/logic/_common/DataParser';
+import { StackDataParser } from '@/logic/_common/DataParser';
 import { ChartHandler } from "@/logic/_common/ChartHandler";
-import { makeReservoirsRepr, makeReservoirsOrderedRepr } from '@/logic/savings/chart';
+import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/savings/chart';
 
 import ObjectList from '@/helpers/objects/ObjectList';
 
@@ -30,9 +30,9 @@ type PropsType = {
 
 const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
     
-    const dataParser = new SavingsReservoirDataParser( result );
+    const dataParser = new StackDataParser( result, 'reservoirs' );
     const data = dataParser.data;
-    const reservoirs = new ObjectList( dataParser.reservoirs ).sortBy( 'start', 'asc' );
+    const items = new ObjectList( dataParser.items ).sortBy( 'start', 'asc' );
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
     const chartHandler = new ChartHandler( data );
 
@@ -54,7 +54,7 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
                 chartHandler={ chartHandler }
                 labels={ chartLabels }
                 colorArray={ colorArray }
-                reservoirs={ reservoirs }
+                items={ items }
             />
 
             :
@@ -64,7 +64,7 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
                 chartHandler={ chartHandler }
                 labels={ chartLabels }
                 colorArray={ colorArray }
-                reservoirs={ reservoirs }
+                items={ items }
             />
 
             :
@@ -72,7 +72,7 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
                 chartHandler={ chartHandler }
                 labels={ chartLabels }
                 colorArray={ colorArray }
-                reservoirs={ reservoirs }
+                items={ items }
             />
             }
                 
@@ -84,10 +84,10 @@ type ChartCompositionPropsType = {
     chartHandler: ChartHandler
     labels: ObjectType
     colorArray: string[]
-    reservoirs: ObjectType[]
+    items: ObjectType[]
 }
 
-const LineChartComposition = ( { chartHandler, labels, colorArray, reservoirs }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { chartHandler, labels, colorArray, items }: ChartCompositionPropsType ) => {
 
     const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
 
@@ -126,18 +126,18 @@ const LineChartComposition = ( { chartHandler, labels, colorArray, reservoirs }:
                 <Tooltip 
                     content={ 
                         <ComplexTooltip 
-                            reservoirs={ reservoirs } 
-                            makeReservoirsRepr={ makeReservoirsOrderedRepr }
+                            items={ items } 
+                            makeItemsRepr={ makeItemsOrderedRepr }
                         /> 
                     } 
                 />
 
-                { reservoirs.map( ( r, i ) =>
+                { items.map( ( r, i ) =>
                     <Line 
                         key={ i }
                         id={ `${i+1}`} 
                         type={ chartHandler.lineType } 
-                        dataKey={ `quantities.${r.id}.quantity` }
+                        dataKey={ `values.${r.id}.value` }
                         stroke={ colorArray[ 0 ] } 
                         strokeWidth={ 2 } 
                         strokeDasharray={ lineDashes[ i ] }
@@ -161,7 +161,7 @@ const LineChartComposition = ( { chartHandler, labels, colorArray, reservoirs }:
                     verticalAlign='top'
                     height={ 24 }
                     content={ <LineLegend 
-                        reservoirs={ reservoirs }
+                        items={ items }
                         colorsArray={ colorArray }
                         strokeDasharray={ lineDashes }
                     /> }
@@ -171,7 +171,7 @@ const LineChartComposition = ( { chartHandler, labels, colorArray, reservoirs }:
     );
 }
 
-const AreaChartComposition = ( { chartHandler, labels, colorArray, reservoirs }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { chartHandler, labels, colorArray, items }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -207,17 +207,17 @@ const AreaChartComposition = ( { chartHandler, labels, colorArray, reservoirs }:
                 <Tooltip 
                     content={ 
                         <ComplexTooltip 
-                            reservoirs={ reservoirs } 
-                            makeReservoirsRepr={ makeReservoirsRepr }
+                            items={ items } 
+                            makeItemsRepr={ makeItemsRepr }
                         /> 
                     } 
                 />
 
-                { reservoirs.map( ( r, i ) =>
+                { items.map( ( r, i ) =>
                     <Area 
                         key={ i } 
                         type={ chartHandler.lineType } 
-                        dataKey={ `quantities.${r.id}.quantity` }
+                        dataKey={ `values.${r.id}.value` }
                         stackId="a"
                         stroke={ colorArray[ i ] } 
                         fill={ colorArray[ i ] } 
@@ -230,7 +230,7 @@ const AreaChartComposition = ( { chartHandler, labels, colorArray, reservoirs }:
                     verticalAlign='top' 
                     height={ 24 }
                     content={ <ColorLegend 
-                        reservoirs={ reservoirs }
+                        items={ items }
                         colorsArray={ colorArray }
                     /> }
                 />
@@ -239,7 +239,7 @@ const AreaChartComposition = ( { chartHandler, labels, colorArray, reservoirs }:
     );
 }
 
-const BarChartComposition = ( { chartHandler, labels, colorArray, reservoirs }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { chartHandler, labels, colorArray, items }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -276,17 +276,17 @@ const BarChartComposition = ( { chartHandler, labels, colorArray, reservoirs }: 
                     cursor={{ fill: '#0369a1' }}
                     content={ 
                         <ComplexTooltip 
-                            reservoirs={ reservoirs } 
-                            makeReservoirsRepr={ makeReservoirsRepr }
+                            items={ items } 
+                            makeItemsRepr={ makeItemsRepr }
                         /> 
                     } 
                 />
 
-                { reservoirs.map( ( r, i ) =>
+                { items.map( ( r, i ) =>
                     <Bar 
                         key={ i } 
                         type={ chartHandler.lineType } 
-                        dataKey={ `quantities.${r.id}.quantity` }
+                        dataKey={ `values.${r.id}.value` }
                         stackId="a"
                         fill={ colorArray[ i ] } 
                         fillOpacity={ 1 }
@@ -298,7 +298,7 @@ const BarChartComposition = ( { chartHandler, labels, colorArray, reservoirs }: 
                     verticalAlign='top' 
                     height={ 24 }
                     content={ <ColorLegend 
-                        reservoirs={ reservoirs }
+                        items={ items }
                         colorsArray={ colorArray }
                     /> }
                 />

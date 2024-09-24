@@ -3,7 +3,7 @@ import { CubicMeters } from "@/components/Symbols";
 import { withCommas } from "@/helpers/numbers";
 import ObjectList from "@/helpers/objects/ObjectList";
 
-import { SavingsReservoirDataParser } from '@/logic/_common/DataParser';
+import { StackDataParser } from '@/logic/_common/DataParser';
 import { lexicon } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
@@ -13,14 +13,14 @@ type PropsType = { result: RequestResultType | null }
 
 const ListContent = ( { result }: PropsType ) => {
 
-    const dataParser = new SavingsReservoirDataParser( result );
+    const dataParser = new StackDataParser( result, 'reservoirs' );
     const headers: string[] = dataParser.headers;
     const data: ObjectType[] = dataParser.data;
-    const reservoirs = new ObjectList( dataParser.reservoirs ).sortBy( 'start', 'desc' );
+    const items = new ObjectList( dataParser.items ).sortBy( 'start', 'desc' );
     // sortBy start: most recent at the beggining
 
     // update lexicon
-    reservoirs.forEach( r => lexicon[ r.name_en ] = r.name_el );
+    items.forEach( r => lexicon[ r.name_en ] = r.name_el );
 
     console.log( `rendering: ListContent...`, headers, data )
 
@@ -44,10 +44,10 @@ const ListContent = ( { result }: PropsType ) => {
                         <td> { row.time } </td>
                         <td className='number'> { withCommas( row.total ) } <CubicMeters /></td>
 
-                        { reservoirs.map( ( r: ObjectType ) =>
+                        { items.map( ( r: ObjectType ) =>
                             <Fragment key={ r.id }>
-                                <td className='number'>{ withCommas( row.quantities[ r.id ].quantity ) }</td>
-                                <td className='number'>{ row.quantities[ r.id ].percent }%</td>
+                                <td className='number'>{ withCommas( row.values[ r.id ].value ) }</td>
+                                <td className='number'>{ row.values[ r.id ].percentage }%</td>
                             </Fragment>
                         ) }
                     </tr>

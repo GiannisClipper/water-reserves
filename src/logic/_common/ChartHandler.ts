@@ -52,41 +52,41 @@ class ChartHandler {
     private _calculateYTicks = (): number[] => {
 
         const minYValues = this._data.map( ( row: ObjectType ) => {
-            const { time, quantity, quantities } = row;
+            const { time, value, values } = row;
     
-            // case of multiple quantities
-            if ( quantities !== undefined ) {
-                return Math.min( ...Object.values( quantities ).map( q => q.quantity ) );
+            // case of multiple values
+            if ( values !== undefined ) {
+                return Math.min( ...Object.values( values ).map( v => v.value ) );
             }
     
-            // case of single quantity
-            return quantity;
+            // case of single value
+            return value;
         } );
     
         const maxYValues = this._data.map( ( row: ObjectType ) => {
-            const { time, quantity, total, quantities } = row;
+            const { time, value, total, values } = row;
     
-            // case of multiple quantities including total (line chart)
+            // case of multiple values including total (line chart)
             if ( total !== undefined ) {
                 return total;
             }
     
-            // case of multiple quantities without total (area, bar charts)
-            if ( quantities !== undefined ) {
-                return Math.max( ...Object.values( quantities ).map( q => q.quantity ) );
+            // case of multiple values without total (area, bar charts)
+            if ( values !== undefined ) {
+                return Math.max( ...Object.values( values ).map( v => v.value ) );
             }
     
-            // case of single quantity
-            return quantity;
+            // case of single value
+            return value;
         } );
     
         const minYValue: number = Math.min( ...minYValues ) * 0.90;
         const maxYValue: number = Math.max( ...maxYValues ) * 1.05;
-        const diff: number = ( maxYValue - minYValue );
-        // console.log( 'minYValue, maxYValue, diff', minYValue, maxYValue, diff )
+        const difference: number = ( maxYValue - minYValue );
+        // console.log( 'minYValue, maxYValue, difference', minYValue, maxYValue, difference )
         // for example: 0 1278834027 1278834027
     
-        let log: number = Math.log10( diff );
+        let log: number = Math.log10( difference );
         const logDecimals: number = log - Math.trunc( log );
         // console.log( 'log, logDecimals', log, logDecimals ) 
         // for example: 9.10681418338768 0.10681418338768012
@@ -97,7 +97,7 @@ class ChartHandler {
         // for example: 8
     
         let baseUnit: number = Math.pow( 10, log );
-        let times = Math.ceil( Math.ceil( diff / baseUnit ) / 10 );
+        let times = Math.ceil( Math.ceil( difference / baseUnit ) / 10 );
         times = Math.ceil( times / 2.5 ) * 2.5 // possible values: 2.5, 5, 7.5, 10
         // console.log( 'baseUnit, times', baseUnit, times ) 
         // for example: 100000000 2.5

@@ -2,16 +2,16 @@ import type { ObjectType } from '@/types';
 
 import ObjectList from '@/helpers/objects/ObjectList';
 
-const makeReservoirsRepr = ( reservoirs: ObjectType[], quantities: ObjectType ): ObjectType[] => {
+const makeItemsRepr = ( items: ObjectType[], values: ObjectType ): ObjectType[] => {
 
     // toReversed: placing from bottom to top the reservoir lines in chart
-    const result: any[] = reservoirs.toReversed()
+    const result: any[] = items.toReversed()
         .map( ( reservoir: ObjectType, i: number ) => {
 
             const { id, name_el: name } = reservoir;
-            if ( quantities[ id ] ) {
-                const { quantity=0, percent=0 } = quantities[ id ];
-                return { name, quantity, percent };
+            if ( values[ id ] ) {
+                const { value=0, percentage=0 } = values[ id ];
+                return { name, value, percentage };
             }
             return null;
         } )
@@ -20,11 +20,11 @@ const makeReservoirsRepr = ( reservoirs: ObjectType[], quantities: ObjectType ):
     return result;
 }
 
-const makeReservoirsOrderedRepr = ( reservoirs: ObjectType[], quantities: ObjectType ): ObjectType[] => {
+const makeItemsOrderedRepr = ( items: ObjectType[], values: ObjectType ): ObjectType[] => {
 
-    let result: ObjectType[] = makeReservoirsRepr( reservoirs, quantities );
-    result = new ObjectList( result ).sortBy( 'quantity', 'desc' );
+    let result: ObjectType[] = makeItemsRepr( items, values );
+    result = new ObjectList( result ).sortBy( 'value', 'desc' );
     return result;
 }
 
-export { makeReservoirsRepr, makeReservoirsOrderedRepr };
+export { makeItemsRepr, makeItemsOrderedRepr };

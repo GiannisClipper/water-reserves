@@ -10,7 +10,7 @@ import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels
 import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
 import { SimpleTooltip } from '@/components/Page/Chart/tooltips';
 
-import { SavingsDataParser } from '@/logic/_common/DataParser';
+import { SingleDataParser } from '@/logic/_common/DataParser';
 import { ChartHandler } from '@/logic/_common/ChartHandler';
 
 import type { ObjectType } from '@/types';
@@ -26,7 +26,7 @@ type PropsType = {
 
 const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
 
-    const data: ObjectType[] = new SavingsDataParser( result ).data;
+    const data: ObjectType[] = new SingleDataParser( result ).data;
     const chartHandler = new ChartHandler( data );
 
     console.log( "rendering: ChartContent..." )
@@ -105,7 +105,7 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                 />
 
                 <Line 
-                    dataKey="quantity"
+                    dataKey="value"
                     type={ chartHandler.lineType } 
                     stroke={ chartHandler.color[ 500 ] } 
                     strokeWidth={ 2 } 
@@ -153,7 +153,7 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                 />
 
                 <Area 
-                    dataKey="quantity"
+                    dataKey="value"
                     type={ chartHandler.lineType } 
                     stroke={ chartHandler.color[ 400 ] } 
                     fill={ chartHandler.color[ 300 ] } 
@@ -202,7 +202,7 @@ const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTyp
                 />
 
                 <Bar 
-                    dataKey="quantity" 
+                    dataKey="value" 
                     stroke={ chartHandler.color[ 400 ] } 
                     fill={ chartHandler.color[ 300 ] } 
                 />

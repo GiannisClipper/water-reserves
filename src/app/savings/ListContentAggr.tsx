@@ -1,6 +1,6 @@
 import { CubicMeters } from "@/components/Symbols";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
-import { SavingsDataParser } from '@/logic/_common/DataParser';
+import { SingleDataParser } from '@/logic/_common/DataParser';
 import { translate } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
@@ -10,7 +10,7 @@ type PropsType = { result: RequestResultType | null }
 
 const ListContent = ( { result }: PropsType ) => {
 
-    const dataParser = new SavingsDataParser( result );
+    const dataParser = new SingleDataParser( result );
     const headers: string[] = dataParser.headers;
     const data: ObjectType[] = dataParser.data;
 
@@ -33,9 +33,9 @@ const ListContent = ( { result }: PropsType ) => {
                 { data.map( ( row: ObjectType, i: number ) =>
                     <tr key={ i }>
                         <td> { row.time } </td>
-                        <td className='number'> { withCommas( row.quantity ) } <CubicMeters /></td>
-                        <td className='number'> { withCommas( row.diff ) } <CubicMeters /></td>
-                        <td className='number'> { withPlusSign( row.percent.toFixed( 2 ) ) } </td>
+                        <td className='number'> { withCommas( row.value ) } <CubicMeters /></td>
+                        <td className='number'> { withCommas( row.difference ) } <CubicMeters /></td>
+                        <td className='number'> { withPlusSign( row.percentage.toFixed( 2 ) ) } </td>
                     </tr>
                 ) }
                 </tbody>

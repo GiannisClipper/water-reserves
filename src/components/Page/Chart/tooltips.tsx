@@ -5,20 +5,19 @@ import { timeLabel } from '@/helpers/time';
 type SimpleTooltipPropsType = {
     active?: boolean
     payload?: any
-    label?: string
 } 
 
-const SimpleTooltip = ( { active, payload, label }: SimpleTooltipPropsType ) => {
+const SimpleTooltip = ( { active, payload }: SimpleTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
-        const { time, quantity, diff, percent } = payload[ 0 ].payload;
+        const { time, value, difference, percentage } = payload[ 0 ].payload;
 
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
-                <p>{ `Αποθέματα: ${withCommas( quantity )}` } m<sup>3</sup></p>
-                <p>{ `Διαφορά: ${withCommas( diff )} (${withPlusSign( percent )}%)` }</p>
+                <p>{ `Αποθέματα: ${withCommas( value )}` } m<sup>3</sup></p>
+                <p>{ `Διαφορά: ${withCommas( difference )} (${withPlusSign( percentage )}%)` }</p>
             </div>
       );
     }
@@ -29,18 +28,17 @@ const SimpleTooltip = ( { active, payload, label }: SimpleTooltipPropsType ) => 
 type ComplexTooltipPropsType = {
     active?: boolean
     payload?: any
-    label?: string
-    reservoirs: ObjectType[]
-    makeReservoirsRepr: CallableFunction
+    items: ObjectType[]
+    makeItemsRepr: CallableFunction
 } 
 
-const ComplexTooltip = ( { active, payload, label, reservoirs, makeReservoirsRepr }: ComplexTooltipPropsType ) => {
+const ComplexTooltip = ( { active, payload, items, makeItemsRepr }: ComplexTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
-        const { time, total, quantities } = payload[ 0 ].payload;
+        const { time, total, values } = payload[ 0 ].payload;
 
-        const reservoirsRepr: ObjectType[] = makeReservoirsRepr( reservoirs, quantities );
+        const itemsRepr: ObjectType[] = makeItemsRepr( items, values );
 
         return (
             <div className="Tooltip">
@@ -52,11 +50,11 @@ const ComplexTooltip = ( { active, payload, label, reservoirs, makeReservoirsRep
                             <td>Σύνολο</td> 
                             <td className='value'>{ withCommas( total ) } m<sup>3</sup></td>
                         </tr>
-                        { reservoirsRepr.map( ( reservoir, i ) =>
+                        { itemsRepr.map( ( reservoir, i ) =>
                             <tr key={ i }>
                                 <td>{ reservoir.name }</td>
-                                <td className='value'>{ withCommas( reservoir.quantity )} m<sup>3</sup></td> 
-                                <td className='value'>{ `${reservoir.percent}%` }</td>
+                                <td className='value'>{ withCommas( reservoir.value )} m<sup>3</sup></td> 
+                                <td className='value'>{ `${reservoir.percentage}%` }</td>
                             </tr>
                         ) }
                     </tbody>

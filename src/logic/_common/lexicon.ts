@@ -7,8 +7,8 @@ const lexicon: ObjectType = {
     custom_year: 'Υδρολογικό έτος',
     reservoir: 'Ταμιευτήρας',
     quantity: 'Ποσότητα',
-    diff: 'Διαφορά',
-    percent: '%',
+    difference: 'Διαφορά',
+    percentage: '%',
     total: 'Σύνολο',
 };
 

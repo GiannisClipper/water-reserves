@@ -2,15 +2,15 @@ import type { ObjectType } from '@/types';
 
 type ColorLegendPropsType = {
     payload?: any
-    reservoirs: ObjectType[]
+    items: ObjectType[]
     colorsArray: string[]
 }
 
-const ColorLegend = ( { payload, reservoirs, colorsArray }: ColorLegendPropsType ) => {
+const ColorLegend = ( { payload, items, colorsArray }: ColorLegendPropsType ) => {
 
     return (
         <div className='CustomizedLegend'>
-            { reservoirs.map( ( r: ObjectType, i: number ) =>
+            { items.map( ( r: ObjectType, i: number ) =>
                 <span 
                     key={ i }
                     style={ { color: colorsArray[ i ] } }
@@ -29,16 +29,16 @@ const ColorLegend = ( { payload, reservoirs, colorsArray }: ColorLegendPropsType
 
 type LineLegendPropsType = {
     payload?: any
-    reservoirs: ObjectType[]
+    items: ObjectType[]
     colorsArray: string[]
     strokeDasharray: string[]
 }
 
-const LineLegend = ( { payload, reservoirs, colorsArray, strokeDasharray }: LineLegendPropsType ) => {
+const LineLegend = ( { payload, items, colorsArray, strokeDasharray }: LineLegendPropsType ) => {
 
     return (
         <div className='CustomizedLegend'>
-            { reservoirs.map( ( r: ObjectType, i: number ) =>
+            { items.map( ( r: ObjectType, i: number ) =>
                 <span 
                     key={ i }
                     style={ { color: colorsArray[ 0 ] } }
