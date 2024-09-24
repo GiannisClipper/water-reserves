@@ -1,7 +1,9 @@
 import type { ObjectType } from '@/types';
 import { timeKey } from "@/helpers/time";
 
-abstract class DataParser {    
+abstract class DataHandler {    
+
+    abstract type: string;
 
     _headers: string[] = [];
     _data: ObjectType[] = [];
@@ -21,13 +23,16 @@ abstract class DataParser {
     // Classes or null prototypes are not supported.
     toJSON(): ObjectType {
         return {
+            type: this.type,
             headers: this._headers,
             data: this._data,
         }
     }
 }
 
-class SingleDataParser extends DataParser {    
+class SingleDataHandler extends DataHandler {    
+
+    type: string = 'single';
 
     static addDiff = ( data: ObjectType[] ): ObjectType[] => 
 
@@ -59,7 +64,7 @@ class SingleDataParser extends DataParser {
 
         // add difference between previous and current values
 
-        this._data = SingleDataParser.addDiff( this._data );
+        this._data = SingleDataHandler.addDiff( this._data );
 
         // add headers
         if ( this._data.length ) {
@@ -72,7 +77,9 @@ class SingleDataParser extends DataParser {
     };
 }
 
-class StackDataParser extends DataParser {    
+class StackDataHandler extends DataHandler {    
+
+    type: string = 'stack';
 
     static nestValues = ( data: ObjectType[] ): ObjectType[] => {
 
@@ -143,15 +150,15 @@ class StackDataParser extends DataParser {
 
         // nest values
 
-        this._data = StackDataParser.nestValues( this._data );
+        this._data = StackDataHandler.nestValues( this._data );
 
         // add total value
 
-        this._data = StackDataParser.addTotal( this._data );
+        this._data = StackDataHandler.addTotal( this._data );
     
         // add value/total percentage
 
-        this._data = StackDataParser.addPercentage( this._data );
+        this._data = StackDataHandler.addPercentage( this._data );
 
         // parse items 
 
@@ -204,34 +211,28 @@ type PropsType = {
     result: any
 }
 
-type ReturnType = {
-    displayMode: string
-    itemsKey: string
-    dataParser: DataParser
-}
+const makeDataHandler = ( { endpoint, searchParams, result }: PropsType ): DataHandler => {
 
-const makeDataContext = ( { endpoint, searchParams, result }: PropsType ): ReturnType => {
-
-    let displayMode: string = '';
+    let type: string = '';
     let itemsKey: string = '';
-    let dataParser: DataParser;
+    let dataHandler: DataHandler;
 
     if ( endpoint === 'savings' ) {
-        displayMode = searchParams.reservoir_aggregation ? 'single' : 'stack';
+        type = searchParams.reservoir_aggregation ? 'single' : 'stack';
         itemsKey = 'reservoirs';
     }
 
-    if ( displayMode === 'single' ) {
-        dataParser = new SingleDataParser( result );
+    if ( type === 'single' ) {
+        dataHandler = new SingleDataHandler( result );
 
     } else {
-        dataParser = new StackDataParser( result, itemsKey );
+        dataHandler = new StackDataHandler( result, itemsKey );
     }
 
-    return { displayMode, itemsKey, dataParser };
+    return dataHandler;
 }
 
 export { 
-    DataParser, SingleDataParser, StackDataParser, 
-    makeDataContext 
+    DataHandler, SingleDataHandler, StackDataHandler, 
+    makeDataHandler 
 };

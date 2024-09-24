@@ -10,7 +10,7 @@ import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels
 import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
 import { SingleTooltip } from '@/components/Page/Chart/tooltips';
 
-import { SingleDataParser } from '@/logic/_common/DataParser';
+import { SingleDataHandler } from '@/logic/_common/DataHandler';
 import { ChartHandler } from '@/logic/_common/ChartHandler';
 
 import type { ObjectType } from '@/types';
@@ -18,14 +18,14 @@ import type { ObjectType } from '@/types';
 import "@/styles/chart.css";
 
 type PropsType = { 
-    dataParser: SingleDataParser
+    dataHandler: SingleDataHandler
     chartType: string | undefined
     chartLabels: ObjectType
 }
 
-const ChartContent = ( { dataParser, chartType, chartLabels }: PropsType ) => {
+const ChartContent = ( { dataHandler, chartType, chartLabels }: PropsType ) => {
 
-    const chartHandler = new ChartHandler( dataParser.data );
+    const chartHandler = new ChartHandler( dataHandler.data );
 
     console.log( "rendering: ChartContent..." )
 

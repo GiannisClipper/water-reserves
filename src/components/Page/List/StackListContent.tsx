@@ -3,20 +3,20 @@ import { CubicMeters } from "@/components/Symbols";
 import { withCommas } from "@/helpers/numbers";
 import ObjectList from "@/helpers/objects/ObjectList";
 
-import { StackDataParser } from '@/logic/_common/DataParser';
+import { StackDataHandler } from '@/logic/_common/DataHandler';
 import { lexicon } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
 
 type PropsType = { 
-    dataParser: StackDataParser
+    dataHandler: StackDataHandler
 }
 
-const ListContent = ( { dataParser }: PropsType ) => {
+const ListContent = ( { dataHandler }: PropsType ) => {
 
-    const headers: string[] = dataParser.headers;
-    const data: ObjectType[] = dataParser.data;
-    const items = new ObjectList( dataParser.items ).sortBy( 'start', 'desc' );
+    const headers: string[] = dataHandler.headers;
+    const data: ObjectType[] = dataHandler.data;
+    const items = new ObjectList( dataHandler.items ).sortBy( 'start', 'desc' );
     // sortBy start: most recent at the beggining
 
     // update lexicon

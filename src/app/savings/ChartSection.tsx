@@ -6,7 +6,7 @@ import ChartLabel from "@/components/Page/Chart/ChartLabel";
 import SingleChartContent from "../../components/Page/Chart/SingleChartContent";
 import StackChartContent from "../../components/Page/Chart/StackChartContent";
 
-import { makeDataContext } from "@/logic/_common/DataParser";
+import { makeDataHandler } from "@/logic/_common/DataHandler";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
 
@@ -21,9 +21,11 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const { displayMode, itemsKey, dataParser } = makeDataContext( { endpoint, searchParams, result } );
-    
-    const ChartContent: any = displayMode === 'single'
+    const dataHandler = makeDataHandler( { endpoint, searchParams, result } );
+
+    // console.log( 'dataHandler', dataHandler.toJSON() );
+
+    const ChartContent: any = dataHandler.type === 'single'
         ? SingleChartContent
         : StackChartContent;
 
@@ -49,7 +51,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
             />
 
             <ChartContent 
-                dataParser={ dataParser }
+                dataHandler={ dataHandler }
                 chartType={ chartType }
                 chartLabels={ chartLabels }
             />

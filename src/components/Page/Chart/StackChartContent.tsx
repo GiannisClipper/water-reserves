@@ -11,7 +11,7 @@ import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
 import { StackTooltip } from '@/components/Page/Chart/tooltips';
 import { LineLegend, ColorLegend } from "@/components/Page/Chart/legends";
 
-import { StackDataParser } from '@/logic/_common/DataParser';
+import { StackDataHandler } from '@/logic/_common/DataHandler';
 import { ChartHandler } from "@/logic/_common/ChartHandler";
 import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/savings/chart';
 import ObjectList from '@/helpers/objects/ObjectList';
@@ -21,15 +21,15 @@ import type { ObjectType } from '@/types';
 import "@/styles/chart.css";
 
 type PropsType = { 
-    dataParser: StackDataParser
+    dataHandler: StackDataHandler
     chartType: string | undefined
     chartLabels: ObjectType
 }
 
-const ChartContent = ( { dataParser, chartType, chartLabels }: PropsType ) => {
+const ChartContent = ( { dataHandler, chartType, chartLabels }: PropsType ) => {
     
-    const chartHandler = new ChartHandler( dataParser.data );
-    const items = new ObjectList( dataParser.items ).sortBy( 'start', 'asc' );
+    const chartHandler = new ChartHandler( dataHandler.data );
+    const items = new ObjectList( dataHandler.items ).sortBy( 'start', 'asc' );
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
 
     const colorArray: string[] = [ 

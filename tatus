@@ -1,0 +1,571 @@
+[33mcommit 6e153ee223cea73ec956a84803c7670a53f25093[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 24 13:54:03 2024 +0300
+
+    More refactoring and use of toJSON() serialization to pass class objects from server to client components.
+
+[33mcommit b00bbcdb0c4eb405e961c5b2235fb805f66456fb[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 24 11:16:42 2024 +0300
+
+    Rename <ListContentAggr/> and <ListContentNonAggr/> to <SingleListContent/> and <StackListContent/>.
+
+[33mcommit 8897c50b433bec0d7d8291c0ccd9c29633a63a07[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 24 10:52:50 2024 +0300
+
+    Rename <ChartContentAggr/> and <ChartContentNonAggr/> to <SingleChartContent/> and <StackChartContent/>.
+
+[33mcommit 347221a5241d79cdbcf56be9eaee46efedfd20a0[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 24 10:44:38 2024 +0300
+
+    Rename <SimpleTooltip/> and <ComplexTooltip/> to <SingleTooltip/> and <StackTooltip/>.
+
+[33mcommit da132696ccc35515a2e3d4ec8275a9951f10067f[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 24 10:39:15 2024 +0300
+
+    Refactor SavingsDataParser, SavingsReservoirDataParser to generic SingleDataParser, StackDataParser.
+
+[33mcommit 660d96c943eaa2fb287eaf79e59fde0ff0dcc2a6[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 24 09:13:22 2024 +0300
+
+    Refactor DataParser, ChartHandler classes (attribute-like getters).
+
+[33mcommit a4b3140689ca38fe425b0d5ba6d6b2051621a174[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 24 08:45:22 2024 +0300
+
+    Include color in ChartHandler class.
+
+[33mcommit 28860012e986d2f1d5336c47040544f6efc3e94d[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 24 08:33:35 2024 +0300
+
+    Clean up some commented lines about resize handling (aspect, onResize).
+
+[33mcommit ba1ead260150b8786af134b4cb0353ea1bb7094b[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Mon Sep 23 11:23:09 2024 +0300
+
+    Refactor chart handling: add ChartHandler class.
+
+[33mcommit 0d5a9a80c680dbad9e3680c352fe3b06316a78b0[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Mon Sep 23 10:12:41 2024 +0300
+
+    Refactor data parsing: add DataParser, SavingsDataParser, SavingsReservoirDataParser classes.
+
+[33mcommit b86e2994d313c5cf761663562dc38768f680b8ea[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Mon Sep 23 08:08:49 2024 +0300
+
+    Refactor chart labels and ticks custom components.
+
+[33mcommit a4f72255d59453cf8c94d59e698149e3f089a1ed[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Mon Sep 23 07:55:43 2024 +0300
+
+    Refactor <CustomLegend/> and <LineLegend/> to <ColorLegend/> and <LineLegend>.
+
+[33mcommit 6c54b5a25b20172c9585281f496c2aa5f8f80075[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Mon Sep 23 07:42:26 2024 +0300
+
+    Refactor <CustomTooltip/> to <SimpleTooltip/> and <ComplexTooltip/>.
+
+[33mcommit d08ffc5fc728de15af3c555de2af8f7ef8454d0e[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Sep 22 15:33:11 2024 +0300
+
+    Make the aspect (width/height) stable (and disable onResize event handling).
+
+[33mcommit e9daa164cb938f08c6399f8c2e33f63eb9f74402[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Sep 22 14:48:36 2024 +0300
+
+    Add title and x,y labels on charts.
+
+[33mcommit f62203a1b69f3f2b4e30ed568457d6206f6594a8[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Sep 22 09:45:03 2024 +0300
+
+    Add wide-screen chart (/savings/chart?...).
+
+[33mcommit 755d5bfe7a5eff273b9adfda1a0b81b1d6fe9bd6[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Sep 22 08:07:13 2024 +0300
+
+    Refactor globals.css
+
+[33mcommit 923bddd2645ef2281f24a72f7ad391676af99de1[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sat Sep 21 19:24:08 2024 +0300
+
+    Refactor <DataSection/> (add ParamsValidation class).
+
+[33mcommit 68613a2e302e179f40bcf42f013cec1826dbe4ff[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sat Sep 21 18:51:11 2024 +0300
+
+    Remove SelfRequests classes, functionality is covered by BrowserUrl class.
+
+[33mcommit 238bde9470c0c52a853ee5475edef2cb5a93f410[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 20 18:05:16 2024 +0300
+
+    Small changes in <ParamContent/> styling.
+
+[33mcommit a9fd408b300ac5561b424448b5220e56e4c0c5c2[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 20 12:18:42 2024 +0300
+
+    Refactor <ChartSection/> (add BrowserUrl class in helpers).
+
+[33mcommit 7937905584236a1555728e6c9de2caf7041bf6c2[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Sep 18 14:41:22 2024 +0300
+
+    Remove /savings older implementation and Rename /savings-reservoir to /savings.
+
+[33mcommit 2a2dfc604c4e8cd1ba3703b1fb17d9dd219e44c6[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Sep 18 13:34:24 2024 +0300
+
+    Integrate the features of /savings into /savings-reservoirs (aggregated and non aggregated charts and lists).
+
+[33mcommit 1950ba97e266a2ef5956d8b79bd14316681d05fe[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Sep 18 11:49:48 2024 +0300
+
+    Replace <FieldCheckBox/> with <CheckField/> (custom checkbox).
+
+[33mcommit 9233a51f6fded8e9988cbb8c676a75d7172d8282[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 17 15:22:46 2024 +0300
+
+    Rearrange params in <ParamsContent/> (/savings-reservoir).
+
+[33mcommit a94b32f470a10f622376279c10a4b28cca6596d7[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 17 12:17:01 2024 +0300
+
+    Add show more/less feature in <ParamContent/>.
+
+[33mcommit 02d461dcbe67e3dc45e5fb943441767f0af867a3[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sat Sep 14 16:41:42 2024 +0300
+
+    Change header (no border, line in the middle, background with opacity) and few more styling changes.
+
+[33mcommit c8a3b55843b44abb1a2291984466697e6a57a277[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 13 13:11:00 2024 +0300
+
+    Improve the calculation of y ticks in charts.
+
+[33mcommit 2de712371e5e460c27313d1bed78e0d408411869[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 13 11:18:44 2024 +0300
+
+    Add <CustomizedYAxisTick> in charts.
+
+[33mcommit 4c700fe0270e8b6d2f0ce9dc301410b2821f4e68[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 13 10:18:53 2024 +0300
+
+    Update the <CustomizedXAxisTick> of charts: Set font-size, Refactor getXTicks().
+
+[33mcommit 5ec567d31bbd44f6cb6b2c15b1c858cdeff22638[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 13 09:15:24 2024 +0300
+
+    Upgrade recharts package to fix warning: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead. at {Component}.
+
+[33mcommit 3e776b3ed7e7c2527e1b6cec64a66db9d8b47f4f[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Sep 12 13:32:11 2024 +0300
+
+    Add <CustomizedLegent>, <LineLegent> in /savings-reservoir charts & Fix <ResponsiveContainer> in charts to render properly in small screens by setting aspect attribute and handling onResize event.
+
+[33mcommit 5488be2ca275f57499b06df6c41f0c593d954372[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Sep 12 07:47:22 2024 +0300
+
+    Working on list (text file) and chart (image file) downloading.
+
+[33mcommit f759da066fc9653738b2930bdf4780bc08ea9e06[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Sep 11 19:45:16 2024 +0300
+
+    Working on text file downloading.
+
+[33mcommit 8a2cf51b62110c0cd68dc2ebf16adc9bd5f75f7a[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Sep 11 16:33:12 2024 +0300
+
+    Update /savings-reservoir <ListContent>: Add reservoir quantities and human-readable headers (& some refactoring in logic functions related to <ListContent>, <ChartContent> components).
+
+[33mcommit 772c0a552adacb8d37712ab89104cd28616b7478[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Sep 11 11:17:32 2024 +0300
+
+    Refactor getNonAggregateData(), getAggregateData(): Separate code in more functions (parseData, addDiff, aggregateReservoirs, addTotal).
+
+[33mcommit c9f2e1e99042df4c02eaf1f31cd73b645bfc19d7[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Sep 11 08:29:40 2024 +0300
+
+    Update /savings <ListContent>: Add diff, percent values, Change headers to human-readable, Improve layout.
+
+[33mcommit 30a249d8beab2c315c503e96fdc196d445ed5320[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Sep 11 07:04:21 2024 +0300
+
+    Move styles/colors.ts to helpers/colors/index.ts
+
+[33mcommit aac99e988fb9940c4e46e9a7fcdcceb84fa6110a[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 10 19:08:54 2024 +0300
+
+    Fix withCommas() helper: a bug in case of negative values .
+
+[33mcommit 421dc94d8681337f6868d24ac77f6b9ddcf6698e[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 10 18:56:52 2024 +0300
+
+    Update /savings charts <CustomTooltip>: Add difference of quantity next to percentage.
+
+[33mcommit 4f1526c2143d471a608582dfe5bfdc1aa1f3d4b7[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 10 18:41:40 2024 +0300
+
+    Move files from helpers/params, helpers/charts into logic/...
+
+[33mcommit 7c8d98b92801f4403014d0e00d4167ee16c80568[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 10 16:08:46 2024 +0300
+
+    Refactor <CharContent> both in /savings and /savings-reservoir: Split in sub-components (LineChartComposition, AreaChartComposition, BarChartComposition) and Move all logic in functions (helpers/charts/...).
+
+[33mcommit d0637f43cde2bbe9743ef9f694fe9b0801dbdb0b[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 10 12:51:32 2024 +0300
+
+    Update <CustomTooltip> in /savings-reservoir charts: Add makeReservoirsRepr() and makeReservoirsOrderedRepr().
+
+[33mcommit 45376e43187b0884bf6d8b6d66f4e2852a22a81a[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Sep 10 10:43:11 2024 +0300
+
+    Update chart colors: Remove custom colors from settings.ts, Add styles/colors.ts with tailwind colors as hex numbers.
+
+[33mcommit 1e4f3be651b59ac57cb6e2cb3c8cb603401ba5f1[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Mon Sep 9 11:49:34 2024 +0300
+
+    Update CustomTooltip of savings and savings-reservoir charts.
+
+[33mcommit 140af0c81fe0b6f48069a9a2268c198f526f17c6[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Sep 8 16:32:49 2024 +0300
+
+    Working on colors and styling of savings-reservoir charts.
+
+[33mcommit 8ccd9ba11dc66dfa2069b7268e8dc31d57701118[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Sep 8 14:11:39 2024 +0300
+
+    Update savings-reservoir charts (indicating quantities with reservoir names, no ids).
+
+[33mcommit d38392b8318110f933a3a0b8c7872201e8941f51[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Sep 8 14:09:09 2024 +0300
+
+    Add ObjectList class (with methods to find or sort objects by key).
+
+[33mcommit 7572e858da691b14508c679a121bc6de351c9c5f[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sat Sep 7 17:52:15 2024 +0300
+
+    Move some reusable components (ParamLabel, ChartLabel, ListLabel, ListContent, Error) into components/Page.
+
+[33mcommit 91bbf597a102c5e3115aff45e3ba0af4c8128cb8[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sat Sep 7 16:32:38 2024 +0300
+
+    Remove reservoirs data fetching from savings page (ParamSection).
+
+[33mcommit e57d48c57a347d3cfb184251f91222df4f9e2583[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sat Sep 7 14:04:22 2024 +0300
+
+    Add setParamsFactory (refactor ParamContent form handling) & Add FormSectionAggregation (merge FormSectionTimeAggregation, FormSectionValueAggregation).
+
+[33mcommit 36de38eef26e4fc34242e25ac5ef30bde7bdb924[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sat Sep 7 13:12:30 2024 +0300
+
+    Remove reservoir_filter search param from savings page.
+
+[33mcommit 6cd11e880c6f02d8e78dd8499628dea024eee119[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sat Sep 7 13:00:27 2024 +0300
+
+    Handle time_aggregation search param with timeAggregation, valueAggregation form params.
+
+[33mcommit f33e48d805fdbe0e83293fe3edf4ffbaf9bc552c[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 6 15:38:50 2024 +0300
+
+    Working on savings-reservoir chart colors.
+
+[33mcommit 01d32f7f4026d1a3b5a59ed35a1aa07cea007a54[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 6 14:37:54 2024 +0300
+
+    Add CustomTooltip.
+
+[33mcommit 8dcf87307c4a6cf0207fffea63b3d7b289ac681b[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Sep 6 12:38:28 2024 +0300
+
+    Update xTicks (display days/months/years considering the amount of dataC).
+
+[33mcommit bd1745ceaa8cd7a30bfc93a5cdb7e0e4b74189b3[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Sep 5 18:41:48 2024 +0300
+
+    Add CustomizedXAxisTick to fix issue: remaining old xtick values after resizing the app window.
+
+[33mcommit 7ec8d69f6f0393e78b4e2effbc2b2d61e74d7898[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Sep 5 16:41:20 2024 +0300
+
+    Working on savings-reservoir page (following savings page structure).
+
+[33mcommit 47288a440072a30c58cfebf2fb49b6b9b672cb36[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Sep 5 16:39:24 2024 +0300
+
+    Update y-axe values in graphs(better range calculation, comma formatted).
+
+[33mcommit 88a4d62a22317a54f9922da67fd3cb3504db59cf[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Aug 30 18:36:36 2024 +0300
+
+    Separate form tsx,css into form and field tsx,css files.
+
+[33mcommit 35512319272e9643b99442b96d3c9da87e9c992d[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Aug 30 13:43:26 2024 +0300
+
+    Set icons width, height to have smoother refreshing.
+
+[33mcommit adceeca8e5a3e19f132b01f37f20b33fde0743f0[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Aug 30 13:03:13 2024 +0300
+
+    Update Skeletons.
+
+[33mcommit f49dbd422b09ea8941a2ea10e4494f7b2045935a[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Aug 30 11:59:10 2024 +0300
+
+    Add Skeletons (components used on requesting/loading delay).
+
+[33mcommit f605d085445aa7a0fe28559a83abf7389057613f[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Aug 30 03:08:09 2024 +0300
+
+    Fix error handling in savings page.
+
+[33mcommit 18e840b0103644537d9998200700e3b020eb69bc[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Fri Aug 30 02:42:44 2024 +0300
+
+    Update FormSectionReservoirs (associate checkboxes with state values).
+
+[33mcommit 34f65fcc434a1b7efed90584c0f298bf2a4a4a0c[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Aug 29 23:27:00 2024 +0300
+
+    Refactor helpers/parsers (functions) to helpers/params (classes).
+
+[33mcommit ea5a81108fa8bd76ee4dfe0507d277e685ad05dd[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Aug 29 20:03:11 2024 +0300
+
+    Request reservoirs in ParamSection component (change this to server rendering, also add ParamState as client rendering).
+
+[33mcommit b60e9aa76045aae9c085a9903a5cdf895930781e[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Aug 29 15:24:23 2024 +0300
+
+    Refactor ApiRequests.
+
+[33mcommit c1315ed04ab3d5e2aad3fd4a6e9313316ae63338[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Aug 29 14:28:16 2024 +0300
+
+    Add FieldValueAggregation in ParamContent (and some styling).
+
+[33mcommit 1443af5f3dcbd6139dc315eefe0435daa0757ed2[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Aug 29 13:00:41 2024 +0300
+
+    Working on styling.
+
+[33mcommit 63b923845f49c2344b33a5ebfae03e1278d576db[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Aug 28 21:21:21 2024 +0300
+
+    Add background image.
+
+[33mcommit 57ae8d558bcfad9ff3a44f47993aed8f57ca8660[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Aug 28 19:18:06 2024 +0300
+
+    Change between chart types.
+
+[33mcommit 96983353df2f1a4c57a98d0ad070b14fa6007171[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Aug 28 16:32:40 2024 +0300
+
+    Add NEXT_PUBLIC_ prefix to env variables due to be accessible from the client (nextjs convention).
+
+[33mcommit 475a325ccd4bfd1742007c8226fec613dbf9c8b1[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Aug 28 15:40:47 2024 +0300
+
+    Update ParamLabel, ChartLabel, ListLabel (add icons as tools).
+
+[33mcommit d8849be301e1a3d5a336123ec0d950aa684c3ed3[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Aug 28 13:10:02 2024 +0300
+
+    Add InfoModal (to show info about the system).
+
+[33mcommit 6207a034fce1d44e8ff3091af213a44cb161a4f0[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Aug 28 11:59:53 2024 +0300
+
+    Add .env file.
+
+[33mcommit 419c5c948b30f128e798ff68e6aacf7839cf76ac[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Aug 28 11:45:28 2024 +0300
+
+    Update routes (pages)...
+    
+    - current-status
+    - savings
+    - savings-reservoir
+    - production
+    - production-factory
+    - precipitation
+    - savings-production
+    - savings-precipitation
+
+[33mcommit 066eb86a576a47dba647aa5565866b47d0b0c386[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Wed Aug 28 10:57:56 2024 +0300
+
+    Update Header.
+
+[33mcommit 84f4c869d1630eed7062311ed3a0759e705adba2[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Aug 27 20:22:22 2024 +0300
+
+    Styling, change indigo to sky color.
+
+[33mcommit 0b974c47859381349932903c925dffd0aa1a0227[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Aug 27 18:26:02 2024 +0300
+
+    Replace react-icons with fontawesome icons.
+
+[33mcommit 7b5bc163332d0fb86732076a637c868d13bf8698[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Aug 27 14:11:27 2024 +0300
+
+    Working on savings page (parsers,requests).
+
+[33mcommit 128ff0e44d7ab018416c3b6a455d4dc46926f3f4[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Mon Aug 26 19:24:44 2024 +0300
+
+    Working on savings page (ParamSection,Form).
+
+[33mcommit 790cc0b57f07e474aee4422a732ef739398bd60b[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Aug 25 17:20:36 2024 +0300
+
+    Working on savings page (helpers/Requests).
+
+[33mcommit 081f4faa5a63dda5e059082d1bd463eaf8bc1421[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Aug 25 16:05:51 2024 +0300
+
+    Working on savings page (Modal,styles,types,params).
+
+[33mcommit 131ad591b1d88953646275fc06c7371223511921[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Tue Aug 6 10:08:57 2024 +0300
+
+    Working on Line|Area|Bar charts (savings page).
+
+[33mcommit 35c72bd5fd8df86c6a5fca6b64e6573c8beb9bac[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Mon Aug 5 21:14:31 2024 +0300
+
+    Setup recharts library.
+
+[33mcommit 92a1c49cbeb487e1143850fa9afbc08946589ab7[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Aug 4 20:51:55 2024 +0300
+
+    Add process-params feature in savings/ParamContent.
+
+[33mcommit ef3a8a0f69d16f650214c60a46369002b23c2937[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Aug 4 19:12:21 2024 +0300
+
+    Add sections in savings page...
+    
+    ParamSection
+      ParamLabel
+      ParamContent
+    DataSection
+      ChartSection
+        ChartLabel
+        ChartContent
+      ListSection
+        ListLabel
+        ListContent
+
+[33mcommit 01cd1aca5bb149189b68fe095fe89d4e17c3add1[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Sun Aug 4 12:12:49 2024 +0300
+
+    Add type React.ReactNode
+
+[33mcommit 1e7c9fd8deae6c3440cdc36d2660528288039093[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Aug 1 18:13:24 2024 +0300
+
+    Setup icons and add routes (current-status, savings, production, ratio, precipitation).
+
+[33mcommit fd53c381930cc60c8436e8bb8274a0fa0a11adc8[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Aug 1 14:31:09 2024 +0300
+
+    Repcace initial home page.
+
+[33mcommit 3da69142a24645d52b362a7e5931594675eba323[m
+Author: Giannis Clipper <giannisclipper@gmail.com>
+Date:   Thu Aug 1 10:34:18 2024 +0300
+
+    Initial commit from Create Next App
