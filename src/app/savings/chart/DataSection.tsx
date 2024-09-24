@@ -1,4 +1,4 @@
-import type { SavingsSearchParamsType } from "@/types/searchParams";
+import type { SearchParamsType } from "@/types/searchParams";
 import { SavingsApiRequest } from "@/logic/_common/ApiRequests";
 import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 
@@ -7,9 +7,12 @@ import Error from "@/components/Page/Error";
 import ChartSection from "./ChartSection";
 import { ParamsValidation } from "@/logic/_common/ParamsValidation";
 
-type PropsType = { searchParams: SavingsSearchParamsType }
+type PropsType = { 
+    endpoint: string
+    searchParams: SearchParamsType 
+}
 
-const DataSection = async ( { searchParams }: PropsType ) => {
+const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 2000 ) )
 
@@ -50,8 +53,9 @@ const DataSection = async ( { searchParams }: PropsType ) => {
         :
         <div className="DataSection">
             <ChartSection 
-                searchParams={searchParams}
-                result={result} 
+                endpoint={ endpoint }
+                searchParams={ searchParams }
+                result={ result }
             />
         </div>
     );

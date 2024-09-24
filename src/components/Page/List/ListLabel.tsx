@@ -6,11 +6,7 @@ import { downloadList } from "@/logic/_common/download";
 
 import "@/styles/label.css"
 
-import type { RequestResultType } from "@/types/requestResult";
-
-type PropsType = { result: RequestResultType | null }
-
-const ListLabel = ( { result }: PropsType ) => {
+const ListLabel = () => {
 
     console.log( "rendering: ListLabel..." )
 
@@ -19,17 +15,11 @@ const ListLabel = ( { result }: PropsType ) => {
             <Left>
                 Λίστα δεδομένων
             </Left>
-            { 
-            result
-            ?
             <Right>
                 <ScreenIcon className="icon" title="Ευρεία οθόνη" />
                 <LinkIcon className="icon" title="Σύνδεσμος ευρείας οθόνης" />
                 <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" onClick={ downloadList } />
             </Right>
-            :
-            null
-            }
         </div>
     );
 }

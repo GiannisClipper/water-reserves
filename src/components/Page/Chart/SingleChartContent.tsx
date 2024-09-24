@@ -3,8 +3,8 @@
 import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar } from 'recharts';
-import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { Customized } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, Customized  } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
@@ -14,20 +14,18 @@ import { SingleDataParser } from '@/logic/_common/DataParser';
 import { ChartHandler } from '@/logic/_common/ChartHandler';
 
 import type { ObjectType } from '@/types';
-import type { RequestResultType } from "@/types/requestResult";
 
 import "@/styles/chart.css";
 
 type PropsType = { 
-    result: RequestResultType | null
+    dataParser: SingleDataParser
     chartType: string | undefined
     chartLabels: ObjectType
 }
 
-const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
+const ChartContent = ( { dataParser, chartType, chartLabels }: PropsType ) => {
 
-    const data: ObjectType[] = new SingleDataParser( result ).data;
-    const chartHandler = new ChartHandler( data );
+    const chartHandler = new ChartHandler( dataParser.data );
 
     console.log( "rendering: ChartContent..." )
 

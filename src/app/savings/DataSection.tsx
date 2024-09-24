@@ -10,9 +10,12 @@ import ChartSection from "./ChartSection";
 import ListSection from "./ListSection";
 import { ParamsValidation } from "@/logic/_common/ParamsValidation";
 
-type PropsType = { searchParams: SavingsSearchParamsType }
+type PropsType = { 
+    endpoint: string
+    searchParams: SavingsSearchParamsType 
+}
 
-const DataSection = async ( { searchParams }: PropsType ) => {
+const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 2000 ) )
 
@@ -55,13 +58,15 @@ const DataSection = async ( { searchParams }: PropsType ) => {
         :
         <div className="DataSection">
             <ChartSection 
-                searchParams={searchParams}
-                result={result} 
+                endpoint={ endpoint }
+                searchParams={ searchParams }
+                result={ result }
             />
             <Suspense fallback={<ListSectionSkeleton />}>
                 <ListSection 
-                    searchParams={searchParams}
-                    result={result} 
+                    endpoint={ endpoint }
+                    searchParams={ searchParams }
+                    result={ result }
                 />
             </Suspense>
         </div>

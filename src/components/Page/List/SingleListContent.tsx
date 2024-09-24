@@ -4,13 +4,13 @@ import { SingleDataParser } from '@/logic/_common/DataParser';
 import { translate } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
-import type { RequestResultType } from "@/types/requestResult";
 
-type PropsType = { result: RequestResultType | null }
+type PropsType = { 
+    dataParser: SingleDataParser
+}
 
-const ListContent = ( { result }: PropsType ) => {
+const ListContent = ( { dataParser }: PropsType ) => {
 
-    const dataParser = new SingleDataParser( result );
     const headers: string[] = dataParser.headers;
     const data: ObjectType[] = dataParser.data;
 

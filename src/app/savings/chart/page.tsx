@@ -5,10 +5,12 @@ import { DataSectionSkeleton } from "@/components/Wide/Skeleton";
 import type { SearchParamsType } from "@/types/searchParams";
 import { SAVINGS } from "@/app/settings";
 
-type PropsType = { searchParams: SearchParamsType }
-
 import "@/styles/header.css";
 import "@/styles/wide.css";
+
+const endpoint: string = 'savings';
+
+type PropsType = { searchParams: SearchParamsType }
 
 export default function Page( { searchParams }: PropsType ) {
 
@@ -21,7 +23,10 @@ export default function Page( { searchParams }: PropsType ) {
         <div className="Content">
 
             <Suspense fallback={ <DataSectionSkeleton /> }>
-                <DataSection searchParams={searchParams} />
+                <DataSection 
+                    endpoint={ endpoint }
+                    searchParams={searchParams} 
+                />
             </Suspense>
         </div>
 

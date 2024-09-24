@@ -15,6 +15,16 @@ abstract class DataParser {
     get data(): ObjectType[] {
         return this._data;
     }
+
+    // toJSON() is used for serialization, considering the Error: 
+    // Only plain objects, and a few built-ins, can be passed to Client Components from Server Components. 
+    // Classes or null prototypes are not supported.
+    toJSON(): ObjectType {
+        return {
+            headers: this._headers,
+            data: this._data,
+        }
+    }
 }
 
 class SingleDataParser extends DataParser {    
@@ -107,8 +117,9 @@ class StackDataParser extends DataParser {
         } );
 
     _items: ObjectType[] = [];
+    _itemsKey: string = '';
 
-    constructor( responseResult: any, itemKey: string ) {
+    constructor( responseResult: any, itemsKey: string ) {
         super();
 
         // parse headers
@@ -144,13 +155,15 @@ class StackDataParser extends DataParser {
 
         // parse items 
 
-        let items: ObjectType[] = responseResult && responseResult.legend && responseResult.legend[ itemKey ] || [];
+        let items: ObjectType[] = responseResult && responseResult.legend && responseResult.legend[ itemsKey ] || [];
 
         if ( this._data.length ) {
             const { values } = this._data[ 0 ];
             const ids: string[] = Object.keys( values );
             this._items = items.filter( r => ids.includes( `${r.id}` ) );
         }
+
+        this._itemsKey = itemsKey;
 
         // add headers
         if ( this._data.length ) {
@@ -171,6 +184,54 @@ class StackDataParser extends DataParser {
     get items(): ObjectType[] {
         return this._items;
     }
+
+    get itemsKey(): string {
+        return this._itemsKey;
+    }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            items: this._items,
+            itemsKey: this._itemsKey,
+        }
+    }
 }
 
-export { SingleDataParser, StackDataParser };
+type PropsType = {
+    endpoint: string
+    searchParams: any
+    result: any
+}
+
+type ReturnType = {
+    displayMode: string
+    itemsKey: string
+    dataParser: DataParser
+}
+
+const makeDataContext = ( { endpoint, searchParams, result }: PropsType ): ReturnType => {
+
+    let displayMode: string = '';
+    let itemsKey: string = '';
+    let dataParser: DataParser;
+
+    if ( endpoint === 'savings' ) {
+        displayMode = searchParams.reservoir_aggregation ? 'single' : 'stack';
+        itemsKey = 'reservoirs';
+    }
+
+    if ( displayMode === 'single' ) {
+        dataParser = new SingleDataParser( result );
+
+    } else {
+        dataParser = new StackDataParser( result, itemsKey );
+    }
+
+    return { displayMode, itemsKey, dataParser };
+}
+
+export { 
+    DataParser, SingleDataParser, StackDataParser, 
+    makeDataContext 
+};

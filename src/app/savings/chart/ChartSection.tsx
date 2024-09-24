@@ -1,18 +1,26 @@
-import SingleChartContent from "../SingleChartContent";
-import StackChartContent from "../StackChartContent";
+import SingleChartContent from "../../../components/Page/Chart/SingleChartContent";
+import StackChartContent from "../../../components/Page/Chart/StackChartContent";
+import { makeDataContext } from "@/logic/_common/DataParser";
 import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
 
-import type { SavingsSearchParamsType } from "@/types/searchParams";
+import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
 
-type PropsType = { 
-    searchParams: SavingsSearchParamsType
-    result: RequestResultType | null 
+type PropsType = {
+    endpoint: string
+    searchParams: SearchParamsType
+    result: RequestResultType | null
 }
 
-const ChartSection = ( { searchParams, result }: PropsType  ) => {
+const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const reservoirAggregation: string | undefined = searchParams.reservoir_aggregation;
+    const { displayMode, itemsKey, dataParser } = makeDataContext( { endpoint, searchParams, result } );
+    
+    console.log( JSON.parse( JSON.stringify( dataParser ) ) )
+
+    const ChartContent: any = displayMode === 'single'
+        ? SingleChartContent
+        : StackChartContent;
 
     const chartType = searchParams.chart_type;
 
@@ -22,21 +30,14 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
 
     return (
         <div className="ChartSection">
-
-            { reservoirAggregation 
-            ? 
-                <SingleChartContent 
-                    result={ result } 
-                    chartType={ chartType }
-                    chartLabels={ chartLabels }
-                />
-            : 
-                <StackChartContent
-                    result={ result } 
-                    chartType={ chartType }
-                    chartLabels={ chartLabels }
-                />
-            }
+            <ChartContent 
+                // toJSON() is used for serialization, considering the Error: 
+                // Only plain objects, and a few built-ins, can be passed to Client Components from Server Components. 
+                // Classes or null prototypes are not supported.
+                dataParser={ dataParser.toJSON() }
+                chartType={ chartType }
+                chartLabels={ chartLabels }
+            />
         </div>
     );
 }

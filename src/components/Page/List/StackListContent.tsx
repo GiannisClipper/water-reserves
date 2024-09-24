@@ -7,13 +7,13 @@ import { StackDataParser } from '@/logic/_common/DataParser';
 import { lexicon } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
-import type { RequestResultType } from "@/types/requestResult";
 
-type PropsType = { result: RequestResultType | null }
+type PropsType = { 
+    dataParser: StackDataParser
+}
 
-const ListContent = ( { result }: PropsType ) => {
+const ListContent = ( { dataParser }: PropsType ) => {
 
-    const dataParser = new StackDataParser( result, 'reservoirs' );
     const headers: string[] = dataParser.headers;
     const data: ObjectType[] = dataParser.data;
     const items = new ObjectList( dataParser.items ).sortBy( 'start', 'desc' );

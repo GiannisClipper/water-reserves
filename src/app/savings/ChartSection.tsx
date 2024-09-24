@@ -3,21 +3,29 @@
 import { useState, useEffect } from "react";
 
 import ChartLabel from "@/components/Page/Chart/ChartLabel";
-import SingleChartContent from "./SingleChartContent";
-import StackChartContent from "./StackChartContent";
+import SingleChartContent from "../../components/Page/Chart/SingleChartContent";
+import StackChartContent from "../../components/Page/Chart/StackChartContent";
+
+import { makeDataContext } from "@/logic/_common/DataParser";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
-import type { SavingsSearchParamsType } from "@/types/searchParams";
-import type { RequestResultType } from "@/types/requestResult";
 
-type PropsType = { 
-    searchParams: SavingsSearchParamsType
-    result: RequestResultType | null 
+import type { SearchParamsType } from "@/types/searchParams";
+import { RequestResultType } from "@/types/requestResult";
+
+type PropsType = {
+    endpoint: string
+    searchParams: SearchParamsType
+    result: RequestResultType | null
 }
 
-const ChartSection = ( { searchParams, result }: PropsType  ) => {
+const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const reservoirAggregation: string | undefined = searchParams.reservoir_aggregation;
+    const { displayMode, itemsKey, dataParser } = makeDataContext( { endpoint, searchParams, result } );
+    
+    const ChartContent: any = displayMode === 'single'
+        ? SingleChartContent
+        : StackChartContent;
 
     const chartLabels = new SavingsChartLabels( searchParams ).getAsObject();
 
@@ -37,25 +45,14 @@ const ChartSection = ( { searchParams, result }: PropsType  ) => {
     return (
         <div className="ChartSection">
             <ChartLabel 
-                result={ result }
                 setChartType={ setChartType }
             />
 
-            { reservoirAggregation 
-            ? 
-                <SingleChartContent 
-                    result={ result } 
-                    chartType={ chartType }
-                    chartLabels={ chartLabels }
-                />
-
-            : 
-                <StackChartContent
-                    result={ result } 
-                    chartType={ chartType }
-                    chartLabels={ chartLabels }
-                />
-            }
+            <ChartContent 
+                dataParser={ dataParser }
+                chartType={ chartType }
+                chartLabels={ chartLabels }
+            />
         </div>
     );
 }

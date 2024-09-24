@@ -1,10 +1,10 @@
 "use client"
 
-import { LineChart, Line, Legend } from 'recharts';
+import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar } from 'recharts';
-import { XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
-import { Customized } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, Customized  } from 'recharts';
+import { ResponsiveContainer } from 'recharts';
 
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
@@ -14,27 +14,23 @@ import { LineLegend, ColorLegend } from "@/components/Page/Chart/legends";
 import { StackDataParser } from '@/logic/_common/DataParser';
 import { ChartHandler } from "@/logic/_common/ChartHandler";
 import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/savings/chart';
-
 import ObjectList from '@/helpers/objects/ObjectList';
 
 import type { ObjectType } from '@/types';
-import type { RequestResultType } from "@/types/requestResult";
 
 import "@/styles/chart.css";
 
 type PropsType = { 
-    result: RequestResultType | null
+    dataParser: StackDataParser
     chartType: string | undefined
     chartLabels: ObjectType
 }
 
-const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
+const ChartContent = ( { dataParser, chartType, chartLabels }: PropsType ) => {
     
-    const dataParser = new StackDataParser( result, 'reservoirs' );
-    const data = dataParser.data;
+    const chartHandler = new ChartHandler( dataParser.data );
     const items = new ObjectList( dataParser.items ).sortBy( 'start', 'asc' );
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
-    const chartHandler = new ChartHandler( data );
 
     const colorArray: string[] = [ 
         chartHandler.color[ 600 ], 
