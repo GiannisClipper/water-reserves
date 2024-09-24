@@ -6,10 +6,10 @@ import { BarChart, Bar } from 'recharts';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, Customized  } from 'recharts';
 import { ResponsiveContainer } from 'recharts';
 
-import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels';
-import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
-import { StackTooltip } from '@/components/Page/Chart/tooltips';
-import { LineLegend, ColorLegend } from "@/components/Page/Chart/legends";
+import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
+import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
+import { StackTooltip } from '@/components/page/chart/tooltips';
+import { LineLegend, ColorLegend } from "@/components/page/chart/legends";
 
 import { StackDataHandler } from '@/logic/_common/DataHandler';
 import { ChartHandler } from "@/logic/_common/ChartHandler";

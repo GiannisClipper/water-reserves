@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Header from "@/app/Header";
-import DataSection from "./DataSection";
-import { DataSectionSkeleton } from "@/components/Wide/Skeleton";
+import DataSection from "@/components/wide/DataSection";
+import { DataSectionSkeleton } from "@/components/wide/Skeleton";
 import type { SearchParamsType } from "@/types/searchParams";
 import { SAVINGS } from "@/app/settings";
 

@@ -6,9 +6,9 @@ import { BarChart, Bar } from 'recharts';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Customized  } from 'recharts';
 import { ResponsiveContainer } from 'recharts';
 
-import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels';
-import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
-import { SingleTooltip } from '@/components/Page/Chart/tooltips';
+import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
+import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
+import { SingleTooltip } from '@/components/page/chart/tooltips';
 
 import { SingleDataHandler } from '@/logic/_common/DataHandler';
 import { ChartHandler } from '@/logic/_common/ChartHandler';

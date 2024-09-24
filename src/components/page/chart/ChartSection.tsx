@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 
-import ChartLabel from "@/components/Page/Chart/ChartLabel";
-import SingleChartContent from "../../components/Page/Chart/SingleChartContent";
-import StackChartContent from "../../components/Page/Chart/StackChartContent";
+import ChartLabel from "@/components/page/chart/ChartLabel";
+import SingleChartContent from "@/components/page/chart/SingleChartContent";
+import StackChartContent from "@/components/page/chart/StackChartContent";
 
 import { makeDataHandler } from "@/logic/_common/DataHandler";
 import BrowserUrl from "@/helpers/url/BrowserUrl";

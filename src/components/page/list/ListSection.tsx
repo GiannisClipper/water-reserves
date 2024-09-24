@@ -1,6 +1,6 @@
-import ListLabel from "@/components/Page/List/ListLabel";
-import SingleListContent from "../../components/Page/List/SingleListContent";
-import StackListContent from "../../components/Page/List/StackListContent";
+import ListLabel from "@/components/page/list/ListLabel";
+import SingleListContent from "@/components/page/list/SingleListContent";
+import StackListContent from "@/components/page/list/StackListContent";
 
 import { makeDataHandler } from "@/logic/_common/DataHandler";
 

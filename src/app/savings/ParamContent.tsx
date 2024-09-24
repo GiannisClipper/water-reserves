@@ -7,7 +7,7 @@ import type { SavingsFormParamsType } from "@/types/formParams";
 import type { RequestErrorType } from "@/types/requestResult";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 import SavingsFormParams from "@/logic/savings/params/SavingsFormParams";
-import { setParamsFactory } from "@/components/Page";
+import { setParamsFactory } from "@/components/page";
 
 import { 
     Form, FormSectionTimeRange, 

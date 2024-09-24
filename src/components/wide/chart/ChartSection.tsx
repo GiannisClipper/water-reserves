@@ -1,5 +1,5 @@
-import SingleChartContent from "../../../components/Page/Chart/SingleChartContent";
-import StackChartContent from "../../../components/Page/Chart/StackChartContent";
+import SingleChartContent from "@/components/page/chart/SingleChartContent";
+import StackChartContent from "@/components/page/chart/StackChartContent";
 import { makeDataHandler } from "@/logic/_common/DataHandler";
 import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
 
