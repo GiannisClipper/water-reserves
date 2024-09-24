@@ -8,7 +8,7 @@ import { Customized } from 'recharts';
 
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
-import { SimpleTooltip } from '@/components/Page/Chart/tooltips';
+import { SingleTooltip } from '@/components/Page/Chart/tooltips';
 
 import { SingleDataParser } from '@/logic/_common/DataParser';
 import { ChartHandler } from '@/logic/_common/ChartHandler';
@@ -101,7 +101,7 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                 />
 
                 <Tooltip 
-                    content={ <SimpleTooltip /> } 
+                    content={ <SingleTooltip /> } 
                 />
 
                 <Line 
@@ -149,7 +149,7 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                 />
 
                 <Tooltip 
-                    content={ <SimpleTooltip /> } 
+                    content={ <SingleTooltip /> } 
                 />
 
                 <Area 
@@ -198,7 +198,7 @@ const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTyp
 
                 <Tooltip 
                     cursor={{ fill: '#0369a1' }}
-                    content={ <SimpleTooltip /> } 
+                    content={ <SingleTooltip /> } 
                 />
 
                 <Bar 

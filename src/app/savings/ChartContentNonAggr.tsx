@@ -8,7 +8,7 @@ import { Customized } from 'recharts';
 
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/Page/Chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/Page/Chart/ticks';
-import { ComplexTooltip } from '@/components/Page/Chart/tooltips';
+import { StackTooltip } from '@/components/Page/Chart/tooltips';
 import { LineLegend, ColorLegend } from "@/components/Page/Chart/legends";
 
 import { StackDataParser } from '@/logic/_common/DataParser';
@@ -125,7 +125,7 @@ const LineChartComposition = ( { chartHandler, labels, colorArray, items }: Char
 
                 <Tooltip 
                     content={ 
-                        <ComplexTooltip 
+                        <StackTooltip 
                             items={ items } 
                             makeItemsRepr={ makeItemsOrderedRepr }
                         /> 
@@ -206,7 +206,7 @@ const AreaChartComposition = ( { chartHandler, labels, colorArray, items }: Char
 
                 <Tooltip 
                     content={ 
-                        <ComplexTooltip 
+                        <StackTooltip 
                             items={ items } 
                             makeItemsRepr={ makeItemsRepr }
                         /> 
@@ -275,7 +275,7 @@ const BarChartComposition = ( { chartHandler, labels, colorArray, items }: Chart
                 <Tooltip 
                     cursor={{ fill: '#0369a1' }}
                     content={ 
-                        <ComplexTooltip 
+                        <StackTooltip 
                             items={ items } 
                             makeItemsRepr={ makeItemsRepr }
                         /> 

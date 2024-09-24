@@ -2,12 +2,12 @@ import type { ObjectType } from '@/types';
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 
-type SimpleTooltipPropsType = {
+type SingleTooltipPropsType = {
     active?: boolean
     payload?: any
 } 
 
-const SimpleTooltip = ( { active, payload }: SimpleTooltipPropsType ) => {
+const SingleTooltip = ( { active, payload }: SingleTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -25,14 +25,14 @@ const SimpleTooltip = ( { active, payload }: SimpleTooltipPropsType ) => {
     return null;
 };
 
-type ComplexTooltipPropsType = {
+type StackTooltipPropsType = {
     active?: boolean
     payload?: any
     items: ObjectType[]
     makeItemsRepr: CallableFunction
 } 
 
-const ComplexTooltip = ( { active, payload, items, makeItemsRepr }: ComplexTooltipPropsType ) => {
+const StackTooltip = ( { active, payload, items, makeItemsRepr }: StackTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -67,4 +67,4 @@ const ComplexTooltip = ( { active, payload, items, makeItemsRepr }: ComplexToolt
     return null;
 };
 
-export { SimpleTooltip, ComplexTooltip };
+export { SingleTooltip, StackTooltip };
