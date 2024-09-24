@@ -6,22 +6,22 @@ type LineType = 'linear' | 'monotone';
 
 class ChartHandler {
 
-    data: ObjectType[] = [];
+    _data: ObjectType[] = [];
 
-    xTicks: string[] = [];
-    yTicks: number[] = [];
+    _xTicks: string[] = [];
+    _yTicks: number[] = [];
 
-    _color: ObjectType = ROSE;
+    _color: ObjectType = SKY;
 
     constructor( data: ObjectType[] ) {
-        this.data = data;
-        this.xTicks = this._calculateXTicks();
-        this.yTicks = this._calculateYTicks();
+        this._data = data;
+        this._xTicks = this._calculateXTicks();
+        this._yTicks = this._calculateYTicks();
     }
 
     private _calculateXTicks = (): string[] => {
 
-        let values = this.data.map( ( row: { [ key: string ]: any } ) => row.time );
+        let values = this._data.map( ( row: { [ key: string ]: any } ) => row.time );
     
         if ( values.length === 0 ) {
             return values;
@@ -51,7 +51,7 @@ class ChartHandler {
 
     private _calculateYTicks = (): number[] => {
 
-        const minYValues = this.data.map( ( row: ObjectType ) => {
+        const minYValues = this._data.map( ( row: ObjectType ) => {
             const { time, quantity, quantities } = row;
     
             // case of multiple quantities
@@ -63,7 +63,7 @@ class ChartHandler {
             return quantity;
         } );
     
-        const maxYValues = this.data.map( ( row: ObjectType ) => {
+        const maxYValues = this._data.map( ( row: ObjectType ) => {
             const { time, quantity, total, quantities } = row;
     
             // case of multiple quantities including total (line chart)
@@ -113,26 +113,31 @@ class ChartHandler {
         return result;    
     }
 
-    getData = (): ObjectType[] => {
-        return this.data;
+    get data(): ObjectType[] {
+        return this._data;
     }
 
-    getXTicks = (): string[] => {
-        return this.xTicks;
+    get xTicks(): string[] {
+        return this._xTicks;
     }
 
-    getYTicks = (): number[] => {
-        return this.yTicks;
+    get yTicks(): number[] {
+        return this._yTicks;
     }
 
-    minYTick = (): number => this.yTicks.length ? this.yTicks[ 0 ] : 0;
+    get minYTick(): number {
+        return this._yTicks.length ? this._yTicks[ 0 ] : 0;
+    }
 
-    maxYTick = (): number => this.yTicks.length ? this.yTicks[ this.yTicks.length - 1 ] : 0;
+    get maxYTick(): number { 
+        return this._yTicks.length ? this._yTicks[ this._yTicks.length - 1 ] : 0;
+    }
 
-    getLineType = (): LineType => 
-        this.xTicks.length && this.xTicks[ 0 ].length === 10 
+    get lineType(): LineType { 
+        return this._xTicks.length && this._xTicks[ 0 ].length === 10 
             ? 'linear' // in case of full dates
             : 'monotone'; // in case of aggregated values (months, years, ...)
+    }
 
     get color():ObjectType { 
         return this._color;

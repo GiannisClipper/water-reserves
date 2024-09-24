@@ -11,8 +11,8 @@ type PropsType = { result: RequestResultType | null }
 const ListContent = ( { result }: PropsType ) => {
 
     const dataParser = new SavingsDataParser( result );
-    const headers: string[] = dataParser.getHeaders();
-    const data: ObjectType[] = dataParser.getData();
+    const headers: string[] = dataParser.headers;
+    const data: ObjectType[] = dataParser.data;
 
     console.log( `rendering: ListContent...` )
 

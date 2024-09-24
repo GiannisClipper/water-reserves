@@ -3,17 +3,17 @@ import { timeKey } from "@/helpers/time";
 
 abstract class DataParser {    
 
-    headers: string[] = [];
-    data: ObjectType[] = [];
+    _headers: string[] = [];
+    _data: ObjectType[] = [];
 
     constructor() {};
 
-    getHeaders(): string[] {
-        return this.headers;
+    get headers(): string[] {
+        return this._headers;
     } 
 
-    getData(): ObjectType[] {
-        return this.data;
+    get data(): ObjectType[] {
+        return this._data;
     }
 }
 
@@ -41,7 +41,7 @@ class SavingsDataParser extends DataParser {
 
         let data: any[][] = responseResult && responseResult.data || [];
 
-        this.data = data.map( ( row: any[], i: number ) => {
+        this._data = data.map( ( row: any[], i: number ) => {
             const time: string = row[ 0 ];
             const quantity: number = Math.round( row[ 1 ] );
             return { time, quantity };
@@ -49,15 +49,15 @@ class SavingsDataParser extends DataParser {
 
         // add difference between previous and current values
 
-        this.data = SavingsDataParser.addDiff( this.data );
+        this._data = SavingsDataParser.addDiff( this._data );
 
         // add headers
-        if ( this.data.length ) {
-            const { time } = this.data[ 0 ];
-            this.headers.push( timeKey( time ) );
-            this.headers.push( 'quantity' );
-            this.headers.push( 'diff' );
-            this.headers.push( 'percent' );
+        if ( this._data.length ) {
+            const { time } = this._data[ 0 ];
+            this._headers.push( timeKey( time ) );
+            this._headers.push( 'quantity' );
+            this._headers.push( 'diff' );
+            this._headers.push( 'percent' );
         }        
     };
 }
@@ -106,7 +106,7 @@ class SavingsReservoirDataParser extends DataParser {
             return { ...otherKeys, quantities };
         } );
 
-    reservoirs: ObjectType[] = [];
+    _reservoirs: ObjectType[] = [];
 
     constructor( responseResult: any ) {
         super();
@@ -123,7 +123,7 @@ class SavingsReservoirDataParser extends DataParser {
             data = data.map( ( row: any[], i: number ) => row.slice( 1 ) );
         }
     
-        this.data = data.map( ( row: any[], i: number ) => {
+        this._data = data.map( ( row: any[], i: number ) => {
             const time: string = row[ 0 ];
             const reservoir_id: string = row[ 1 ];
             const quantity: number = Math.round( row[ 2 ] );
@@ -132,44 +132,44 @@ class SavingsReservoirDataParser extends DataParser {
 
         // nest quantities
 
-        this.data = SavingsReservoirDataParser.nestQuantities( this.data );
+        this._data = SavingsReservoirDataParser.nestQuantities( this._data );
 
         // add total quantity
 
-        this.data = SavingsReservoirDataParser.addTotal( this.data );
+        this._data = SavingsReservoirDataParser.addTotal( this._data );
     
         // add quality/total percentage
 
-        this.data = SavingsReservoirDataParser.addPercent( this.data );
+        this._data = SavingsReservoirDataParser.addPercent( this._data );
 
         // parse reservoirs 
 
         let reservoirs: ObjectType[] = responseResult && responseResult.legend && responseResult.legend.reservoirs || [];
 
-        if ( this.data.length ) {
-            const { quantities } = this.data[ 0 ];
+        if ( this._data.length ) {
+            const { quantities } = this._data[ 0 ];
             const ids: string[] = Object.keys( quantities );
-            this.reservoirs = reservoirs.filter( r => ids.includes( `${r.id}` ) );
+            this._reservoirs = reservoirs.filter( r => ids.includes( `${r.id}` ) );
         }
 
         // add headers
-        if ( this.data.length ) {
-            const { time, quantities } = this.data[ 0 ];
-            this.headers.push( timeKey( time ) );
-            this.headers.push( 'total' );
+        if ( this._data.length ) {
+            const { time, quantities } = this._data[ 0 ];
+            this._headers.push( timeKey( time ) );
+            this._headers.push( 'total' );
     
             const ids: string[] = Object.keys( quantities );
             reservoirs
                 .filter( r => ids.includes( `${r.id}` ) )
                 .forEach( r => {
-                    this.headers.push( r.name_en ) 
-                    this.headers.push( 'percent' ) 
+                    this._headers.push( r.name_en ) 
+                    this._headers.push( 'percent' ) 
                 } );
         }
     }
 
-    getReservoirs(): ObjectType[] {
-        return this.reservoirs;
+    get reservoirs(): ObjectType[] {
+        return this._reservoirs;
     }
 }
 

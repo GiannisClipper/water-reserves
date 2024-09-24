@@ -4,7 +4,7 @@ import { withCommas } from "@/helpers/numbers";
 import ObjectList from "@/helpers/objects/ObjectList";
 
 import { SavingsReservoirDataParser } from '@/logic/_common/DataParser';
-import { lexicon, translate } from "@/logic/_common/lexicon";
+import { lexicon } from "@/logic/_common/lexicon";
 
 import type { ObjectType } from "@/types";
 import type { RequestResultType } from "@/types/requestResult";
@@ -14,9 +14,9 @@ type PropsType = { result: RequestResultType | null }
 const ListContent = ( { result }: PropsType ) => {
 
     const dataParser = new SavingsReservoirDataParser( result );
-    const headers: string[] = dataParser.getHeaders();
-    const data: ObjectType[] = dataParser.getData();
-    const reservoirs = new ObjectList( dataParser.getReservoirs() ).sortBy( 'start', 'desc' );
+    const headers: string[] = dataParser.headers;
+    const data: ObjectType[] = dataParser.data;
+    const reservoirs = new ObjectList( dataParser.reservoirs ).sortBy( 'start', 'desc' );
     // sortBy start: most recent at the beggining
 
     // update lexicon

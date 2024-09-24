@@ -26,7 +26,7 @@ type PropsType = {
 
 const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
 
-    const data: ObjectType[] = new SavingsDataParser( result ).getData();
+    const data: ObjectType[] = new SavingsDataParser( result ).data;
     const chartHandler = new ChartHandler( data );
 
     console.log( "rendering: ChartContent..." )
@@ -73,7 +73,7 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart
-                data={ chartHandler.getData() }
+                data={ chartHandler.data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -86,17 +86,17 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
 
                 <XAxis 
                     dataKey="time" 
-                    ticks={ chartHandler.getXTicks() } 
+                    ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.getData() } /> }
+                    tick={ <XAxisTick data={ chartHandler.data } /> }
                     label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ chartHandler.minYTick(), chartHandler.maxYTick() ] } 
-                    ticks={ chartHandler.getYTicks() }
+                    domain={ [ chartHandler.minYTick, chartHandler.maxYTick ] } 
+                    ticks={ chartHandler.yTicks }
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ chartHandler.getData() } /> }
+                    tick={ <YAxisTick data={ chartHandler.data } /> }
                     label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
@@ -106,7 +106,7 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
 
                 <Line 
                     dataKey="quantity"
-                    type={ chartHandler.getLineType() } 
+                    type={ chartHandler.lineType } 
                     stroke={ chartHandler.color[ 500 ] } 
                     strokeWidth={ 2 } 
                     dot={ false }
@@ -121,7 +121,7 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
     return (
         <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-                data={ chartHandler.getData() }
+                data={ chartHandler.data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -134,17 +134,17 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
 
                 <XAxis 
                     dataKey="time" 
-                    ticks={ chartHandler.getXTicks() }
+                    ticks={ chartHandler.xTicks }
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.getData() } /> } 
+                    tick={ <XAxisTick data={ chartHandler.data } /> } 
                     label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ chartHandler.minYTick(), chartHandler.maxYTick() ] } 
-                    ticks={ chartHandler.getYTicks() }
+                    domain={ [ chartHandler.minYTick, chartHandler.maxYTick ] } 
+                    ticks={ chartHandler.yTicks }
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ chartHandler.getData() } /> }
+                    tick={ <YAxisTick data={ chartHandler.data } /> }
                     label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
@@ -154,7 +154,7 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
 
                 <Area 
                     dataKey="quantity"
-                    type={ chartHandler.getLineType() } 
+                    type={ chartHandler.lineType } 
                     stroke={ chartHandler.color[ 400 ] } 
                     fill={ chartHandler.color[ 300 ] } 
                 />
@@ -168,7 +168,7 @@ const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTyp
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
-                data={ chartHandler.getData() }
+                data={ chartHandler.data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -182,17 +182,17 @@ const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTyp
 
                 <XAxis 
                     dataKey="time" 
-                    ticks={ chartHandler.getXTicks() }
+                    ticks={ chartHandler.xTicks }
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.getData() } /> } 
+                    tick={ <XAxisTick data={ chartHandler.data } /> } 
                     label={ <XAxisLabel label={ labels.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ chartHandler.minYTick(), chartHandler.maxYTick() ] } 
-                    ticks={ chartHandler.getYTicks() }
+                    domain={ [ chartHandler.minYTick, chartHandler.maxYTick ] } 
+                    ticks={ chartHandler.yTicks }
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ chartHandler.getData() } /> }
+                    tick={ <YAxisTick data={ chartHandler.data } /> }
                     label={ <YAxisLabel label={ labels.yLabel } /> }
                 />
 
