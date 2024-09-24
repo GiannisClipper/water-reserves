@@ -13,8 +13,6 @@ import { SimpleTooltip } from '@/components/Page/Chart/tooltips';
 import { SavingsDataParser } from '@/logic/_common/DataParser';
 import { ChartHandler } from '@/logic/_common/ChartHandler';
 
-import { SKY } from '@/helpers/colors';
-
 import type { ObjectType } from '@/types';
 import type { RequestResultType } from "@/types/requestResult";
 
@@ -41,7 +39,7 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
             <BarChartComposition
                 chartHandler={ chartHandler }
                 labels={ chartLabels }
-                color={ SKY }
+                color={ chartHandler.color }
             />
 
             :
@@ -50,14 +48,14 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
             <AreaChartComposition
                 chartHandler={ chartHandler }
                 labels={ chartLabels }
-                color={ SKY }
+                color={ chartHandler.color }
             />
 
             :
             <LineChartComposition
                 chartHandler={ chartHandler }
                 labels={ chartLabels }
-                color={ SKY }
+                color={ chartHandler.color }
             />
             }
         </div>
@@ -109,7 +107,7 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                 <Line 
                     dataKey="quantity"
                     type={ chartHandler.getLineType() } 
-                    stroke={ SKY[ 500 ] } 
+                    stroke={ chartHandler.color[ 500 ] } 
                     strokeWidth={ 2 } 
                     dot={ false }
                 />
@@ -157,8 +155,8 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                 <Area 
                     dataKey="quantity"
                     type={ chartHandler.getLineType() } 
-                    stroke={ SKY[ 400 ] } 
-                    fill={ SKY[ 300 ] } 
+                    stroke={ chartHandler.color[ 400 ] } 
+                    fill={ chartHandler.color[ 300 ] } 
                 />
             </AreaChart>
         </ResponsiveContainer>
@@ -205,8 +203,8 @@ const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTyp
 
                 <Bar 
                     dataKey="quantity" 
-                    stroke={ SKY[ 400 ] } 
-                    fill={ SKY[ 300 ] } 
+                    stroke={ chartHandler.color[ 400 ] } 
+                    fill={ chartHandler.color[ 300 ] } 
                 />
             </BarChart>
         </ResponsiveContainer>

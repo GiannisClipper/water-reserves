@@ -16,7 +16,6 @@ import { ChartHandler } from "@/logic/_common/ChartHandler";
 import { makeReservoirsRepr, makeReservoirsOrderedRepr } from '@/logic/savings/chart';
 
 import ObjectList from '@/helpers/objects/ObjectList';
-import { SKY } from '@/helpers/colors';
 
 import type { ObjectType } from '@/types';
 import type { RequestResultType } from "@/types/requestResult";
@@ -37,7 +36,12 @@ const ChartContent = ( { result, chartType, chartLabels }: PropsType ) => {
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
     const chartHandler = new ChartHandler( data );
 
-    const colorArray: string[] = [ SKY[ 600 ], SKY[ 500 ], SKY[ 400 ], SKY[ 300 ] ];
+    const colorArray: string[] = [ 
+        chartHandler.color[ 600 ], 
+        chartHandler.color[ 500 ], 
+        chartHandler.color[ 400 ], 
+        chartHandler.color[ 300 ] ]
+    ;
 
     console.log( "rendering: ChartContent..." ) 
 

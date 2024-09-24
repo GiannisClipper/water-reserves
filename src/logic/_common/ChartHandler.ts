@@ -1,6 +1,8 @@
-import { ObjectType } from "@/types";
+import { SKY, ROSE } from '@/helpers/colors';
+import type { ObjectType } from "@/types";
 
 type LineType = 'linear' | 'monotone';
+
 
 class ChartHandler {
 
@@ -8,6 +10,8 @@ class ChartHandler {
 
     xTicks: string[] = [];
     yTicks: number[] = [];
+
+    _color: ObjectType = ROSE;
 
     constructor( data: ObjectType[] ) {
         this.data = data;
@@ -129,6 +133,10 @@ class ChartHandler {
         this.xTicks.length && this.xTicks[ 0 ].length === 10 
             ? 'linear' // in case of full dates
             : 'monotone'; // in case of aggregated values (months, years, ...)
+
+    get color():ObjectType { 
+        return this._color;
+    }
 }
 
 export type { LineType };
