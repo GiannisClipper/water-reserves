@@ -1,4 +1,8 @@
+import ParamValues from './ParamValues';
 import SavingsParamValues from './ParamValues/SavingsParamValues';
+
+import type { ObjectType } from '@/types';
+import type { SearchParamsType } from '@/types/searchParams';
 
 type StateSettersPropsType = {
     params: { [ key: string ]: any }
@@ -27,11 +31,7 @@ abstract class ParamHandler {
             setToInterval: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
                 setParams( { ...params, toInterval: e.target.value } )
             },
-    
-            setReservoirAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-                setParams( { ...params, reservoirAggregation: e.target.value } )
-            },
-    
+        
             setTimeAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
                 const timeAggregation = e.target.value;
                 const valueAggregation = timeAggregation ? params.valueAggregation || 'avg' : '';
@@ -43,17 +43,24 @@ abstract class ParamHandler {
                 const timeAggregation = valueAggregation ? params.timeAggregation || 'month' : '';
                 setParams( { ...params, timeAggregation, valueAggregation } )
             },
-    
-            setReservoirFilter: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
-                console.log( 'setReservoirFilter' )
-                const { reservoirFilter } = params;
-                reservoirFilter[ e.target.name ] = e.target.checked;
-                setParams( { ...params, reservoirFilter } );
-            },
         }
     } 
 
-    constructor() {}
+    public Class = ParamHandler;
+
+    private _paramValues: ParamValues;
+
+    constructor( paramValues: ParamValues ) {
+        this._paramValues = paramValues;
+    };
+
+    get paramValues(): ParamValues {
+        return this._paramValues;
+    }
+
+    abstract get itemsLabel(): string;
+    abstract get itemsFilterKey(): string;
+    abstract get itemsAggregationKey(): string;
 }
 
 class SavingsParamHandler extends ParamHandler {
@@ -63,11 +70,11 @@ class SavingsParamHandler extends ParamHandler {
         return {
             ...super.getStateSetters( { params, setParams } ),
 
-            setReservoirAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+            setItemsAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
                 setParams( { ...params, reservoirAggregation: e.target.value } )
             },
     
-            setReservoirFilter: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+            setItemsFilter: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
                 const { reservoirFilter } = params;
                 reservoirFilter[ e.target.name ] = e.target.checked;
                 setParams( { ...params, reservoirFilter } );
@@ -75,17 +82,27 @@ class SavingsParamHandler extends ParamHandler {
         }
     }
 
-    _paramValues: SavingsParamValues;
+    public Class = SavingsParamHandler;
 
-    constructor( paramValues: SavingsParamValues ) {
-        super();
-        this._paramValues = paramValues;
-    };
+    get itemsLabel(): string { return 'Ταμιευτήρες'; }
+    get itemsFilterKey(): string { return 'reservoirFilter'; }
+    get itemsAggregationKey(): string { return 'reservoirAggregation'; }
+}
 
-    get paramValues(): SavingsParamValues {
-        return this._paramValues;
+class ParamHandlerFactory {
+
+    private _paramHandler: ParamHandler;
+
+    constructor( endpoint: string, searchParams: SearchParamsType, items: ObjectType[] ) {
+    // if ( endpoint === 'savings' ) {
+        const paramValues: SavingsParamValues = new SavingsParamValues( searchParams, items || []  );
+        this._paramHandler = new SavingsParamHandler( paramValues );
+    // }
+    }
+
+    get paramHandler(): ParamHandler {
+        return this._paramHandler;
     }
 }
 
-
-export { ParamHandler, SavingsParamHandler };
+export { ParamHandler, SavingsParamHandler, ParamHandlerFactory };

@@ -20,9 +20,18 @@ interface SavingsParamValuesType extends ParamValuesType {
     reservoirAggregation: string | undefined
 }
 
+interface ProductionParamValuesType extends ParamValuesType {
+    factoryFilter: { [ key: string ]: boolean }
+    factoryAggregation: string | undefined
+}
+
+type ParamValuesFamilyType = SavingsParamValuesType | ProductionParamValuesType;
+
 export type { 
     ViewType, 
     ChartType,
     ParamValuesType,
     SavingsParamValuesType,
+    ProductionParamValuesType,
+    ParamValuesFamilyType
 };

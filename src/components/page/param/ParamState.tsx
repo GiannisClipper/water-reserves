@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import ParamLabel from "@/components/page/param/ParamLabel";
-import ParamContent from "@/app/savings/ParamContent";
+import ParamContent from "@/components/page/param/ParamContent";
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType } from "@/types/requestResult";
 
 type PropsType = {
     endpoint: string
     searchParams: SavingsSearchParamsType
-    items: [ { [ key: string ]: any } ] | null
+    items: [ { [ key: string ]: any } ]
     error: RequestErrorType | null
 }
 

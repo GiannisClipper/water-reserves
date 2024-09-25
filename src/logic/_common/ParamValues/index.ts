@@ -6,6 +6,7 @@ import type {
 import type {
     ParamValuesType, 
 } from "@/types/paramValues";
+import { ObjectType } from "@/types";
 
 
 class ParamValues {
@@ -120,24 +121,24 @@ class ParamValues {
         }
     }
 
-    fromJSON( formParams: ParamValuesType ): ParamValues {
+    fromJSON( values: ObjectType ): ParamValues {
 
-        this._viewType = formParams.viewType;
-        this._chartType = formParams.chartType;
+        this._viewType = values.viewType;
+        this._chartType = values.chartType;
     
-        this._fromDate = formParams.fromDate;
-        this._toDate = formParams.toDate;
+        this._fromDate = values.fromDate;
+        this._toDate = values.toDate;
     
-        this._fromInterval = formParams.fromInterval;
-        this._toInterval = formParams.toInterval;
+        this._fromInterval = values.fromInterval;
+        this._toInterval = values.toInterval;
     
-        this._timeAggregation = formParams.timeAggregation;
-        this._valueAggregation = formParams.valueAggregation;
+        this._timeAggregation = values.timeAggregation;
+        this._valueAggregation = values.valueAggregation;
         
         return this;
     }
 
-    toJSON(): ParamValuesType {
+    toJSON(): ObjectType {
         return { 
             viewType: this._viewType,
             chartType: this._chartType,
@@ -182,6 +183,12 @@ class ParamValues {
         }
 
         return searchParams;
+    }
+
+    toQueryString(): string {
+        return Object
+            .entries( this.toSearchParams() )
+            .map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
     }
 }
 

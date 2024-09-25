@@ -11,11 +11,11 @@ import {
     CheckField
 } from "@/components/Field";
 
-import SavingsParamValues from "@/logic/_common/ParamValues/SavingsParamValues";
-import { SavingsParamHandler } from "@/logic/_common/ParamHandler";
+import { ParamHandler, ParamHandlerFactory } from "@/logic/_common/ParamHandler";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
-import type { ChartType, SavingsSearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
+import type { ChartType, SearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType } from "@/types/requestResult";
 
 import "@/styles/form.css";
@@ -23,9 +23,9 @@ import "@/styles/field.css";
 
 type PropsType = {
     endpoint: string
-    searchParams: SavingsSearchParamsType
+    searchParams: SearchParamsType
     onSearch: boolean
-    items: { [ key: string ]: any }[] | null
+    items: ObjectType[]
     error: RequestErrorType | null
 }
 
@@ -33,17 +33,16 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
 
     console.log( "rendering: ParamContent..." )
 
-    const paramValues: SavingsParamValues = new SavingsParamValues( searchParams, items || []  );
-    const paramHandler: SavingsParamHandler = new SavingsParamHandler( paramValues );
+    const paramHandler: ParamHandler = new ParamHandlerFactory( endpoint, searchParams, items ).paramHandler;
 
     const [ params, setParams ] = useState( paramHandler.paramValues.toJSON() );
     const {
         setFromDate, setToDate,
         setFromInterval, setToInterval,
-        setReservoirAggregation: setItemsAggregation, 
+        setItemsAggregation, 
         setTimeAggregation, setValueAggregation,
-        setReservoirFilter: setItemsFilter,
-    } = SavingsParamHandler.getStateSetters( { params, setParams } );
+        setItemsFilter,
+    } = paramHandler.Class.getStateSetters( { params, setParams } );
 
     const [ showMore, setShowMore ] = useState( false );
     const setMore = () => setShowMore( true );
@@ -62,7 +61,7 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
             }
 
             // convert form params to query string
-            const queryString: string = new SavingsParamValues( searchParams, items || [] )
+            const queryString: string = paramHandler.paramValues
                 .fromJSON( params )
                 .toQueryString();
 
@@ -97,19 +96,19 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
 
             </FormSection>
 
-            <FormSection label="Ταμιευτήρες">
+            <FormSection label={ paramHandler.itemsLabel }>
                 { items?.map( r => 
                     <CheckField
                         key={ r.id }
                         name={ r.id }
                         label={ r.name_el }
-                        checked={ params.reservoirFilter[ r.id ] }
+                        checked={ params[ paramHandler.itemsFilterKey ][ r.id ] }
                         onChange={ setItemsFilter }
                     /> 
                 ) }
                 <FieldItemsAggregation
                     values={ [ '', 'sum' ] }
-                    value={ params.reservoirAggregation }
+                    value={ params[ paramHandler.itemsAggregationKey ] }
                     onChange={ setItemsAggregation }
                 />
 

@@ -1,16 +1,11 @@
 import ParamValues from "@/logic/_common/ParamValues";
 
 import type { 
-    ViewType, ChartType,
     SearchParamsType, 
     SavingsSearchParamsType 
 } from "@/types/searchParams";
 
-import type {
-    ParamValuesType, 
-    SavingsParamValuesType 
-} from "@/types/paramValues";
-
+import { ObjectType } from "@/types";
 
 class SavingsParamValues extends ParamValues {
 
@@ -45,17 +40,16 @@ class SavingsParamValues extends ParamValues {
         this._reservoirAggregation = val ? val : this._reservoirAggregation;
     }
 
-    fromJSON( savingsParamValues: SavingsParamValuesType ): SavingsParamValues {
+    fromJSON( values: ObjectType ): SavingsParamValues {
 
-        const formParams: ParamValuesType = savingsParamValues;
-        super.fromJSON( formParams );
-        this._reservoirFilter = savingsParamValues.reservoirFilter;
-        this._reservoirAggregation = savingsParamValues.reservoirAggregation;
+        super.fromJSON( values );
+        this._reservoirFilter = values.reservoirFilter;
+        this._reservoirAggregation = values.reservoirAggregation;
 
         return this;
     }
 
-    toJSON(): SavingsParamValuesType {
+    toJSON(): ObjectType {
         return {
             ...super.toJSON(),
             reservoirFilter: this._reservoirFilter,
