@@ -1,6 +1,6 @@
 import type { ObjectType } from '@/types';
-import { ParamValidation } from "@/logic/_common/ParamValidation";
-import { SavingsApiRequest } from "@/logic/_common/ApiRequests";
+import { ParamValidation } from "@/logic/ParamValidation";
+import { SavingsApiRequest } from "@/logic/ApiRequests";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType, RequestResultType } from '@/types/requestResult';

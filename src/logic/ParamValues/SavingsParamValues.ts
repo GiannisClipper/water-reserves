@@ -1,4 +1,4 @@
-import ParamValues from "@/logic/_common/ParamValues";
+import ParamValues from "@/logic/ParamValues";
 
 import type { 
     SearchParamsType, 

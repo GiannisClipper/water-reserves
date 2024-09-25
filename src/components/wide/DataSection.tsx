@@ -2,7 +2,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 import { ChartSectionSkeleton } from "@/components/page/Skeleton";
 import Error from "@/components/page/Error";
 import ChartSection from "./chart/ChartSection";
-import { DataRequestHandler } from "@/logic/_common/DataRequestHandler";
+import { DataRequestHandler } from "@/logic/DataRequestHandler";
 
 type PropsType = { 
     endpoint: string

@@ -10,8 +10,8 @@ import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { SingleTooltip } from '@/components/page/chart/tooltips';
 
-import { SingleDataHandler } from '@/logic/_common/DataHandler';
-import { ChartHandler } from '@/logic/_common/ChartHandler';
+import { SingleDataHandler } from '@/logic/DataHandler';
+import { ChartHandler } from '@/logic/ChartHandler';
 
 import type { ObjectType } from '@/types';
 

@@ -1,5 +1,5 @@
 import type { ObjectType } from '@/types';
-import { ReservoirsApiRequest } from "@/logic/_common/ApiRequests";
+import { ReservoirsApiRequest } from "@/logic/ApiRequests";
 import ObjectList from "@/helpers/objects/ObjectList";
 import type { RequestErrorType } from '@/types/requestResult';
 

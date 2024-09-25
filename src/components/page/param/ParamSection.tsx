@@ -1,5 +1,5 @@
 import ParamState from "./ParamState";
-import { ParamRequestHandler } from "@/logic/_common/ParamRequestHandler";
+import { ParamRequestHandler } from "@/logic/ParamRequestHandler";
 import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = {
@@ -13,8 +13,6 @@ const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     const requestHandler = await new ParamRequestHandler( endpoint );
     const { error, items } = requestHandler.toJSON();
-
-    // console.log( error, reservoirs );
 
     return (
         <div className="ParamSection">

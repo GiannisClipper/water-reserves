@@ -1,7 +1,7 @@
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
-import { makeDataHandler } from "@/logic/_common/DataHandler";
-import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
+import { makeDataHandler } from "@/logic/DataHandler";
+import { SavingsChartLabels } from "@/logic/ChartLabels";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";

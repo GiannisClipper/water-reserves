@@ -11,7 +11,7 @@ import {
     CheckField
 } from "@/components/Field";
 
-import { ParamHandler, ParamHandlerFactory } from "@/logic/_common/ParamHandler";
+import { ParamHandler, ParamHandlerFactory } from "@/logic/ParamHandler";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
 import type { ObjectType } from "@/types";

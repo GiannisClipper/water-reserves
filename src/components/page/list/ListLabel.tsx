@@ -2,7 +2,7 @@
 
 import { Left, Right } from "@/components/Generics";
 import { DownloadIcon, ScreenIcon, LinkIcon } from "@/components/Icons";
-import { downloadList } from "@/logic/_common/download";
+import { downloadList } from "@/logic/download";
 
 import "@/styles/label.css"
 

@@ -3,8 +3,8 @@ import { CubicMeters } from "@/components/Symbols";
 import { withCommas } from "@/helpers/numbers";
 import ObjectList from "@/helpers/objects/ObjectList";
 
-import { StackDataHandler } from '@/logic/_common/DataHandler';
-import { lexicon } from "@/logic/_common/lexicon";
+import { StackDataHandler } from '@/logic/DataHandler';
+import { lexicon } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
 

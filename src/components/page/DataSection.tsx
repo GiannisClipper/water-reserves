@@ -6,7 +6,7 @@ import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/page/Ske
 import Error from "@/components/page/Error";
 import ChartSection from "./chart/ChartSection";
 import ListSection from "./list/ListSection";
-import { DataRequestHandler } from "@/logic/_common/DataRequestHandler";
+import { DataRequestHandler } from "@/logic/DataRequestHandler";
 
 type PropsType = { 
     endpoint: string

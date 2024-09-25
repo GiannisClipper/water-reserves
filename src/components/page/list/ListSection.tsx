@@ -2,7 +2,7 @@ import ListLabel from "@/components/page/list/ListLabel";
 import SingleListContent from "@/components/page/list/SingleListContent";
 import StackListContent from "@/components/page/list/StackListContent";
 
-import { makeDataHandler } from "@/logic/_common/DataHandler";
+import { makeDataHandler } from "@/logic/DataHandler";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";

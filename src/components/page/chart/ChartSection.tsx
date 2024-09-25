@@ -6,9 +6,9 @@ import ChartLabel from "@/components/page/chart/ChartLabel";
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 
-import { makeDataHandler } from "@/logic/_common/DataHandler";
+import { makeDataHandler } from "@/logic/DataHandler";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
-import { SavingsChartLabels } from "@/logic/_common/ChartLabels";
+import { SavingsChartLabels } from "@/logic/ChartLabels";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import { RequestResultType } from "@/types/requestResult";

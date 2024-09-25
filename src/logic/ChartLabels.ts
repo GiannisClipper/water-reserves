@@ -1,5 +1,5 @@
 import { ObjectType } from '@/types';
-import ParamValues from '@/logic/_common/ParamValues';
+import ParamValues from '@/logic/ParamValues';
 
 class ChartLabels {    
 

@@ -11,9 +11,9 @@ import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { StackTooltip } from '@/components/page/chart/tooltips';
 import { LineLegend, ColorLegend } from "@/components/page/chart/legends";
 
-import { StackDataHandler } from '@/logic/_common/DataHandler';
-import { ChartHandler } from "@/logic/_common/ChartHandler";
-import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/savings/chart';
+import { StackDataHandler } from '@/logic/DataHandler';
+import { ChartHandler } from "@/logic/ChartHandler";
+import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/tooltipRepr';
 import ObjectList from '@/helpers/objects/ObjectList';
 
 import type { ObjectType } from '@/types';

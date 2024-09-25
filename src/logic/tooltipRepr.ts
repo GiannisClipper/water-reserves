@@ -4,18 +4,18 @@ import ObjectList from '@/helpers/objects/ObjectList';
 
 const makeItemsRepr = ( items: ObjectType[], values: ObjectType ): ObjectType[] => {
 
-    // toReversed: placing from bottom to top the reservoir lines in chart
+    // toReversed: placing from bottom to top the lines in chart
     const result: any[] = items.toReversed()
-        .map( ( reservoir: ObjectType, i: number ) => {
+        .map( ( item: ObjectType, i: number ) => {
 
-            const { id, name_el: name } = reservoir;
+            const { id, name_el: name } = item;
             if ( values[ id ] ) {
                 const { value=0, percentage=0 } = values[ id ];
                 return { name, value, percentage };
             }
             return null;
         } )
-        .filter( ( reservoir: ObjectType | null ) => reservoir !== null );
+        .filter( ( item: ObjectType | null ) => item !== null );
 
     return result;
 }

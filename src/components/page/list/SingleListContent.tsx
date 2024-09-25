@@ -1,7 +1,7 @@
 import { CubicMeters } from "@/components/Symbols";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
-import { SingleDataHandler } from '@/logic/_common/DataHandler';
-import { translate } from "@/logic/_common/lexicon";
+import { SingleDataHandler } from '@/logic/DataHandler';
+import { translate } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
 
