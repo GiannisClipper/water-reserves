@@ -1,6 +1,6 @@
-import type { ViewType, ChartType } from "./searchParams";
+import type { ViewType, ChartType } from "@/types/searchParams";
 
-interface FormParamsType {
+interface ParamValuesType {
 
     viewType: ViewType
     chartType: ChartType
@@ -15,7 +15,7 @@ interface FormParamsType {
     valueAggregation: string
 }
 
-interface SavingsFormParamsType extends FormParamsType {
+interface SavingsParamValuesType extends ParamValuesType {
     reservoirFilter: { [ key: string ]: boolean }
     reservoirAggregation: string | undefined
 }
@@ -23,6 +23,6 @@ interface SavingsFormParamsType extends FormParamsType {
 export type { 
     ViewType, 
     ChartType,
-    FormParamsType,
-    SavingsFormParamsType,
+    ParamValuesType,
+    SavingsParamValuesType,
 };

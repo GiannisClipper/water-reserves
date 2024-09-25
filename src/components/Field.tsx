@@ -84,11 +84,11 @@ const FieldToInterval = ( props: any ) => {
     );
 }
 
-const reprReservoirAggregation = ( key: string ): string => {
+const reprItemsAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
+        'sum': 'Συγκεντρωτικά',
         '': 'Ανά ταμιευτήρα',
-        'sum': 'Συνολικά'
     };
 
     if ( key in values ) {
@@ -126,14 +126,14 @@ const reprTimeAggregation = ( key: string ): string => {
     return "";
 }
 
-const FieldReservoirAggregation = ( props: any ) => (
+const FieldItemsAggregation = ( props: any ) => (
 
     <Field
         label = {<span>Ανάλυση</span>}
         value = {
             <select { ...props }>
-                <option value="">{reprReservoirAggregation( "" )}</option>
-                <option value="sum">{reprReservoirAggregation( "sum" )}</option>
+                <option value="sum">{reprItemsAggregation( "sum" )}</option>
+                <option value="">{reprItemsAggregation( "" )}</option>
             </select>
         }
     />
@@ -194,6 +194,7 @@ export {
     Field, 
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
-    FieldReservoirAggregation, FieldTimeAggregation, FieldValueAggregation, 
+    FieldItemsAggregation, 
+    FieldTimeAggregation, FieldValueAggregation, 
     CheckField
 };

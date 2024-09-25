@@ -43,40 +43,6 @@ const FormSection = ( { className, label, children }: FormSectionPropsType ) => 
     );
 }
 
-type FormSectionPropsType_ = { children: React.ReactNode }
-
-const FormSectionTimeRange = ( { children }: FormSectionPropsType_ ) => {
-    return (
-        <FormSection label="Περίοδος δεδομένων">
-            { children }
-        </FormSection>
-    );
-}
-
-const FormSectionIntervalFilter = ( { children }: FormSectionPropsType_ ) => {
-    return (
-        <FormSection label="Παράθυρο ενδιαφέροντος">
-            { children }
-        </FormSection>
-    );
-}
-
-const FormSectionAggregation = ( { children }: FormSectionPropsType_ ) => {
-    return (
-        <FormSection label="Συγκέντρωση δεδομένων">
-            { children }
-        </FormSection>
-    );
-}
-
-const FormSectionReservoirs = ( { children }: FormSectionPropsType_ ) => {
-    return (
-        <FormSection label="Ταμιευτήρες">
-            { children }
-        </FormSection>
-    );
-}
-
 // FormButton
 
 type FormButtonPropsType = {
@@ -129,10 +95,4 @@ const FormButtonLess = ( { className, onClick }: FormButtonPropsType_ ) => {
     );
 }
 
-export { 
-    Form, FormSection, 
-    FormSectionTimeRange, FormSectionIntervalFilter,
-    FormSectionAggregation,
-    FormSectionReservoirs,
-    FormButtonMore, FormButtonLess
-};
+export { Form, FormSection, FormButtonMore, FormButtonLess };

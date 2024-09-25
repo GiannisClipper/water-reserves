@@ -1,4 +1,4 @@
-import FormParams from "@/logic/savings/params/FormParams";
+import ParamValues from "@/logic/_common/ParamValues";
 
 import type { 
     ViewType, ChartType,
@@ -7,16 +7,16 @@ import type {
 } from "@/types/searchParams";
 
 import type {
-    FormParamsType, 
-    SavingsFormParamsType 
-} from "@/types/formParams";
+    ParamValuesType, 
+    SavingsParamValuesType 
+} from "@/types/paramValues";
 
 
-class SavingsFormParams extends FormParams {
+class SavingsParamValues extends ParamValues {
 
     _reservoirs: { [ key: string ]: any }[] = [];
     _reservoirFilter: { [ key: string ]: boolean } = {};
-    _reservoirAggregation: string | undefined = 'sum';
+    _reservoirAggregation: string | undefined;
 
     constructor( savingsSearchParams: SavingsSearchParamsType, reservoirs: { [ key: string ]: any }[] ) {
         const searchParams: SearchParamsType = savingsSearchParams;
@@ -24,13 +24,10 @@ class SavingsFormParams extends FormParams {
 
         this._reservoirs = reservoirs;
         this.convertReservoirFilter( savingsSearchParams.reservoir_filter );
-        this._reservoirAggregation = savingsSearchParams.reservoir_aggregation;
-
+        this._reservoirAggregation = Object.keys( savingsSearchParams ).length
+            ? savingsSearchParams.reservoir_aggregation || ''
+            : 'sum';
     }
-
-    // set reservoirFilter( val: { [ key: string ]: boolean } | undefined ) {
-    //     this._reservoirFilter = val ? val : this._reservoirFilter;
-    // }
 
     convertReservoirFilter( val: string | undefined ) {
 
@@ -48,27 +45,27 @@ class SavingsFormParams extends FormParams {
         this._reservoirAggregation = val ? val : this._reservoirAggregation;
     }
 
-    setFromObject( savingsFormParams: SavingsFormParamsType ): SavingsFormParams {
+    fromJSON( savingsParamValues: SavingsParamValuesType ): SavingsParamValues {
 
-        const formParams: FormParamsType = savingsFormParams;
-        super.setFromObject( formParams );
-        this._reservoirFilter = savingsFormParams.reservoirFilter;
-        this._reservoirAggregation = savingsFormParams.reservoirAggregation;
+        const formParams: ParamValuesType = savingsParamValues;
+        super.fromJSON( formParams );
+        this._reservoirFilter = savingsParamValues.reservoirFilter;
+        this._reservoirAggregation = savingsParamValues.reservoirAggregation;
 
         return this;
     }
 
-    getAsObject(): SavingsFormParamsType {
+    toJSON(): SavingsParamValuesType {
         return {
-            ...super.getAsObject(),
+            ...super.toJSON(),
             reservoirFilter: this._reservoirFilter,
             reservoirAggregation: this._reservoirAggregation,
         }
     }
 
-    getAsSearchObject(): SavingsSearchParamsType {
+    toSearchParams(): SavingsSearchParamsType {
 
-        const searchParams: SearchParamsType = super.getAsSearchObject();
+        const searchParams: SearchParamsType = super.toSearchParams();
 
         const result: SavingsSearchParamsType = { ...searchParams };
     
@@ -88,12 +85,11 @@ class SavingsFormParams extends FormParams {
         return result;    
     }
 
-    getAsQueryString(): string {
+    toQueryString(): string {
         return Object
-            .entries( this.getAsSearchObject() )
+            .entries( this.toSearchParams() )
             .map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
     }
-
 }
 
-export default SavingsFormParams;
+export default SavingsParamValues;

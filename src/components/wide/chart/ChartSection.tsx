@@ -24,7 +24,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartType = searchParams.chart_type;
 
-    const chartLabels = new SavingsChartLabels( searchParams ).getAsObject();
+    const chartLabels = new SavingsChartLabels( searchParams ).toJSON();
 
     console.log( "rendering: ChartSection..." )
 

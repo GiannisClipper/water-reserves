@@ -29,7 +29,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         ? SingleChartContent
         : StackChartContent;
 
-    const chartLabels = new SavingsChartLabels( searchParams ).getAsObject();
+    const chartLabels = new SavingsChartLabels( searchParams ).toJSON();
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 

@@ -1,5 +1,5 @@
 import { ObjectType } from '@/types';
-import FormParams from '../savings/params/FormParams';
+import ParamValues from '@/logic/_common/ParamValues';
 
 class ChartLabels {    
 
@@ -8,7 +8,7 @@ class ChartLabels {
 
     constructor( searchParams: ObjectType ) {
 
-        const params = new FormParams( searchParams ).getAsObject();
+        const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
 
         const timeRepr = {
@@ -28,7 +28,7 @@ class ChartLabels {
             : 'Ημερήσια ποσότητα';    
     }
 
-    getAsObject(): ObjectType {
+    toJSON(): ObjectType {
         return {
             xLabel: this.xLabel, 
             yLabel: this.yLabel
@@ -53,9 +53,9 @@ class SavingsChartLabels extends ChartLabels {
         this.yLabel += ' (κυβ.μέτρα)'
     }
 
-    getAsObject(): ObjectType {
+    toJSON(): ObjectType {
         return {
-            ...super.getAsObject(),
+            ...super.toJSON(),
             title: this.title
         }
     }

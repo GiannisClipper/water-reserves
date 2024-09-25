@@ -4,11 +4,11 @@ import type {
 } from "@/types/searchParams";
 
 import type {
-    FormParamsType, 
-} from "@/types/formParams";
+    ParamValuesType, 
+} from "@/types/paramValues";
 
 
-class FormParams {
+class ParamValues {
 
     _viewType: ViewType = 'overall';
     _chartType: ChartType = 'line';
@@ -120,7 +120,7 @@ class FormParams {
         }
     }
 
-    setFromObject( formParams: FormParamsType ): FormParams {
+    fromJSON( formParams: ParamValuesType ): ParamValues {
 
         this._viewType = formParams.viewType;
         this._chartType = formParams.chartType;
@@ -137,7 +137,7 @@ class FormParams {
         return this;
     }
 
-    getAsObject(): FormParamsType {
+    toJSON(): ParamValuesType {
         return { 
             viewType: this._viewType,
             chartType: this._chartType,
@@ -153,7 +153,7 @@ class FormParams {
         };  
     }
 
-    getAsSearchObject(): SearchParamsType {
+    toSearchParams(): SearchParamsType {
 
         const searchParams: SearchParamsType = {};
 
@@ -185,4 +185,4 @@ class FormParams {
     }
 }
 
-export default FormParams;
+export default ParamValues;

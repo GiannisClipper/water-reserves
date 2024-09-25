@@ -2,27 +2,21 @@
 
 import { useState, useEffect } from "react";
 
-import type { ChartType, SavingsSearchParamsType } from "@/types/searchParams";
-import type { SavingsFormParamsType } from "@/types/formParams";
-import type { RequestErrorType } from "@/types/requestResult";
-import BrowserUrl from "@/helpers/url/BrowserUrl";
-import SavingsFormParams from "@/logic/savings/params/SavingsFormParams";
-import { setParamsFactory } from "@/components/page";
-
-import { 
-    Form, FormSectionTimeRange, 
-    FormSectionIntervalFilter, 
-    FormSectionReservoirs,
-    FormButtonMore,
-    FormButtonLess
-} from "@/components/Form";
+import { Form, FormSection, FormButtonMore, FormButtonLess } from "@/components/Form";
 
 import { 
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
-    FieldReservoirAggregation, FieldValueAggregation, FieldTimeAggregation,
+    FieldItemsAggregation, FieldValueAggregation, FieldTimeAggregation,
     CheckField
 } from "@/components/Field";
+
+import SavingsParamValues from "@/logic/_common/ParamValues/SavingsParamValues";
+import { SavingsParamHandler } from "@/logic/_common/ParamHandler";
+import BrowserUrl from "@/helpers/url/BrowserUrl";
+
+import type { ChartType, SavingsSearchParamsType } from "@/types/searchParams";
+import type { RequestErrorType } from "@/types/requestResult";
 
 import "@/styles/form.css";
 import "@/styles/field.css";
@@ -39,16 +33,17 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
 
     console.log( "rendering: ParamContent..." )
 
-    const savingsFormParams: SavingsFormParamsType = 
-        new SavingsFormParams( searchParams, items || [] ).getAsObject();
+    const paramValues: SavingsParamValues = new SavingsParamValues( searchParams, items || []  );
+    const paramHandler: SavingsParamHandler = new SavingsParamHandler( paramValues );
 
-    const [ params, setParams ] = useState( savingsFormParams );
+    const [ params, setParams ] = useState( paramHandler.paramValues.toJSON() );
     const {
         setFromDate, setToDate,
         setFromInterval, setToInterval,
-        setReservoirAggregation, setTimeAggregation, setValueAggregation,
-        setReservoirFilter,
-    } = setParamsFactory( { params, setParams } );
+        setReservoirAggregation: setItemsAggregation, 
+        setTimeAggregation, setValueAggregation,
+        setReservoirFilter: setItemsFilter,
+    } = SavingsParamHandler.getStateSetters( { params, setParams } );
 
     const [ showMore, setShowMore ] = useState( false );
     const setMore = () => setShowMore( true );
@@ -67,9 +62,9 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
             }
 
             // convert form params to query string
-            const queryString: string = new SavingsFormParams( searchParams, items || [] )
-                .setFromObject( params )
-                .getAsQueryString();
+            const queryString: string = new SavingsParamValues( searchParams, items || [] )
+                .fromJSON( params )
+                .toQueryString();
 
             // update browser url and request page
             url.setParams( queryString.split( '&' ) );
@@ -81,7 +76,7 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
     return (
         <Form className="ParamContent">
 
-            <FormSectionTimeRange>
+            <FormSection label="Περίοδος δεδομένων">
                 <FieldFromDate
                     value={ params.fromDate }
                     onChange={ setFromDate }
@@ -100,25 +95,25 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
                     onChange={ setValueAggregation }
                 />
 
-            </FormSectionTimeRange>
+            </FormSection>
 
-            <FormSectionReservoirs>
+            <FormSection label="Ταμιευτήρες">
                 { items?.map( r => 
                     <CheckField
                         key={ r.id }
                         name={ r.id }
                         label={ r.name_el }
                         checked={ params.reservoirFilter[ r.id ] }
-                        onChange={ setReservoirFilter }
+                        onChange={ setItemsFilter }
                     /> 
                 ) }
-                <FieldReservoirAggregation
+                <FieldItemsAggregation
                     values={ [ '', 'sum' ] }
                     value={ params.reservoirAggregation }
-                    onChange={ setReservoirAggregation }
+                    onChange={ setItemsAggregation }
                 />
 
-            </FormSectionReservoirs>
+            </FormSection>
 
             { showMore
                 ? <FormButtonLess onClick={ setLess } />
@@ -127,7 +122,7 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
 
             { showMore
                 ?
-                <FormSectionIntervalFilter>
+                <FormSection label="Παράθυρο ενδιαφέροντος">
                     <FieldFromInterval
                         value={ params.fromInterval }
                         onChange={ setFromInterval }
@@ -136,7 +131,7 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
                         value={ params.toInterval }
                         onChange={ setToInterval }
                     />
-                </FormSectionIntervalFilter>
+                </FormSection>
                 :
                 null
             }
