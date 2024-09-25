@@ -1,4 +1,4 @@
-import { ReservoirsApiRequest, FactoriesApiRequest } from "@/logic/ApiRequests";
+import { ReservoirsApiRequest, FactoriesApiRequest, LocationsApiRequest } from "@/logic/ApiRequests";
 import ObjectList from "@/helpers/objects/ObjectList";
 
 import type { RequestErrorType } from '@/types/requestResult';
@@ -15,17 +15,27 @@ class ParamRequestHandler {
         let sortKey: string = 'id';
         let sortDirection: 'asc' | 'desc' = 'asc';
 
-        if ( endpoint === 'savings' ) {
-            ApiRequest = ReservoirsApiRequest;
-            sortKey = 'start';
-            sortDirection = 'asc';
+        switch ( endpoint ) {
 
-        } else if ( endpoint === 'production' ) {
-            ApiRequest = FactoriesApiRequest;
-            sortKey = 'start';
-            sortDirection = 'asc';
+            case 'savings': {
+                ApiRequest = ReservoirsApiRequest;
+                sortKey = 'start';
+                sortDirection = 'asc';
+            } 
+            case 'production': {
+                ApiRequest = FactoriesApiRequest;
+                sortKey = 'start';
+                sortDirection = 'asc';
+                break;
+            }
+            case 'precipitation': {
+                ApiRequest = LocationsApiRequest;
+                break;
+            }
+            default:
+                throw `Invalid endpoint (${endpoint}) used in ParamRequestHandler`;
         }
-
+    
         if ( ! ApiRequest ) {
             return this;
         }

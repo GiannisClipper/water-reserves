@@ -230,6 +230,11 @@ const makeDataHandler = ( { endpoint, searchParams, result }: PropsType ): DataH
             itemsKey = 'factories';
             break;
         }
+        case 'precipitation': {
+            type = searchParams.location_aggregation ? 'single' : 'stack';
+            itemsKey = 'locations';
+            break;
+        }
         default:
             throw `Invalid endpoint (${endpoint}) used in makeDataHandler()`;
     }

@@ -24,10 +24,16 @@ interface ProductionSearchParamsType extends SearchParamsType {
     factory_aggregation?: string
 }
 
+interface WeatherSearchParamsType extends SearchParamsType {
+    location_filter?: string
+    location_aggregation?: string
+}
+
 export type { 
     ViewType, 
     ChartType, 
     SearchParamsType,
     SavingsSearchParamsType,
     ProductionSearchParamsType,
+    WeatherSearchParamsType,
 };

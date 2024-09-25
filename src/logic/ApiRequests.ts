@@ -5,6 +5,7 @@ import type {
     SearchParamsType,
     SavingsSearchParamsType,
     ProductionSearchParamsType,
+    WeatherSearchParamsType,
 } from "@/types/searchParams";
 
 abstract class ApiRequest {    
@@ -19,7 +20,7 @@ abstract class ApiRequest {
 
     public async request(): Promise<[ RequestErrorType | null, any | null ]> {
 
-        // console.log( this.url );
+        console.log( this.url );
         const response = await fetch( this.url );
         // console.log( response.status, response.statusText )
         const result: any = await response.json();
@@ -71,6 +72,13 @@ class FactoriesApiRequest extends ApiRequest {
     constructor() { super(); }
 }
 
+class LocationsApiRequest extends ApiRequest { 
+        
+    endpoint = 'locations';
+
+    constructor() { super(); }
+}
+
 class SavingsApiRequest extends ApiRequestWithParams { 
     
     endpoint = 'savings';
@@ -93,9 +101,22 @@ class ProductionApiRequest extends ApiRequestWithParams {
     }
 }
 
+class WeatherApiRequest extends ApiRequestWithParams { 
+    
+    endpoint = 'weather';
+    searchParams = {};
+
+    constructor( searchParams: WeatherSearchParamsType ) {
+        super();
+        this.searchParams = searchParams;
+    }
+}
+
 export { 
     ReservoirsApiRequest,
     FactoriesApiRequest,
+    LocationsApiRequest,
     SavingsApiRequest, 
     ProductionApiRequest,
+    WeatherApiRequest,
 };

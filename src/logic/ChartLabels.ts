@@ -33,9 +33,11 @@ abstract class ChartLabels {
     toJSON(): ObjectType {
         return {
             xLabel: this._xLabel, 
-            yLabel: this._yLabel
+            yLabel: this._yLabel,
+            title: this._title
         }
     }
+    
 }
 
 class SavingsChartLabels extends ChartLabels {
@@ -53,13 +55,6 @@ class SavingsChartLabels extends ChartLabels {
         );
 
         this._yLabel += ' (κυβ.μέτρα)'
-    }
-
-    toJSON(): ObjectType {
-        return {
-            ...super.toJSON(),
-            title: this._title
-        }
     }
 }
 
@@ -79,14 +74,32 @@ class ProductionChartLabels extends ChartLabels {
 
         this._yLabel += ' (κυβ.μέτρα)'
     }
+}
 
-    toJSON(): ObjectType {
-        return {
-            ...super.toJSON(),
-            title: this._title
-        }
+class PrecipitationChartLabels extends ChartLabels {
+
+    _title: string;
+
+    constructor( searchParams: ObjectType ) {
+
+        super( searchParams );
+        
+        this._title = 'Ποσότητες υετού ' + ( 
+            searchParams.location_aggregation 
+                ? '(συνολικά)'
+                : '(ανά τοποθεσία)'
+        );
+
+        this._yLabel += ' (mm)'
     }
+
+    // toJSON(): ObjectType {
+    //     return {
+    //         ...super.toJSON(),
+    //         title: this._title
+    //     }
+    // }    
 }
 
 
-export { SavingsChartLabels, ProductionChartLabels };
+export { SavingsChartLabels, ProductionChartLabels, PrecipitationChartLabels };

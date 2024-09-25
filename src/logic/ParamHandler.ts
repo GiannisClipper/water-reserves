@@ -1,6 +1,7 @@
 import ParamValues from './ParamValues';
 import SavingsParamValues from './ParamValues/SavingsParamValues';
 import ProductionParamValues from './ParamValues/ProductionParamValues';
+import WeatherParamValues from './ParamValues/WeatherParamValues';
 
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
@@ -130,6 +131,44 @@ class ProductionParamHandler extends ParamHandler {
     };
 }
 
+class WeatherParamHandler extends ParamHandler {
+
+    static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
+
+        return {
+            ...super.getStateSetters( { params, setParams } ),
+
+            setTimeAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+                const timeAggregation = e.target.value;
+                const valueAggregation = timeAggregation ? params.valueAggregation || 'sum' : '';
+                setParams( { ...params, timeAggregation, valueAggregation } )
+            },
+
+            setItemsAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+                setParams( { ...params, locationAggregation: e.target.value } )
+            },
+    
+            setItemsFilter: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+                const { locationFilter } = params;
+                locationFilter[ e.target.name ] = e.target.checked;
+                setParams( { ...params, locationFilter } );
+            },
+        }
+    }
+
+    public Class = WeatherParamHandler;
+
+    get itemsLabel(): string { return 'Τοποθεσίες'; }
+    get itemsFilterKey(): string { return 'locationFilter'; }
+    get itemsAggregationKey(): string { return 'locationAggregation'; }
+
+    getValueAggregationOptions( timeAggregation: string ): string[] {
+        return timeAggregation
+            ? [ 'sum' ]
+            : [ '' ];
+    };
+}
+
 class ParamHandlerFactory {
 
     private _paramHandler: ParamHandler | undefined;
@@ -148,6 +187,11 @@ class ParamHandlerFactory {
                 this._paramHandler = new ProductionParamHandler( paramValues );
                 break;
             }
+            case 'precipitation': {
+                const paramValues: WeatherParamValues = new WeatherParamValues( searchParams, items || []  );
+                this._paramHandler = new WeatherParamHandler( paramValues );
+                break;
+            }
 
             default:
                 throw `Invalid endpoint (${endpoint}) used in ParamHandlerFactory`;
@@ -159,4 +203,4 @@ class ParamHandlerFactory {
     }
 }
 
-export { ParamHandler, SavingsParamHandler, ParamHandlerFactory };
+export { ParamHandler, ParamHandlerFactory };

@@ -31,8 +31,6 @@ type PropsType = {
 
 const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) => {
 
-    console.log( "rendering: ParamContent..." )
-
     const paramHandler: ParamHandler = new ParamHandlerFactory( endpoint, searchParams, items ).paramHandler;
 
     const [ params, setParams ] = useState( paramHandler.paramValues.toJSON() );
@@ -47,6 +45,8 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
     const [ showMore, setShowMore ] = useState( false );
     const setMore = () => setShowMore( true );
     const setLess = () => setShowMore( false );
+
+    console.log( "rendering: ParamContent...", params )
 
     useEffect( () => {
 

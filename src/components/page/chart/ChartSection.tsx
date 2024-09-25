@@ -7,7 +7,7 @@ import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 
 import { makeDataHandler } from "@/logic/DataHandler";
-import { SavingsChartLabels, ProductionChartLabels } from "@/logic/ChartLabels";
+import { SavingsChartLabels, ProductionChartLabels, PrecipitationChartLabels } from "@/logic/ChartLabels";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
 import type { SearchParamsType } from "@/types/searchParams";
@@ -42,10 +42,13 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
             chartLabels = new ProductionChartLabels( searchParams ).toJSON();
             break;
         }
+        case 'precipitation': {
+            chartLabels = new PrecipitationChartLabels( searchParams ).toJSON();
+            break;
+        }
         default:
             throw `Invalid endpoint (${endpoint}) used in <ChartSection/>`;
     }
-
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
