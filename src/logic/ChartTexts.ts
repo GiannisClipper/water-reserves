@@ -1,5 +1,7 @@
-import { ObjectType } from '@/types';
 import ParamValues from '@/logic/ParamValues';
+
+import type { ObjectType } from '@/types';
+import type { SearchParamsType } from '@/types/searchParams';
 
 abstract class ChartTexts {    
 
@@ -94,5 +96,34 @@ class PrecipitationChartTexts extends ChartTexts {
     }
 }
 
+class ChartTextsFactory {
 
-export { SavingsChartTexts, ProductionChartTexts, PrecipitationChartTexts };
+    private _chartTexts: ChartTexts;
+
+    constructor( endpoint: string, searchParams: SearchParamsType ) {
+
+        switch ( endpoint ) {
+
+            case 'savings': {
+                this._chartTexts = new SavingsChartTexts( searchParams );
+                break;
+            } 
+            case 'production': {
+                this._chartTexts = new ProductionChartTexts( searchParams );
+                break;
+            }
+            case 'precipitation': {
+                this._chartTexts = new PrecipitationChartTexts( searchParams );
+                break;
+            }
+            default:
+                throw `Invalid endpoint (${endpoint}) used in ChartTextsFactory`;
+        }
+    }
+
+    get chartTexts(): ChartTexts {
+        return this._chartTexts;
+    }
+}
+
+export { ChartTextsFactory };

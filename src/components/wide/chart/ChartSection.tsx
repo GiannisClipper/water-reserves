@@ -1,7 +1,7 @@
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import { makeDataHandler } from "@/logic/DataHandler";
-import { SavingsChartTexts, ProductionChartTexts, PrecipitationChartTexts } from "@/logic/ChartTexts";
+import { ChartTextsFactory } from "@/logic/ChartTexts";
 
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
@@ -25,25 +25,9 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartType = searchParams.chart_type;
 
-    let chartTexts: ObjectType;
-
-    switch ( endpoint ) {
-
-        case 'savings': {
-            chartTexts = new SavingsChartTexts( searchParams ).toJSON();
-            break;
-        } 
-        case 'production': {
-            chartTexts = new ProductionChartTexts( searchParams ).toJSON();
-            break;
-        }
-        case 'precipitation': {
-            chartTexts = new PrecipitationChartTexts( searchParams ).toJSON();
-            break;
-        }
-        default:
-            throw `Invalid endpoint (${endpoint}) used in <ChartSection/>`;
-    }
+    const chartTexts: ObjectType = new ChartTextsFactory( endpoint, searchParams )
+        .chartTexts
+        .toJSON();
 
     console.log( "rendering: ChartSection..." )
 
