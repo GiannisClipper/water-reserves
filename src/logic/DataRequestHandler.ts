@@ -1,5 +1,5 @@
 import { ParamValidation } from "@/logic/ParamValidation";
-import { SavingsApiRequest, ProductionApiRequest, WeatherApiRequest } from "@/logic/ApiRequests";
+import { ApiRequestFactory } from "@/logic/ApiRequest";
 
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from "@/types/searchParams";
@@ -20,27 +20,10 @@ class DataRequestHandler {
             this._error = new ParamValidation( searchParams ).validate();
 
             if ( ! this._error ) {
-                switch ( endpoint ) {
-
-                    case 'savings': {
-                        const apiRequest = new SavingsApiRequest( searchParams );
-                        [ this._error, this._result ] = await apiRequest.request();
-                        break;
-                    }
-                    case 'production': {
-                        const apiRequest = new ProductionApiRequest( searchParams );
-                        [ this._error, this._result ] = await apiRequest.request();    
-                        break;
-                    }
-                    case 'precipitation': {
-                        const apiRequest = new WeatherApiRequest( searchParams );
-                        [ this._error, this._result ] = await apiRequest.request();    
-                        break;
-                    }
-                    default:
-                        throw `Invalid endpoint (${endpoint}) used in DataRequestHandler`;
-                }
+                const apiRequest = new ApiRequestFactory( endpoint, searchParams ).apiRequest;
+                [ this._error, this._result ] = await apiRequest.request();
             }
+
             return this;
         } )();
     };

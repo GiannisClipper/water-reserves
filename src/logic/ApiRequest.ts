@@ -1,5 +1,5 @@
 import { NEXT_PUBLIC_REST_API_BASE_URL } from '@/app/settings';
-import { RequestErrorType, RequestResultType } from '@/types/requestResult';
+import { RequestErrorType } from '@/types/requestResult';
 
 import type { 
     SearchParamsType,
@@ -112,6 +112,48 @@ class WeatherApiRequest extends ApiRequestWithParams {
     }
 }
 
+class ApiRequestFactory {
+
+    private _apiRequest: ApiRequest;
+
+    constructor( endpoint: string, searchParams?: SearchParamsType ) {
+
+        switch ( endpoint ) {
+
+            case 'reservoirs': {
+                this._apiRequest = new ReservoirsApiRequest();
+                break;
+            }
+            case 'factories': {
+                this._apiRequest = new FactoriesApiRequest();
+                break;
+            }
+            case 'locations': {
+                this._apiRequest = new LocationsApiRequest();
+                break;
+            }
+            case 'savings': {
+                this._apiRequest = new SavingsApiRequest( searchParams || {} );
+                break;
+            }
+            case 'production': {
+                this._apiRequest = new ProductionApiRequest( searchParams || {} );
+                break;
+            }
+            case 'precipitation': {
+                this._apiRequest = new WeatherApiRequest( searchParams || {} );
+                break;
+            }
+            default:
+                throw `Invalid endpoint (${endpoint}) used in ApiRequestFactory`;
+        }
+    }
+
+    get apiRequest(): ApiRequest {
+        return this._apiRequest;
+    }
+}
+
 export { 
     ReservoirsApiRequest,
     FactoriesApiRequest,
@@ -119,4 +161,5 @@ export {
     SavingsApiRequest, 
     ProductionApiRequest,
     WeatherApiRequest,
+    ApiRequestFactory
 };

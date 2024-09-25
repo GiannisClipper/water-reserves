@@ -1,4 +1,4 @@
-import { ReservoirsApiRequest, FactoriesApiRequest, LocationsApiRequest } from "@/logic/ApiRequests";
+import { ApiRequestFactory } from "@/logic/ApiRequest";
 import ObjectList from "@/helpers/objects/ObjectList";
 
 import type { RequestErrorType } from '@/types/requestResult';
@@ -11,41 +11,27 @@ class ParamRequestHandler {
 
     constructor( endpoint: string ) {
 
-        let ApiRequest: any;
-        let sortKey: string = 'id';
-        let sortDirection: 'asc' | 'desc' = 'asc';
-
-        switch ( endpoint ) {
-
-            case 'savings': {
-                ApiRequest = ReservoirsApiRequest;
-                sortKey = 'start';
-                sortDirection = 'asc';
-            } 
-            case 'production': {
-                ApiRequest = FactoriesApiRequest;
-                sortKey = 'start';
-                sortDirection = 'asc';
-                break;
-            }
-            case 'precipitation': {
-                ApiRequest = LocationsApiRequest;
-                break;
-            }
-            default:
-                throw `Invalid endpoint (${endpoint}) used in ParamRequestHandler`;
-        }
-    
-        if ( ! ApiRequest ) {
-            return this;
-        }
-    
         return ( async () => {
 
-            const apiRequest = new ApiRequest();
+            const endpoints: ObjectType = {
+                'savings': 'reservoirs',
+                'production': 'factories',
+                'precipitation': 'locations',
+            };
+
+            const apiRequest = new ApiRequestFactory( endpoints[ endpoint ] ).apiRequest;
             [ this._error, this._items ] = await apiRequest.request();
 
             if ( this._items ) {
+
+                let sortKey: string = 'id';
+                let sortDirection: 'asc' | 'desc' = 'asc';
+
+                if ( [ 'savings', 'production' ].includes( endpoint ) ) {
+                    sortKey = 'start';
+                    sortDirection = 'asc';
+                }        
+
                 this._items = new ObjectList( this._items ).sortBy( sortKey, sortDirection );
             }
 
