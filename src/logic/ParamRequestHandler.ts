@@ -1,9 +1,10 @@
-import type { ObjectType } from '@/types';
-import { ReservoirsApiRequest } from "@/logic/ApiRequests";
+import { ReservoirsApiRequest, FactoriesApiRequest } from "@/logic/ApiRequests";
 import ObjectList from "@/helpers/objects/ObjectList";
-import type { RequestErrorType } from '@/types/requestResult';
 
-class ParamRequestHandler {    
+import type { RequestErrorType } from '@/types/requestResult';
+import type { ObjectType } from '@/types';
+
+class ParamRequestHandler {
 
     _error: RequestErrorType | null = null;
     _items: ObjectType[] | null = null;
@@ -16,6 +17,11 @@ class ParamRequestHandler {
 
         if ( endpoint === 'savings' ) {
             ApiRequest = ReservoirsApiRequest;
+            sortKey = 'start';
+            sortDirection = 'asc';
+
+        } else if ( endpoint === 'production' ) {
+            ApiRequest = FactoriesApiRequest;
             sortKey = 'start';
             sortDirection = 'asc';
         }

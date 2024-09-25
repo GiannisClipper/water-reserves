@@ -1,5 +1,6 @@
-import type { ObjectType } from '@/types';
 import { timeKey } from "@/helpers/time";
+
+import type { ObjectType } from '@/types';
 
 abstract class DataHandler {    
 
@@ -217,9 +218,20 @@ const makeDataHandler = ( { endpoint, searchParams, result }: PropsType ): DataH
     let itemsKey: string = '';
     let dataHandler: DataHandler;
 
-    if ( endpoint === 'savings' ) {
-        type = searchParams.reservoir_aggregation ? 'single' : 'stack';
-        itemsKey = 'reservoirs';
+    switch ( endpoint ) {
+
+        case 'savings': {
+            type = searchParams.reservoir_aggregation ? 'single' : 'stack';
+            itemsKey = 'reservoirs';
+            break;
+        } 
+        case 'production': {
+            type = searchParams.factory_aggregation ? 'single' : 'stack';
+            itemsKey = 'factories';
+            break;
+        }
+        default:
+            throw `Invalid endpoint (${endpoint}) used in makeDataHandler()`;
     }
 
     if ( type === 'single' ) {

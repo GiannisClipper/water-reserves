@@ -1,10 +1,12 @@
 import { ObjectType } from '@/types';
 import ParamValues from '@/logic/ParamValues';
 
-class ChartLabels {    
+abstract class ChartLabels {    
 
-    xLabel: string = '';
-    yLabel: string = '';
+    abstract _title: string;
+
+    _xLabel: string = '';
+    _yLabel: string = '';
 
     constructor( searchParams: ObjectType ) {
 
@@ -22,44 +24,69 @@ class ChartLabels {
             sum: 'Συνολική ποσότητα',
         };
 
-        this.xLabel = 'Χρονική ανάλυση ' + ( timeRepr[ timeAggregation ] || 'ανά ημέρα' );
-        this.yLabel = valueRepr[ valueAggregation ] !== undefined
+        this._xLabel = 'Χρονική ανάλυση ' + ( timeRepr[ timeAggregation ] || 'ανά ημέρα' );
+        this._yLabel = valueRepr[ valueAggregation ] !== undefined
             ? valueRepr[ valueAggregation ]
-            : 'Ημερήσια ποσότητα';    
+            : 'Ημερήσια ποσότητα';
     }
 
     toJSON(): ObjectType {
         return {
-            xLabel: this.xLabel, 
-            yLabel: this.yLabel
+            xLabel: this._xLabel, 
+            yLabel: this._yLabel
         }
     }
 }
 
 class SavingsChartLabels extends ChartLabels {
 
-    title: string = '';
+    _title: string;
 
     constructor( searchParams: ObjectType ) {
 
         super( searchParams );
         
-        this.title = 'Αποθέματα νερού ' + ( 
+        this._title = 'Αποθέματα νερού ' + ( 
             searchParams.reservoir_aggregation 
                 ? '(συνολικά)'
                 : '(ανά ταμιευτήρα)'
         );
 
-        this.yLabel += ' (κυβ.μέτρα)'
+        this._yLabel += ' (κυβ.μέτρα)'
     }
 
     toJSON(): ObjectType {
         return {
             ...super.toJSON(),
-            title: this.title
+            title: this._title
+        }
+    }
+}
+
+class ProductionChartLabels extends ChartLabels {
+
+    _title: string;
+
+    constructor( searchParams: ObjectType ) {
+
+        super( searchParams );
+        
+        this._title = 'Παραγωγή πόσιμου νερού ' + ( 
+            searchParams.factory_aggregation 
+                ? '(συνολικά)'
+                : '(ανά μονάδα επεξεργασίας)'
+        );
+
+        this._yLabel += ' (κυβ.μέτρα)'
+    }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            title: this._title
         }
     }
 }
 
 
-export { SavingsChartLabels };
+export { SavingsChartLabels, ProductionChartLabels };

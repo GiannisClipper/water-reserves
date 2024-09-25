@@ -19,9 +19,15 @@ interface SavingsSearchParamsType extends SearchParamsType {
     reservoir_aggregation?: string
 }
 
+interface ProductionSearchParamsType extends SearchParamsType {
+    factory_filter?: string
+    factory_aggregation?: string
+}
+
 export type { 
     ViewType, 
     ChartType, 
     SearchParamsType,
     SavingsSearchParamsType,
+    ProductionSearchParamsType,
 };

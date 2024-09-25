@@ -7,11 +7,12 @@ import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 
 import { makeDataHandler } from "@/logic/DataHandler";
+import { SavingsChartLabels, ProductionChartLabels } from "@/logic/ChartLabels";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
-import { SavingsChartLabels } from "@/logic/ChartLabels";
 
 import type { SearchParamsType } from "@/types/searchParams";
-import { RequestResultType } from "@/types/requestResult";
+import type { RequestResultType } from "@/types/requestResult";
+import type { ObjectType } from "@/types";
 
 type PropsType = {
     endpoint: string
@@ -29,7 +30,22 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         ? SingleChartContent
         : StackChartContent;
 
-    const chartLabels = new SavingsChartLabels( searchParams ).toJSON();
+    let chartLabels: ObjectType;
+
+    switch ( endpoint ) {
+
+        case 'savings': {
+            chartLabels = new SavingsChartLabels( searchParams ).toJSON();
+            break;
+        } 
+        case 'production': {
+            chartLabels = new ProductionChartLabels( searchParams ).toJSON();
+            break;
+        }
+        default:
+            throw `Invalid endpoint (${endpoint}) used in <ChartSection/>`;
+    }
+
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 

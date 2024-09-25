@@ -1,5 +1,7 @@
 import ParamState from "./ParamState";
+
 import { ParamRequestHandler } from "@/logic/ParamRequestHandler";
+
 import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = {

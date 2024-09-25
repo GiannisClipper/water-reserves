@@ -1,10 +1,13 @@
 import { Suspense } from "react";
+
 import Header from "../Header";
 import ParamSection from "../../components/page/param/ParamSection";
 import DataSection from "@/components/page/DataSection";
 import { DataSectionSkeleton } from "@/components/page/Skeleton";
-import type { SearchParamsType } from "@/types/searchParams";
+
 import { SAVINGS } from "../settings";
+
+import type { SearchParamsType } from "@/types/searchParams";
 
 import "@/styles/header.css";
 import "@/styles/page.css";

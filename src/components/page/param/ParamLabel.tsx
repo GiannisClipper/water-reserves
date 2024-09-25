@@ -1,8 +1,9 @@
 "use client"
 
 import { Left, Right } from "@/components/Generics";
-import type { SearchParamsType } from "@/types/searchParams";
 import { RefreshIcon, SearchIcon, LinkIcon } from "@/components/Icons";
+
+import type { SearchParamsType } from "@/types/searchParams";
 
 import "@/styles/label.css"
 

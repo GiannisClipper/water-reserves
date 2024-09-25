@@ -87,8 +87,8 @@ const FieldToInterval = ( props: any ) => {
 const reprItemsAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
+        '': 'Αναλυτικά',
         'sum': 'Συγκεντρωτικά',
-        '': 'Ανά ταμιευτήρα',
     };
 
     if ( key in values ) {
@@ -159,7 +159,7 @@ const FieldValueAggregation = ( { values, ...props } ) => (
     <Field
         label = {<span>Τιμή</span>}
         value = {
-            <select { ...props } disabled={ true }>
+            <select { ...props } disabled={ values.length <= 1 }>
                 { values.map( v => <option key={v} value={v}>{reprValueAggregation( v )}</option> ) }
             </select>
         }

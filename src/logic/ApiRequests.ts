@@ -4,6 +4,7 @@ import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 import type { 
     SearchParamsType,
     SavingsSearchParamsType,
+    ProductionSearchParamsType,
 } from "@/types/searchParams";
 
 abstract class ApiRequest {    
@@ -63,6 +64,13 @@ class ReservoirsApiRequest extends ApiRequest {
     constructor() { super(); }
 }
 
+class FactoriesApiRequest extends ApiRequest { 
+        
+    endpoint = 'factories';
+
+    constructor() { super(); }
+}
+
 class SavingsApiRequest extends ApiRequestWithParams { 
     
     endpoint = 'savings';
@@ -74,7 +82,20 @@ class SavingsApiRequest extends ApiRequestWithParams {
     }
 }
 
+class ProductionApiRequest extends ApiRequestWithParams { 
+    
+    endpoint = 'production';
+    searchParams = {};
+
+    constructor( searchParams: ProductionSearchParamsType ) {
+        super();
+        this.searchParams = searchParams;
+    }
+}
+
 export { 
     ReservoirsApiRequest,
+    FactoriesApiRequest,
     SavingsApiRequest, 
+    ProductionApiRequest,
 };

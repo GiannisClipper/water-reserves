@@ -2,9 +2,9 @@
 
 import { Left, Right } from "@/components/Generics";
 import { ChartLineIcon, ChartAreaIcon, ChartBarIcon, LinkIcon, ScreenIcon, DownloadIcon } from "@/components/Icons";
-import BrowserUrl from "@/helpers/url/BrowserUrl";
+
 import { downloadChart } from "@/logic/download";
-import type { RequestResultType } from "@/types/requestResult";
+import BrowserUrl from "@/helpers/url/BrowserUrl";
 
 import "@/styles/label.css"
 

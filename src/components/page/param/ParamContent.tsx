@@ -89,7 +89,7 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
                     onChange={ setTimeAggregation }
                 />
                 <FieldValueAggregation
-                    values={ [ '', 'avg' ] }
+                    values={ paramHandler.getValueAggregationOptions( params.timeAggregation ) }
                     value={ params.valueAggregation }
                     onChange={ setValueAggregation }
                 />

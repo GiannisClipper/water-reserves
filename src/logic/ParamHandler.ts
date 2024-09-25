@@ -1,5 +1,6 @@
 import ParamValues from './ParamValues';
 import SavingsParamValues from './ParamValues/SavingsParamValues';
+import ProductionParamValues from './ParamValues/ProductionParamValues';
 
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
@@ -61,6 +62,8 @@ abstract class ParamHandler {
     abstract get itemsLabel(): string;
     abstract get itemsFilterKey(): string;
     abstract get itemsAggregationKey(): string;
+
+    abstract getValueAggregationOptions( timeAggregation: string ): string[];
 }
 
 class SavingsParamHandler extends ParamHandler {
@@ -87,20 +90,71 @@ class SavingsParamHandler extends ParamHandler {
     get itemsLabel(): string { return 'Ταμιευτήρες'; }
     get itemsFilterKey(): string { return 'reservoirFilter'; }
     get itemsAggregationKey(): string { return 'reservoirAggregation'; }
+
+    getValueAggregationOptions( timeAggregation: string ): string[] {
+        return timeAggregation
+            ? [ 'avg' ]
+            : [ '' ];
+    };
+}
+
+class ProductionParamHandler extends ParamHandler {
+
+    static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
+
+        return {
+            ...super.getStateSetters( { params, setParams } ),
+
+            setItemsAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+                setParams( { ...params, factoryAggregation: e.target.value } )
+            },
+    
+            setItemsFilter: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+                const { factoryFilter } = params;
+                factoryFilter[ e.target.name ] = e.target.checked;
+                setParams( { ...params, factoryFilter } );
+            },
+        }
+    }
+
+    public Class = ProductionParamHandler;
+
+    get itemsLabel(): string { return 'Μονάδες επεξεργασίας'; }
+    get itemsFilterKey(): string { return 'factoryFilter'; }
+    get itemsAggregationKey(): string { return 'factoryAggregation'; }
+
+    getValueAggregationOptions( timeAggregation: string ): string[] {
+        return timeAggregation
+            ? [ 'avg', 'sum' ]
+            : [ '' ];
+    };
 }
 
 class ParamHandlerFactory {
 
-    private _paramHandler: ParamHandler;
+    private _paramHandler: ParamHandler | undefined;
 
     constructor( endpoint: string, searchParams: SearchParamsType, items: ObjectType[] ) {
-    // if ( endpoint === 'savings' ) {
-        const paramValues: SavingsParamValues = new SavingsParamValues( searchParams, items || []  );
-        this._paramHandler = new SavingsParamHandler( paramValues );
-    // }
+
+        switch ( endpoint ) {
+
+            case 'savings': {
+                const paramValues: SavingsParamValues = new SavingsParamValues( searchParams, items || []  );
+                this._paramHandler = new SavingsParamHandler( paramValues );
+                break;
+            } 
+            case 'production': {
+                const paramValues: ProductionParamValues = new ProductionParamValues( searchParams, items || []  );
+                this._paramHandler = new ProductionParamHandler( paramValues );
+                break;
+            }
+
+            default:
+                throw `Invalid endpoint (${endpoint}) used in ParamHandlerFactory`;
+        }
     }
 
-    get paramHandler(): ParamHandler {
+    get paramHandler(): ParamHandler | undefined {
         return this._paramHandler;
     }
 }

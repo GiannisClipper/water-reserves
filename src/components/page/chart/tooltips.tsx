@@ -1,6 +1,7 @@
-import type { ObjectType } from '@/types';
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
+
+import type { ObjectType } from '@/types';
 
 type SingleTooltipPropsType = {
     active?: boolean
@@ -16,7 +17,7 @@ const SingleTooltip = ( { active, payload }: SingleTooltipPropsType ) => {
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
-                <p>{ `Αποθέματα: ${withCommas( value )}` } m<sup>3</sup></p>
+                <p>{ `Ποσότητα: ${withCommas( value )}` } m<sup>3</sup></p>
                 <p>{ `Διαφορά: ${withCommas( difference )} (${withPlusSign( percentage )}%)` }</p>
             </div>
       );

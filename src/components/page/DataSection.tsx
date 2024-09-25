@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 
-import type { SearchParamsType } from "@/types/searchParams";
-
 import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/page/Skeleton";
 import Error from "@/components/page/Error";
 import ChartSection from "./chart/ChartSection";
 import ListSection from "./list/ListSection";
+
 import { DataRequestHandler } from "@/logic/DataRequestHandler";
+
+import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = { 
     endpoint: string
@@ -21,7 +22,7 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
     console.log( "rendering: DataSection..." );
 
     return ( 
-        
+
         ! error && ! result
         ?
         <div className="DataSection">
