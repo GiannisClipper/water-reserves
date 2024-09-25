@@ -20,10 +20,10 @@ import "@/styles/chart.css";
 type PropsType = { 
     dataHandler: SingleDataHandler
     chartType: string | undefined
-    chartLabels: ObjectType
+    chartTexts: ObjectType
 }
 
-const ChartContent = ( { dataHandler, chartType, chartLabels }: PropsType ) => {
+const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
 
     const chartHandler = new ChartHandler( dataHandler.data );
 
@@ -36,7 +36,7 @@ const ChartContent = ( { dataHandler, chartType, chartLabels }: PropsType ) => {
             ?
             <BarChartComposition
                 chartHandler={ chartHandler }
-                labels={ chartLabels }
+                labels={ chartTexts }
                 color={ chartHandler.color }
             />
 
@@ -45,14 +45,14 @@ const ChartContent = ( { dataHandler, chartType, chartLabels }: PropsType ) => {
             ?
             <AreaChartComposition
                 chartHandler={ chartHandler }
-                labels={ chartLabels }
+                labels={ chartTexts }
                 color={ chartHandler.color }
             />
 
             :
             <LineChartComposition
                 chartHandler={ chartHandler }
-                labels={ chartLabels }
+                labels={ chartTexts }
                 color={ chartHandler.color }
             />
             }

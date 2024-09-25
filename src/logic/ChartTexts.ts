@@ -1,7 +1,7 @@
 import { ObjectType } from '@/types';
 import ParamValues from '@/logic/ParamValues';
 
-abstract class ChartLabels {    
+abstract class ChartTexts {    
 
     abstract _title: string;
 
@@ -13,13 +13,13 @@ abstract class ChartLabels {
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
 
-        const timeRepr = {
+        const timeRepr: ObjectType = {
             month: 'ανά μήνα',
             year: 'ανά έτος',
             custom_year: 'ανά υδρολογικό έτος',
         };
 
-        const valueRepr = {
+        const valueRepr: ObjectType = {
             avg: 'Μέση ημερήσια ποσότητα',
             sum: 'Συνολική ποσότητα',
         };
@@ -40,7 +40,7 @@ abstract class ChartLabels {
     
 }
 
-class SavingsChartLabels extends ChartLabels {
+class SavingsChartTexts extends ChartTexts {
 
     _title: string;
 
@@ -58,7 +58,7 @@ class SavingsChartLabels extends ChartLabels {
     }
 }
 
-class ProductionChartLabels extends ChartLabels {
+class ProductionChartTexts extends ChartTexts {
 
     _title: string;
 
@@ -76,7 +76,7 @@ class ProductionChartLabels extends ChartLabels {
     }
 }
 
-class PrecipitationChartLabels extends ChartLabels {
+class PrecipitationChartTexts extends ChartTexts {
 
     _title: string;
 
@@ -92,14 +92,7 @@ class PrecipitationChartLabels extends ChartLabels {
 
         this._yLabel += ' (mm)'
     }
-
-    // toJSON(): ObjectType {
-    //     return {
-    //         ...super.toJSON(),
-    //         title: this._title
-    //     }
-    // }    
 }
 
 
-export { SavingsChartLabels, ProductionChartLabels, PrecipitationChartLabels };
+export { SavingsChartTexts, ProductionChartTexts, PrecipitationChartTexts };

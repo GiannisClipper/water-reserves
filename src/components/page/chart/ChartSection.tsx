@@ -7,7 +7,7 @@ import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 
 import { makeDataHandler } from "@/logic/DataHandler";
-import { SavingsChartLabels, ProductionChartLabels, PrecipitationChartLabels } from "@/logic/ChartLabels";
+import { SavingsChartTexts, ProductionChartTexts, PrecipitationChartTexts } from "@/logic/ChartTexts";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
 import type { SearchParamsType } from "@/types/searchParams";
@@ -30,20 +30,20 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         ? SingleChartContent
         : StackChartContent;
 
-    let chartLabels: ObjectType;
+    let chartTexts: ObjectType;
 
     switch ( endpoint ) {
 
         case 'savings': {
-            chartLabels = new SavingsChartLabels( searchParams ).toJSON();
+            chartTexts = new SavingsChartTexts( searchParams ).toJSON();
             break;
         } 
         case 'production': {
-            chartLabels = new ProductionChartLabels( searchParams ).toJSON();
+            chartTexts = new ProductionChartTexts( searchParams ).toJSON();
             break;
         }
         case 'precipitation': {
-            chartLabels = new PrecipitationChartLabels( searchParams ).toJSON();
+            chartTexts = new PrecipitationChartTexts( searchParams ).toJSON();
             break;
         }
         default:
@@ -72,7 +72,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
             <ChartContent 
                 dataHandler={ dataHandler }
                 chartType={ chartType }
-                chartLabels={ chartLabels }
+                chartTexts={ chartTexts }
             />
         </div>
     );
