@@ -12,7 +12,7 @@ import {
 } from "@/components/Field";
 
 import { ParamHandler, ParamHandlerFactory } from "@/logic/ParamHandler";
-import useSearchData from "@/logic/useSearchData";
+import usePageRequest from "@/logic/usePageRequest";
 
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
@@ -24,12 +24,12 @@ import "@/styles/field.css";
 type PropsType = {
     endpoint: string
     searchParams: SearchParamsType
-    onSearch: boolean
+    onPageRequest: boolean
     items: ObjectType[]
     error: RequestErrorType | null
 }
 
-const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) => {
+const ParamContent = ( { endpoint, searchParams, onPageRequest, items }: PropsType ) => {
 
     const paramHandler: ParamHandler = new ParamHandlerFactory( endpoint, searchParams, items ).paramHandler;
 
@@ -46,9 +46,9 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
     const setMore = () => setShowMore( true );
     const setLess = () => setShowMore( false );
 
-    console.log( "rendering: ParamContent...", params )
+    console.log( "rendering: ParamContent..." );
 
-    useSearchData( { onSearch, params, paramHandler } );
+    usePageRequest( { onPageRequest, params, paramHandler } );
 
     return (
         <Form className="ParamContent">

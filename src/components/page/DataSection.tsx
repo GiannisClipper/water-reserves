@@ -16,9 +16,13 @@ type PropsType = {
 
 const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
-    const apiRequest: ApiRequest = new ApiRequestFactory( endpoint, searchParams ).apiRequest;
-    const { error, result } = ( await apiRequest.request() ).toJSON();
-    
+    let error = null, result = null;
+
+    if ( Object.keys( searchParams ).length ) {
+        const apiRequest: ApiRequest = new ApiRequestFactory( endpoint, searchParams ).apiRequest;
+        ( { error, result } = ( await apiRequest.request() ).toJSON() );
+    }
+
     console.log( "rendering: DataSection..." );
 
     return ( 

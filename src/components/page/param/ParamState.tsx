@@ -17,7 +17,7 @@ type PropsType = {
 
 const ParamState = ( { endpoint, searchParams, error, items }: PropsType ) => {
 
-    const [ onSearch, setOnSearch ] = useState<boolean>( false );
+    const [ onPageRequest, setOnPageRequest ] = useState<boolean>( false );
 
     console.log( "rendering: ParamState..." )
 
@@ -25,14 +25,14 @@ const ParamState = ( { endpoint, searchParams, error, items }: PropsType ) => {
         <div className="ParamState">
             <ParamLabel 
                 searchParams={ searchParams } 
-                setOnSearch={ setOnSearch }
+                setOnPageRequest={ setOnPageRequest }
             />
             <ParamContent
                 endpoint={ endpoint }
                 searchParams={ searchParams }
                 items={ items }
                 error={ error }
-                onSearch={ onSearch }
+                onPageRequest={ onPageRequest }
             />
         </div>
     );

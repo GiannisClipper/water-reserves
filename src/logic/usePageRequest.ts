@@ -7,16 +7,16 @@ import type { ObjectType } from "@/types";
 import type { ChartType } from "@/types/searchParams";
 
 type PropsType = {
-    onSearch: boolean
+    onPageRequest: boolean
     params: ObjectType
     paramHandler: ParamHandler
 }
 
-const useSearchData = ( { onSearch, params, paramHandler }: PropsType ) => {
+const usePageRequest = ( { onPageRequest, params, paramHandler }: PropsType ) => {
 
     return useEffect( () => {
 
-        if ( onSearch ) {
+        if ( onPageRequest ) {
 
             const url: BrowserUrl = new BrowserUrl( window );
 
@@ -36,7 +36,7 @@ const useSearchData = ( { onSearch, params, paramHandler }: PropsType ) => {
             url.open();
         }
 
-    }, [ onSearch ] );
+    }, [ onPageRequest ] );
 }
 
-export default useSearchData;
+export default usePageRequest;

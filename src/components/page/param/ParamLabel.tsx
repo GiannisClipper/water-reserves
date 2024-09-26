@@ -9,10 +9,10 @@ import "@/styles/label.css"
 
 type PropsType = { 
     searchParams: SearchParamsType
-    setOnSearch: CallableFunction 
+    setOnPageRequest: CallableFunction 
 }
 
-export default function ParamLabel( { searchParams, setOnSearch }: PropsType ) {
+export default function ParamLabel( { searchParams, setOnPageRequest }: PropsType ) {
 
     console.log( "rendering: ParamLabel..." )
 
@@ -23,7 +23,7 @@ export default function ParamLabel( { searchParams, setOnSearch }: PropsType ) {
             </Left>
             <Right>
                 <SearchIcon 
-                    onClick={ () => setOnSearch( true ) } 
+                    onClick={ () => setOnPageRequest( true ) } 
                     className="icon" 
                     title="Αναζήτηση-επεξεργασία δεδομένων" 
                 />

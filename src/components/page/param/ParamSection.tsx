@@ -21,7 +21,7 @@ const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
     const apiRequest: ApiRequest = new ApiRequestFactory( endpoints[ endpoint ] ).apiRequest;
     const { error, result } = ( await apiRequest.request() ).toJSON();
 
-    console.log( "rendering: ParamSection...", result, error )
+    console.log( "rendering: ParamSection..." )
 
     return (
         <div className="ParamSection">
