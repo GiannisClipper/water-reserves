@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { Form, FormSection, FormButtonMore, FormButtonLess } from "@/components/Form";
 
@@ -12,10 +12,10 @@ import {
 } from "@/components/Field";
 
 import { ParamHandler, ParamHandlerFactory } from "@/logic/ParamHandler";
-import BrowserUrl from "@/helpers/url/BrowserUrl";
+import useSearchData from "@/logic/useSearchData";
 
 import type { ObjectType } from "@/types";
-import type { ChartType, SearchParamsType } from "@/types/searchParams";
+import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType } from "@/types/requestResult";
 
 import "@/styles/form.css";
@@ -48,29 +48,7 @@ const ParamContent = ( { endpoint, searchParams, onSearch, items }: PropsType ) 
 
     console.log( "rendering: ParamContent...", params )
 
-    useEffect( () => {
-
-        if ( onSearch ) {
-
-            const url: BrowserUrl = new BrowserUrl( window );
-
-            // update chartType from url
-            const chartType: string | undefined = url.getParam( 'chart_type' );
-            if ( chartType ) {
-                params.chartType = chartType as ChartType;
-            }
-
-            // convert form params to query string
-            const queryString: string = paramHandler.paramValues
-                .fromJSON( params )
-                .toQueryString();
-
-            // update browser url and request page
-            url.setParams( queryString.split( '&' ) );
-            url.open();
-        }
-
-    }, [ onSearch ] );
+    useSearchData( { onSearch, params, paramHandler } );
 
     return (
         <Form className="ParamContent">

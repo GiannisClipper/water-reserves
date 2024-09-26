@@ -171,7 +171,7 @@ class WeatherParamHandler extends ParamHandler {
 
 class ParamHandlerFactory {
 
-    private _paramHandler: ParamHandler | undefined;
+    private _paramHandler: ParamHandler;
 
     constructor( endpoint: string, searchParams: SearchParamsType, items: ObjectType[] ) {
 
@@ -198,7 +198,7 @@ class ParamHandlerFactory {
         }
     }
 
-    get paramHandler(): ParamHandler | undefined {
+    get paramHandler(): ParamHandler {
         return this._paramHandler;
     }
 }
