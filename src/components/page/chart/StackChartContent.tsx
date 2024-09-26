@@ -33,10 +33,10 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
 
     const colorArray: string[] = [ 
-        chartHandler.color[ 600 ], 
-        chartHandler.color[ 500 ], 
-        chartHandler.color[ 400 ], 
-        chartHandler.color[ 300 ] ]
+        chartTexts.color[ 600 ], 
+        chartTexts.color[ 500 ], 
+        chartTexts.color[ 400 ], 
+        chartTexts.color[ 300 ] ]
     ;
 
     console.log( "rendering: ChartContent..." ) 
@@ -275,7 +275,8 @@ const BarChartComposition = ( { chartHandler, labels, colorArray, items, texts }
                 />
 
                 <Tooltip 
-                    cursor={{ fill: '#0369a1' }}
+                    // cursor={{ fill: '#0369a1' }}
+                    cursor={{ fill: '#eee' }}
                     content={ 
                         <StackTooltip 
                             items={ items } 

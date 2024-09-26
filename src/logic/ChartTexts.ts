@@ -1,5 +1,7 @@
 import ParamValues from '@/logic/ParamValues';
 
+import { SKY, GREEN, RED, YELLOW, INDIGO, CYAN } from '@/helpers/colors';
+
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
 
@@ -9,6 +11,7 @@ abstract class ChartTexts {
 
     abstract _title: string;
     abstract _unit: UnitType;
+    abstract _color: ObjectType;
 
     _xLabel: string = '';
     _yLabel: string = '';
@@ -40,7 +43,8 @@ abstract class ChartTexts {
             xLabel: this._xLabel, 
             yLabel: this._yLabel,
             title: this._title,
-            unit: this._unit
+            unit: this._unit,
+            color: this._color,
         }
     }
     
@@ -50,6 +54,7 @@ class SavingsChartTexts extends ChartTexts {
 
     _title: string;
     _unit: UnitType;
+    _color: ObjectType;
 
     constructor( searchParams: ObjectType ) {
 
@@ -62,6 +67,7 @@ class SavingsChartTexts extends ChartTexts {
         );
 
         this._unit = 'm3';
+        this._color = SKY;
         this._yLabel += ' (κυβ.μέτρα)';
     }
 }
@@ -70,6 +76,7 @@ class ProductionChartTexts extends ChartTexts {
 
     _title: string;
     _unit: UnitType;
+    _color: ObjectType;
 
     constructor( searchParams: ObjectType ) {
 
@@ -82,6 +89,7 @@ class ProductionChartTexts extends ChartTexts {
         );
 
         this._unit = 'm3';
+        this._color = INDIGO;
         this._yLabel += ' (κυβ.μέτρα)';
     }
 }
@@ -90,6 +98,7 @@ class PrecipitationChartTexts extends ChartTexts {
 
     _title: string;
     _unit: UnitType;
+    _color: ObjectType;
 
     constructor( searchParams: ObjectType ) {
 
@@ -102,6 +111,7 @@ class PrecipitationChartTexts extends ChartTexts {
         );
 
         this._unit = 'mm';
+        this._color = CYAN;
         this._yLabel += ' (mm)';
     }
 }

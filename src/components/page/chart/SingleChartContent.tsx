@@ -37,7 +37,6 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
             <BarChartComposition
                 chartHandler={ chartHandler }
                 texts={ chartTexts }
-                color={ chartHandler.color }
             />
 
             :
@@ -46,14 +45,12 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
             <AreaChartComposition
                 chartHandler={ chartHandler }
                 texts={ chartTexts }
-                color={ chartHandler.color }
             />
 
             :
             <LineChartComposition
                 chartHandler={ chartHandler }
                 texts={ chartTexts }
-                color={ chartHandler.color }
             />
             }
         </div>
@@ -63,7 +60,6 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
     texts: ObjectType
-    color: ObjectType
 }
 
 const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType ) => {
@@ -107,7 +103,7 @@ const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                 <Line 
                     dataKey="value"
                     type={ chartHandler.lineType } 
-                    stroke={ chartHandler.color[ 500 ] } 
+                    stroke={ texts.color[ 500 ] } 
                     strokeWidth={ 2 } 
                     dot={ false }
                 />
@@ -157,8 +153,8 @@ const AreaChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                 <Area 
                     dataKey="value"
                     type={ chartHandler.lineType } 
-                    stroke={ chartHandler.color[ 400 ] } 
-                    fill={ chartHandler.color[ 300 ] } 
+                    stroke={ texts.color[ 400 ] } 
+                    fill={ texts.color[ 300 ] } 
                 />
             </AreaChart>
         </ResponsiveContainer>
@@ -199,7 +195,8 @@ const BarChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType
                 />
 
                 <Tooltip 
-                    cursor={{ fill: '#0369a1' }}
+                    // cursor={{ fill: '#0369a1' }}
+                    cursor={{ fill: '#eee' }}
                     content={ <SingleTooltip 
                         texts={ texts }
                     /> } 
@@ -207,8 +204,8 @@ const BarChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType
 
                 <Bar 
                     dataKey="value" 
-                    stroke={ chartHandler.color[ 400 ] } 
-                    fill={ chartHandler.color[ 300 ] } 
+                    stroke={ texts.color[ 400 ] } 
+                    fill={ texts.color[ 300 ] } 
                 />
             </BarChart>
         </ResponsiveContainer>
