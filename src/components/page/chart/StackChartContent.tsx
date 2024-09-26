@@ -51,6 +51,7 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
                 labels={ chartTexts }
                 colorArray={ colorArray }
                 items={ items }
+                texts={ chartTexts }
             />
 
             :
@@ -61,6 +62,7 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
                 labels={ chartTexts }
                 colorArray={ colorArray }
                 items={ items }
+                texts={ chartTexts }
             />
 
             :
@@ -69,6 +71,7 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
                 labels={ chartTexts }
                 colorArray={ colorArray }
                 items={ items }
+                texts={ chartTexts }
             />
             }
                 
@@ -81,9 +84,10 @@ type ChartCompositionPropsType = {
     labels: ObjectType
     colorArray: string[]
     items: ObjectType[]
+    texts: ObjectType
 }
 
-const LineChartComposition = ( { chartHandler, labels, colorArray, items }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { chartHandler, labels, colorArray, items, texts }: ChartCompositionPropsType ) => {
 
     const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
 
@@ -124,6 +128,7 @@ const LineChartComposition = ( { chartHandler, labels, colorArray, items }: Char
                         <StackTooltip 
                             items={ items } 
                             makeItemsRepr={ makeItemsOrderedRepr }
+                            texts={ texts }
                         /> 
                     } 
                 />
@@ -167,7 +172,7 @@ const LineChartComposition = ( { chartHandler, labels, colorArray, items }: Char
     );
 }
 
-const AreaChartComposition = ( { chartHandler, labels, colorArray, items }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { chartHandler, labels, colorArray, items, texts }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -205,6 +210,7 @@ const AreaChartComposition = ( { chartHandler, labels, colorArray, items }: Char
                         <StackTooltip 
                             items={ items } 
                             makeItemsRepr={ makeItemsRepr }
+                            texts={ texts }
                         /> 
                     } 
                 />
@@ -235,7 +241,7 @@ const AreaChartComposition = ( { chartHandler, labels, colorArray, items }: Char
     );
 }
 
-const BarChartComposition = ( { chartHandler, labels, colorArray, items }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { chartHandler, labels, colorArray, items, texts }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -274,6 +280,7 @@ const BarChartComposition = ( { chartHandler, labels, colorArray, items }: Chart
                         <StackTooltip 
                             items={ items } 
                             makeItemsRepr={ makeItemsRepr }
+                            texts={ texts }
                         /> 
                     } 
                 />

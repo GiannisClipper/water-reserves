@@ -3,9 +3,12 @@ import ParamValues from '@/logic/ParamValues';
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
 
+type UnitType = 'm3' | 'mm';
+
 abstract class ChartTexts {    
 
     abstract _title: string;
+    abstract _unit: UnitType;
 
     _xLabel: string = '';
     _yLabel: string = '';
@@ -36,7 +39,8 @@ abstract class ChartTexts {
         return {
             xLabel: this._xLabel, 
             yLabel: this._yLabel,
-            title: this._title
+            title: this._title,
+            unit: this._unit
         }
     }
     
@@ -45,6 +49,7 @@ abstract class ChartTexts {
 class SavingsChartTexts extends ChartTexts {
 
     _title: string;
+    _unit: UnitType;
 
     constructor( searchParams: ObjectType ) {
 
@@ -56,13 +61,15 @@ class SavingsChartTexts extends ChartTexts {
                 : '(ανά ταμιευτήρα)'
         );
 
-        this._yLabel += ' (κυβ.μέτρα)'
+        this._unit = 'm3';
+        this._yLabel += ' (κυβ.μέτρα)';
     }
 }
 
 class ProductionChartTexts extends ChartTexts {
 
     _title: string;
+    _unit: UnitType;
 
     constructor( searchParams: ObjectType ) {
 
@@ -74,13 +81,15 @@ class ProductionChartTexts extends ChartTexts {
                 : '(ανά μονάδα επεξεργασίας)'
         );
 
-        this._yLabel += ' (κυβ.μέτρα)'
+        this._unit = 'm3';
+        this._yLabel += ' (κυβ.μέτρα)';
     }
 }
 
 class PrecipitationChartTexts extends ChartTexts {
 
     _title: string;
+    _unit: UnitType;
 
     constructor( searchParams: ObjectType ) {
 
@@ -92,7 +101,8 @@ class PrecipitationChartTexts extends ChartTexts {
                 : '(ανά τοποθεσία)'
         );
 
-        this._yLabel += ' (mm)'
+        this._unit = 'mm';
+        this._yLabel += ' (mm)';
     }
 }
 
@@ -125,5 +135,7 @@ class ChartTextsFactory {
         return this._chartTexts;
     }
 }
+
+export type { UnitType };
 
 export { ChartTextsFactory };

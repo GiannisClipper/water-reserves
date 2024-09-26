@@ -36,7 +36,7 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
             ?
             <BarChartComposition
                 chartHandler={ chartHandler }
-                labels={ chartTexts }
+                texts={ chartTexts }
                 color={ chartHandler.color }
             />
 
@@ -45,14 +45,14 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
             ?
             <AreaChartComposition
                 chartHandler={ chartHandler }
-                labels={ chartTexts }
+                texts={ chartTexts }
                 color={ chartHandler.color }
             />
 
             :
             <LineChartComposition
                 chartHandler={ chartHandler }
-                labels={ chartTexts }
+                texts={ chartTexts }
                 color={ chartHandler.color }
             />
             }
@@ -62,11 +62,11 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
 
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
-    labels: ObjectType
+    texts: ObjectType
     color: ObjectType
 }
 
-const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -75,7 +75,7 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<TopTitle title={ labels.title } />}
+                    component={<TopTitle title={ texts.title } />}
                 />
                 
                 <CartesianGrid 
@@ -87,7 +87,7 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> }
-                    label={ <XAxisLabel label={ labels.xLabel } /> }
+                    label={ <XAxisLabel label={ texts.xLabel } /> }
                 />
 
                 <YAxis 
@@ -95,11 +95,13 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                     ticks={ chartHandler.yTicks }
                     interval={ 0 } 
                     tick={ <YAxisTick data={ chartHandler.data } /> }
-                    label={ <YAxisLabel label={ labels.yLabel } /> }
+                    label={ <YAxisLabel label={ texts.yLabel } /> }
                 />
 
                 <Tooltip 
-                    content={ <SingleTooltip /> } 
+                    content={ <SingleTooltip 
+                        texts={ texts }
+                    /> } 
                 />
 
                 <Line 
@@ -114,7 +116,7 @@ const LineChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
     );
 }
 
-const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -123,7 +125,7 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<TopTitle title={ labels.title } />}
+                    component={<TopTitle title={ texts.title } />}
                 />
 
                 <CartesianGrid 
@@ -135,7 +137,7 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
-                    label={ <XAxisLabel label={ labels.xLabel } /> }
+                    label={ <XAxisLabel label={ texts.xLabel } /> }
                 />
 
                 <YAxis 
@@ -143,11 +145,13 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
                     ticks={ chartHandler.yTicks }
                     interval={ 0 } 
                     tick={ <YAxisTick data={ chartHandler.data } /> }
-                    label={ <YAxisLabel label={ labels.yLabel } /> }
+                    label={ <YAxisLabel label={ texts.yLabel } /> }
                 />
 
                 <Tooltip 
-                    content={ <SingleTooltip /> } 
+                    content={ <SingleTooltip 
+                        texts={ texts }
+                    /> } 
                 />
 
                 <Area 
@@ -161,7 +165,7 @@ const AreaChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTy
     );
 }
 
-const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -170,7 +174,7 @@ const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTyp
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<TopTitle title={ labels.title } />}
+                    component={<TopTitle title={ texts.title } />}
                 />
 
                 <CartesianGrid 
@@ -183,7 +187,7 @@ const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTyp
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
-                    label={ <XAxisLabel label={ labels.xLabel } /> }
+                    label={ <XAxisLabel label={ texts.xLabel } /> }
                 />
 
                 <YAxis 
@@ -191,12 +195,14 @@ const BarChartComposition = ( { chartHandler, labels }: ChartCompositionPropsTyp
                     ticks={ chartHandler.yTicks }
                     interval={ 0 } 
                     tick={ <YAxisTick data={ chartHandler.data } /> }
-                    label={ <YAxisLabel label={ labels.yLabel } /> }
+                    label={ <YAxisLabel label={ texts.yLabel } /> }
                 />
 
                 <Tooltip 
                     cursor={{ fill: '#0369a1' }}
-                    content={ <SingleTooltip /> } 
+                    content={ <SingleTooltip 
+                        texts={ texts }
+                    /> } 
                 />
 
                 <Bar 
