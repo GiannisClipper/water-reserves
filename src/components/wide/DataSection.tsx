@@ -1,8 +1,10 @@
-import type { SearchParamsType } from "@/types/searchParams";
 import { ChartSectionSkeleton } from "@/components/page/Skeleton";
 import Error from "@/components/page/Error";
 import ChartSection from "./chart/ChartSection";
-import { DataRequestHandler } from "@/logic/DataRequestHandler";
+
+import { ApiRequest, ApiRequestFactory } from "@/logic/ApiRequest";
+
+import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = { 
     endpoint: string
@@ -13,8 +15,8 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 2000 ) )
 
-    const requestHandler = await new DataRequestHandler( endpoint, searchParams );
-    const { error, result } = requestHandler.toJSON();
+    const apiRequest: ApiRequest = new ApiRequestFactory( endpoint, searchParams ).apiRequest;
+    const { error, result } = ( await apiRequest.request() ).toJSON();
 
     console.log( "rendering: DataSection..." );
 

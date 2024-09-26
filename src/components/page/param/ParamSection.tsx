@@ -1,8 +1,9 @@
 import ParamState from "./ParamState";
 
-import { ParamRequestHandler } from "@/logic/ParamRequestHandler";
+import { ApiRequest, ApiRequestFactory } from "@/logic/ApiRequest";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 type PropsType = {
     endpoint: string
@@ -11,10 +12,16 @@ type PropsType = {
 
 const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
 
-    console.log( "rendering: ParamSection..." )
+    const endpoints: ObjectType = {
+        'savings': 'reservoirs',
+        'production': 'factories',
+        'precipitation': 'locations',
+    };
 
-    const requestHandler = await new ParamRequestHandler( endpoint );
-    const { error, items } = requestHandler.toJSON();
+    const apiRequest: ApiRequest = new ApiRequestFactory( endpoints[ endpoint ] ).apiRequest;
+    const { error, result } = ( await apiRequest.request() ).toJSON();
+
+    console.log( "rendering: ParamSection...", result, error )
 
     return (
         <div className="ParamSection">
@@ -22,7 +29,7 @@ const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
                 endpoint={ endpoint }
                 searchParams={ searchParams } 
                 error={ error }
-                items={ items }
+                items={ result }
             />
         </div>
     );

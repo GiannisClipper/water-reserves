@@ -1,12 +1,6 @@
-import type { 
-    ViewType, ChartType,
-    SearchParamsType, 
-} from "@/types/searchParams";
+import type { ChartType, SearchParamsType } from "@/types/searchParams";
 
-import type {
-    ParamValuesType, 
-} from "@/types/paramValues";
-import { ObjectType } from "@/types";
+import type { ObjectType } from "@/types";
 
 
 class ParamValues {

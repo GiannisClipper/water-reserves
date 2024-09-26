@@ -1,5 +1,9 @@
 import { NEXT_PUBLIC_REST_API_BASE_URL } from '@/app/settings';
-import { RequestErrorType } from '@/types/requestResult';
+import ObjectList from '@/helpers/objects/ObjectList';
+import { ParamValidation } from "@/logic/ParamValidation";
+
+import type { ObjectType } from '@/types';
+import { RequestErrorType, RequestResultType } from '@/types/requestResult';
 
 import type { 
     SearchParamsType,
@@ -11,6 +15,8 @@ import type {
 abstract class ApiRequest {    
 
     abstract endpoint: string;
+    _error: RequestErrorType | null = null;
+    _result: RequestResultType | null = null;
 
     constructor() {};
 
@@ -18,36 +24,53 @@ abstract class ApiRequest {
         return `${NEXT_PUBLIC_REST_API_BASE_URL}/${this.endpoint}`;
     }
 
-    public async request(): Promise<[ RequestErrorType | null, any | null ]> {
+    public async request() { // Promise<[ RequestErrorType | null, RequestResultType | null ]> {
 
         console.log( this.url );
         const response = await fetch( this.url );
         // console.log( response.status, response.statusText )
         const result: any = await response.json();
-        // console.log( result )
 
         if ( response.status !== 200 ) {
-            const error: RequestErrorType = {
+            this._error = {
                 statusCode: response.status,
                 statusText: response.statusText,
                 message: result.detail
             }
-            return [ error, null ];
+            return this;
         }
 
-        return [ null, result ];
+        this._result = result;
+        return this;
+    }
+
+    get error(): RequestErrorType | null {
+        return this._error;
+    } 
+
+    get result(): RequestResultType | null {
+        return this._result;
+    }
+
+    toJSON(): ObjectType {
+        return {
+            url: this.url,
+            error: this._error,
+            result: this._result,
+        }
     }
 }
 
 abstract class ApiRequestWithParams extends ApiRequest {    
 
-    abstract searchParams: { [ key: string ]: any };
+    searchParams: ObjectType;
 
-    constructor() {
+    constructor( searchParams: SearchParamsType ) {
         super();
-    };
+        this.searchParams = searchParams;
+    }
 
-    get urlParams(): string {
+    private get urlParams(): string {
         return Object
             .entries( this.searchParams )
             .map( entry => `${entry[ 0 ]}=${entry[ 1 ]}` ).join( '&' );
@@ -56,6 +79,16 @@ abstract class ApiRequestWithParams extends ApiRequest {
     public get url(): string {
         return `${NEXT_PUBLIC_REST_API_BASE_URL}/${this.endpoint}?${this.urlParams}`;
     }
+
+    public async request() {
+
+        this._error = new ParamValidation( this.searchParams ).validate();
+
+        if ( ! this._error ) {
+            return await super.request();
+        }
+        return this;
+    }
 }
 
 class ReservoirsApiRequest extends ApiRequest { 
@@ -63,6 +96,14 @@ class ReservoirsApiRequest extends ApiRequest {
     endpoint = 'reservoirs';
 
     constructor() { super(); }
+
+    public async request() {
+        await super.request();
+        if ( this._result ) {
+            this._result = new ObjectList( this._result as ObjectType[] ).sortBy( 'start', 'asc' );
+        }
+        return this;
+    }
 }
 
 class FactoriesApiRequest extends ApiRequest { 
@@ -70,6 +111,14 @@ class FactoriesApiRequest extends ApiRequest {
     endpoint = 'factories';
 
     constructor() { super(); }
+
+    public async request() {
+        await super.request();
+        if ( this._result ) {
+            this._result = new ObjectList( this._result as ObjectType[] ).sortBy( 'start', 'asc' );
+        }
+        return this;
+    }
 }
 
 class LocationsApiRequest extends ApiRequest { 
@@ -77,38 +126,40 @@ class LocationsApiRequest extends ApiRequest {
     endpoint = 'locations';
 
     constructor() { super(); }
+
+    public async request() {
+        await super.request();
+        if ( this._result ) {
+            this._result = new ObjectList( this._result as ObjectType[] ).sortBy( 'id', 'asc' );
+        }
+        return this;
+    }
 }
 
 class SavingsApiRequest extends ApiRequestWithParams { 
     
     endpoint = 'savings';
-    searchParams = {};
 
     constructor( searchParams: SavingsSearchParamsType ) {
-        super();
-        this.searchParams = searchParams;
+        super( searchParams );
     }
 }
 
 class ProductionApiRequest extends ApiRequestWithParams { 
     
     endpoint = 'production';
-    searchParams = {};
 
     constructor( searchParams: ProductionSearchParamsType ) {
-        super();
-        this.searchParams = searchParams;
+        super( searchParams );
     }
 }
 
 class WeatherApiRequest extends ApiRequestWithParams { 
     
     endpoint = 'weather';
-    searchParams = {};
 
     constructor( searchParams: WeatherSearchParamsType ) {
-        super();
-        this.searchParams = searchParams;
+        super( searchParams );
     }
 }
 
@@ -155,6 +206,8 @@ class ApiRequestFactory {
 }
 
 export { 
+    ApiRequest,
+    ApiRequestWithParams,
     ReservoirsApiRequest,
     FactoriesApiRequest,
     LocationsApiRequest,
