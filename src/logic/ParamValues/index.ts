@@ -11,7 +11,6 @@ import { ObjectType } from "@/types";
 
 class ParamValues {
 
-    _viewType: ViewType = 'overall';
     _chartType: ChartType = 'line';
 
     _fromDate: string = '';
@@ -25,7 +24,6 @@ class ParamValues {
 
     constructor( searchParams: SearchParamsType ) {
 
-        this.viewType = searchParams.view_type;
         this.chartType = searchParams.chart_type;
 
         this.convertTimeRange( searchParams.time_range );
@@ -35,10 +33,6 @@ class ParamValues {
         this.yearStart = searchParams.year_start;
 
         this.valueAggregation = searchParams.time_aggregation;
-    }
-
-    set viewType( val: ViewType | undefined ) {
-        this._viewType = val ? val : this._viewType;
     }
 
     set chartType( val: ChartType | undefined ) {
@@ -123,7 +117,6 @@ class ParamValues {
 
     fromJSON( values: ObjectType ): ParamValues {
 
-        this._viewType = values.viewType;
         this._chartType = values.chartType;
     
         this._fromDate = values.fromDate;
@@ -140,7 +133,6 @@ class ParamValues {
 
     toJSON(): ObjectType {
         return { 
-            viewType: this._viewType,
             chartType: this._chartType,
 
             fromDate: this._fromDate,
@@ -158,7 +150,6 @@ class ParamValues {
 
         const searchParams: SearchParamsType = {};
 
-        searchParams.view_type = this._viewType;
         searchParams.chart_type = this._chartType;
     
         if ( this._fromDate && this._toDate ) {

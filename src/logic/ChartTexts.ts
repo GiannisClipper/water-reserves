@@ -1,6 +1,6 @@
 import ParamValues from '@/logic/ParamValues';
 
-import { SKY, GREEN, RED, YELLOW, INDIGO, CYAN } from '@/helpers/colors';
+import { BLUE, SKY, TEAL, GREEN, RED, YELLOW, INDIGO, CYAN } from '@/helpers/colors';
 
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
@@ -89,7 +89,7 @@ class ProductionChartTexts extends ChartTexts {
         );
 
         this._unit = 'm3';
-        this._color = INDIGO;
+        this._color = TEAL;
         this._yLabel += ' (κυβ.μέτρα)';
     }
 }

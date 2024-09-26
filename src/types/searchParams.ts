@@ -4,7 +4,6 @@ type ChartType = 'line' | 'area' | 'bar';
 
 interface SearchParamsType {
 
-    view_type?: ViewType
     chart_type?: ChartType
 
     time_range?: string

@@ -2,7 +2,6 @@ import type { ViewType, ChartType } from "@/types/searchParams";
 
 interface ParamValuesType {
 
-    viewType: ViewType
     chartType: ChartType
 
     fromDate: string
