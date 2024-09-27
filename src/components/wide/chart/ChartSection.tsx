@@ -1,7 +1,7 @@
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
-import { makeDataHandler } from "@/logic/DataHandler";
+import { DataHandlerFactory } from "@/logic/DataHandler";
 import { ChartTextsFactory } from "@/logic/ChartTexts";
 
 import type { ObjectType } from "@/types";
@@ -16,12 +16,7 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    let dataHandler: any
-    if ( endpoint !== 'savings-production' ) {
-        dataHandler = makeDataHandler( { endpoint, searchParams, result } );
-    } else {
-        dataHandler = makeDataHandler( { endpoint, searchParams, result, valueKeys: [ 'savings', 'production' ] } );
-    }
+    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } ).dataHandler;
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,

@@ -240,13 +240,6 @@ class MultiDataHandler extends DataHandler {
         
         // parse data
 
-        // console.log( 'result', result );
-        // the result structure:
-        // [
-        //     { data: [ {}, {} ], headers: [ '', '' ], legend: null },
-        //     { data: [ {}, {} ], headers: [ '', '' ], legend: null }
-        // ]
-
         const timeObj: ObjectType = {};
 
         for ( const valueKey of this._valueKeys ) {
@@ -288,59 +281,64 @@ type PropsType = {
     valueKeys?: string[]
 }
 
-const makeDataHandler = ( { endpoint, searchParams, result, valueKeys }: PropsType ): DataHandler => {
+class DataHandlerFactory {
 
-    let type: string = '';
-    let itemsKey: string = '';
-    let dataHandler: DataHandler;
+    private _dataHandler: DataHandler;
 
-    switch ( endpoint ) {
+    private type: string = '';
+    private itemsKey: string = '';
 
-        case 'savings': {
-            type = searchParams.reservoir_aggregation ? 'single' : 'stack';
-            itemsKey = 'reservoirs';
-            break;
-        } 
-        case 'production': {
-            type = searchParams.factory_aggregation ? 'single' : 'stack';
-            itemsKey = 'factories';
-            break;
+    constructor( { endpoint, searchParams, result, valueKeys }: PropsType ) {
+
+        switch ( endpoint ) {
+
+            case 'savings': {
+                this.type = searchParams.reservoir_aggregation ? 'single' : 'stack';
+                this.itemsKey = 'reservoirs';
+                break;
+            } 
+            case 'production': {
+                this.type = searchParams.factory_aggregation ? 'single' : 'stack';
+                this.itemsKey = 'factories';
+                break;
+            }
+            case 'precipitation': {
+                this.type = searchParams.location_aggregation ? 'single' : 'stack';
+                this.itemsKey = 'locations';
+                break;
+            }
+            case 'savings-production': {
+                this.type = 'multi';
+                break;
+            }
+            default:
+                throw `Invalid endpoint (${endpoint}) used in DataHandlerFactory()`;
         }
-        case 'precipitation': {
-            type = searchParams.location_aggregation ? 'single' : 'stack';
-            itemsKey = 'locations';
-            break;
+    
+        switch ( this.type ) {
+    
+            case 'single': {
+                this._dataHandler = new SingleDataHandler( result );
+                break;
+            }
+            case 'stack': {
+                this._dataHandler = new StackDataHandler( result, this.itemsKey );
+                break;
+            }
+            case 'multi': {
+                this._dataHandler = new MultiDataHandler( result );
+                break;
+            }
+            default:
+                throw `Invalid type (${this.type}) used in DataHandlerFactory()`;
         }
-        case 'savings-production': {
-            type = 'multi';
-            break;
-        }
-        default:
-            throw `Invalid endpoint (${endpoint}) used in makeDataHandler()`;
     }
 
-    switch ( type ) {
-
-        case 'single': {
-            dataHandler = new SingleDataHandler( result );
-            break;
-        }
-        case 'stack': {
-            dataHandler = new StackDataHandler( result, itemsKey );
-            break;
-        }
-        case 'multi': {
-            dataHandler = new MultiDataHandler( result, valueKeys as string[] );
-            break;
-        }
-        default:
-            throw `Invalid type (${type}) used in makeDataHandler()`;
+    get dataHandler(): DataHandler {
+        return this._dataHandler;
     }
-
-    return dataHandler;
 }
 
 export { 
-    DataHandler, SingleDataHandler, StackDataHandler, 
-    makeDataHandler 
+    DataHandler, SingleDataHandler, StackDataHandler, DataHandlerFactory 
 };

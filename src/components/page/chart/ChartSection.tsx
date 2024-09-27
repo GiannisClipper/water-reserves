@@ -7,7 +7,7 @@ import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 
-import { makeDataHandler } from "@/logic/DataHandler";
+import { DataHandlerFactory } from "@/logic/DataHandler";
 import { ChartTextsFactory } from "@/logic/ChartTexts";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
@@ -23,7 +23,7 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const dataHandler = makeDataHandler( { endpoint, searchParams, result } );
+    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } ).dataHandler;
 
     console.log( "rendering: ChartSection..." )// , dataHandler.toJSON() )
 

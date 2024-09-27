@@ -3,7 +3,7 @@ import SingleListContent from "@/components/page/list/SingleListContent";
 import StackListContent from "@/components/page/list/StackListContent";
 import MultiListContent from "@/components/page/list/MultiListContent";
 
-import { makeDataHandler } from "@/logic/DataHandler";
+import { DataHandlerFactory } from "@/logic/DataHandler";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
@@ -17,7 +17,7 @@ type PropsType = {
 
 const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const dataHandler = makeDataHandler( { endpoint, searchParams, result } );
+    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } ).dataHandler;
 
     // await new Promise( resolve => setTimeout( resolve, 1000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
