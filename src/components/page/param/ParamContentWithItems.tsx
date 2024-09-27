@@ -11,9 +11,10 @@ import {
     CheckField
 } from "@/components/Field";
 
-import { ParamHandler, ParamHandlerFactory } from "@/logic/ParamHandler";
+import { ParamHandlerWithItems, ParamHandlerFactory } from "@/logic/ParamHandler";
 import usePageRequest from "@/logic/usePageRequest";
 
+import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType } from "@/types/requestResult";
 
@@ -25,24 +26,27 @@ type PropsType = {
     searchParams: SearchParamsType
     onPageRequest: boolean
     error: RequestErrorType | null
+    items: ObjectType[]
 }
 
-const ParamContent = ( { endpoint, searchParams, onPageRequest }: PropsType ) => {
+const ParamContentWithItems = ( { endpoint, searchParams, onPageRequest, items }: PropsType ) => {
 
-    const paramHandler: ParamHandler = new ParamHandlerFactory( endpoint, searchParams ).paramHandler;
+    const paramHandler: ParamHandlerWithItems = new ParamHandlerFactory( endpoint, searchParams, items ).paramHandler as ParamHandlerWithItems;
 
     const [ params, setParams ] = useState( paramHandler.paramValues.toJSON() );
     const {
         setFromDate, setToDate,
         setFromInterval, setToInterval,
+        setItemsAggregation, 
         setTimeAggregation, setValueAggregation,
+        setItemsFilter,
     } = paramHandler.Class.getStateSetters( { params, setParams } );
 
     const [ showMore, setShowMore ] = useState( false );
     const setMore = () => setShowMore( true );
     const setLess = () => setShowMore( false );
 
-    console.log( "rendering: MultiParamContent..." );
+    console.log( "rendering: ParamContentWithItems..." );
 
     usePageRequest( { onPageRequest, params, paramHandler } );
 
@@ -68,6 +72,25 @@ const ParamContent = ( { endpoint, searchParams, onPageRequest }: PropsType ) =>
                     value={ params.valueAggregation }
                     onChange={ setValueAggregation }
                 />
+
+            </FormSection>
+
+            <FormSection label={ paramHandler.itemsLabel }>
+                { items?.map( r => 
+                    <CheckField
+                        key={ r.id }
+                        name={ r.id }
+                        label={ r.name_el }
+                        checked={ params[ paramHandler.itemsFilterKey ][ r.id ] }
+                        onChange={ setItemsFilter }
+                    /> 
+                ) }
+                <FieldItemsAggregation
+                    values={ [ '', 'sum' ] }
+                    value={ params[ paramHandler.itemsAggregationKey ] }
+                    onChange={ setItemsAggregation }
+                />
+
             </FormSection>
 
             { showMore
@@ -95,4 +118,4 @@ const ParamContent = ( { endpoint, searchParams, onPageRequest }: PropsType ) =>
     );
 }
 
-export default ParamContent;
+export default ParamContentWithItems;

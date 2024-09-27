@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import ParamLabel from "@/components/page/param/ParamLabel";
 import ParamContent from "@/components/page/param/ParamContent";
-import MultiParamContent from "@/components/page/param/MultiParamContent";
+import ParamContentWithItems from "@/components/page/param/ParamContentWithItems";
 
 import type { SavingsSearchParamsType } from "@/types/searchParams";
 import type { RequestErrorType, RequestResultType } from '@/types/requestResult';
@@ -12,8 +12,8 @@ import type { RequestErrorType, RequestResultType } from '@/types/requestResult'
 type PropsType = {
     endpoint: string
     searchParams: SavingsSearchParamsType
-    items?: RequestResultType | null
     error: RequestErrorType | null
+    items?: RequestResultType
 }
 
 const ParamState = ( { endpoint, searchParams, error, items }: PropsType ) => {
@@ -32,19 +32,19 @@ const ParamState = ( { endpoint, searchParams, error, items }: PropsType ) => {
             { 
             endpoint === 'savings-production'
             ?
-            <MultiParamContent
+            <ParamContent
                 endpoint={ endpoint }
                 searchParams={ searchParams }
                 error={ error }
                 onPageRequest={ onPageRequest }
             />
             :
-            <ParamContent
+            <ParamContentWithItems
                 endpoint={ endpoint }
                 searchParams={ searchParams }
-                items={ items }
                 error={ error }
                 onPageRequest={ onPageRequest }
+                items={ items as RequestResultType }
             />
             }
         </div>

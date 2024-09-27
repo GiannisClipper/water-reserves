@@ -227,7 +227,7 @@ class ParamHandlerFactory {
         }
     }
 
-    get paramHandler(): ParamHandler {
+    get paramHandler(): ParamHandler | ParamHandlerWithItems {
         return this._paramHandler;
     }
 }
