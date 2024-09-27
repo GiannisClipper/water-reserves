@@ -7,7 +7,7 @@ import type { SearchParamsType } from '@/types/searchParams';
 
 type UnitType = 'm3' | 'mm' | '%';
 
-abstract class ChartTexts {    
+abstract class MetadataHandler {    
 
     abstract _title: string;
     abstract _unit: UnitType;
@@ -50,7 +50,7 @@ abstract class ChartTexts {
     
 }
 
-class SavingsChartTexts extends ChartTexts {
+class SavingsMetadataHandler extends MetadataHandler {
 
     _title: string;
     _unit: UnitType;
@@ -72,7 +72,7 @@ class SavingsChartTexts extends ChartTexts {
     }
 }
 
-class ProductionChartTexts extends ChartTexts {
+class ProductionMetadataHandler extends MetadataHandler {
 
     _title: string;
     _unit: UnitType;
@@ -94,7 +94,7 @@ class ProductionChartTexts extends ChartTexts {
     }
 }
 
-class PrecipitationChartTexts extends ChartTexts {
+class PrecipitationMetadataHandler extends MetadataHandler {
 
     _title: string;
     _unit: UnitType;
@@ -116,7 +116,7 @@ class PrecipitationChartTexts extends ChartTexts {
     }
 }
 
-class SavingsProductionChartTexts extends ChartTexts {
+class SavingsProductionMetadataHandler extends MetadataHandler {
 
     _title: string;
     _unit: UnitType;
@@ -134,40 +134,40 @@ class SavingsProductionChartTexts extends ChartTexts {
     }
 }
 
-class ChartTextsFactory {
+class MetadataHandlerFactory {
 
-    private _chartTexts: ChartTexts;
+    private _metadataHandler: MetadataHandler;
 
     constructor( endpoint: string, searchParams: SearchParamsType ) {
 
         switch ( endpoint ) {
 
             case 'savings': {
-                this._chartTexts = new SavingsChartTexts( searchParams );
+                this._metadataHandler = new SavingsMetadataHandler( searchParams );
                 break;
             } 
             case 'production': {
-                this._chartTexts = new ProductionChartTexts( searchParams );
+                this._metadataHandler = new ProductionMetadataHandler( searchParams );
                 break;
             }
             case 'precipitation': {
-                this._chartTexts = new PrecipitationChartTexts( searchParams );
+                this._metadataHandler = new PrecipitationMetadataHandler( searchParams );
                 break;
             }
             case 'savings-production': {
-                this._chartTexts = new SavingsProductionChartTexts( searchParams );
+                this._metadataHandler = new SavingsProductionMetadataHandler( searchParams );
                 break;
             }
             default:
-                throw `Invalid endpoint (${endpoint}) used in ChartTextsFactory`;
+                throw `Invalid endpoint (${endpoint}) used in MetadataHandlerFactory`;
         }
     }
 
-    get chartTexts(): ChartTexts {
-        return this._chartTexts;
+    get metadataHandler(): MetadataHandler {
+        return this._metadataHandler;
     }
 }
 
 export type { UnitType };
 
-export { ChartTextsFactory };
+export { MetadataHandler, MetadataHandlerFactory };

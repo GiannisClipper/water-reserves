@@ -18,12 +18,12 @@ import type { ObjectType } from '@/types';
 import "@/styles/chart.css";
 
 type PropsType = { 
-    dataHandler: SingleDataHandler
     chartType: string | undefined
-    chartTexts: ObjectType
+    dataHandler: SingleDataHandler
+    metadataHandler: ObjectType
 }
 
-const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
+const ChartContent = ( { chartType, dataHandler, metadataHandler }: PropsType ) => {
 
     console.log( "rendering: ChartContent...", dataHandler.data )
 
@@ -36,7 +36,7 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
             ?
             <BarChartComposition
                 chartHandler={ chartHandler }
-                texts={ chartTexts }
+                metadataHandler={ metadataHandler }
             />
 
             :
@@ -44,13 +44,13 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
             ?
             <AreaChartComposition
                 chartHandler={ chartHandler }
-                texts={ chartTexts }
+                metadataHandler={ metadataHandler }
             />
 
             :
             <LineChartComposition
                 chartHandler={ chartHandler }
-                texts={ chartTexts }
+                metadataHandler={ metadataHandler }
             />
             }
         </div>
@@ -59,10 +59,10 @@ const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
 
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
-    texts: ObjectType
+    metadataHandler: ObjectType
 }
 
-const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -71,7 +71,7 @@ const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<TopTitle title={ texts.title } />}
+                    component={<TopTitle title={ metadataHandler.title } />}
                 />
                 
                 <CartesianGrid 
@@ -83,7 +83,7 @@ const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> }
-                    label={ <XAxisLabel label={ texts.xLabel } /> }
+                    label={ <XAxisLabel label={ metadataHandler.xLabel } /> }
                 />
 
                 <YAxis 
@@ -91,19 +91,19 @@ const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                     ticks={ chartHandler.yTicks }
                     interval={ 0 } 
                     tick={ <YAxisTick data={ chartHandler.data } /> }
-                    label={ <YAxisLabel label={ texts.yLabel } /> }
+                    label={ <YAxisLabel label={ metadataHandler.yLabel } /> }
                 />
 
                 <Tooltip 
                     content={ <SingleTooltip 
-                        texts={ texts }
+                        metadataHandler={ metadataHandler }
                     /> } 
                 />
 
                 <Line
                     dataKey="value"
                     type={ chartHandler.lineType } 
-                    stroke={ texts.colors[ 0 ][ 500 ] } 
+                    stroke={ metadataHandler.colors[ 0 ][ 500 ] } 
                     strokeWidth={ 2 } 
                     dot={ false }
                 />
@@ -112,7 +112,7 @@ const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
     );
 }
 
-const AreaChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -121,7 +121,7 @@ const AreaChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<TopTitle title={ texts.title } />}
+                    component={<TopTitle title={ metadataHandler.title } />}
                 />
 
                 <CartesianGrid 
@@ -133,7 +133,7 @@ const AreaChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
-                    label={ <XAxisLabel label={ texts.xLabel } /> }
+                    label={ <XAxisLabel label={ metadataHandler.xLabel } /> }
                 />
 
                 <YAxis 
@@ -141,27 +141,27 @@ const AreaChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                     ticks={ chartHandler.yTicks }
                     interval={ 0 } 
                     tick={ <YAxisTick data={ chartHandler.data } /> }
-                    label={ <YAxisLabel label={ texts.yLabel } /> }
+                    label={ <YAxisLabel label={ metadataHandler.yLabel } /> }
                 />
 
                 <Tooltip 
                     content={ <SingleTooltip 
-                        texts={ texts }
+                        metadataHandler={ metadataHandler }
                     /> } 
                 />
 
                 <Area 
                     dataKey="value"
                     type={ chartHandler.lineType } 
-                    stroke={ texts.colors[ 0 ][ 400 ] } 
-                    fill={ texts.colors[ 0 ][ 300 ] } 
+                    stroke={ metadataHandler.colors[ 0 ][ 400 ] } 
+                    fill={ metadataHandler.colors[ 0 ][ 300 ] } 
                 />
             </AreaChart>
         </ResponsiveContainer>
     );
 }
 
-const BarChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -170,7 +170,7 @@ const BarChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
-                    component={<TopTitle title={ texts.title } />}
+                    component={<TopTitle title={ metadataHandler.title } />}
                 />
 
                 <CartesianGrid 
@@ -183,7 +183,7 @@ const BarChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
-                    label={ <XAxisLabel label={ texts.xLabel } /> }
+                    label={ <XAxisLabel label={ metadataHandler.xLabel } /> }
                 />
 
                 <YAxis 
@@ -191,21 +191,21 @@ const BarChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType
                     ticks={ chartHandler.yTicks }
                     interval={ 0 } 
                     tick={ <YAxisTick data={ chartHandler.data } /> }
-                    label={ <YAxisLabel label={ texts.yLabel } /> }
+                    label={ <YAxisLabel label={ metadataHandler.yLabel } /> }
                 />
 
                 <Tooltip 
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ <SingleTooltip 
-                        texts={ texts }
+                        metadataHandler={ metadataHandler }
                     /> } 
                 />
 
                 <Bar 
                     dataKey="value" 
-                    stroke={ texts.colors[ 0 ][ 400 ] } 
-                    fill={ texts.colors[ 0 ][ 300 ] } 
+                    stroke={ metadataHandler.colors[ 0 ][ 400 ] } 
+                    fill={ metadataHandler.colors[ 0 ][ 300 ] } 
                 />
             </BarChart>
         </ResponsiveContainer>

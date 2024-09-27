@@ -8,7 +8,7 @@ import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 
 import { DataHandlerFactory } from "@/logic/DataHandler";
-import { ChartTextsFactory } from "@/logic/ChartTexts";
+import { MetadataHandlerFactory } from "@/logic/MetadataHandler";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
 import type { SearchParamsType } from "@/types/searchParams";
@@ -23,9 +23,12 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } ).dataHandler;
+    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
+        .dataHandler;
 
-    console.log( "rendering: ChartSection..." )// , dataHandler.toJSON() )
+    const metadataHandler: ObjectType = new MetadataHandlerFactory( endpoint, searchParams )
+        .metadataHandler
+        .toJSON();
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,
@@ -33,10 +36,6 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         'multi': MultiChartContent,
     };
     const ChartContent = chartContents[ dataHandler.type ];
-
-    const chartTexts: ObjectType = new ChartTextsFactory( endpoint, searchParams )
-        .chartTexts
-        .toJSON();
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
@@ -59,8 +58,8 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
             <ChartContent 
                 dataHandler={ dataHandler }
+                metadataHandler={ metadataHandler }
                 chartType={ chartType }
-                chartTexts={ chartTexts }
             />
         </div>
     );

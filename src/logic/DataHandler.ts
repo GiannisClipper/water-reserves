@@ -136,10 +136,8 @@ class StackDataHandler extends DataHandler {
             return { ...otherKeys, values };
         } );
 
-    constructor( responseResult: any, itemsKey: string ) {
+    constructor( responseResult: any ) {
         super();
-
-        this._itemsKey = itemsKey;
 
         let result: Object = responseResult || {};
         this._valueKeys = Object.keys( result );
@@ -178,9 +176,11 @@ class StackDataHandler extends DataHandler {
 
         this._data = StackDataHandler.addPercentage( this._data );
 
-        // parse items 
+        // parse itemsKey, items 
 
-        let items: ObjectType[] = result.legend && result.legend[ itemsKey ] || [];
+        this._itemsKey = Object.keys( result.legend )[ 0 ];
+
+        let items: ObjectType[] = result.legend && result.legend[ this._itemsKey ] || [];
 
         if ( this._data.length ) {
             const { values } = this._data[ 0 ];
@@ -278,33 +278,27 @@ type PropsType = {
     endpoint: string
     searchParams: any
     result: any
-    valueKeys?: string[]
 }
 
 class DataHandlerFactory {
 
     private _dataHandler: DataHandler;
-
     private type: string = '';
-    private itemsKey: string = '';
 
-    constructor( { endpoint, searchParams, result, valueKeys }: PropsType ) {
+    constructor( { endpoint, searchParams, result }: PropsType ) {
 
         switch ( endpoint ) {
 
             case 'savings': {
                 this.type = searchParams.reservoir_aggregation ? 'single' : 'stack';
-                this.itemsKey = 'reservoirs';
                 break;
             } 
             case 'production': {
                 this.type = searchParams.factory_aggregation ? 'single' : 'stack';
-                this.itemsKey = 'factories';
                 break;
             }
             case 'precipitation': {
                 this.type = searchParams.location_aggregation ? 'single' : 'stack';
-                this.itemsKey = 'locations';
                 break;
             }
             case 'savings-production': {
@@ -322,7 +316,7 @@ class DataHandlerFactory {
                 break;
             }
             case 'stack': {
-                this._dataHandler = new StackDataHandler( result, this.itemsKey );
+                this._dataHandler = new StackDataHandler( result );
                 break;
             }
             case 'multi': {

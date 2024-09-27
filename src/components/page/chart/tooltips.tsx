@@ -2,7 +2,7 @@ import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 
 import type { ObjectType } from '@/types';
-import type { UnitType } from '@/logic/ChartTexts';
+import type { UnitType } from '@/logic/MetadataHandler';
 
 const Unit = ( { unit }: { unit: UnitType } ) => {
     if ( unit === 'm3' ) {
@@ -14,10 +14,10 @@ const Unit = ( { unit }: { unit: UnitType } ) => {
 type SingleTooltipPropsType = {
     active?: boolean
     payload?: any
-    texts: ObjectType
+    metadataHandler: ObjectType
 } 
 
-const SingleTooltip = ( { active, payload, texts }: SingleTooltipPropsType ) => {
+const SingleTooltip = ( { active, payload, metadataHandler }: SingleTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -26,7 +26,7 @@ const SingleTooltip = ( { active, payload, texts }: SingleTooltipPropsType ) => 
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
-                <p>{ `Ποσότητα: ${withCommas( value )}` } <Unit unit={ texts.unit }/></p>
+                <p>{ `Ποσότητα: ${withCommas( value )}` } <Unit unit={ metadataHandler.unit }/></p>
                 <p>{ `Διαφορά: ${withCommas( difference )} (${withPlusSign( percentage )}%)` }</p>
             </div>
       );
@@ -40,10 +40,10 @@ type StackTooltipPropsType = {
     payload?: any
     items: ObjectType[]
     makeItemsRepr: CallableFunction
-    texts: ObjectType
+    metadataHandler: ObjectType
 } 
 
-const StackTooltip = ( { active, payload, items, makeItemsRepr, texts }: StackTooltipPropsType ) => {
+const StackTooltip = ( { active, payload, items, makeItemsRepr, metadataHandler }: StackTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -59,7 +59,7 @@ const StackTooltip = ( { active, payload, items, makeItemsRepr, texts }: StackTo
                     <tbody>
                         <tr className='total'>
                             <td>Σύνολο</td> 
-                            <td className='value'>{ withCommas( total ) } <Unit unit={ texts.unit }/></td>
+                            <td className='value'>{ withCommas( total ) } <Unit unit={ metadataHandler.unit }/></td>
                         </tr>
                         { itemsRepr.map( ( reservoir, i ) =>
                             <tr key={ i }>
