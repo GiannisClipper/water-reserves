@@ -26,10 +26,10 @@ type PropsType = {
 
 const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
 
-    const valueKeys: string[] = dataHandler.headers.slice( 1 );
+    const valueKeys: string[] = dataHandler.valueKeys;
     const chartHandler: ChartHandler = new ChartHandlerFactory( 'multi', dataHandler.data, valueKeys ).chartHandler;
 
-    console.log( "rendering: ChartContent...", chartHandler.toJSON() );
+    console.log( "rendering: ChartContent...", dataHandler );
 
     return (
         <div className="ChartContent">

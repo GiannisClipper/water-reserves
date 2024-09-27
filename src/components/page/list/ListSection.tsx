@@ -17,12 +17,7 @@ type PropsType = {
 
 const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    let dataHandler: any
-    if ( endpoint !== 'savings-production' ) {
-        dataHandler = makeDataHandler( { endpoint, searchParams, result } );
-    } else {
-        dataHandler = makeDataHandler( { endpoint, searchParams, result, valueKeys: [ 'savings', 'production' ] } );
-    }
+    const dataHandler = makeDataHandler( { endpoint, searchParams, result } );
 
     // await new Promise( resolve => setTimeout( resolve, 1000 ) )
     // const result: number = Math.floor( Math.random() * 10 );

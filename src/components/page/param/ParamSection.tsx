@@ -1,6 +1,6 @@
 import ParamState from "./ParamState";
 
-import { ApiRequest, ApiRequestFactory } from "@/logic/ApiRequest";
+import { ApiRequestFactory } from "@/logic/ApiRequest";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
@@ -21,8 +21,13 @@ const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
     let error = null, result = null;
 
     if ( endpoints[ endpoint ] ) {
-        const apiRequest: ApiRequest = new ApiRequestFactory( endpoints[ endpoint ] ).apiRequest;
-        ( { error, result } = ( await apiRequest.request() ).toJSON() );
+        const apiRequestCollection = new ApiRequestFactory( endpoints[ endpoint ] ).apiRequestCollection;
+        ( { error, result } = ( await apiRequestCollection.request() ).toJSON() );
+
+        if ( result ) {
+            const key = Object.keys( result )[ 0 ];
+            result = result[ key ];
+        }
     }
 
     console.log( "rendering: ParamSection..." )

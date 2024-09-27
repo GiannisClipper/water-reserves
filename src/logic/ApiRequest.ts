@@ -163,45 +163,115 @@ class WeatherApiRequest extends ApiRequestWithParams {
     }
 }
 
+class ApiRequestCollection {
+
+    _apiRequests: ApiRequest[];
+
+    constructor( apiRequests: ApiRequest[] ) {
+        this._apiRequests = apiRequests;
+    }
+
+    public async request() {
+        for ( const apiRequest of this._apiRequests ) {
+            const { error, result } = ( await apiRequest.request() ).toJSON();
+            if ( error ) {
+                break;
+            }
+        }
+        return this;
+    }
+
+    get error(): RequestErrorType | null {
+
+        for ( const apiRequest of this._apiRequests ) {
+            if ( apiRequest.error ) {
+                return apiRequest.error;
+            }
+        }
+        return null;
+    } 
+
+    get result(): ObjectType | null {
+
+        const result: ObjectType = {};
+        for ( const apiRequest of this._apiRequests ) {
+            if ( apiRequest.result ) {
+                result[ apiRequest.endpoint ] = apiRequest.result;
+            }
+        }
+        return result;
+    }
+
+    public toJSON(): ObjectType {
+        return {
+            error: this.error,
+            result: this.result,
+        }
+    }
+}
+
 class ApiRequestFactory {
 
-    private _apiRequest: ApiRequest;
+    private _apiRequestCollection: ApiRequestCollection;
 
     constructor( endpoint: string, searchParams?: SearchParamsType ) {
 
         switch ( endpoint ) {
 
             case 'reservoirs': {
-                this._apiRequest = new ReservoirsApiRequest();
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new ReservoirsApiRequest()
+                ] );
                 break;
             }
             case 'factories': {
-                this._apiRequest = new FactoriesApiRequest();
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new FactoriesApiRequest()
+                ] );
                 break;
             }
             case 'locations': {
-                this._apiRequest = new LocationsApiRequest();
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new LocationsApiRequest()
+                ] );
                 break;
             }
             case 'savings': {
-                this._apiRequest = new SavingsApiRequest( searchParams || {} );
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new SavingsApiRequest( searchParams || {} )
+                ] );
                 break;
             }
             case 'production': {
-                this._apiRequest = new ProductionApiRequest( searchParams || {} );
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new ProductionApiRequest( searchParams || {} )
+                ] );
                 break;
             }
             case 'precipitation': {
-                this._apiRequest = new WeatherApiRequest( searchParams || {} );
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new WeatherApiRequest( searchParams || {} )
+                ] );
                 break;
             }
+            case 'savings-production': {
+                const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
+                const searchParams2 = { ...searchParams, factory_aggregation: 'sum' };
+
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new SavingsApiRequest( searchParams1 ),
+                    new ProductionApiRequest( searchParams2 )
+                ] );
+                break;
+            }
+
             default:
                 throw `Invalid endpoint (${endpoint}) used in ApiRequestFactory`;
         }
     }
 
-    get apiRequest(): ApiRequest {
-        return this._apiRequest;
+    get apiRequestCollection(): ApiRequestCollection {
+        return this._apiRequestCollection;
     }
 }
 

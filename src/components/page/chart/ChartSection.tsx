@@ -23,12 +23,9 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    let dataHandler: any
-    if ( endpoint !== 'savings-production' ) {
-        dataHandler = makeDataHandler( { endpoint, searchParams, result } );
-    } else {
-        dataHandler = makeDataHandler( { endpoint, searchParams, result, valueKeys: [ 'savings', 'production' ] } );
-    }
+    const dataHandler = makeDataHandler( { endpoint, searchParams, result } );
+
+    console.log( "rendering: ChartSection..." )// , dataHandler.toJSON() )
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,

@@ -32,6 +32,7 @@ type PropsType = {
 const ParamContentWithItems = ( { endpoint, searchParams, onPageRequest, items }: PropsType ) => {
 
     const paramHandler: ParamHandlerWithItems = new ParamHandlerFactory( endpoint, searchParams, items ).paramHandler as ParamHandlerWithItems;
+    console.log( "rendering: ParamContentWithItems...", paramHandler );
 
     const [ params, setParams ] = useState( paramHandler.paramValues.toJSON() );
     const {

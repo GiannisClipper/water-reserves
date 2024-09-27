@@ -9,6 +9,8 @@ abstract class DataHandler {
     _headers: string[] = [];
     _data: ObjectType[] = [];
 
+    _valueKeys: string[] = [];
+
     constructor() {};
 
     get headers(): string[] {
@@ -19,6 +21,10 @@ abstract class DataHandler {
         return this._data;
     }
 
+    get valueKeys(): string[] {
+        return this._valueKeys;
+    }
+
     // toJSON() is used for serialization, considering the Error: 
     // Only plain objects, and a few built-ins, can be passed to Client Components from Server Components. 
     // Classes or null prototypes are not supported.
@@ -27,6 +33,7 @@ abstract class DataHandler {
             type: this.type,
             headers: this._headers,
             data: this._data,
+            valueKeys: this.valueKeys,
         }
     }
 }
@@ -55,7 +62,9 @@ class SingleDataHandler extends DataHandler {
 
         // parse data
 
-        let data: any[][] = responseResult && responseResult.data || [];
+        const result: Object = responseResult || {};
+        this._valueKeys = Object.keys( result );
+        const data: [][] = result[ this._valueKeys[ 0 ] ].data;
 
         this._data = data.map( ( row: any[], i: number ) => {
             const time: string = row[ 0 ];
@@ -132,13 +141,19 @@ class StackDataHandler extends DataHandler {
 
         this._itemsKey = itemsKey;
 
+        let result: Object = responseResult || {};
+        this._valueKeys = Object.keys( result );
+        if ( this._valueKeys.length ) {
+            result = result[ this._valueKeys[ 0 ] ];
+        }
+
         // parse headers
 
-        const headers: string[] = responseResult && responseResult.headers || [];
+        const headers: string[] = result.headers || [];
 
         // parse data
 
-        let data: any[][] = responseResult && responseResult.data || [];
+        let data: [][] = result.data || [];
     
         if ( headers.length && headers[ 0 ] === 'id' ) {
             data = data.map( ( row: any[], i: number ) => row.slice( 1 ) );
@@ -165,7 +180,7 @@ class StackDataHandler extends DataHandler {
 
         // parse items 
 
-        let items: ObjectType[] = responseResult && responseResult.legend && responseResult.legend[ itemsKey ] || [];
+        let items: ObjectType[] = result.legend && result.legend[ itemsKey ] || [];
 
         if ( this._data.length ) {
             const { values } = this._data[ 0 ];
@@ -210,19 +225,17 @@ class MultiDataHandler extends DataHandler {
 
     type: string = 'multi';
 
-    _valueKeys: string[];
-
-    constructor( responseResult: any, valueKeys: string[] ) {
+    constructor( responseResult: any ) {
         super();
-
-        this._valueKeys = valueKeys;
 
         let result: any[] = responseResult || [];
 
+        this._valueKeys = Object.keys( result );
+
         // parse headers
         if ( result.length ) {
-            const time = result[ 0 ].headers[ 0 ];
-            this._headers = [ time, ...valueKeys ];
+            const time = result[ this._valueKeys[ 0 ] ].headers[ 0 ];
+            this._headers = [ time, ...this._valueKeys ];
         }
         
         // parse data
@@ -236,9 +249,9 @@ class MultiDataHandler extends DataHandler {
 
         const timeObj: ObjectType = {};
 
-        for ( let i = 0; i < result.length; i++ ) {
+        for ( const valueKey of this._valueKeys ) {
     
-            const temp = result[ i ].data.map( ( row: any[], i: number ) => {
+            const temp = result[ valueKey ].data.map( ( row: any[], i: number ) => {
                 const time: string = row[ 0 ];
                 const value: number = Math.round( row[ 1 ] );
                 return { time, value };
@@ -249,33 +262,22 @@ class MultiDataHandler extends DataHandler {
                 if ( ! timeObj[ time ] ) {
                     timeObj[ time ] = { time };
                 }
-                timeObj[ time ][ valueKeys[ i ] ] = value;
+                timeObj[ time ][ valueKey ] = value;
             } );
         }
 
-        for ( const key of valueKeys ) {
+        for ( const valueKey of this._valueKeys ) {
 
             const total = Object.values( timeObj )
-                .map( row => row[ key ] )
+                .map( row => row[ valueKey ] )
                 .reduce( ( tot, val ) => tot + val, 0 );
 
                 const average = total / Object.values( timeObj ).length;
 
-            Object.values( timeObj ).forEach( row => row[ key ] = row[ key ] / average );
+            Object.values( timeObj ).forEach( row => row[ valueKey ] = row[ valueKey ] / average );
         }
 
         this._data = Object.values( timeObj );
-    }
-
-    get valueKeys(): string[] {
-        return this._valueKeys;
-    }
-
-    toJSON(): ObjectType {
-        return {
-            ...super.toJSON(),
-            valueKeys: this._valueKeys,
-        }
     }
 }
 
