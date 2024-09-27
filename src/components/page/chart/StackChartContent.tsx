@@ -12,7 +12,7 @@ import { StackTooltip } from '@/components/page/chart/tooltips';
 import { LineLegend, ColorLegend } from "@/components/page/chart/legends";
 
 import { StackDataHandler } from '@/logic/DataHandler';
-import { ChartHandler } from "@/logic/ChartHandler";
+import { ChartHandler, ChartHandlerFactory } from "@/logic/ChartHandler";
 import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/tooltipRepr';
 import ObjectList from '@/helpers/objects/ObjectList';
 
@@ -28,16 +28,18 @@ type PropsType = {
 
 const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
     
-    const chartHandler = new ChartHandler( dataHandler.data );
+    const chartHandler: ChartHandler = new ChartHandlerFactory( 'stack', dataHandler.data ).chartHandler;
+    console.log( "rendering: ChartContent...", chartHandler.toJSON() )
+
     const items = new ObjectList( dataHandler.items ).sortBy( 'start', 'asc' );
     // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
 
     const colorArray: string[] = [ 
-        chartTexts.color[ 600 ], 
-        chartTexts.color[ 500 ], 
-        chartTexts.color[ 400 ], 
-        chartTexts.color[ 300 ] ]
-    ;
+        chartTexts.colors[ 0 ][ 600 ], 
+        chartTexts.colors[ 0 ][ 500 ], 
+        chartTexts.colors[ 0 ][ 400 ], 
+        chartTexts.colors[ 0 ][ 300 ]
+    ];
 
     console.log( "rendering: ChartContent..." ) 
 

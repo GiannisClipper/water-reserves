@@ -5,13 +5,13 @@ import { BLUE, SKY, TEAL, GREEN, RED, YELLOW, INDIGO, CYAN } from '@/helpers/col
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
 
-type UnitType = 'm3' | 'mm';
+type UnitType = 'm3' | 'mm' | '%';
 
 abstract class ChartTexts {    
 
     abstract _title: string;
     abstract _unit: UnitType;
-    abstract _color: ObjectType;
+    abstract _colors: ObjectType[];
 
     _xLabel: string = '';
     _yLabel: string = '';
@@ -44,7 +44,7 @@ abstract class ChartTexts {
             yLabel: this._yLabel,
             title: this._title,
             unit: this._unit,
-            color: this._color,
+            colors: this._colors,
         }
     }
     
@@ -54,7 +54,7 @@ class SavingsChartTexts extends ChartTexts {
 
     _title: string;
     _unit: UnitType;
-    _color: ObjectType;
+    _colors: ObjectType[];
 
     constructor( searchParams: ObjectType ) {
 
@@ -67,7 +67,7 @@ class SavingsChartTexts extends ChartTexts {
         );
 
         this._unit = 'm3';
-        this._color = SKY;
+        this._colors = [ SKY ];
         this._yLabel += ' (κυβ.μέτρα)';
     }
 }
@@ -76,7 +76,7 @@ class ProductionChartTexts extends ChartTexts {
 
     _title: string;
     _unit: UnitType;
-    _color: ObjectType;
+    _colors: ObjectType[];
 
     constructor( searchParams: ObjectType ) {
 
@@ -89,7 +89,7 @@ class ProductionChartTexts extends ChartTexts {
         );
 
         this._unit = 'm3';
-        this._color = TEAL;
+        this._colors = [ TEAL ];
         this._yLabel += ' (κυβ.μέτρα)';
     }
 }
@@ -98,7 +98,7 @@ class PrecipitationChartTexts extends ChartTexts {
 
     _title: string;
     _unit: UnitType;
-    _color: ObjectType;
+    _colors: ObjectType[];
 
     constructor( searchParams: ObjectType ) {
 
@@ -111,8 +111,26 @@ class PrecipitationChartTexts extends ChartTexts {
         );
 
         this._unit = 'mm';
-        this._color = CYAN;
+        this._colors = [ CYAN ];
         this._yLabel += ' (mm)';
+    }
+}
+
+class SavingsProductionChartTexts extends ChartTexts {
+
+    _title: string;
+    _unit: UnitType;
+    _colors: ObjectType[];
+
+    constructor( searchParams: ObjectType ) {
+
+        super( searchParams );
+        
+        this._title = 'Αποθέματα και Παραγωγή νερού ';
+
+        this._unit = '%';
+        this._colors = [ SKY, TEAL ];
+        this._yLabel += ' (μεταβολή %)';
     }
 }
 
@@ -134,6 +152,10 @@ class ChartTextsFactory {
             }
             case 'precipitation': {
                 this._chartTexts = new PrecipitationChartTexts( searchParams );
+                break;
+            }
+            case 'savings-production': {
+                this._chartTexts = new SavingsProductionChartTexts( searchParams );
                 break;
             }
             default:

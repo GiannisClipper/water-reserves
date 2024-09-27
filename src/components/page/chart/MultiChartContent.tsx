@@ -3,12 +3,13 @@
 import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar } from 'recharts';
-import { XAxis, YAxis, CartesianGrid, Tooltip, Customized  } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, Customized  } from 'recharts';
 import { ResponsiveContainer } from 'recharts';
 
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
-import { SingleTooltip } from '@/components/page/chart/tooltips';
+import { MultiTooltip } from '@/components/page/chart/tooltips';
+import { MultiColorLegend } from "@/components/page/chart/legends";
 
 import { SingleDataHandler } from '@/logic/DataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
@@ -25,9 +26,10 @@ type PropsType = {
 
 const ChartContent = ( { dataHandler, chartType, chartTexts }: PropsType ) => {
 
-    console.log( "rendering: ChartContent...", dataHandler.data )
+    const valueKeys: string[] = dataHandler.headers.slice( 1 );
+    const chartHandler: ChartHandler = new ChartHandlerFactory( 'multi', dataHandler.data, valueKeys ).chartHandler;
 
-    const chartHandler: ChartHandler = new ChartHandlerFactory( 'single', dataHandler.data ).chartHandler;
+    console.log( "rendering: ChartContent...", chartHandler.toJSON() );
 
     return (
         <div className="ChartContent">
@@ -95,17 +97,34 @@ const LineChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                 />
 
                 <Tooltip 
-                    content={ <SingleTooltip 
-                        texts={ texts }
+                    content={ <MultiTooltip 
+                        valueKeys={ chartHandler.valueKeys } 
                     /> } 
                 />
 
                 <Line
-                    dataKey="value"
+                    dataKey={ chartHandler.valueKeys[ 0 ] }
                     type={ chartHandler.lineType } 
                     stroke={ texts.colors[ 0 ][ 500 ] } 
                     strokeWidth={ 2 } 
                     dot={ false }
+                />
+                <Line
+                    dataKey={ chartHandler.valueKeys[ 1 ] }
+                    type={ chartHandler.lineType } 
+                    stroke={ texts.colors[ 1 ][ 500 ] } 
+                    strokeWidth={ 2 } 
+                    dot={ false }
+                />
+
+                <Legend 
+                    align="right" 
+                    verticalAlign='top' 
+                    height={ 24 }
+                    content={ <MultiColorLegend 
+                        valueKeys={ chartHandler.valueKeys }
+                        colorsArray={ texts.colors }
+                    /> }
                 />
             </LineChart>
         </ResponsiveContainer>
@@ -145,17 +164,35 @@ const AreaChartComposition = ( { chartHandler, texts }: ChartCompositionPropsTyp
                 />
 
                 <Tooltip 
-                    content={ <SingleTooltip 
-                        texts={ texts }
+                    content={ <MultiTooltip 
+                        valueKeys={ chartHandler.valueKeys } 
                     /> } 
                 />
 
                 <Area 
-                    dataKey="value"
+                    dataKey={ chartHandler.valueKeys[ 0 ] }
                     type={ chartHandler.lineType } 
                     stroke={ texts.colors[ 0 ][ 400 ] } 
                     fill={ texts.colors[ 0 ][ 300 ] } 
                 />
+
+                <Area 
+                    dataKey={ chartHandler.valueKeys[ 1 ] }
+                    type={ chartHandler.lineType } 
+                    stroke={ texts.colors[ 1 ][ 400 ] } 
+                    fill={ texts.colors[ 1 ][ 300 ] } 
+                />
+
+                <Legend 
+                    align="right" 
+                    verticalAlign='top' 
+                    height={ 24 }
+                    content={ <MultiColorLegend 
+                        valueKeys={ chartHandler.valueKeys }
+                        colorsArray={ texts.colors }
+                    /> }
+                />
+
             </AreaChart>
         </ResponsiveContainer>
     );
@@ -197,16 +234,32 @@ const BarChartComposition = ( { chartHandler, texts }: ChartCompositionPropsType
                 <Tooltip 
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
-                    content={ <SingleTooltip 
-                        texts={ texts }
+                    content={ <MultiTooltip 
+                        valueKeys={ chartHandler.valueKeys } 
                     /> } 
                 />
 
                 <Bar 
-                    dataKey="value" 
+                    dataKey={ chartHandler.valueKeys[ 0 ] }
                     stroke={ texts.colors[ 0 ][ 400 ] } 
                     fill={ texts.colors[ 0 ][ 300 ] } 
                 />
+                <Bar 
+                    dataKey={ chartHandler.valueKeys[ 1 ] }
+                    stroke={ texts.colors[ 1 ][ 400 ] } 
+                    fill={ texts.colors[ 1 ][ 300 ] } 
+                />
+
+                <Legend 
+                    align="right" 
+                    verticalAlign='top' 
+                    height={ 24 }
+                    content={ <MultiColorLegend 
+                        valueKeys={ chartHandler.valueKeys }
+                        colorsArray={ texts.colors }
+                    /> }
+                />
+
             </BarChart>
         </ResponsiveContainer>
     );

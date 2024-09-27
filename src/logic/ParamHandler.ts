@@ -1,7 +1,7 @@
-import ParamValues from './ParamValues';
 import SavingsParamValues from './ParamValues/SavingsParamValues';
 import ProductionParamValues from './ParamValues/ProductionParamValues';
 import WeatherParamValues from './ParamValues/WeatherParamValues';
+import { ParamValues, SavingsProductionParamValues } from './ParamValues';
 
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
@@ -13,7 +13,7 @@ type StateSettersPropsType = {
 
 type StateSettersResultType = { [ key: string ]: CallableFunction }
 
-abstract class ParamHandler {    
+class ParamHandler {
 
     static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
 
@@ -60,14 +60,25 @@ abstract class ParamHandler {
         return this._paramValues;
     }
 
+    public getTimeAggregationOptions(): string[] {
+        return [ '', 'month', 'year', 'custom_year' ];
+    }
+
+    public getValueAggregationOptions( timeAggregation: string ): string[] {
+        return timeAggregation
+            ? [ 'avg', 'sum' ]
+            : [ '' ];
+    }
+}
+
+abstract class ParamHandlerWithItems extends ParamHandler {
+
     abstract get itemsLabel(): string;
     abstract get itemsFilterKey(): string;
     abstract get itemsAggregationKey(): string;
-
-    abstract getValueAggregationOptions( timeAggregation: string ): string[];
 }
 
-class SavingsParamHandler extends ParamHandler {
+class SavingsParamHandler extends ParamHandlerWithItems {
 
     static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
 
@@ -99,7 +110,7 @@ class SavingsParamHandler extends ParamHandler {
     };
 }
 
-class ProductionParamHandler extends ParamHandler {
+class ProductionParamHandler extends ParamHandlerWithItems {
 
     static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
 
@@ -131,7 +142,7 @@ class ProductionParamHandler extends ParamHandler {
     };
 }
 
-class WeatherParamHandler extends ParamHandler {
+class WeatherParamHandler extends ParamHandlerWithItems {
 
     static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
 
@@ -169,29 +180,47 @@ class WeatherParamHandler extends ParamHandler {
     };
 }
 
+class SavingsProductionParamHandler extends ParamHandler {
+
+    public Class = SavingsProductionParamHandler;
+
+    getTimeAggregationOptions(): string[] {
+        return [ 'month', 'year', 'custom_year' ];
+    };
+
+    getValueAggregationOptions(): string[] {
+        return [ 'growth' ];
+    };
+}
+
 class ParamHandlerFactory {
 
-    private _paramHandler: ParamHandler;
+    private _paramHandler: ParamHandler | ParamHandlerWithItems;
 
-    constructor( endpoint: string, searchParams: SearchParamsType, items: ObjectType[] ) {
+    constructor( endpoint: string, searchParams: SearchParamsType, items?: ObjectType[] ) {
 
         switch ( endpoint ) {
 
             case 'savings': {
-                const paramValues: SavingsParamValues = new SavingsParamValues( searchParams, items || []  );
+                const paramValues = new SavingsParamValues( searchParams, items || [] );
                 this._paramHandler = new SavingsParamHandler( paramValues );
                 break;
             } 
             case 'production': {
-                const paramValues: ProductionParamValues = new ProductionParamValues( searchParams, items || []  );
+                const paramValues = new ProductionParamValues( searchParams, items || [] );
                 this._paramHandler = new ProductionParamHandler( paramValues );
                 break;
             }
             case 'precipitation': {
-                const paramValues: WeatherParamValues = new WeatherParamValues( searchParams, items || []  );
+                const paramValues = new WeatherParamValues( searchParams, items || [] );
                 this._paramHandler = new WeatherParamHandler( paramValues );
                 break;
             }
+            case 'savings-production': {
+                const paramValues = new SavingsProductionParamValues( searchParams );
+                this._paramHandler = new SavingsProductionParamHandler( paramValues );
+                break;
+            } 
 
             default:
                 throw `Invalid endpoint (${endpoint}) used in ParamHandlerFactory`;
@@ -203,4 +232,4 @@ class ParamHandlerFactory {
     }
 }
 
-export { ParamHandler, ParamHandlerFactory };
+export { ParamHandler, ParamHandlerWithItems, ParamHandlerFactory };

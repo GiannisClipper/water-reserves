@@ -18,8 +18,12 @@ const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
         'precipitation': 'locations',
     };
 
-    const apiRequest: ApiRequest = new ApiRequestFactory( endpoints[ endpoint ] ).apiRequest;
-    const { error, result } = ( await apiRequest.request() ).toJSON();
+    let error = null, result = null;
+
+    if ( endpoints[ endpoint ] ) {
+        const apiRequest: ApiRequest = new ApiRequestFactory( endpoints[ endpoint ] ).apiRequest;
+        ( { error, result } = ( await apiRequest.request() ).toJSON() );
+    }
 
     console.log( "rendering: ParamSection..." )
 

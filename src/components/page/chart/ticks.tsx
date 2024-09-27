@@ -35,7 +35,7 @@ const YAxisTick = props => {
 
   // set the tick
   let tick: string = '';
-  try { tick = withCommas( parseInt( payload.value ) ); } catch ( e ) {};
+  try { tick = withCommas( payload.value < 1000 ? payload.value : parseInt( payload.value ) ); } catch ( e ) {};
   
   // set positioning params
   const dx = -3 * tick.length - 2;

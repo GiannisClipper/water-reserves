@@ -4,12 +4,6 @@ import { timeLabel } from '@/helpers/time';
 import type { ObjectType } from '@/types';
 import type { UnitType } from '@/logic/ChartTexts';
 
-type SingleTooltipPropsType = {
-    active?: boolean
-    payload?: any
-    texts: ObjectType
-} 
-
 const Unit = ( { unit }: { unit: UnitType } ) => {
     if ( unit === 'm3' ) {
         return ( <>m<sup>3</sup></> );
@@ -17,13 +11,18 @@ const Unit = ( { unit }: { unit: UnitType } ) => {
     return unit;
 }
 
+type SingleTooltipPropsType = {
+    active?: boolean
+    payload?: any
+    texts: ObjectType
+} 
+
 const SingleTooltip = ( { active, payload, texts }: SingleTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         const { time, value, difference, percentage } = payload[ 0 ].payload;
 
-        console.log( 'UNIT', texts.unit)
         return (
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
@@ -79,4 +78,32 @@ const StackTooltip = ( { active, payload, items, makeItemsRepr, texts }: StackTo
     return null;
 };
 
-export { SingleTooltip, StackTooltip };
+type MultiTooltipPropsType = {
+    active?: boolean
+    payload?: any
+    valueKeys: string[]
+} 
+
+const MultiTooltip = ( { active, payload, valueKeys }: MultiTooltipPropsType ) => {
+
+    if ( active && payload && payload.length ) {
+
+        const { time } = payload[ 0 ].payload;
+
+        return (
+            <div className="Tooltip">
+                <p>{ `${timeLabel( time )}: ${time}` }</p>
+                <>
+                { valueKeys.map( key => {
+                    const value = payload[ 0 ].payload[ key ];
+                   return ( <p id={key}>{ `${key}: ${ Math.round( value * 100 ) / 100 }` }</p> );
+                } ) }
+                </>
+            </div>
+      );
+    }
+  
+    return null;
+};
+
+export { SingleTooltip, StackTooltip, MultiTooltip };

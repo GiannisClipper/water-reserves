@@ -27,6 +27,33 @@ const ColorLegend = ( { payload, items, colorsArray }: ColorLegendPropsType ) =>
     )
 }
 
+type MultiColorLegendPropsType = {
+    payload?: any
+    valueKeys: string[]
+    colorsArray: string[]
+}
+
+const MultiColorLegend = ( { payload, valueKeys, colorsArray }: MultiColorLegendPropsType ) => {
+
+    return (
+        <div className='CustomizedLegend'>
+            { valueKeys.map( ( vk: string, i: number ) =>
+                <span 
+                    key={ i }
+                    style={ { color: colorsArray[ i ][ 500 ] } }
+                >
+                    <svg height="10" width="15" xmlns="http://www.w3.org/2000/svg">
+                        <g fill="none" stroke={ colorsArray[ i ][ 500 ] } strokeWidth="4">
+                            <path d="M5 5 l15 0" />
+                        </g>
+                    </svg>
+                    { vk }
+                </span>
+            ) }
+        </div>
+    )
+}
+
 type LineLegendPropsType = {
     payload?: any
     items: ObjectType[]
@@ -65,4 +92,4 @@ const LineLegend = ( { payload, items, colorsArray, strokeDasharray }: LineLegen
     )
 }
 
-export { ColorLegend, LineLegend };
+export { ColorLegend, MultiColorLegend, LineLegend };

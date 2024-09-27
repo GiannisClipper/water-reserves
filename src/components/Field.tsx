@@ -102,7 +102,8 @@ const reprValueAggregation = ( key: string ): string => {
     const values: { [key: string]: string } = { 
         '': 'Ημερήσια ποσότητα',
         'avg': 'Μέση ημερήσια ποσότητα',
-        'sum': 'Συνολική ποσότητα', 
+        'sum': 'Συνολική ποσότητα',
+        'growth': 'Ποσοστό αύξησης/μείωσης',
     };
 
     if ( key in values ) {
@@ -117,7 +118,7 @@ const reprTimeAggregation = ( key: string ): string => {
         '': 'Ανά ημέρα',
         'month': 'Ανά μήνα', 
         'year': 'Ανά έτος', 
-        'custom_year': 'Ανά υδρολογικό έτος' 
+        'custom_year': 'Ανά υδρολογικό έτος'
     };
 
     if ( key in values ) {
@@ -139,17 +140,21 @@ const FieldItemsAggregation = ( props: any ) => (
     />
 );
 
-const FieldTimeAggregation = ( props: any ) => (
+const FieldTimeAggregation = ( { values, ...props } ) => (
 
     <Field
         label = {<span>Ανάλυση</span>}
         value = {
-            <select { ...props }>
-                <option value="">{reprTimeAggregation( "" )}</option>
-                <option value="month">{reprTimeAggregation( "month" )}</option>
-                <option value="year">{reprTimeAggregation( "year" )}</option>
-                <option value="custom_year">{reprTimeAggregation( "custom_year" )}</option>
+            <select { ...props } disabled={ values.length <= 1 }>
+                { values.map( v => <option key={v} value={v}>{reprTimeAggregation( v )}</option> ) }
             </select>
+
+            // <select { ...props }>
+            //     <option value="">{reprTimeAggregation( "" )}</option>
+            //     <option value="month">{reprTimeAggregation( "month" )}</option>
+            //     <option value="year">{reprTimeAggregation( "year" )}</option>
+            //     <option value="custom_year">{reprTimeAggregation( "custom_year" )}</option>
+            // </select>
         }
     />
 );

@@ -4,6 +4,7 @@ import { SingleDataHandler } from '@/logic/DataHandler';
 import { translate } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
+import { Fragment } from "react";
 
 type PropsType = { 
     dataHandler: SingleDataHandler
@@ -32,10 +33,14 @@ const ListContent = ( { dataHandler }: PropsType ) => {
 
                 { data.map( ( row: ObjectType, i: number ) =>
                     <tr key={ i }>
-                        <td> { row.time } </td>
-                        <td className='number'> { withCommas( row.value ) } <CubicMeters /></td>
-                        <td className='number'> { withCommas( row.difference ) } <CubicMeters /></td>
-                        <td className='number'> { withPlusSign( row.percentage.toFixed( 2 ) ) } </td>
+                        { headers.map( ( x: string, j: number ) => {
+                            const valueKey = j === 0 ? 'time' : x;
+                            return (
+                                <Fragment key={ x }>
+                                    <td className='number'>{ row[ valueKey ] }</td>
+                                </Fragment>
+                            );
+                        } ) }
                     </tr>
                 ) }
                 </tbody>

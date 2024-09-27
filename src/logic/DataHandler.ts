@@ -82,6 +82,9 @@ class StackDataHandler extends DataHandler {
 
     type: string = 'stack';
 
+    _items: ObjectType[] = [];
+    _itemsKey: string = '';
+
     static nestValues = ( data: ObjectType[] ): ObjectType[] => {
 
         const timeObj: ObjectType = {};
@@ -124,11 +127,10 @@ class StackDataHandler extends DataHandler {
             return { ...otherKeys, values };
         } );
 
-    _items: ObjectType[] = [];
-    _itemsKey: string = '';
-
     constructor( responseResult: any, itemsKey: string ) {
         super();
+
+        this._itemsKey = itemsKey;
 
         // parse headers
 
@@ -171,8 +173,6 @@ class StackDataHandler extends DataHandler {
             this._items = items.filter( r => ids.includes( `${r.id}` ) );
         }
 
-        this._itemsKey = itemsKey;
-
         // add headers
         if ( this._data.length ) {
             const { time, values } = this._data[ 0 ];
@@ -206,13 +206,87 @@ class StackDataHandler extends DataHandler {
     }
 }
 
+class MultiDataHandler extends DataHandler {    
+
+    type: string = 'multi';
+
+    _valueKeys: string[];
+
+    constructor( responseResult: any, valueKeys: string[] ) {
+        super();
+
+        this._valueKeys = valueKeys;
+
+        let result: any[] = responseResult || [];
+
+        // parse headers
+        if ( result.length ) {
+            const time = result[ 0 ].headers[ 0 ];
+            this._headers = [ time, ...valueKeys ];
+        }
+        
+        // parse data
+
+        // console.log( 'result', result );
+        // the result structure:
+        // [
+        //     { data: [ {}, {} ], headers: [ '', '' ], legend: null },
+        //     { data: [ {}, {} ], headers: [ '', '' ], legend: null }
+        // ]
+
+        const timeObj: ObjectType = {};
+
+        for ( let i = 0; i < result.length; i++ ) {
+    
+            const temp = result[ i ].data.map( ( row: any[], i: number ) => {
+                const time: string = row[ 0 ];
+                const value: number = Math.round( row[ 1 ] );
+                return { time, value };
+            } );
+
+            temp.forEach( ( row: ObjectType ) => { 
+                const { time, value } = row;
+                if ( ! timeObj[ time ] ) {
+                    timeObj[ time ] = { time };
+                }
+                timeObj[ time ][ valueKeys[ i ] ] = value;
+            } );
+        }
+
+        for ( const key of valueKeys ) {
+
+            const total = Object.values( timeObj )
+                .map( row => row[ key ] )
+                .reduce( ( tot, val ) => tot + val, 0 );
+
+                const average = total / Object.values( timeObj ).length;
+
+            Object.values( timeObj ).forEach( row => row[ key ] = row[ key ] / average );
+        }
+
+        this._data = Object.values( timeObj );
+    }
+
+    get valueKeys(): string[] {
+        return this._valueKeys;
+    }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            valueKeys: this._valueKeys,
+        }
+    }
+}
+
 type PropsType = {
     endpoint: string
     searchParams: any
     result: any
+    valueKeys?: string[]
 }
 
-const makeDataHandler = ( { endpoint, searchParams, result }: PropsType ): DataHandler => {
+const makeDataHandler = ( { endpoint, searchParams, result, valueKeys }: PropsType ): DataHandler => {
 
     let type: string = '';
     let itemsKey: string = '';
@@ -235,15 +309,30 @@ const makeDataHandler = ( { endpoint, searchParams, result }: PropsType ): DataH
             itemsKey = 'locations';
             break;
         }
+        case 'savings-production': {
+            type = 'multi';
+            break;
+        }
         default:
             throw `Invalid endpoint (${endpoint}) used in makeDataHandler()`;
     }
 
-    if ( type === 'single' ) {
-        dataHandler = new SingleDataHandler( result );
+    switch ( type ) {
 
-    } else {
-        dataHandler = new StackDataHandler( result, itemsKey );
+        case 'single': {
+            dataHandler = new SingleDataHandler( result );
+            break;
+        }
+        case 'stack': {
+            dataHandler = new StackDataHandler( result, itemsKey );
+            break;
+        }
+        case 'multi': {
+            dataHandler = new MultiDataHandler( result, valueKeys as string[] );
+            break;
+        }
+        default:
+            throw `Invalid type (${type}) used in makeDataHandler()`;
     }
 
     return dataHandler;

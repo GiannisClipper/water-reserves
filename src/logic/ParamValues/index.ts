@@ -177,4 +177,13 @@ class ParamValues {
     }
 }
 
+class SavingsProductionParamValues extends ParamValues {
+
+    constructor( searchParams: SearchParamsType ) {
+        super( searchParams );
+        // this._valueAggregation = 'sum';
+    }
+}
+
 export default ParamValues;
+export { ParamValues, SavingsProductionParamValues };

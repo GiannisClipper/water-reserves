@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 
-import ChartLabel from "@/components/page/chart/ChartLabel";
+import ChartLabel from "./ChartLabel";
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
+import MultiChartContent from "@/components/page/chart/MultiChartContent";
 
 import { makeDataHandler } from "@/logic/DataHandler";
 import { ChartTextsFactory } from "@/logic/ChartTexts";
@@ -22,13 +23,19 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const dataHandler = makeDataHandler( { endpoint, searchParams, result } );
+    let dataHandler: any
+    if ( endpoint !== 'savings-production' ) {
+        dataHandler = makeDataHandler( { endpoint, searchParams, result } );
+    } else {
+        dataHandler = makeDataHandler( { endpoint, searchParams, result, valueKeys: [ 'savings', 'production' ] } );
+    }
 
-    // console.log( 'dataHandler', dataHandler.toJSON() );
-
-    const ChartContent: any = dataHandler.type === 'single'
-        ? SingleChartContent
-        : StackChartContent;
+    const chartContents: ObjectType = {
+        'single': SingleChartContent,
+        'stack': StackChartContent,
+        'multi': MultiChartContent,
+    };
+    const ChartContent = chartContents[ dataHandler.type ];
 
     const chartTexts: ObjectType = new ChartTextsFactory( endpoint, searchParams )
         .chartTexts
@@ -45,7 +52,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
-    console.log( "rendering: ChartSection...", chartType )
+    console.log( "rendering: ChartSection..." )//, dataHandler.toJSON() )
 
     return (
         <div className="ChartSection">
