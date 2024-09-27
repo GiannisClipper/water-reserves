@@ -264,6 +264,16 @@ class ApiRequestFactory {
                 ] );
                 break;
             }
+            case 'savings-precipitation': {
+                const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
+                const searchParams2 = { ...searchParams, location_aggregation: 'sum' };
+
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new SavingsApiRequest( searchParams1 ),
+                    new WeatherApiRequest( searchParams2 )
+                ] );
+                break;
+            }
 
             default:
                 throw `Invalid endpoint (${endpoint}) used in ApiRequestFactory`;

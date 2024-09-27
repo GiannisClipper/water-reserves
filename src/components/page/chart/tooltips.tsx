@@ -96,7 +96,7 @@ const MultiTooltip = ( { active, payload, valueKeys }: MultiTooltipPropsType ) =
                 <>
                 { valueKeys.map( key => {
                     const value = payload[ 0 ].payload[ key ];
-                   return ( <p id={key}>{ `${key}: ${ Math.round( value * 100 ) / 100 }` }</p> );
+                   return ( <p key={key}>{ `${key}: ${ Math.round( value * 100 ) / 100 }` }</p> );
                 } ) }
                 </>
             </div>

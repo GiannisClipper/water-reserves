@@ -131,10 +131,28 @@ class SavingsProductionMetadataHandler extends MetadataHandler {
 
         super( searchParams );
         
-        this._title = 'Αποθέματα και Παραγωγή νερού ';
+        this._title = 'Αποθέματα & Παραγωγή νερού';
 
         this._unit = '%';
         this._colors = [ SKY, AMBER ];
+        this._yLabel += ' (μεταβολή %)';
+    }
+}
+
+class SavingsPrecipitationMetadataHandler extends MetadataHandler {
+
+    _title: string;
+    _unit: UnitType;
+    _colors: ObjectType[];
+
+    constructor( searchParams: ObjectType ) {
+
+        super( searchParams );
+        
+        this._title = 'Αποθέματα νερού & Μετρήσεις υετού';
+
+        this._unit = '%';
+        this._colors = [ SKY, CYAN ];
         this._yLabel += ' (μεταβολή %)';
     }
 }
@@ -161,6 +179,10 @@ class MetadataHandlerFactory {
             }
             case 'savings-production': {
                 this._metadataHandler = new SavingsProductionMetadataHandler( searchParams );
+                break;
+            }
+            case 'savings-precipitation': {
+                this._metadataHandler = new SavingsPrecipitationMetadataHandler( searchParams );
                 break;
             }
             default:

@@ -305,6 +305,10 @@ class DataHandlerFactory {
                 this.type = 'multi';
                 break;
             }
+            case 'savings-precipitation': {
+                this.type = 'multi';
+                break;
+            }
             default:
                 throw `Invalid endpoint (${endpoint}) used in DataHandlerFactory()`;
         }

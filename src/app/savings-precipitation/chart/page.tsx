@@ -1,22 +1,19 @@
 import { Suspense } from "react";
 
-import Header from "../Header";
-import ParamSection from "@/components/page/param/ParamSection";
-import DataSection from "@/components/page/DataSection";
-import { DataSectionSkeleton } from "@/components/page/Skeleton";
+import Header from "@/app/Header";
+import DataSection from "@/components/wide/DataSection";
+import { DataSectionSkeleton } from "@/components/wide/Skeleton";
 
-import { SAVINGS_PRECIPITATION } from "../settings";
+import { SAVINGS_PRECIPITATION } from "@/app/settings";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
 import "@/styles/header.css";
-import "@/styles/page.css";
+import "@/styles/wide.css";
 
 const endpoint: string = 'savings-precipitation';
 
-type PropsType = { 
-    searchParams: SearchParamsType 
-}
+type PropsType = { searchParams: SearchParamsType }
 
 export default function Page( { searchParams }: PropsType ) {
 
@@ -28,17 +25,10 @@ export default function Page( { searchParams }: PropsType ) {
 
         <div className="Content">
 
-            <Suspense fallback="<p>Loading...</p>">
-                <ParamSection 
-                    endpoint={ endpoint }
-                    searchParams={ searchParams } 
-                />
-            </Suspense>
-
             <Suspense fallback={ <DataSectionSkeleton /> }>
                 <DataSection 
                     endpoint={ endpoint }
-                    searchParams={ searchParams } 
+                    searchParams={searchParams} 
                 />
             </Suspense>
         </div>
@@ -46,4 +36,3 @@ export default function Page( { searchParams }: PropsType ) {
         </>
     );
 }
-

@@ -1,7 +1,7 @@
 import SavingsParamValues from './ParamValues/SavingsParamValues';
 import ProductionParamValues from './ParamValues/ProductionParamValues';
 import WeatherParamValues from './ParamValues/WeatherParamValues';
-import { ParamValues, SavingsProductionParamValues } from './ParamValues';
+import { ParamValues, SavingsProductionParamValues, SavingsPrecipitationParamValues } from './ParamValues';
 
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
@@ -193,6 +193,19 @@ class SavingsProductionParamHandler extends ParamHandler {
     };
 }
 
+class SavingsPrecipitationParamHandler extends ParamHandler {
+
+    public Class = SavingsPrecipitationParamHandler;
+
+    getTimeAggregationOptions(): string[] {
+        return [ 'month', 'year', 'custom_year' ];
+    };
+
+    getValueAggregationOptions(): string[] {
+        return [ 'growth' ];
+    };
+}
+
 class ParamHandlerFactory {
 
     private _paramHandler: ParamHandler | ParamHandlerWithItems;
@@ -219,6 +232,11 @@ class ParamHandlerFactory {
             case 'savings-production': {
                 const paramValues = new SavingsProductionParamValues( searchParams );
                 this._paramHandler = new SavingsProductionParamHandler( paramValues );
+                break;
+            } 
+            case 'savings-precipitation': {
+                const paramValues = new SavingsPrecipitationParamValues( searchParams );
+                this._paramHandler = new SavingsPrecipitationParamHandler( paramValues );
                 break;
             } 
 
