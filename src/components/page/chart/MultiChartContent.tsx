@@ -29,7 +29,7 @@ const ChartContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) 
     const valueKeys: string[] = dataHandler.valueKeys;
     const chartHandler: ChartHandler = new ChartHandlerFactory( 'multi', dataHandler.data, valueKeys ).chartHandler;
 
-    console.log( "rendering: ChartContent...", dataHandler );
+    console.log( "rendering: ChartContent..." )//, dataHandler );
 
     return (
         <div className="ChartContent">
@@ -102,20 +102,20 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     /> } 
                 />
 
-                <Line
-                    dataKey={ chartHandler.valueKeys[ 0 ] }
-                    type={ chartHandler.lineType } 
-                    stroke={ metadataHandler.colors[ 0 ][ 500 ] } 
-                    strokeWidth={ 2 } 
-                    dot={ false }
-                />
-                <Line
-                    dataKey={ chartHandler.valueKeys[ 1 ] }
-                    type={ chartHandler.lineType } 
-                    stroke={ metadataHandler.colors[ 1 ][ 500 ] } 
-                    strokeWidth={ 2 } 
-                    dot={ false }
-                />
+                <>
+                { chartHandler.valueKeys.map( ( key, i ) => {
+                    return (
+                        <Line
+                            key={ i }
+                            dataKey={ key }
+                            type={ chartHandler.lineType } 
+                            stroke={ metadataHandler.colors[ i ][ 500 ] } 
+                            strokeWidth={ 2 } 
+                            dot={ false }
+                        />
+                    );
+                } ) }
+                </>
 
                 <Legend 
                     align="right" 
@@ -169,19 +169,20 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     /> } 
                 />
 
-                <Area 
-                    dataKey={ chartHandler.valueKeys[ 0 ] }
-                    type={ chartHandler.lineType } 
-                    stroke={ metadataHandler.colors[ 0 ][ 400 ] } 
-                    fill={ metadataHandler.colors[ 0 ][ 300 ] } 
-                />
-
-                <Area 
-                    dataKey={ chartHandler.valueKeys[ 1 ] }
-                    type={ chartHandler.lineType } 
-                    stroke={ metadataHandler.colors[ 1 ][ 400 ] } 
-                    fill={ metadataHandler.colors[ 1 ][ 300 ] } 
-                />
+                <>
+                { chartHandler.valueKeys.map( ( key, i ) => {
+                    return (
+                        <Area 
+                            key={ i }
+                            dataKey={ key }
+                            type={ chartHandler.lineType } 
+                            stroke={ metadataHandler.colors[ i ][ 400 ] } 
+                            fill={ metadataHandler.colors[ i ][ 300 ] } 
+                            fillOpacity={ .65 } 
+                        />
+                    );
+                } ) }
+                </>
 
                 <Legend 
                     align="right" 
@@ -239,16 +240,19 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     /> } 
                 />
 
-                <Bar 
-                    dataKey={ chartHandler.valueKeys[ 0 ] }
-                    stroke={ metadataHandler.colors[ 0 ][ 400 ] } 
-                    fill={ metadataHandler.colors[ 0 ][ 300 ] } 
-                />
-                <Bar 
-                    dataKey={ chartHandler.valueKeys[ 1 ] }
-                    stroke={ metadataHandler.colors[ 1 ][ 400 ] } 
-                    fill={ metadataHandler.colors[ 1 ][ 300 ] } 
-                />
+<>
+                { chartHandler.valueKeys.map( ( key, i ) => {
+                    return (
+                        <Bar 
+                            key={ i }
+                            dataKey={ key }
+                            stroke={ metadataHandler.colors[ i ][ 400 ] } 
+                            fill={ metadataHandler.colors[ i ][ 300 ] } 
+                            fillOpacity={ .65 } 
+                        />
+                    );
+                } ) }
+                </>
 
                 <Legend 
                     align="right" 

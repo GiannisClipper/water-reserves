@@ -291,7 +291,7 @@ const BarChartComposition = ( { chartHandler, colorArray, items, metadataHandler
                         dataKey={ `values.${r.id}.value` }
                         stackId="a"
                         fill={ colorArray[ i ] } 
-                        fillOpacity={ 1 }
+                        fillOpacity={ .65 }
                     />
                 ) }
 

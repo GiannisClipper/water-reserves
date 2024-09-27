@@ -228,12 +228,12 @@ class MultiDataHandler extends DataHandler {
     constructor( responseResult: any ) {
         super();
 
-        let result: any[] = responseResult || [];
+        let result: ObjectType = responseResult || {};
 
         this._valueKeys = Object.keys( result );
 
         // parse headers
-        if ( result.length ) {
+        if ( this._valueKeys.length ) {
             const time = result[ this._valueKeys[ 0 ] ].headers[ 0 ];
             this._headers = [ time, ...this._valueKeys ];
         }

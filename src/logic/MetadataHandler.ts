@@ -1,6 +1,11 @@
 import ParamValues from '@/logic/ParamValues';
 
-import { BLUE, SKY, TEAL, GREEN, RED, YELLOW, INDIGO, CYAN } from '@/helpers/colors';
+import {
+    ROSE, PINK, FUCHSIA, PURPLE, VIOLET,
+    INDIGO, BLUE, SKY, CYAN, TEAL, EMERALD, 
+    GREEN, LIME, YELLOW, AMBER, ORANGE, RED, 
+    STONE, NEUTRAL, ZINC, GRAY, SLATE
+} from '@/helpers/colors';
 
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
@@ -89,7 +94,7 @@ class ProductionMetadataHandler extends MetadataHandler {
         );
 
         this._unit = 'm3';
-        this._colors = [ TEAL ];
+        this._colors = [ AMBER ];
         this._yLabel += ' (κυβ.μέτρα)';
     }
 }
@@ -129,7 +134,7 @@ class SavingsProductionMetadataHandler extends MetadataHandler {
         this._title = 'Αποθέματα και Παραγωγή νερού ';
 
         this._unit = '%';
-        this._colors = [ SKY, TEAL ];
+        this._colors = [ SKY, AMBER ];
         this._yLabel += ' (μεταβολή %)';
     }
 }

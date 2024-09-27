@@ -25,7 +25,7 @@ type PropsType = {
 
 const ChartContent = ( { chartType, dataHandler, metadataHandler }: PropsType ) => {
 
-    console.log( "rendering: ChartContent...", dataHandler.data )
+    console.log( "rendering: ChartContent..." )//, dataHandler.data )
 
     const chartHandler: ChartHandler = new ChartHandlerFactory( 'single', dataHandler.data ).chartHandler;
 
@@ -155,6 +155,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     type={ chartHandler.lineType } 
                     stroke={ metadataHandler.colors[ 0 ][ 400 ] } 
                     fill={ metadataHandler.colors[ 0 ][ 300 ] } 
+                    fillOpacity={ .65 } 
                 />
             </AreaChart>
         </ResponsiveContainer>
@@ -206,6 +207,7 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     dataKey="value" 
                     stroke={ metadataHandler.colors[ 0 ][ 400 ] } 
                     fill={ metadataHandler.colors[ 0 ][ 300 ] } 
+                    fillOpacity={ .65 } 
                 />
             </BarChart>
         </ResponsiveContainer>

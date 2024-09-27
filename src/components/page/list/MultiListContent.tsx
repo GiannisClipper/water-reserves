@@ -37,7 +37,11 @@ const ListContent = ( { dataHandler }: PropsType ) => {
                             const valueKey = j === 0 ? 'time' : x;
                             return (
                                 <Fragment key={ x }>
-                                    <td className='number'>{ row[ valueKey ] }</td>
+                                    <td className='number'>{ 
+                                        j === 0
+                                        ? row[ valueKey ]
+                                        : Math.round( row[ valueKey ] * 100 ) / 100 
+                                    }</td>
                                 </Fragment>
                             );
                         } ) }
