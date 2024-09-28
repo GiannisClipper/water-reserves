@@ -1,4 +1,3 @@
-
 const TopTitle = props => {
 
     const { title } = props;

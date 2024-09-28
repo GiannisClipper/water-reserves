@@ -2,20 +2,60 @@
 
 @layer components {
 
-  .DataSection,
+  .DataSection {
+    @apply flex flex-row flex-wrap justify-around
+    w-full
+  }
+
   .DataSectionSkeleton {
-    @apply flex flex-row justify-around
+    @apply flex flex-row
     w-full
     bg-white bg-opacity-50
     p-8
   }
 
-  .ChartSectionSkeleton {
-    @apply flex flex-row
-    w-full
+  .Card {
+    @apply w-full md:w-[480px]
+    my-4 md:mx-4
+    bg-white bg-opacity-50
+    p-4
   }
 
-  .Card {
-    @apply w-[480px] border border-gray-400 p-2
+  .Card > * {
+    @apply m-4
+  }
+
+  .Card > .Title {
+    @apply
+    mt-2
+    text-lg
+    text-sky-800 font-semibold
+    pb-2
+    border-b border-sky-700
+  }
+
+  .Card > .Info > * {
+    @apply
+    text-sky-800 font-semibold
+    py-1
+  }
+
+  .CardLineChart, .CardPieChart {
+    @apply 
+    border border-solid border-teal-500
+    bg-white bg-opacity-50
+  }
+
+  .CardLineChart text, .CardPieChart text {
+    @apply
+    text-sky-800
+  }
+
+  .XTick, .YTick {
+    @apply text-xs font-sans
+  }
+
+  .ChartLabel {
+    @apply text-sm font-sans
   }
 }

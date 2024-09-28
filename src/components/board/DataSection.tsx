@@ -4,14 +4,11 @@ import { Card } from "./Card";
 
 import { ApiRequestFactory } from "@/logic/ApiRequest";
 
-import type { SearchParamsType } from "@/types/searchParams";
-
 type PropsType = {
     endpoint: string
-    searchParams: SearchParamsType
 }
 
-const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
+const DataSection = async ( { endpoint }: PropsType ) => {
 
     const apiRequestCollection = new ApiRequestFactory( endpoint ).apiRequestCollection;
     let { error, result } = ( await apiRequestCollection.request() ).toJSON() ;
@@ -50,18 +47,6 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
                 option='precipitation'
                 result={ result }
             />
-            {/* <ChartSection 
-                endpoint={ endpoint }
-                searchParams={ searchParams }
-                result={ result }
-            />
-            <Suspense fallback={<ListSectionSkeleton />}>
-                <ListSection 
-                    endpoint={ endpoint }
-                    searchParams={ searchParams }
-                    result={ result }
-                />
-            </Suspense> */}
         </div>
     );
 }

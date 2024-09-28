@@ -18,6 +18,10 @@ abstract class CardHandler {
     _date: string;
     abstract _value: number;
     abstract _unit: UnitType;
+    abstract _recentEntries: ObjectType[];
+
+    _clusters: ObjectType[];
+    _cluster: number;
 
     constructor( result: ObjectType, key: string ) {
 
@@ -30,6 +34,9 @@ abstract class CardHandler {
         this._interval = `${firstDay}-${lastDay}`;
 
         this._date = lastEntry.date.split( '-' ).reverse().join( '/' );
+
+        this._clusters = result[ key ].kmeans.clusters;
+        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
     }
 
     get interval(): string {
@@ -48,12 +55,27 @@ abstract class CardHandler {
         return this._unit;
     }
 
+    get recentEntries(): ObjectType[] {
+        return this._recentEntries;
+    }
+
+    get clusters(): Object[] {
+        return this._clusters;
+    }
+
+    get cluster(): number {
+        return this._cluster;
+    }
+
     toJSON(): ObjectType {
         return {
             interval: this.interval,
             date: this.date, 
             value: this.value,
             unit: this.unit,
+            recentEntries: this.recentEntries,
+            clusters: this.clusters,
+            cluster: this.clusters,
         }
     }
 }
@@ -62,6 +84,7 @@ class SavingsCardHandler extends CardHandler {
 
     _value: number;
     _unit: UnitType = 'm3';
+    _recentEntries: ObjectType[];
 
     constructor( result: any ) {
 
@@ -70,6 +93,11 @@ class SavingsCardHandler extends CardHandler {
 
         const { recent_entries } = result[ key ];
         this._value = recent_entries[ recent_entries.length - 1 ].quantity;
+
+        this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
+            date: entry.date,
+            value: entry.quantity, 
+        } ) );
     }
 }
 
@@ -77,6 +105,7 @@ class ProductionCardHandler extends CardHandler {
 
     _value: number;
     _unit: UnitType = 'm3';
+    _recentEntries: ObjectType[];
 
     constructor( result: any ) {
 
@@ -85,6 +114,11 @@ class ProductionCardHandler extends CardHandler {
 
         const { recent_entries } = result[ key ];
         this._value = recent_entries[ recent_entries.length - 1 ].quantity;
+
+        this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
+            date: entry.date,
+            value: entry.quantity, 
+        } ) );
     }
 }
 
@@ -92,6 +126,7 @@ class PrecipitationCardHandler extends CardHandler {
 
     _value: number;
     _unit: UnitType = 'mm';
+    _recentEntries: ObjectType[];
 
     constructor( result: any ) {
 
@@ -100,6 +135,11 @@ class PrecipitationCardHandler extends CardHandler {
 
         const { recent_entries } = result[ key ];
         this._value = recent_entries[ recent_entries.length - 1 ].precipitation_sum;
+
+        this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
+            date: entry.date,
+            value: entry.precipitation_sum, 
+        } ) );
     }
 }
 

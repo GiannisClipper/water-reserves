@@ -116,7 +116,7 @@ class PrecipitationMetadataHandler extends MetadataHandler {
         );
 
         this._unit = 'mm';
-        this._colors = [ CYAN ];
+        this._colors = [ TEAL ];
         this._yLabel += ' (mm)';
     }
 }
