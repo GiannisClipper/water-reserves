@@ -98,3 +98,11 @@ ffmpeg convert without loss quality
 https://stackoverflow.com/a/27878699/12138247
 
 ffmpeg -i input.mp4 -vcodec copy -af "volume=3dB" output.mp4
+
+
+possibility of DataSettings (Columns, List, Chart, Tooltip)
+{
+  key:{ repr:'', responseKey: '', responseIndex: 0, unit: '' },
+  key:{ repr:'', transKey: '', transMethod: '', unit: '' }
+  key:{ repr:'', groupKey: '', groupValue: '' }
+}

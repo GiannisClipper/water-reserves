@@ -5,7 +5,7 @@ import Error from "@/components/page/Error";
 import ChartSection from "./chart/ChartSection";
 import ListSection from "./list/ListSection";
 
-import { ApiRequest, ApiRequestFactory } from "@/logic/ApiRequest";
+import { ApiRequestFactory } from "@/logic/ApiRequest";
 
 import type { SearchParamsType } from "@/types/searchParams";
 

@@ -259,18 +259,39 @@ class MultiDataHandler extends DataHandler {
             } );
         }
 
+        // calculate ratio against average value
+        // for ( const valueKey of this._valueKeys ) {
+
+        //     const total = Object.values( timeObj )
+        //         .map( row => row[ valueKey ] )
+        //         .reduce( ( tot, val ) => tot + val, 0 );
+
+        //     const average = total / Object.values( timeObj ).length;
+
+        //     Object.values( timeObj ).forEach( row => row[ valueKey ] = row[ valueKey ] / average );
+        // }
+        // this._data = Object.values( timeObj );
+
+        // calculate logarithmic value
+        // for ( const valueKey of this._valueKeys ) {
+        //     Object.values( timeObj ).forEach( row => row[ valueKey ] = Math.log10( row[ valueKey ] ) );
+        // }
+        // this._data = Object.values( timeObj );
+
+        // calculate growth percentage
+        const arr = Object.values( timeObj );
+        console.log( 'arr', arr)
         for ( const valueKey of this._valueKeys ) {
-
-            const total = Object.values( timeObj )
-                .map( row => row[ valueKey ] )
-                .reduce( ( tot, val ) => tot + val, 0 );
-
-                const average = total / Object.values( timeObj ).length;
-
-            Object.values( timeObj ).forEach( row => row[ valueKey ] = row[ valueKey ] / average );
+            for ( let i = arr.length - 1; i >= 0; i-- ) {
+                console.log( 'i', valueKey, i )
+                if ( i > 0 ) {
+                    arr[ i ][ valueKey ] /= arr[ i - 1 ][ valueKey ];
+                } else {
+                    arr[ i ][ valueKey ] = 0;
+                }
+            }
         }
-
-        this._data = Object.values( timeObj );
+        this._data = arr;
     }
 }
 

@@ -3,7 +3,7 @@ import { Left, Right } from "@/components/Generics";
 import { GaugeIcon, WaterIcon, FaucetIcon, RainIcon, ComposeIcon } from "@/components/Icons";
 
 import { 
-    CURRENT_STATUS,
+    STATUS,
     SAVINGS,
     PRODUCTION,
     PRECIPITATION,
@@ -21,12 +21,12 @@ export default function Options() {
     return (
         <div className="Options"> 
 
-            <Link className="Option" href="/current-status">
+            <Link className="Option" href="/status">
                 <Left className='icon'>
                     <GaugeIcon />
                 </Left>
                 <Right className='text'>
-                    { CURRENT_STATUS }
+                    { STATUS }
                 </Right>
             </Link>
 
