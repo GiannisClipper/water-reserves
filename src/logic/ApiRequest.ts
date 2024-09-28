@@ -27,20 +27,30 @@ abstract class ApiRequest {
     public async request() { // Promise<[ RequestErrorType | null, RequestResultType | null ]> {
 
         console.log( this.url );
-        const response = await fetch( this.url );
-        // console.log( response.status, response.statusText )
-        const result: any = await response.json();
 
-        if ( response.status !== 200 ) {
-            this._error = {
-                statusCode: response.status,
-                statusText: response.statusText,
-                message: result.detail
+        try {
+            const response = await fetch( this.url );
+            // console.log( response.status, response.statusText )
+            const result: any = await response.json();
+
+            if ( response.status !== 200 ) {
+                this._error = {
+                    statusCode: response.status,
+                    statusText: response.statusText,
+                    message: result.detail
+                }
+                return this;
             }
-            return this;
-        }
+            this._result = result;
 
-        this._result = result;
+        } catch ( error: any ) {
+            // for example => TypeError: fetch failed
+            // when server is not running 
+            this._error = {
+                message: error
+            }
+        }
+    
         return this;
     }
 
@@ -89,6 +99,13 @@ abstract class ApiRequestWithParams extends ApiRequest {
         }
         return this;
     }
+}
+
+class StatusApiRequest extends ApiRequest { 
+        
+    endpoint = 'status';
+
+    constructor() { super(); }
 }
 
 class ReservoirsApiRequest extends ApiRequest { 
@@ -218,6 +235,12 @@ class ApiRequestFactory {
 
         switch ( endpoint ) {
 
+            case 'status': {
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new StatusApiRequest(),
+                ] );
+                break;
+            }
             case 'reservoirs': {
                 this._apiRequestCollection = new ApiRequestCollection( [
                     new ReservoirsApiRequest()
