@@ -240,7 +240,7 @@ async def select_all(
         reservoir_aggregation, time_aggregation, year_start 
     ).get_query()
 
-    print( 'query:', query )
+    # print( 'query:', query )
 
     headers = get_query_headers( query )
     data = []

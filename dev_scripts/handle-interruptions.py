@@ -76,6 +76,9 @@ def find_geolocation( interruption ):
     for road in roads:
         queries.append( f'{road},{area},{query_suffix}' )
     queries.append( f'{area},{query_suffix}' )
+    if len( area.split( ' ' ) ) > 1:
+        # to bypass wrong results noticed on 'ΑΝΩ ΚΗΦΙΣΙΑ' area
+        queries.append( f'{area},{area.split( ' ' )[ -1 ]},{query_suffix}' )
 
     # make requests
     results = []
@@ -175,11 +178,14 @@ data = read_interruptions( 'interruptions.csv' )
 
 counter = 0
 limit = 50
+# filter = 34
 
 for row in data:
     counter += 1
     if counter > limit:
         break
+    # if counter != filter:
+    #     continue
 
     result = find_geolocation( row )
     row[ 'geo_url' ] = result[ 'url' ]

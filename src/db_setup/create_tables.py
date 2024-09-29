@@ -137,9 +137,7 @@ def create_weather( conn ):
     sql = '''
         CREATE TABLE weather (
             id SERIAL PRIMARY KEY,
-            location_id SERIAL NOT NULL,
             date DATE NOT NULL,
-            weather_code INTEGER,
             temperature_2m_mean REAL,
             temperature_2m_min REAL,
             temperature_2m_max REAL,
@@ -148,6 +146,30 @@ def create_weather( conn ):
             snowfall_sum REAL,
             FOREIGN KEY( location_id ) REFERENCES locations( id ),
             UNIQUE( location_id, date )
+        );
+    '''
+
+def create_interruptions( conn ):
+
+    # Create a cursor object
+    cursor = conn.cursor()
+
+    # Drop table if already exists
+    cursor.execute( "DROP TABLE IF EXISTS interruptions" )
+
+    # Create table
+    sql = '''
+        CREATE TABLE interruptions (
+            id SERIAL PRIMARY KEY,
+            date DATE NOT NULL,
+            area VARCHAR(30) NOT NULL,
+            intersection VARCHAR(128) NOT NULL,
+            scheduled VARCHAR(30),
+            geo_url TEXT,
+            geo_descr TEXT,
+            lat REAL,
+            lon REAL,
+            UNIQUE( date, area, intersection )
         );
     '''
 

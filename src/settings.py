@@ -10,6 +10,8 @@ class Settings( BaseSettings ):
     production_url: str = 'https://www.eydap.gr/el/Controls/GeneralControls/DrinkingWaterProductionDetails.aspx'
     weather_url: str = 'https://archive-api.open-meteo.com/v1/archive'
 
+    interruptions_url: str = 'https://opendata.eydap.gr'
+
     savings_html_path: str = 'resources/db_setup/savings/html'
     production_html_path: str = 'resources/db_setup/production/html'
     weather_json_path: str = 'resources/db_setup/weather/json'
@@ -17,6 +19,9 @@ class Settings( BaseSettings ):
     savings_csv_path: str = 'resources/db_setup/savings'
     production_csv_path: str = 'resources/db_setup/production'
     weather_csv_path: str = 'resources/db_setup/weather'
+
+    interruptions_csv_path: str = 'resources/db_setup/interruptions/csv'
+    interruptions_json_path: str = 'resources/db_setup/interruptions/json'
 
     savings_cron: str = "5,25,45 8-21 * * *"
     production_cron: str = "10,30,50 8-21 * * *"
