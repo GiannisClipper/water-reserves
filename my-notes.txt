@@ -123,3 +123,24 @@ $ pytest tests/routers/test_savings.py -v -s -k "test_select_days_range_custom_y
 
 python -m src.request_savings
 python -m src.db_setup.request_savings
+
+
+# search for more data or analysis
+
+https://opendata.eydap.gr/terms.php?lang=EL
+https://climate.copernicus.eu/european-temperature
+https://cds-beta.climate.copernicus.eu/datasets/sis-temperature-statistics?tab=documentation
+
+# nominatim.openstreetmap.org
+
+https://nominatim.openstreetmap.org/search?q=laskaratou,athens,attica,greece&format=json
+
+https://nominatim.openstreetmap.org/search?q=%CE%B2%CE%BF%CF%85%CE%BB%CE%B1,attica,greece&format=json
+
+https://nominatim.openstreetmap.org/search?q=Αγ. Δημητριου,ΑΓ. ΔΗΜΗΤΡΙΟΣ Α,attica,greece&format=json
+https://nominatim.openstreetmap.org/search?q=%CE%91%CE%B3.%20%CE%94%CE%B7%CE%BC%CE%B7%CF%84%CF%81%CE%B9%CE%BF%CF%85,%CE%91%CE%93.%20%CE%94%CE%97%CE%9C%CE%97%CE%A4%CE%A1%CE%99%CE%9F%CE%A3%20%CE%91,attica,greece&format=json
+
+
+Σκυλίτση Ομ.,ΠΕΙΡΑΙΑΣ
+Μεγάλου Αλεξάνδρου,ΠΕΙΡΑΙΑΣ
+https://nominatim.openstreetmap.org/search?q=Μεγάλου Αλεξάνδρου,ΠΕΙΡΑΙΑΣ,attica,greece&format=json
