@@ -54,7 +54,7 @@ for line in lines:
             time.sleep( 1.5 )
 
     # transform values
-    results = list( map( lambda r: { 
+    results = list( map( lambda r: {
         'lat': float( r[ 'lat' ] ), 
         'lon': float( r[ 'lon' ] ),
         # reverse the description => greece,attica,area,address
@@ -70,7 +70,7 @@ for line in lines:
     # ' Ελλάς, Αποκεντρωμένη Διοίκηση Αττικής, Περιφέρεια Αττικής, Περιφερειακή Ενότητα Πειραιώς, Δήμος Κερατσινίου - Δραπετσώνας, Πειραιάς,Δημοτική Ενότητα Κερατσινίου', 
     # ' Ελλάς, Αποκεντρωμένη Διοίκηση Αττικής, Περιφέρεια Αττικής, Περιφερειακή Ενότητα Πειραιώς,Δήμος Κερατσινίου - Δραπετσώνας'
     # best rank: 8
-    # best result: { 'lat': 37.969759, 'lon': 23.622377, 'descr': ' Ελλάς, 187 58, Αποκεντρωμένη Διοίκηση Αττικής, Περιφέρεια Αττικής, Περιφερειακή Ενότητα Πειραιώς, Δήμος Κερατσινίου - Δραπετσώνας, Δημοτική Ενότητα Κερατσινίου, Αμφιάλη,Αμισού'}
+    # best result: {'lat': 37.969759, 'lon': 23.622377, 'descr': 'Αμισού, Αμφιάλη, Δημοτική Ενότητα Κερατσινίου, Δήμος Κερατσινίου - Δραπετσώνας, Περιφερειακή Ενότητα Πειραιώς, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 187 58, Ελλάς'}
 
     # split description
     results = list( map( lambda r: { 
@@ -104,7 +104,7 @@ for line in lines:
 
 
     # print( len( results ), results )
-    best_result[ 'descr' ] = ','.join( best_result[ 'descr' ] )
+    best_result[ 'descr' ] = ','.join( reversed( best_result[ 'descr' ] ) )
     print( 'best rank:', best_rank )
     print( 'best result:', best_result )
 
