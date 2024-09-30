@@ -57,46 +57,51 @@ def request_monthly( monthYear ):
             print( f'Error: {error}' )
 
 
+def parse_argv( argv ):
+
+    n = len( sys.argv )
+    if n < 2 or n > 3:
+        raise Exception( 'Incorrect number of parameters.' )
+
+    # convert passing arguments to integer variables
+
+    fromYear, fromMonth = sys.argv[ 1 ].split( '-' )
+    fromYear = int( fromYear )
+    fromMonth = int( fromMonth )
+    toYear = fromYear
+    toMonth = fromMonth
+
+    if n == 3:
+        toYear, toMonth = sys.argv[ 2 ].split( '-' )
+        toYear = int( toYear )
+        toMonth = int( toMonth )
+
+    # calculate all month/year options
+
+    year = fromYear
+    month = fromMonth
+    monthYears = []
+    while True:
+        if ( year == toYear and month > toMonth ) or year > toYear:
+            break
+
+        monthYears.append( f'{month:02}/{year:04}' )
+        month += 1
+        if month > 12:
+            year +=1
+            month = 1
+
+    return monthYears
+
+
 if __name__ == "__main__":
 
     try:
-        n = len( sys.argv )
-        if n < 2 or n > 3:
-            raise Exception( 'Incorrect number of parameters.' )
-
-        # convert passing arguments to integer variables
-
-        fromYear, fromMonth = sys.argv[ 1 ].split( '-' )
-        fromYear = int( fromYear )
-        fromMonth = int( fromMonth )
-        toYear = fromYear
-        toMonth = fromMonth
-
-        if n == 3:
-            toYear, toMonth = sys.argv[ 2 ].split( '-' )
-            toYear = int( toYear )
-            toMonth = int( toMonth )
-
-        # calculate all month/year requests
-
-        year = fromYear
-        month = fromMonth
-        monthYears = []
-        while True:
-            if ( year == toYear and month > toMonth ) or year > toYear:
-                break
-            monthYears.append( f'{month:02}/{year:04}' )
-            month += 1
-            if month > 12:
-                year +=1
-                month = 1
+        monthYears = parse_argv( sys.argv )
 
         # request data and store in csv files
-
         for monthYear in monthYears:
-            # print( monthYear )
             request_monthly( monthYear )
-        # print( os.getcwd() )
 
     except Exception as error:
         print( 'Error: ' + repr( error ) )

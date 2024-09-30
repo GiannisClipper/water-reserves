@@ -131,6 +131,12 @@ https://opendata.eydap.gr/terms.php?lang=EL
 https://climate.copernicus.eu/european-temperature
 https://cds-beta.climate.copernicus.eu/datasets/sis-temperature-statistics?tab=documentation
 
+# geoapify
+login: giannisclipper (google) 
+key: d26975e0efb049b99bea416fba70e36f
+
+https://apidocs.geoapify.com/docs/geocoding/forward-geocoding/
+
 # nominatim.openstreetmap.org
 
 https://nominatim.openstreetmap.org/search?q=laskaratou,athens,attica,greece&format=json
@@ -144,3 +150,13 @@ https://nominatim.openstreetmap.org/search?q=%CE%91%CE%B3.%20%CE%94%CE%B7%CE%BC%
 Σκυλίτση Ομ.,ΠΕΙΡΑΙΑΣ
 Μεγάλου Αλεξάνδρου,ΠΕΙΡΑΙΑΣ
 https://nominatim.openstreetmap.org/search?q=Μεγάλου Αλεξάνδρου,ΠΕΙΡΑΙΑΣ,attica,greece&format=json
+
+https://nominatim.openstreetmap.org/search?format=json&q=Κυκλάδων,ΑΝΩ ΚΗΦΙΣΙΑ,attica,greece
+
+Κυκλάδων και 25ης Μαρτίου,ΑΝΩ ΚΗΦΙΣΙΑ
+Ι. Αγαθού και Κορδάτου,ΕΛΕΥΣΙΝΑ
+Σκυλίτση Ομ. και Μεγάλου Αλεξάνδρου,ΠΕΙΡΑΙΑΣ,ATTICA,GREECE
+
+3ης Σεπτεμβρίου και Γκυϊλφόρδου,ΠΛ. ΒΙΚΤΩΡΙΑΣ => προστέθηκε το name
+
+Αβύδου και Πλατεία Αορνού,ΖΩΓΡΑΦΟΣ

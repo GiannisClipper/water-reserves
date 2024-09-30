@@ -40,3 +40,19 @@ def get_query_headers( query ):
             buffer += c
 
     return headers
+
+def simplify( text ):
+
+    dict = { 
+        'Ά': 'Α', 'Έ': 'Ε', 'Ή': 'Η', 'Ί': 'Ι', 'Ό': 'Ο', 'Ύ': 'Υ', 'Ώ': 'Ω', 
+        'Ϊ': 'Ι', 'Ϋ': 'Υ'
+    }
+
+    text = text.upper()
+    words = text.split()
+    for i, word in enumerate( words ):
+        letters = list( word )
+        letters = list( map( lambda l: dict.get( l ) if dict.get( l ) else l, letters ) )
+        words[ i ] = ''.join( letters )
+
+    return ' '.join( words )

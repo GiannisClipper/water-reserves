@@ -33,6 +33,10 @@ class Settings( BaseSettings ):
     db_user: str = ""
     db_password: str = ""
 
+    # Pydantic will read the environment variables in a case-insensitive way, 
+    # an upper-case variable APP_NAME will still be read for the attribute app_name
+    GEOAPIFY_API_KEY: str =""
+
     status: object = None
 
     model_config = SettingsConfigDict( 

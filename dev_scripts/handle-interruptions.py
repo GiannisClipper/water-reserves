@@ -3,13 +3,17 @@ import time
 import psycopg
 conninfo = f"user=admin password=pass5678 host=127.0.0.1 port=5432 dbname=water_reserves"
 
-def csv_row( row ):
+# parse csv rows, while any of the columns 
+# #may contain values in double quotes
+def parse_csv_row( row ):
+
+    DOUBLE_QUOTE = '"'
 
     result = []
     enabled = True
     buffer = ''
     for chr in row:
-        if chr == '"':
+        if chr == DOUBLE_QUOTE:
             # start string in double quotes
             if buffer == '':
                 enabled = False
@@ -47,7 +51,7 @@ def read_interruptions( filename ):
     # split csv rows into values
     data = []
     for line in lines:
-        line = csv_row( line )
+        line = parse_csv_row( line )
 
         # transform values
         line[ 0 ] = '-'.join( reversed( line[ 0 ].split( '/' ) ) )
