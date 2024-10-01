@@ -41,14 +41,25 @@ def get_query_headers( query ):
 
     return headers
 
-def simplify( text ):
+def no_tones( text ):
 
     dict = { 
         'Ά': 'Α', 'Έ': 'Ε', 'Ή': 'Η', 'Ί': 'Ι', 'Ό': 'Ο', 'Ύ': 'Υ', 'Ώ': 'Ω', 
-        'Ϊ': 'Ι', 'Ϋ': 'Υ'
+        'Ϊ': 'Ι', 'Ϋ': 'Υ',
+        'ά': 'α', 'έ': 'ε', 'ή': 'η', 'ί': 'ι', 'ό': 'ο', 'ύ': 'υ', 'ώ': 'ω', 
+        'ϊ': 'ι', 'ϋ': 'υ',
     }
+    words = text.split()
+    for i, word in enumerate( words ):
+        letters = list( word )
+        letters = list( map( lambda l: dict.get( l ) if dict.get( l ) else l, letters ) )
+        words[ i ] = ''.join( letters )
 
-    text = text.upper()
+    return ' '.join( words )
+
+def no_vowels( text ):
+
+    dict = { 'Η': 'Ι', 'Υ': 'Ι', 'Ω': 'Ο' }
     words = text.split()
     for i, word in enumerate( words ):
         letters = list( word )
