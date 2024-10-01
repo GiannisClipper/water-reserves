@@ -3,6 +3,8 @@ import json
 import httpx
 import time
 import sys
+
+from dev_scripts.MunicipalitiesHandler import MunicipalitiesHandler
 from .GeolocationHandler import NominatimHandler, GeoapifyHandler
 from src.settings import get_settings
 from .request_interruptions import parse_argv
@@ -129,6 +131,8 @@ def parse_json( monthYear ):
     if all( list( map( lambda inter: inter.get( 'geo_url' ) != None, interruptions ) ) ):
         return
 
+    municipalitiesHandler = MunicipalitiesHandler()
+
     saveEnabled = True
 
     for i, interruption in enumerate( interruptions ):
@@ -149,6 +153,7 @@ def parse_json( monthYear ):
             interruption[ 'geo_descr' ] = result[ 'descr' ]
             interruption[ 'lat' ] = result[ 'lat' ]
             interruption[ 'lon' ] = result[ 'lon' ]
+            interruption[ 'municipality' ] = municipalitiesHandler.findByPoint( result[ 'lat' ], result[ 'lon' ] )
             saveEnabled = True
 
         print( 'interruption:', interruptions[ i ] )
