@@ -160,3 +160,14 @@ https://nominatim.openstreetmap.org/search?format=json&q=Κυκλάδων,ΑΝΩ
 3ης Σεπτεμβρίου και Γκυϊλφόρδου,ΠΛ. ΒΙΚΤΩΡΙΑΣ => προστέθηκε το name
 
 Αβύδου και Πλατεία Αορνού,ΖΩΓΡΑΦΟΣ
+
+# GEOJSON
+
+shapely (Manipulation and analysis of geometric objects in the Cartesian plane)
+https://shapely.readthedocs.io/en/stable/
+
+How to check if point is inside a polygon?
+https://automating-gis-processes.github.io/2017/lessons/L3/point-in-polygon.html
+
+How to convert geojson to shapely polygon
+https://stackoverflow.com/questions/68820085/how-to-convert-geojson-to-shapely-polygon
