@@ -103,24 +103,28 @@ def simplify_area( area ):
 
     return area
 
-def parse_queries( interruption ):
+def parse_queries( base_url, interruption ):
+
+    suffix = 'Attica,Greece'
 
     area = interruption[ 'area' ]
+    if len( area.split( ' ' ) ) > 1:
+        area = area.split( ' ' )[ -1 ]
+
     intersection = interruption[ 'intersection' ]
     intersection = simplify_intersection( intersection )
-    roads = parse_roads( interruption[ 'intersection' ] )
+    roads = parse_roads( intersection )
     roads = list( map( lambda r: simplify_road( r ), roads ) )
 
     result = []
     for road in roads:
-        result.append( f'{road},{area}' )
+        result.append( { 
+            'road': road,
+            'area': area,
+            'url': f'{base_url}{road},{area},{suffix}'
+        } )
 
     return result
-
-def parse_url( base_url, query ):
-
-    suffix = 'Attica,Greece'
-    return f'{base_url}{query},{suffix}'
 
 def make_request( url ):
 
@@ -130,21 +134,29 @@ def make_request( url ):
         print( f'Success: {response.status_code}' )
         return response
 
-def parse_nominatim_response( url, response ):
+def parse_nominatim_response( query, response ):
 
+    url = query[ 'url' ]
+    area = query[ 'area' ]
+    road = query[ 'road' ]
     data = response.json()
     result = []
     for row in data:
         result.append( {
             'url': url,
+            'area': area,
+            'road': road,
             'descr': row[ 'display_name' ],
             'lat': float( row[ 'lat' ] ),
             'lon': float( row[ 'lon' ] )
         } )
     return result
 
-def parse_geoapify_response( url, response ):
+def parse_geoapify_response( query, response ):
 
+    url = query[ 'url' ]
+    area = query[ 'area' ]
+    road = query[ 'road' ]
     data = response.json()
     result = []
     for row in data[ 'features' ]:
@@ -156,152 +168,260 @@ def parse_geoapify_response( url, response ):
         if properties.get( 'suburb' ): descr = f'{descr}, {properties.get( 'suburb' )}'
         if properties.get( 'city' ): descr = f'{descr}, {properties.get( 'city' )}'
         if properties.get( 'state_district' ): descr = f'{descr}, {properties.get( 'state_district' )}'
+        if properties.get( 'state' ): descr = f'{descr}, {properties.get( 'state' )}'
         result.append( {
             'url': url,
+            'area': area,
+            'road': road,
             'descr': descr,
             'lat': row[ 'properties' ][ 'lat' ],
             'lon': row[ 'properties' ][ 'lon' ]
         } )
     return result
 
-def filter_results( results, area ):
+# def filter_results( results, area ):
+
+#     district = [ 'ΑΤΤΙΚΗ', 'ATTICA' ]
+
+#     area = simplify_area( area )
+
+#     new_results = []
+#     for row in results:
+#         descr = simplify( row[ 'descr' ] )
+#         if area in descr and any( list( map( lambda v: v in descr, district ) ) ):
+#             new_results.append( row )
+
+#     return new_results
+
+# def select_result( results ):
+
+#     # reverse the order of the description from area,address,attica,greece to: greece,attica,area,address
+#     for result in results:
+#         result[ 'descr' ] = ','.join( reversed( result[ 'descr' ].split( ',' ) ) )
+
+#     # sort by description
+#     results = sorted( results, key=lambda d: d[ 'descr' ] )
+#     # print( list( map( lambda r: r[ 'descr' ], results ) ) )
+#     # best rank: 8
+#     # best result: {'lat': 37.969759, 'lon': 23.622377, 'descr': 'Αμισού, Αμφιάλη, Δημοτική Ενότητα Κερατσινίου, Δήμος Κερατσινίου - Δραπετσώνας, Περιφερειακή Ενότητα Πειραιώς, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 187 58, Ελλάς'}
+
+#     # split description into list
+#     for result in results:
+#         result[ 'descr' ] = result[ 'descr' ].split( ',' )
+
+#     best_rank = 0
+#     best_result = None
+#     prev_result = None
+
+#     for result in results:
+
+#         if not best_result:
+#             best_result = result
+#             prev_result = result
+#             continue
+
+#         rank = 0
+#         for descr in zip( result[ 'descr' ], prev_result[ 'descr' ] ):
+#             if descr[ 0 ] == descr[ 1 ]:
+#                 rank += 1
+
+#         if rank >= best_rank:
+#             best_rank = rank
+#             best_result = result
+
+#         prev_result = result;
+
+#     if best_result == None:
+#         return best_result
+
+#     # reverse back the order of the description
+#     best_result[ 'descr' ] = ','.join( reversed( best_result[ 'descr' ] ) )
+#     return best_result
+
+def match_area_and_road( results ):
 
     district = [ 'ΑΤΤΙΚΗ', 'ATTICA' ]
 
-    area = simplify_area( area )
-
-    new_results = []
-    for row in results:
-        descr = simplify( row[ 'descr' ] )
-        if area in descr and any( list( map( lambda v: v in descr, district ) ) ):
-            new_results.append( row )
-
-    return new_results
-
-def select_result( results ):
-
-    # reverse the order of the description from area,address,attica,greece to: greece,attica,area,address
     for result in results:
-        result[ 'descr' ] = ','.join( reversed( result[ 'descr' ].split( ',' ) ) )
 
-    # sort by description
-    results = sorted( results, key=lambda d: d[ 'descr' ] )
-    # print( list( map( lambda r: r[ 'descr' ], results ) ) )
-    # best rank: 8
-    # best result: {'lat': 37.969759, 'lon': 23.622377, 'descr': 'Αμισού, Αμφιάλη, Δημοτική Ενότητα Κερατσινίου, Δήμος Κερατσινίου - Δραπετσώνας, Περιφερειακή Ενότητα Πειραιώς, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 187 58, Ελλάς'}
+        descr = simplify( result[ 'descr' ] )
+        area = simplify_area( result[ 'area' ] )
+        road = simplify( result[ 'road' ] )
 
-    # split description into list
-    for result in results:
-        result[ 'descr' ] = result[ 'descr' ].split( ',' )
+        if any( list( map( lambda v: v in descr, district ) ) ):
+            if area == None or area in descr:
+                if road == None or road in descr:
+                    return result
 
-    best_rank = 0
-    best_result = None
-    prev_result = None
+    return None
+
+def match_area( results ):
+
+    district = [ 'ATTICA', 'ΑΤΤΙΚΗ', 'ΑΤΙΙΚΗ' ]
+    # ΑΤΙΙΚΗ: very common typo error in geoapify results
 
     for result in results:
 
-        if not best_result:
-            best_result = result
-            prev_result = result
-            continue
+        descr = simplify( result[ 'descr' ] )
+        area = simplify_area( result[ 'area' ] )
 
-        rank = 0
-        for descr in zip( result[ 'descr' ], prev_result[ 'descr' ] ):
-            if descr[ 0 ] == descr[ 1 ]:
-                rank += 1
+        if any( list( map( lambda v: v in descr, district ) ) ):
+            if area == None or area in descr:
+                return result
 
-        if rank >= best_rank:
-            best_rank = rank
-            best_result = result
+    return None
 
-        prev_result = result;
+def match_road( results ):
 
-    if best_result == None:
-        return best_result
+    district = [ 'ATTICA', 'ΑΤΤΙΚΗ', 'ΑΤΙΙΚΗ' ]
+    # ΑΤΙΙΚΗ: very common typo error in geoapify results
 
-    # reverse back the order of the description
-    best_result[ 'descr' ] = ','.join( reversed( best_result[ 'descr' ] ) )
-    return best_result
+    for result in results:
 
-def parse_json( monthYear ):
+        descr = simplify( result[ 'descr' ] )
+        road = simplify( result[ 'road' ] )
 
-    print( f'- Month/Year: {monthYear}' )
+        if any( list( map( lambda v: v in descr, district ) ) ):
+            if road == None or road in descr:
+                return result
 
+    return None
+
+
+def request_apis( interruption ):
+        
     settings = get_settings()
-
-    interruptions = parse_interruptions( monthYear )
-
-    if all( list( map( lambda inter: inter.get( 'geo_url' ) != None, interruptions ) ) ):
-        return
 
     base_urls ={
         'nominatim': 'https://nominatim.openstreetmap.org/search?format=json&q=',
         'geoapify': f'https://api.geoapify.com/v1/geocode/search?apiKey={settings.GEOAPIFY_API_KEY}&lang=el&text='
     }
 
-    for i, row in enumerate( interruptions ):
+    nominatim_queries = parse_queries( base_urls[ 'nominatim' ], interruption )
+    geoapify_queries = parse_queries( base_urls[ 'geoapify' ], interruption )
 
-        # if i % 10 == 0 or i == len( interruptions ) - 1:
-        #     try: 
-        #         yearMonth = '-'.join( reversed( monthYear.split( '/' ) ) )
-        #         jsonfile = f'{settings.interruptions_json_path}/{yearMonth}.json'
+    # to locate incomplete geolocations
+    # print( 'Incomplete interruption:', interruption )
+    # print( nominatim_queries )
+    # print( geoapify_queries )
+    # return None
 
-        #         print( f'Write into: {jsonfile}' )
-        #         with open( jsonfile, 'w', encoding='utf8' ) as f:
-        #             json.dump( interruptions, f, indent=2, sort_keys=False, ensure_ascii=False )
-        #             # f.write( str( interruptions ) )
+    # make requests
+    nominatim_results = []
+    geoapify_results = []
+    result = None
 
-        #     except Exception as error:
-        #         print( f'Error: {error}' )
+    for query in nominatim_queries:
+        url = query[ 'url' ]
+        area = query[ 'area' ]
+        road = query[ 'road' ]
+        response = make_request( url )
+        results = parse_nominatim_response( query, response )
+        result = match_area_and_road( results )
+        if result != None:
+            return result
+        nominatim_results += results
+        print( 'nominatim_results', nominatim_results)
+        time.sleep( 1.25 )
+    
+    for query in geoapify_queries:
+        url = query[ 'url' ]
+        area = query[ 'area' ]
+        road = query[ 'road' ]
+        response = make_request( url )
+        results = parse_geoapify_response( query, response )
+        result = match_area_and_road( results )
+        if result != None:
+            return result
+        geoapify_results += results
+        print( 'geoapify_queries', geoapify_queries)
+        time.sleep( 1.25 )
 
-        if row.get( 'geo_url' ) != None:
+    result = match_area( nominatim_results )
+    if result != None:
+        return result
+
+    result = match_area( geoapify_results )
+    if result != None:
+        return result
+
+    result = match_road( nominatim_results )
+    if result != None:
+        return result
+
+    result = match_road( geoapify_results )
+
+    print( 'nominatim_results:', nominatim_results )
+    print( 'geoapify_results:', geoapify_results )
+
+    return result
+
+def save_interruptions( interruptions ):
+
+    settings = get_settings()
+
+    try: 
+        yearMonth = '-'.join( reversed( monthYear.split( '/' ) ) )
+        jsonfile = f'{settings.interruptions_json_path}/{yearMonth}.json'
+
+        print( f'Write into: {jsonfile}' )
+        with open( jsonfile, 'w', encoding='utf8' ) as f:
+            json.dump( interruptions, f, indent=2, sort_keys=False, ensure_ascii=False )
+    
+    except Exception as error:
+        print( f'Error: {error}' )
+
+
+def parse_json( monthYear ):
+
+    print( f'- Month/Year: {monthYear}' )
+
+    interruptions = parse_interruptions( monthYear )
+
+    if all( list( map( lambda inter: inter.get( 'geo_url' ) != None, interruptions ) ) ):
+        return
+
+    saveEnabled = True
+
+    for i, interruption in enumerate( interruptions ):
+
+        if saveEnabled and i % 10 == 0:
+            save_interruptions( interruptions )
+            saveEnabled = False
+
+
+        if interruption.get( 'geo_url' ) != None:
             continue
 
         print( f'#{i+1} of {len( interruptions )}')
 
-        queries = parse_queries( row )
-        nominatim_urls = list( map( lambda query: parse_url( base_urls[ 'nominatim' ], query ), queries ) )
-        geoapify_urls = list( map( lambda query: parse_url( base_urls[ 'geoapify' ], query ), queries ) )
-
-
-        # to locate incomplete geolocations
-        print( 'Incomplete geolocation:', row )
-        print( nominatim_urls )
-        print( geoapify_urls )
-        continue
-
-
-        # make requests
-        all_results = []
-
-        for nominatim_url in nominatim_urls:
-            response = make_request( nominatim_url )
-            results = parse_nominatim_response( nominatim_url, response )
-            # print( results )
-            results = filter_results( results, row[ 'area' ] )
-            all_results += results
-            time.sleep( 1.25 )
-        
-        if len( all_results ) == 0:
-            for geoapify_url in geoapify_urls:
-                response = make_request( geoapify_url )
-                results = parse_geoapify_response( geoapify_url, response )
-                # print( results )
-                results = filter_results( results, row[ 'area' ] )
-                all_results += results
-                time.sleep( 1.25 )
-
-        # print( 'all_results:', all_results )
-
-        result = select_result( all_results )
+        result = request_apis( interruption )
 
         if result != None:
-            row[ 'geo_url' ] = result[ 'url' ]
-            row[ 'geo_descr' ] = result[ 'descr' ]
-            row[ 'lat' ] = result[ 'lat' ]
-            row[ 'lon' ] = result[ 'lon' ]
+            interruption[ 'geo_url' ] = result[ 'url' ]
+            interruption[ 'geo_descr' ] = result[ 'descr' ]
+            interruption[ 'lat' ] = result[ 'lat' ]
+            interruption[ 'lon' ] = result[ 'lon' ]
+            saveEnabled = True
 
-        print( 'row:', interruptions[ i ] )
+        print( 'interruption:', interruptions[ i ] )
+
+        if saveEnabled and i == len( interruptions ) - 1:
+            save_interruptions( interruptions )
+
+
+# def parse_json( monthYear ):
+
+#     interruptions = parse_interruptions( monthYear )
+
+#     for i, interruption in enumerate( interruptions ):
+
+#         if interruption.get( 'geo_url' ) != None:
+#             continue
+
+#         print( f'#{i+1} of {len( interruptions )}')
+
+#         result = request_apis( interruption )
 
 
 if __name__ == "__main__":
@@ -313,6 +433,14 @@ if __name__ == "__main__":
         for monthYear in monthYears:
             parse_json( monthYear )
             break
+
+        # results = [ 
+        #     {'url': 'https://api.geoapify.com/v1/geocode/search?apiKey=d26975e0efb049b99bea416fba70e36f&lang=el&text=Μεσσολογίου,ΓΑΛΑΤΣΙ,Attica,Greece', 'area': 'ΓΑΛΑΤΣΙ', 'road': 'Μεσσολογίου', 'descr': ', Γαλατσίου, Ατιική', 'lat': 38.01915, 'lon': 23.75711}, 
+        #     {'url': 'https://api.geoapify.com/v1/geocode/search?apiKey=d26975e0efb049b99bea416fba70e36f&lang=el&text=Μεσσολογίου,ΓΑΛΑΤΣΙ,Attica,Greece', 'area': 'ΓΑΛΑΤΣΙ', 'road': 'Μεσσολογίου', 'descr': ', Γαλάτσιον, Ατιική', 'lat': 38.01915, 'lon': 23.75711}, 
+        #     {'url': 'https://api.geoapify.com/v1/geocode/search?apiKey=d26975e0efb049b99bea416fba70e36f&lang=el&text=Κνωσού,ΓΑΛΑΤΣΙ,Attica,Greece', 'area': 'ΓΑΛΑΤΣΙ', 'road': 'Κνωσού', 'descr': ', Γαλατσίου, Ατιική', 'lat': 38.01915, 'lon': 23.75711},
+        #     {'url': 'https://api.geoapify.com/v1/geocode/search?apiKey=d26975e0efb049b99bea416fba70e36f&lang=el&text=Κνωσού,ΓΑΛΑΤΣΙ,Attica,Greece', 'area': 'ΓΑΛΑΤΣΙ', 'road': 'Κνωσού', 'descr': ', Γαλάτσιον, Ατιική', 'lat': 38.01915, 'lon': 23.75711}
+        # ]
+        # print( match_area( results ) )
 
     # except Exception as ex:
     #     # How do I print an exception in Python?
