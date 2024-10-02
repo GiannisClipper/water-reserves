@@ -1,16 +1,13 @@
 import os
 import json
-import httpx
-import time
 import sys
 
 from dev_scripts.MunicipalitiesHandler import MunicipalitiesHandler
-from .GeolocationHandler import NominatimHandler, GeoapifyHandler
+from src.geodata.GeolocationHandler import GeolocationHandler
 from src.settings import get_settings
 from .request_interruptions import parse_argv
 from src.helpers.csv import read_csv
 from src.helpers.json import parse_json_content
-from src.helpers.text import no_tones
 
 def parse_interruptions( monthYear ):
 
@@ -54,58 +51,6 @@ def parse_interruptions( monthYear ):
     return data
 
 
-def request_apis( interruption ):
-
-    nominatimHandler = NominatimHandler( interruption )
-    geoapifyHandler = GeoapifyHandler( interruption )
-
-    # make requests
-    result = None
-
-    for url in nominatimHandler.urls:
-        nominatimHandler.make_request( url )
-        results = nominatimHandler.results
-        match_results = list( filter( lambda r: r[ 'match_district' ] and r[ 'match_area' ] and r[ 'match_street' ], results ) )
-        # print( 'nominatim_results =>', nominatimHandler.results )
-        if len( match_results ) > 0:
-            return match_results[ 0 ]
-        time.sleep( 1.25 )
-    
-    for url in geoapifyHandler.urls:
-        geoapifyHandler.make_request( url )
-        results = geoapifyHandler.results
-        match_results = list( filter( lambda r: r[ 'match_district' ] and r[ 'match_area' ] and r[ 'match_street' ], results ) )
-        # print( 'geoapify_results =>', geoapifyHandler.results )
-        if len( match_results ) > 0:
-            return match_results[ 0 ]
-        time.sleep( 1.25 )
-
-    results = nominatimHandler.results
-    match_results = list( filter( lambda r: r[ 'match_district' ] and r[ 'match_area' ], results ) )
-    if len( match_results ) > 0:
-        return match_results[ 0 ]
-
-    results = geoapifyHandler.results
-    match_results = list( filter( lambda r: r[ 'match_district' ] and r[ 'match_area' ], results ) )
-    if len( match_results ) > 0:
-        return match_results[ 0 ]
-
-    results = nominatimHandler.results
-    match_results = list( filter( lambda r: r[ 'match_district' ] and r[ 'match_street' ], results ) )
-    if len( match_results ) > 0:
-        return match_results[ 0 ]
-
-    results = geoapifyHandler.results
-    match_results = list( filter( lambda r: r[ 'match_district' ] and r[ 'match_street' ], results ) )
-    if len( match_results ) > 0:
-        return match_results[ 0 ]
-
-    print( 'nominatim_results =>', nominatimHandler.results )
-    print( 'geoapify_results =>', geoapifyHandler.results )
-
-    return None
-
-
 def save_interruptions( interruptions ):
 
     settings = get_settings()
@@ -144,10 +89,13 @@ def parse_json( monthYear ):
         if interruption.get( 'geo_url' ) != None:
             continue
 
-        print( f'#{i+1} of {len( interruptions )}')
+        print()
+        print( f'{monthYear} => #{i+1} of {len( interruptions )}')
 
-        result = request_apis( interruption )
-
+        print(interruption)
+        geolocationHandler = GeolocationHandler( interruption )
+        result = geolocationHandler.result
+        # print( '!! result !!', result)
         if result != None:
             interruption[ 'geo_url' ] = result[ 'url' ]
             interruption[ 'geo_descr' ] = result[ 'descr' ]
@@ -158,8 +106,8 @@ def parse_json( monthYear ):
 
         print( 'interruption:', interruptions[ i ] )
 
-        if i > 6:
-            break
+        # if i > 6:
+        #     break
 
         if saveEnabled and i == len( interruptions ) - 1:
             save_interruptions( interruptions )
