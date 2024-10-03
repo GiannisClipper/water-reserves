@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import resources.db_setup.interruptions.errata as errata
 
 class AddressParser( ABC ):
 
@@ -32,6 +33,10 @@ class AreaAddressParser( AddressParser ):
         # parts = list( filter( lambda p: p.upper() not in excluded, parts ) )
 
         # self._area = ' '.join( parts )
+
+        if errata.area.get( area ):
+            area = errata.area[ area ]
+
         self._area = area
 
     @property

@@ -19,7 +19,8 @@ class GeolocationHandler:
 
         # request (district), (country), area, street
 
-        address_list = IntersectionAreaAddressParser( self._area, self._intersection ).address
+        address_parser = IntersectionAreaAddressParser( self._area, self._intersection )
+        address_list = address_parser.address
         results_backup = []
 
         # use Nominatim Api

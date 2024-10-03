@@ -1,5 +1,5 @@
 import os
-from .MunicipalitiesHandler import MunicipalitiesHandler
+from src.geography.MunicipalitiesHandler import MunicipalitiesHandler
 from src.helpers.json import parse_json_content
 
 interruptions_file = 'resources/db_setup/interruptions/json/2024-02.json'

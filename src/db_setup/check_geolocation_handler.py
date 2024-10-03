@@ -2,12 +2,14 @@ import os
 import json
 import sys
 
-from dev_scripts.MunicipalitiesHandler import MunicipalitiesHandler
-from src.geodata.GeolocationHandler import GeolocationHandler
-from src.settings import get_settings
 from .request_interruptions import parse_argv
 from src.helpers.csv import read_csv
 from src.helpers.json import parse_json_content
+
+from src.settings import get_settings
+
+from src.geography.GeolocationHandler import GeolocationHandler
+from src.geography.MunicipalitiesHandler import MunicipalitiesHandler
 
 def parse_interruptions( monthYear ):
 
@@ -113,37 +115,29 @@ def parse_json( monthYear ):
             save_interruptions( interruptions )
 
 
-# def parse_json( monthYear ):
+def check_json( monthYear ):
 
-#     interruptions = parse_interruptions( monthYear )
+    interruptions = parse_interruptions( monthYear )
 
-#     for i, interruption in enumerate( interruptions ):
+    for i, interruption in enumerate( interruptions ):
 
-#         if interruption.get( 'geo_url' ) != None:
-#             continue
+        if interruption.get( 'geo_url' ) != None:
+            continue
 
-#         print( f'#{i+1} of {len( interruptions )}')
+        print( f'#{i+1} of {len( interruptions )}')
 
-#         result = request_apis( interruption )
-
+        print( interruption )
 
 if __name__ == "__main__":
 
     # try:
         monthYears = parse_argv( sys.argv )
 
-        # read csv data, request geolocations and store in json files
         for monthYear in monthYears:
             parse_json( monthYear )
-            break
 
-        # results = [ 
-        #     {'url': 'https://api.geoapify.com/v1/geocode/search?apiKey=d26975e0efb049b99bea416fba70e36f&lang=el&text=Μεσσολογίου,ΓΑΛΑΤΣΙ,Attica,Greece', 'area': 'ΓΑΛΑΤΣΙ', 'road': 'Μεσσολογίου', 'descr': ', Γαλατσίου, Ατιική', 'lat': 38.01915, 'lon': 23.75711}, 
-        #     {'url': 'https://api.geoapify.com/v1/geocode/search?apiKey=d26975e0efb049b99bea416fba70e36f&lang=el&text=Μεσσολογίου,ΓΑΛΑΤΣΙ,Attica,Greece', 'area': 'ΓΑΛΑΤΣΙ', 'road': 'Μεσσολογίου', 'descr': ', Γαλάτσιον, Ατιική', 'lat': 38.01915, 'lon': 23.75711}, 
-        #     {'url': 'https://api.geoapify.com/v1/geocode/search?apiKey=d26975e0efb049b99bea416fba70e36f&lang=el&text=Κνωσού,ΓΑΛΑΤΣΙ,Attica,Greece', 'area': 'ΓΑΛΑΤΣΙ', 'road': 'Κνωσού', 'descr': ', Γαλατσίου, Ατιική', 'lat': 38.01915, 'lon': 23.75711},
-        #     {'url': 'https://api.geoapify.com/v1/geocode/search?apiKey=d26975e0efb049b99bea416fba70e36f&lang=el&text=Κνωσού,ΓΑΛΑΤΣΙ,Attica,Greece', 'area': 'ΓΑΛΑΤΣΙ', 'road': 'Κνωσού', 'descr': ', Γαλάτσιον, Ατιική', 'lat': 38.01915, 'lon': 23.75711}
-        # ]
-        # print( match_area( results ) )
+        # for monthYear in monthYears:
+        #     check_json( monthYear )
 
     # except Exception as ex:
     #     # How do I print an exception in Python?

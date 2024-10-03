@@ -1,11 +1,14 @@
 from shapely.geometry import Point
 from shapely.geometry import shape
 
+from src.settings import get_settings
 from src.helpers.json import parse_json_content
 
 class MunicipalitiesHandler:
 
-    geojson_file = 'resources/geodata/dhmoi_okxe_attica.geojson'
+    settings = get_settings()
+
+    geojson_file = settings.municipalities_geojson_file
 
     def __init__( self ):
         self.geojson = parse_json_content( self.geojson_file )

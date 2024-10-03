@@ -23,6 +23,8 @@ class Settings( BaseSettings ):
     interruptions_csv_path: str = 'resources/db_setup/interruptions/csv'
     interruptions_json_path: str = 'resources/db_setup/interruptions/json'
 
+    municipalities_geojson_file: str = 'resources/geography/dhmoi_okxe_attica.geojson'
+
     savings_cron: str = "5,25,45 8-21 * * *"
     production_cron: str = "10,30,50 8-21 * * *"
     weather_cron: str = "15,35,55 8-21 * * *"

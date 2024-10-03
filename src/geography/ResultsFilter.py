@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from src.helpers.text import no_tones, no_vowels
-from src.helpers.geo import distance
+from src.helpers.geography import distance
 
 class ResultsFilter( ABC ):
 
@@ -99,7 +99,7 @@ class DistanceFilter( ResultsFilter ):
     def results( self ):
         # print( 'DistanceFilter' )
 
-        if not len( self._results ):
+        if len( self._results ) <= 2:
             return self._results
         
         for i, result in enumerate( self._results ):
@@ -115,6 +115,7 @@ class DistanceFilter( ResultsFilter ):
                 if self._results[ j ].get( 'distance' ) == None or self._results[ j ].get( 'distance' ) > dist:
                     self._results[ j ][ 'distance' ] = dist
         
+        print( 'self._results', self._results )
         sorted_results = sorted( self._results, key=lambda x: x[ 'distance' ], reverse=False )
         # print( 'sorted_results', sorted_results )
         shortest = sorted_results[ 0 ][ 'distance' ]
