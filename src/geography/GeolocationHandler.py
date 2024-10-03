@@ -55,16 +55,16 @@ class GeolocationHandler:
             if len( results ) > 0:
                 return results[ 0 ]
 
+        # request (district), (country), area 
+
+        address = AreaAddressParser( self._area ).address
+
         # filter district and area (no street)
         # starting from results_backup (all results with street, area)
         results = DistrictFilter( address, results_backup ).results
         results = AreaFilter( address, results ).results
         if len( results ) > 0:
             return results[ 0 ]
-
-        # request (district), (country), area 
-
-        address = AreaAddressParser( self._area ).address
 
         # use Nominatim Api
         results = nominatimApiProvider.set_address( address ).request()

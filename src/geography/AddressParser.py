@@ -51,12 +51,11 @@ class IntersectionAreaAddressParser( AreaAddressParser ):
 
         super().__init__( area )
 
-        # considering values like Λεωφ. Ελ.  Βενιζέλου και Λεωφ. Κων. Καραμανλή
-        excluded = [ 'ΛΕΩΦ.', 'Λ.', 'ΠΛ.', 'ΑΓ.', 'ΕΛΕΥΘ.', 'ΕΛ.', 'ΚΩΝ.' ]
-
-        streets = intersection.split( 'και' )
+        streets = intersection.split( ' και ' )
         if len( streets ) < 2:
-            streets = intersection.split( '&' )
+            streets = intersection.split( ' & ' )
+        if len( streets ) < 2:
+            streets = intersection.split( ' – ' )
 
         # remove text after double space (considering as comments)
         streets = list( map( lambda s: s.split( '  ' )[ 0 ], streets ) )
@@ -64,13 +63,8 @@ class IntersectionAreaAddressParser( AreaAddressParser ):
         # remove text after comma (considering as comments)
         streets = list( map( lambda s: s.split( ',' )[ 0 ].strip(), streets ) )
 
-        # remove text after opening parenthsis (considering as comments)
+        # remove text after opening parentehsis (considering as comments)
         streets = list( map( lambda s: s.split( '(' )[ 0 ].strip(), streets ) )
-
-        # remove text after dash (considering as comments)
-        streets = list( map( lambda s: s.split( '-' )[ 0 ].strip(), streets ) )
-        streets = list( map( lambda s: s.split( '–' )[ 0 ].strip(), streets ) )
-        streets = list( map( lambda s: s.split( '_' )[ 0 ].strip(), streets ) )
 
         # remove spaces
         streets = list( map( lambda s: s.strip(), streets ) )
@@ -79,6 +73,8 @@ class IntersectionAreaAddressParser( AreaAddressParser ):
         streets = list( filter( lambda s: len( s ) > 2, streets ) )
 
         # remove excluded definitions
+        # considering values like Λεωφ. Ελ.  Βενιζέλου και Λεωφ. Κων. Καραμανλή
+        excluded = [ 'ΛΕΩΦ.', 'Λ.', 'ΠΛ.', 'ΑΓ.', 'ΕΛΕΥΘ.', 'ΕΛ.', 'ΚΩΝ.' ]
         for i, street in enumerate( streets ):
             parts = list( filter( lambda p: p.upper() not in excluded, street.split( ' ' ) ) )
             streets[ i ] = ' '.join( parts ) 

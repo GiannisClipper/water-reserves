@@ -86,6 +86,7 @@ class NominatimApiProvider( ApiProvider ):
         data = []
         for row in response:
             data.append( {
+                'address': self.address,
                 'url': self.url,
                 'descr': row[ 'display_name' ],
                 'lat': float( row[ 'lat' ] ),

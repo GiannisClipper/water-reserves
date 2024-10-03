@@ -101,22 +101,25 @@ class DistanceFilter( ResultsFilter ):
 
         if len( self._results ) <= 2:
             return self._results
-        
-        for i, result in enumerate( self._results ):
-            for j in range( i + 1, len( self._results ) ):
 
-                point1 = ( self._results[ i ][ 'lat' ], self._results[ i ][ 'lon' ] )
-                point2 = ( self._results[ j ][ 'lat' ], self._results[ j ][ 'lon' ] )
+        address = self._results[ 0 ][ 'address' ]
+        results1 = list( filter( lambda r: r[ 'address' ] == address, self._results ) )
+        results2 = list( filter( lambda r: r[ 'address' ] != address, self._results ) )
+   
+        for r1 in results1:
+            for r2 in results2:
+                point1 = ( r1[ 'lat' ], r1[ 'lon' ] )
+                point2 = ( r2[ 'lat' ], r2[ 'lon' ] )
                 dist = distance( point1, point2 )
 
-                if self._results[ i ].get( 'distance' ) == None or self._results[ i ].get( 'distance' ) > dist:
-                    self._results[ i ][ 'distance' ] = dist
+                if r1.get( 'distance' ) == None or r1.get( 'distance' ) > dist:
+                    r1[ 'distance' ] = dist
 
-                if self._results[ j ].get( 'distance' ) == None or self._results[ j ].get( 'distance' ) > dist:
-                    self._results[ j ][ 'distance' ] = dist
-        
-        print( 'self._results', self._results )
-        sorted_results = sorted( self._results, key=lambda x: x[ 'distance' ], reverse=False )
+                if r2.get( 'distance' ) == None or r2.get( 'distance' ) > dist:
+                    r2[ 'distance' ] = dist
+
+        # print( 'self._results', self._results )
+        sorted_results = sorted( results1 + results2, key=lambda x: x[ 'distance' ], reverse=False )
         # print( 'sorted_results', sorted_results )
         shortest = sorted_results[ 0 ][ 'distance' ]
         new_results = list( filter( lambda result: result[ 'distance' ] == shortest, sorted_results ) )
