@@ -1,9 +1,10 @@
 from os import listdir
 from os.path import isfile, join
 from src.settings import get_settings
-from .read_csv import read_reservoirs, read_factories, read_locations
+from .read_csv import read_reservoirs, read_factories, read_locations, read_municipalities
 from .read_html import read_html
 from .read_json import read_weather
+from .read_json import read_interruptions
 
 def insert_reservoirs( conn ):
 
@@ -157,4 +158,66 @@ def insert_weather( conn ):
             cursor.execute( sql )
             conn.commit()
 
+def insert_municipalities( conn ):
 
+    # Get content from csv
+    headers, data = read_municipalities()
+
+    # Create a cursor object
+    cursor = conn.cursor()
+
+    sql = '''INSERT INTO municipalities ( id, name_el, prefecture ) VALUES '''
+    for row in data:
+        id, name_el, prefecture = row
+        row = f"('{id}','{name_el}','{prefecture}'),"
+        sql += row
+    sql = sql[ 0:-1 ] + ';'
+    # print( sql )
+
+    print( f'Insert into municipalities' )
+    cursor.execute( sql )
+    conn.commit()
+
+def insert_interruptions( conn ):
+
+    # Get municipalities from csv
+    headers, data = read_municipalities()
+    
+    municipalities = {}
+    for row in data:
+        id, name_el, prefecture = row
+        municipalities[ name_el ] = id
+
+    path = get_settings().interruptions_json_path
+    jsonfiles = [ f for f in listdir( path ) if isfile( join( path, f ) ) ]
+    jsonfiles.sort()
+
+    for jsonfile in jsonfiles:
+
+        # Get content from html
+        data = read_interruptions( join( path, jsonfile ) )
+
+        # Create a cursor object
+        cursor = conn.cursor()
+
+        sql = '''INSERT INTO interruptions ( date, scheduled, intersection, area, geo_failed, geo_url, geo_descr, lat, lon, municipality_id ) VALUES '''
+        for date, scheduled, intersection, area, geo_failed, geo_url, geo_descr, lat, lon, municipality_name_el in data:
+
+            # replace possible single quotes due to syntax error constructing the string with all values
+            intersection = intersection.replace( "'", '"' )
+            area = area.replace( "'", '"' )
+            geo_url = geo_url.replace( "'", '"' )
+            geo_descr = geo_descr.replace( "'", '"' )
+
+            values = f"(\
+                '{date}','{scheduled}','{intersection[:100]}','{area}',\
+                {geo_failed},'{geo_url}','{geo_descr}',\
+                {lat},{lon},'{municipalities.get( municipality_name_el, '' )}'\
+            ),"
+            sql += values
+        sql = sql[ 0:-1 ] + ';'
+        # print( sql[:300] )
+
+        print( f'Insert into interruptions ({jsonfile})' )
+        cursor.execute( sql )
+        conn.commit()

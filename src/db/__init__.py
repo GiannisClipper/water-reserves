@@ -8,7 +8,12 @@ conninfo = f"user={settings.db_user} password={settings.db_password} host={setti
 
 pool = AsyncConnectionPool( conninfo=conninfo, open=False )
 
-tables: tuple[ str ] = ( 'reservoirs', 'savings', 'factories', 'production', 'locations', 'weather' )
+tables: tuple[ str ] = ( 
+    'reservoirs', 'savings', 
+    'factories', 'production', 
+    'locations', 'weather',
+    'municipalities', 'interruptions'  
+)
 
 def table_exists( table_name: str ):
     query = '''

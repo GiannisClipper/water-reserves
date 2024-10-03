@@ -149,6 +149,35 @@ def create_weather( conn ):
         );
     '''
 
+    print( f'Create table weather' )
+    cursor.execute( sql )
+    conn.commit()
+
+
+def create_municipalities( conn ):
+
+    # Create a cursor object
+    cursor = conn.cursor()
+
+    # Drop table if already exists (as well as depended tables)
+    cursor.execute( "DROP TABLE IF EXISTS interruptions" )
+    cursor.execute( "DROP TABLE IF EXISTS municipalities" )
+
+    # Create table
+    sql = '''
+        CREATE TABLE municipalities (
+            id CHAR(4) PRIMARY KEY,
+            name_el VARCHAR(30) UNIQUE NOT NULL,
+            name_en VARCHAR(30) UNIQUE,
+            prefecture VARCHAR(30) NOT NULL
+        );
+    '''
+
+    print( f'Create table locations' )
+    cursor.execute( sql )
+    conn.commit()
+
+
 def create_interruptions( conn ):
 
     # Create a cursor object
@@ -162,17 +191,19 @@ def create_interruptions( conn ):
         CREATE TABLE interruptions (
             id SERIAL PRIMARY KEY,
             date DATE NOT NULL,
-            area VARCHAR(30) NOT NULL,
-            intersection VARCHAR(128) NOT NULL,
             scheduled VARCHAR(30),
+            intersection VARCHAR(100) NOT NULL,
+            area VARCHAR(30) NOT NULL,
+            geo_failed BOOLEAN,
             geo_url TEXT,
             geo_descr TEXT,
             lat REAL,
             lon REAL,
+            municipality_id CHAR(4),
             UNIQUE( date, area, intersection )
         );
     '''
 
-    print( f'Create table weather' )
+    print( f'Create table interruptions' )
     cursor.execute( sql )
     conn.commit()

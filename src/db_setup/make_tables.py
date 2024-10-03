@@ -5,10 +5,12 @@ import src.db as db
 from .create_tables import create_reservoirs, create_savings
 from .create_tables import create_factories, create_production
 from .create_tables import create_locations, create_weather
+from .create_tables import create_municipalities, create_interruptions
 
 from .insert_rows import insert_reservoirs, insert_savings
 from .insert_rows import insert_factories, insert_production
 from .insert_rows import insert_locations, insert_weather
+from .insert_rows import insert_municipalities, insert_interruptions
 
 def make_tables( names ):
     try:
@@ -41,7 +43,15 @@ def make_tables( names ):
                 elif name == 'weather':
                     create_weather( conn )
                     insert_weather( conn )
-        
+
+                elif name == 'municipalities':
+                    create_municipalities( conn )
+                    insert_municipalities( conn )
+
+                elif name == 'interruptions':
+                    create_interruptions( conn )
+                    insert_interruptions( conn )
+
     except Exception as error:
         print( 'Error: ' + repr( error ) )
 
@@ -64,6 +74,7 @@ if __name__ == "__main__":
         print ( 'Syntax example: python make_tables.py reservoirs savings' )
         print ( 'Syntax example: python make_tables.py factories production' )
         print ( 'Syntax example: python make_tables.py locations weather' )
+        print ( 'Syntax example: python make_tables.py municipalities interruptions' )
         exit( -1 )
     
     make_tables( names )

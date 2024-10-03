@@ -22,6 +22,10 @@ def read_csv( csvfile ):
         else:
             data.append( row.split( ',' ) )
 
+    # remove last entry if empty
+    if data[ -1 ] == [ '' ]:
+        data.pop()
+
     return headers, data
 
 def read_reservoirs():
@@ -45,6 +49,15 @@ def read_factories():
 def read_locations():
 
     csvfile = f'{get_settings().weather_csv_path}/locations.csv'
+
+    try:
+        return read_csv( csvfile )
+    except Exception as error:
+        raise
+
+def read_municipalities():
+
+    csvfile = get_settings().municipalities_csv_file
 
     try:
         return read_csv( csvfile )

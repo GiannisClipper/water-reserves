@@ -142,6 +142,7 @@ class GeoapifyApiProvider( ApiProvider ):
                 descr = f'{descr}, {properties.get( 'country' )}'
 
             data.append( {
+                'address': self.address,
                 'url': self.url,
                 'descr': descr,
                 'lat': row[ 'properties' ][ 'lat' ],

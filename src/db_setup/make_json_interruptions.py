@@ -98,7 +98,7 @@ def parse_json( monthYear ):
         geolocationHandler = GeolocationHandler( interruption )
         result = geolocationHandler.result
         # print( '!! result !!', result)
-        if result != None:
+        if result:
             interruption[ 'geo_url' ] = result[ 'url' ]
             interruption[ 'geo_descr' ] = result[ 'descr' ]
             interruption[ 'lat' ] = result[ 'lat' ]
@@ -106,10 +106,10 @@ def parse_json( monthYear ):
             interruption[ 'municipality' ] = municipalitiesHandler.findByPoint( result[ 'lat' ], result[ 'lon' ] )
             saveEnabled = True
 
-        print( 'interruption:', interruptions[ i ] )
+        else:
+            interruption[ 'geo_failed' ] = True
 
-        # if i > 6:
-        #     break
+        print( 'interruption:', interruptions[ i ] )
 
         if saveEnabled and i == len( interruptions ) - 1:
             save_interruptions( interruptions )
