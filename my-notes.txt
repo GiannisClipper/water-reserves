@@ -147,21 +147,7 @@ https://nominatim.openstreetmap.org/search?q=Αγ. Δημητριου,ΑΓ. ΔΗ
 https://nominatim.openstreetmap.org/search?q=%CE%91%CE%B3.%20%CE%94%CE%B7%CE%BC%CE%B7%CF%84%CF%81%CE%B9%CE%BF%CF%85,%CE%91%CE%93.%20%CE%94%CE%97%CE%9C%CE%97%CE%A4%CE%A1%CE%99%CE%9F%CE%A3%20%CE%91,attica,greece&format=json
 
 
-Σκυλίτση Ομ.,ΠΕΙΡΑΙΑΣ
-Μεγάλου Αλεξάνδρου,ΠΕΙΡΑΙΑΣ
-https://nominatim.openstreetmap.org/search?q=Μεγάλου Αλεξάνδρου,ΠΕΙΡΑΙΑΣ,attica,greece&format=json
-
-https://nominatim.openstreetmap.org/search?format=json&q=Κυκλάδων,ΑΝΩ ΚΗΦΙΣΙΑ,attica,greece
-
-Κυκλάδων και 25ης Μαρτίου,ΑΝΩ ΚΗΦΙΣΙΑ
-Ι. Αγαθού και Κορδάτου,ΕΛΕΥΣΙΝΑ
-Σκυλίτση Ομ. και Μεγάλου Αλεξάνδρου,ΠΕΙΡΑΙΑΣ,ATTICA,GREECE
-
-3ης Σεπτεμβρίου και Γκυϊλφόρδου,ΠΛ. ΒΙΚΤΩΡΙΑΣ => προστέθηκε το name
-
-Αβύδου και Πλατεία Αορνού,ΖΩΓΡΑΦΟΣ
-
-# GEOJSON
+# geolocation
 
 shapely (Manipulation and analysis of geometric objects in the Cartesian plane)
 https://shapely.readthedocs.io/en/stable/

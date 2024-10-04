@@ -5,8 +5,9 @@ from src.settings import get_settings
 
 class ApiProvider( ABC ):
 
-    _response = None
     _address = None
+    _response = None
+    _error = None
     _data = None
 
     def __init__( self, address=None ):
@@ -35,10 +36,17 @@ class ApiProvider( ABC ):
         pass # parse the request response 
 
     @property
+    def error( self ):
+        return self._error
+
+    @property
     def data( self ):
         return self._data
 
     def request( self ):
+
+        self._error = None
+        self._data = None
 
         try:
             with httpx.Client() as client:
@@ -49,8 +57,9 @@ class ApiProvider( ABC ):
                 time.sleep( 1.1 )
 
                 if response.status_code != 200:
-                    result = { 'error': f'{response.status_code} {response.reason_phrase}' }
-                    print( f'Error: {result.error}' )
+                    self._error = f'{response.status_code} {response.reason_phrase}'
+                    result = { 'error': self.error }
+                    print( f'Error: {self.error}' )
                     return result
 
                 print( f'Success: {response.status_code}' )
@@ -59,8 +68,9 @@ class ApiProvider( ABC ):
                 return result
 
         except Exception as error:
-            print( f'Error: {error}' )
-            result = { 'error': error }
+            self._error = f'{error}'
+            print( f'Error: {self.error}' )
+            result = { 'error': self.error }
             return result
 
 class NominatimApiProvider( ApiProvider ):

@@ -97,17 +97,17 @@ def parse_json( monthYear ):
         print(interruption)
         geolocationHandler = GeolocationHandler( interruption )
         result = geolocationHandler.result
-        # print( '!! result !!', result)
-        if result:
+
+        if not result:
+            interruption[ 'geo_failed' ] = True
+
+        elif not result.get( 'error' ):
             interruption[ 'geo_url' ] = result[ 'url' ]
             interruption[ 'geo_descr' ] = result[ 'descr' ]
             interruption[ 'lat' ] = result[ 'lat' ]
             interruption[ 'lon' ] = result[ 'lon' ]
             interruption[ 'municipality' ] = municipalitiesHandler.findByPoint( result[ 'lat' ], result[ 'lon' ] )
             saveEnabled = True
-
-        else:
-            interruption[ 'geo_failed' ] = True
 
         print( 'interruption:', interruptions[ i ] )
 
@@ -128,16 +128,35 @@ def check_json( monthYear ):
 
         print( interruption )
 
+def remove_geo_failed( monthYear ):
+
+    interruptions = parse_interruptions( monthYear )
+
+    should_save = False
+
+    for i, interruption in enumerate( interruptions ):
+
+        if interruption.get( 'geo_failed' ):
+            del interruption[ 'geo_failed' ]
+            should_save= True
+
+    if should_save:
+        save_interruptions( interruptions )
+
+
 if __name__ == "__main__":
 
     # try:
         monthYears = parse_argv( sys.argv )
 
-        for monthYear in monthYears:
-            parse_json( monthYear )
+        # for monthYear in monthYears:
+        #     parse_json( monthYear )
 
         # for monthYear in monthYears:
         #     check_json( monthYear )
+
+        for monthYear in monthYears:
+            remove_geo_failed( monthYear )
 
     # except Exception as ex:
     #     # How do I print an exception in Python?

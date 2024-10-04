@@ -26,6 +26,8 @@ class GeolocationHandler:
         # use Nominatim Api
         for address in address_list:
             results = nominatimApiProvider.set_address( address ).request()
+            if results.get( 'error' ):
+                return results
             if not results.get( 'data' ):
                 continue
 
@@ -42,6 +44,8 @@ class GeolocationHandler:
         # use Geoapify Api
         for address in address_list:
             results = geoapifyApiProvider.set_address( address ).request()
+            if results.get( 'error' ):
+                return results
             if not results.get( 'data' ):
                 continue
 
@@ -68,6 +72,8 @@ class GeolocationHandler:
 
         # use Nominatim Api
         results = nominatimApiProvider.set_address( address ).request()
+        if results.get( 'error' ):
+            return results
         if results.get( 'data' ):
             results = results[ 'data' ]
             # filter district and area, NO STREET
@@ -78,6 +84,8 @@ class GeolocationHandler:
 
         # use Geoapify Api
         results = geoapifyApiProvider.set_address( address ).request()
+        if results.get( 'error' ):
+            return results
         if results.get( 'data' ):
             results = results[ 'data' ]
             # filter district and area, NO STREET
