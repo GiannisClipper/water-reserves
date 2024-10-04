@@ -7,7 +7,8 @@ abstract class ChartHandler {
     _data: ObjectType[] = [];
     _xTicks: string[] = [];
     _yTicks: number[] = [];
-
+    _lineType: LineType | null = null
+ 
     abstract _yValues: number[];
 
     constructor( data: ObjectType[] ) {
@@ -99,7 +100,12 @@ abstract class ChartHandler {
         return this._yTicks.length ? this._yTicks[ this._yTicks.length - 1 ] : 0;
     }
 
-    get lineType(): LineType { 
+    get lineType(): LineType {
+
+        if ( this._lineType ) {
+            return this._lineType
+        }
+    
         return this._xTicks.length && this._xTicks[ 0 ].length === 10 
             ? 'linear' // in case of full dates
             : 'monotone'; // in case of aggregated values (months, years, ...)
@@ -146,6 +152,10 @@ class StackChartHandler extends ChartHandler {
 }
 
 class MultiChartHandler extends ChartHandler {
+
+    // set lineType to 'linear', to have MORE SHARP lines and 
+    // MORE CLEAR comparison between different quantities
+    _lineType: LineType | null = 'linear'
 
     _yValues: number[];
     _valueKeys: string[];

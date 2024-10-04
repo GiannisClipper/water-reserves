@@ -3,14 +3,20 @@ import { PieChart, Pie, Cell } from 'recharts';
 
 import type { ObjectType } from "@/types";
 import { calcTicks } from '@/helpers/ticks';
+import { CardTooltip } from '@/components/page/chart/tooltips';
+import { MetadataHandler } from '@/logic/MetadataHandler';
 
 type LineChartPropsType = { 
     data: ObjectType[]
-    color: ObjectType
     label: string
+    metadataHandler: MetadataHandler
 };
 
-const CardLineChart = ( { data, color, label }: LineChartPropsType ) => {
+import "@/styles/chart.css";
+
+const CardLineChart = ( { data, label, metadataHandler }: LineChartPropsType ) => {
+
+    const color = metadataHandler._colors[ 0 ]
 
     const WIDTH: number = 400;
     const HEIGHT: number = 240;
@@ -39,7 +45,11 @@ const CardLineChart = ( { data, color, label }: LineChartPropsType ) => {
                     interval={ 0 } 
                     tick={ <YAxisTick /> }
                 />
-                <Tooltip />
+                <Tooltip 
+                    content={ <CardTooltip 
+                        metadataHandler={ metadataHandler }
+                    /> } 
+                />
                 <Customized
                     component={<BottomLabel height={ HEIGHT } label={ label } />}
                 /> 
@@ -59,11 +69,13 @@ const CardLineChart = ( { data, color, label }: LineChartPropsType ) => {
 
 type PieChartPropsType = { 
     cluster: number
-    color: ObjectType
     label: string
+    metadataHandler: MetadataHandler
 };
 
-const CardPieChart = ( { cluster, color, label }: PieChartPropsType ) => {
+const CardPieChart = ( { cluster, label, metadataHandler }: PieChartPropsType ) => {
+
+    const color = metadataHandler._colors[ 0 ]
 
     const WIDTH: number = 400;
     const HEIGHT: number = 200;

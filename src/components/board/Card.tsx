@@ -43,13 +43,13 @@ const Card = ( { option, result }: PropsType ) => {
             <CardLineChart 
                 data={ cardHandler.recentEntries }
                 label={ `Πρόσφατες μετρήσεις: ${cardHandler.interval}` }
-                color={ metadataHandler._colors[ 0 ] }
+                metadataHandler={ metadataHandler }
             />
 
             <CardPieChart 
                 cluster={ cardHandler.cluster } 
                 label={ pieLabel }
-                color={ metadataHandler._colors[ 0 ] }
+                metadataHandler={ metadataHandler }
             />
         </div>
     );

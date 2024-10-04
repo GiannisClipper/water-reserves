@@ -11,13 +11,29 @@ const Unit = ( { unit }: { unit: UnitType } ) => {
     return unit;
 }
 
-type SingleTooltipPropsType = {
+type TooltipPropsType = {
     active?: boolean
     payload?: any
     metadataHandler: ObjectType
 } 
 
-const SingleTooltip = ( { active, payload, metadataHandler }: SingleTooltipPropsType ) => {
+const CardTooltip = ( { active, payload, metadataHandler }: TooltipPropsType ) => {
+
+    if ( active && payload && payload.length ) {
+
+        const { date, value } = payload[ 0 ].payload;
+        return (
+            <div className="Tooltip">
+                <p>{ `Ημ/νία: ${date}` }</p>
+                <p>{ `Ποσότητα: ${withCommas( value )}` } <Unit unit={ metadataHandler._unit }/></p>
+            </div>
+      );
+    }
+  
+    return null;
+};
+
+const SingleTooltip = ( { active, payload, metadataHandler }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -106,4 +122,4 @@ const MultiTooltip = ( { active, payload, valueKeys }: MultiTooltipPropsType ) =
     return null;
 };
 
-export { SingleTooltip, StackTooltip, MultiTooltip };
+export { CardTooltip, SingleTooltip, StackTooltip, MultiTooltip };
