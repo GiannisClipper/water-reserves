@@ -122,8 +122,8 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     verticalAlign='top' 
                     height={ 24 }
                     content={ <MultiColorLegend 
-                        valueKeys={ chartHandler.valueKeys }
                         colorsArray={ metadataHandler.colors }
+                        valueLabels={ metadataHandler.valueLabels }
                     /> }
                 />
             </LineChart>
@@ -189,8 +189,8 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     verticalAlign='top' 
                     height={ 24 }
                     content={ <MultiColorLegend 
-                        valueKeys={ chartHandler.valueKeys }
                         colorsArray={ metadataHandler.colors }
+                        valueLabels={ metadataHandler.valueLabels }
                     /> }
                 />
 
@@ -259,8 +259,8 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     verticalAlign='top' 
                     height={ 24 }
                     content={ <MultiColorLegend 
-                        valueKeys={ chartHandler.valueKeys }
                         colorsArray={ metadataHandler.colors }
+                        valueLabels={ metadataHandler.valueLabels }
                     /> }
                 />
 

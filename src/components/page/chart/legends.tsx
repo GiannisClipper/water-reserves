@@ -29,15 +29,15 @@ const ColorLegend = ( { payload, items, colorsArray }: ColorLegendPropsType ) =>
 
 type MultiColorLegendPropsType = {
     payload?: any
-    valueKeys: string[]
     colorsArray: string[]
+    valueLabels: string[]
 }
 
-const MultiColorLegend = ( { payload, valueKeys, colorsArray }: MultiColorLegendPropsType ) => {
+const MultiColorLegend = ( { payload, colorsArray, valueLabels }: MultiColorLegendPropsType ) => {
 
     return (
         <div className='CustomizedLegend'>
-            { valueKeys.map( ( vk: string, i: number ) =>
+            { valueLabels.map( ( label: string, i: number ) =>
                 <span 
                     key={ i }
                     style={ { color: colorsArray[ i ][ 500 ] } }
@@ -47,7 +47,7 @@ const MultiColorLegend = ( { payload, valueKeys, colorsArray }: MultiColorLegend
                             <path d="M5 5 l15 0" />
                         </g>
                     </svg>
-                    { vk }
+                    { label }
                 </span>
             ) }
         </div>

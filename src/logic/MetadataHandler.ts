@@ -17,6 +17,7 @@ abstract class MetadataHandler {
     abstract _title: string;
     abstract _unit: UnitType;
     abstract _colors: ObjectType[];
+    abstract _valueLabels: string[];
 
     _xLabel: string = '';
     _yLabel: string = '';
@@ -50,6 +51,7 @@ abstract class MetadataHandler {
             title: this._title,
             unit: this._unit,
             colors: this._colors,
+            valueLabels: this._valueLabels,
         }
     }
     
@@ -60,6 +62,7 @@ class SavingsMetadataHandler extends MetadataHandler {
     _title: string;
     _unit: UnitType;
     _colors: ObjectType[];
+    _valueLabels: string[] = [ 'Αποθέματα' ];
 
     constructor( searchParams: ObjectType ) {
 
@@ -82,6 +85,7 @@ class ProductionMetadataHandler extends MetadataHandler {
     _title: string;
     _unit: UnitType;
     _colors: ObjectType[];
+    _valueLabels: string[] = [ 'Παραγωγή' ];
 
     constructor( searchParams: ObjectType ) {
 
@@ -104,6 +108,7 @@ class PrecipitationMetadataHandler extends MetadataHandler {
     _title: string;
     _unit: UnitType;
     _colors: ObjectType[];
+    _valueLabels: string[] = [ 'Υετός' ];
 
     constructor( searchParams: ObjectType ) {
 
@@ -126,6 +131,7 @@ class SavingsProductionMetadataHandler extends MetadataHandler {
     _title: string;
     _unit: UnitType;
     _colors: ObjectType[];
+    _valueLabels: string[] = [ 'Αποθέματα', 'Παραγωγή' ];
 
     constructor( searchParams: ObjectType ) {
 
@@ -144,6 +150,7 @@ class SavingsPrecipitationMetadataHandler extends MetadataHandler {
     _title: string;
     _unit: UnitType;
     _colors: ObjectType[];
+    _valueLabels: string[] = [ 'Αποθέματα', 'Υετός' ];
 
     constructor( searchParams: ObjectType ) {
 
