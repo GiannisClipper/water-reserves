@@ -94,7 +94,7 @@ class ProductionMetadataHandler extends MetadataHandler {
         );
 
         this._unit = 'm3';
-        this._colors = [ AMBER ];
+        this._colors = [ PINK ];
         this._yLabel += ' (κυβ.μέτρα)';
     }
 }
@@ -134,7 +134,7 @@ class SavingsProductionMetadataHandler extends MetadataHandler {
         this._title = 'Αποθέματα & Παραγωγή νερού';
 
         this._unit = '%';
-        this._colors = [ SKY, AMBER ];
+        this._colors = [ SKY, PINK ];
         this._yLabel += ' (μεταβολή %)';
     }
 }

@@ -1,8 +1,5 @@
 "use client"
 
-// import dynamic from "next/dynamic";
-// const { Card } = dynamic( import( "./Card" ), { ssr: false } );
-
 import { CardLineChart, CardPieChart } from "./Charts";
 import { Unit } from "@/components/page/chart/tooltips";
 

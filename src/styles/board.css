@@ -58,4 +58,14 @@
   .ChartLabel {
     @apply text-sm font-sans
   }
+
+  @keyframes opacity {
+    from { opacity: 0.2; }
+    to { opacity: 1; }
+  }
+
+  .CardLineChart, .CardPieChart {
+    animation-name: opacity;
+    animation-duration: 2s;
+  }
 }
