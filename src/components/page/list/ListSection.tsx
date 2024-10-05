@@ -35,9 +35,9 @@ const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         <div className="ListSection">
             <ListLabel />
 
-            <ListContent
+            {/* <ListContent
                 dataHandler={ dataHandler }
-            />
+            /> */}
         </div>
     );
 }

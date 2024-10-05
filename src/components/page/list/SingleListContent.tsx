@@ -1,12 +1,12 @@
 import { CubicMeters } from "@/components/Symbols";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
-import { SingleDataHandler } from '@/logic/DataHandler';
+import { FlatDataHandler } from '@/logic/DataHandler';
 import { translate } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
 
 type PropsType = { 
-    dataHandler: SingleDataHandler
+    dataHandler: FlatDataHandler
 }
 
 const ListContent = ( { dataHandler }: PropsType ) => {

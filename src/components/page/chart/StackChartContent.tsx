@@ -34,8 +34,13 @@ type PropsType = {
 }
 
 const ChartContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) => {
-    
-    const chartHandler: ChartHandler = new ChartHandlerFactory( 'stack', dataHandler.data ).chartHandler;
+
+    const chartHandler: ChartHandler = new ChartHandlerFactory( 
+        'stack', 
+        dataHandler.data, 
+        dataHandler.valueSpecifiers 
+    ).chartHandler;
+
     console.log( "rendering: ChartContent...", chartHandler.toJSON() )
 
     const items = new ObjectList( dataHandler.items ).sortBy( 'start', 'asc' );

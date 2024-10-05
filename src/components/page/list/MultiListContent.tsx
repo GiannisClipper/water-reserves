@@ -1,11 +1,11 @@
-import { SingleDataHandler } from '@/logic/DataHandler';
+import { FlatDataHandler } from '@/logic/DataHandler';
 import { translate } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
 import { Fragment } from "react";
 
 type PropsType = { 
-    dataHandler: SingleDataHandler
+    dataHandler: FlatDataHandler
 }
 
 const ListContent = ( { dataHandler }: PropsType ) => {

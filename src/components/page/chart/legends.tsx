@@ -30,14 +30,16 @@ const ColorLegend = ( { payload, items, colorsArray }: ColorLegendPropsType ) =>
 type MultiColorLegendPropsType = {
     payload?: any
     colorsArray: string[]
-    valueLabels: string[]
+    valueSpecifiers: ObjectType[]
 }
 
-const MultiColorLegend = ( { payload, colorsArray, valueLabels }: MultiColorLegendPropsType ) => {
+const MultiColorLegend = ( { payload, colorsArray, valueSpecifiers }: MultiColorLegendPropsType ) => {
+
+    const ySpecifiers: ObjectType[] = valueSpecifiers.filter( s => s[ 'chartXY' ] === 'Y' );
 
     return (
         <div className='CustomizedLegend'>
-            { valueLabels.map( ( label: string, i: number ) =>
+            { ySpecifiers.map( ( s: ObjectType, i: number ) =>
                 <span 
                     key={ i }
                     style={ { color: colorsArray[ i ][ 500 ] } }
@@ -47,7 +49,7 @@ const MultiColorLegend = ( { payload, colorsArray, valueLabels }: MultiColorLege
                             <path d="M5 5 l15 0" />
                         </g>
                     </svg>
-                    { label }
+                    { s[ 'label' ] }
                 </span>
             ) }
         </div>

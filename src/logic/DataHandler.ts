@@ -1,15 +1,30 @@
-import { timeKey } from "@/helpers/time";
+import { 
+    ValueSpecifier,
+    PrimaryValueSpecifier, ReservoirIdValueSpecifier, NestedValueSpecifier,
+    TimeValueSpecifier,
+    SavingsValueSpecifier, SavingsGrowthValueSpecifier, 
+    ProductionValueSpecifier, ProductionGrowthValueSpecifier,
+    PrecipitationValueSpecifier, PrecipitationGrowthValueSpecifier,
+    ReservoirsValueSpecifier,
+    ReservoirsSumValueSpecifier,
+    SecondaryValueSpecifier,
+    ReservoirsPercentageValueSpecifier,
+    SavingsDifferenceValueSpecifier,
+    ProductionDifferenceValueSpecifier,
+    PrecipitationDifferenceValueSpecifier,
+} from "./ValueSpecifier";
 
+import type { ValueSpecifierType } from "./ValueSpecifier";
 import type { ObjectType } from '@/types';
 
 abstract class DataHandler {    
 
     abstract type: string;
 
+    abstract _valueSpecifiers: ValueSpecifier[]
+
     _headers: string[] = [];
     _data: ObjectType[] = [];
-
-    _valueKeys: string[] = [];
 
     constructor() {};
 
@@ -21,8 +36,8 @@ abstract class DataHandler {
         return this._data;
     }
 
-    get valueKeys(): string[] {
-        return this._valueKeys;
+    get valueSpecifiers(): ValueSpecifier[] {
+        return this._valueSpecifiers;
     }
 
     // toJSON() is used for serialization, considering the Error: 
@@ -33,175 +48,161 @@ abstract class DataHandler {
             type: this.type,
             headers: this._headers,
             data: this._data,
-            valueKeys: this.valueKeys,
+            valueSpecifiers: this._valueSpecifiers.map( s => s.toJSON() )
         }
     }
 }
 
 class SingleDataHandler extends DataHandler {    
 
+    _valueSpecifiers: ValueSpecifier[];
+
     type: string = 'single';
 
-    static addDiff = ( data: ObjectType[] ): ObjectType[] => 
-
-        data.map( ( row: ObjectType, i: number ) => {
-            const { time, value } = row;
-            let difference: number = 0;
-            let percentage: number = 0;
-            if ( i > 0 ) {
-                const prevValue: number = Math.round( data[ i - 1 ].value );
-                difference = value - prevValue
-                percentage = Math.round( difference / prevValue * 10000 ) / 100;
-            }
-            return { time, value, difference, percentage };
-        } );
-
-    
-    constructor( responseResult: any ) {
+    constructor( responseResult: any, valueSpecifiers: ValueSpecifier[] ) {
         super();
 
-        // parse data
+        let result: ObjectType = responseResult || {};
 
-        const result: Object = responseResult || {};
-        this._valueKeys = Object.keys( result );
-        const data: [][] = result[ this._valueKeys[ 0 ] ].data;
+        // read the join-value and the datasets 
+        // join-key should be common in all datasets
+        // all values will be placed in one flat object (join-value identifies each of the objects)
+    
+        this._valueSpecifiers = valueSpecifiers;
+        const joinKey = this._valueSpecifiers.filter( s => s.isJoinValue ).map( s => s.key )[ 0 ];
+        const datasets = new Set( this._valueSpecifiers.filter( s => s.dataset ).map( s => s.dataset ) );
+        
+        // get the primary values, these comming directly from http response 
 
-        this._data = data.map( ( row: any[], i: number ) => {
-            const time: string = row[ 0 ];
-            const value: number = Math.round( row[ 1 ] );
-            return { time, value };
-        } );
+        const joinObj: ObjectType = {};
+        for ( const dataset of Array.from( datasets ) ) {
+    
+            // put in temp variable the results for each dataset
+            const temp = result[ dataset ].data.map( ( row: any[], i: number ) => {
 
-        // add difference between previous and current values
+                const primarySpecifiers: ValueSpecifierType[] = valueSpecifiers.filter( 
+                    s => s instanceof PrimaryValueSpecifier && ( s[ 'dataset' ] == dataset || s[ 'isJoinValue' ] ) );
 
-        this._data = SingleDataHandler.addDiff( this._data );
+                const obj: ObjectType = {};
+                for ( const specifier of primarySpecifiers ) {
+                    obj[ specifier[ 'key' ] ] = row[ specifier[ 'index' ] ]
+                }
+                return obj;
+            } );
 
-        // add headers
-        if ( this._data.length ) {
-            const { time } = this._data[ 0 ];
-            this._headers.push( timeKey( time ) );
-            this._headers.push( 'value' );
-            this._headers.push( 'difference' );
-            this._headers.push( 'percentage' );
-        }        
-    };
+            // join the results of all datasets in flat objects using the common join key
+            temp.forEach( ( row: ObjectType ) => { 
+                const joinValue = row[ joinKey ];
+                if ( ! joinObj[ joinValue ] ) {
+                    joinObj[ joinValue ] = {};
+                }
+                joinObj[ joinValue ] = { ...joinObj[ joinValue ], ...row };
+            } );
+        }
+
+        let arr: ObjectType[] = Object.values( joinObj );
+    
+        // get the secondary values, these resulting from primary values calculation
+        
+        const secondarySpecifiers: ValueSpecifierType[] = valueSpecifiers.filter( s => s instanceof SecondaryValueSpecifier );
+        for ( const specifier of secondarySpecifiers ) {
+            arr = specifier.parser( arr );
+        }
+
+        this._data = arr;
+        console.log( 'this._data', this._data)
+    }
+}
+
+class MultiDataHandler extends SingleDataHandler {    
+
+    type: string = 'multi';
+
+    constructor( responseResult: any, valueSpecifiers: ValueSpecifier[] ) {
+        super( responseResult, valueSpecifiers );
+    }
 }
 
 class StackDataHandler extends DataHandler {    
 
     type: string = 'stack';
 
+    _valueSpecifiers: ValueSpecifier[];
+
     _items: ObjectType[] = [];
     _itemsKey: string = '';
 
-    static nestValues = ( data: ObjectType[] ): ObjectType[] => {
-
-        const timeObj: ObjectType = {};
-    
-        data.forEach( ( row: ObjectType ) => { 
-            const { time } = row;
-            timeObj[ time ] = { time, values: {} };
-        } );
-    
-        data.forEach( ( row: ObjectType ) => {
-            const { time, reservoir_id, value } = row;
-            timeObj[ time ].values[ reservoir_id ] = { value };
-        } );
-    
-        return Object.values( timeObj );
-    }
-    
-    static addTotal = ( data: ObjectType[] ): ObjectType[] => 
-
-        data.map( ( row: ObjectType ) => {
-            const { values, ...otherKeys } = row;
-            const total = Object
-                .values( values )
-                .map( v => v.value )
-                .reduce( ( a, b ) => a + b, 0 );
-            return { ...otherKeys, values, total };
-        } );
-    
-    static addPercentage = ( data: ObjectType[] ): ObjectType[] =>
-    
-        data.map( ( row: ObjectType ) => {
-            const { values, ...otherKeys } = row;
-            const total: number = Object
-                .values( values )
-                .map( q => q.value )
-                .reduce( ( a, b ) => a + b, 0 );
-            Object.keys( values ).forEach( id => {
-                values[ id ].percentage = Math.round( values[ id ].value / total * 100 );
-            } );
-            return { ...otherKeys, values };
-        } );
-
-    constructor( responseResult: any ) {
+    constructor( responseResult: any, valueSpecifiers: ValueSpecifier[] ) {
         super();
 
         let result: Object = responseResult || {};
-        this._valueKeys = Object.keys( result );
-        if ( this._valueKeys.length ) {
-            result = result[ this._valueKeys[ 0 ] ];
-        }
 
-        // parse headers
-
-        const headers: string[] = result.headers || [];
-
-        // parse data
-
-        let data: [][] = result.data || [];
+        // read the join-value and the dataset (single dataset in this handler)
     
-        if ( headers.length && headers[ 0 ] === 'id' ) {
-            data = data.map( ( row: any[], i: number ) => row.slice( 1 ) );
-        }
+        this._valueSpecifiers = valueSpecifiers;
+        const joinKey = this._valueSpecifiers.filter( s => s.isJoinValue ).map( s => s.key )[ 0 ];
+        const dataset = this._valueSpecifiers.filter( s => s.dataset ).map( s => s.dataset )[ 0 ];
+        
+        // get the primary values, these comming directly from http response 
     
-        this._data = data.map( ( row: any[], i: number ) => {
-            const time: string = row[ 0 ];
-            const reservoir_id: string = row[ 1 ];
-            const value: number = Math.round( row[ 2 ] );
-            return { time, reservoir_id, value };
+        const primarySpecifiers: ValueSpecifierType[] = valueSpecifiers.filter( s => s instanceof PrimaryValueSpecifier );
+
+        // put in temp variable the results for each dataset
+        let arr = result[ dataset ].data.map( ( row: any[], i: number ) => {
+            const obj: ObjectType = {};
+            for ( const specifier of primarySpecifiers ) {
+                obj[ specifier[ 'key' ] ] = row[ specifier[ 'index' ] ]
+            }
+            return obj;
         } );
 
-        // nest values
+        // process the nested values
 
-        this._data = StackDataHandler.nestValues( this._data );
+        const nestedSpecifier: ValueSpecifierType = valueSpecifiers.filter( s => s instanceof NestedValueSpecifier )[ 0 ];
 
-        // add total value
-
-        this._data = StackDataHandler.addTotal( this._data );
+        const nestObj: ObjectType = {};    
+        arr.forEach( ( row: ObjectType ) => { 
+            const key: string = nestedSpecifier.key;
+            nestObj[ row[ joinKey ] ] = { [ joinKey ]: row[ joinKey ], [ key ]: {} };
+        } );
+        arr.forEach( ( row: ObjectType ) => {
+            const key: string = nestedSpecifier.key;
+            const nestedKey: string = row[ nestedSpecifier.nestedKey ];
+            const nestedValueKey: string = nestedSpecifier.nestedValue;
+            const nestedValue: any = row[ nestedSpecifier.nestedValue ];
+            nestObj[ row[ joinKey ] ][ key ][ nestedKey ] = { 
+                [ nestedSpecifier.nestedKey ]: nestedKey,
+                [ nestedValueKey ]: nestedValue,
+            };
+        } );
     
-        // add value/total percentage
+        arr = Object.values( nestObj );
 
-        this._data = StackDataHandler.addPercentage( this._data );
+        // get the secondary values, these resulting from primary values calculation
+
+        const secondarySpecifiers: ValueSpecifierType[] = valueSpecifiers.filter( s => s instanceof SecondaryValueSpecifier );
+        for ( const specifier of secondarySpecifiers ) {
+            arr = specifier.parser( arr );
+        }
+        
+        this._data = arr;
+        console.log( 'this._data', this._data)
+
 
         // parse itemsKey, items 
 
-        this._itemsKey = Object.keys( result.legend )[ 0 ];
+        this._itemsKey = Object.keys( result[ dataset ].legend )[ 0 ];
 
-        let items: ObjectType[] = result.legend && result.legend[ this._itemsKey ] || [];
+        let items: ObjectType[] = result[ dataset ].legend && result[ dataset ].legend[ this._itemsKey ] || [];
 
         if ( this._data.length ) {
-            const { values } = this._data[ 0 ];
-            const ids: string[] = Object.keys( values );
+            const nestObj = this._data[ 0 ][ nestedSpecifier.key as string ];
+            const ids: string[] = Object.keys( nestObj ).map( id => `${id}` );
             this._items = items.filter( r => ids.includes( `${r.id}` ) );
         }
 
-        // add headers
-        if ( this._data.length ) {
-            const { time, values } = this._data[ 0 ];
-            this._headers.push( timeKey( time ) );
-            this._headers.push( 'total' );
-    
-            const ids: string[] = Object.keys( values );
-            items
-                .filter( r => ids.includes( `${r.id}` ) )
-                .forEach( r => {
-                    this._headers.push( r.name_en ) 
-                    this._headers.push( 'percentage' ) 
-                } );
-        }
+        console.log( 'this._items', this._items)
+
     }
 
     get items(): ObjectType[] {
@@ -221,95 +222,6 @@ class StackDataHandler extends DataHandler {
     }
 }
 
-class MultiDataHandler extends DataHandler {    
-
-    type: string = 'multi';
-
-    constructor( responseResult: any ) {
-        super();
-
-        let result: ObjectType = responseResult || {};
-
-        this._valueKeys = Object.keys( result );
-
-        // parse headers
-        if ( this._valueKeys.length ) {
-            const time = result[ this._valueKeys[ 0 ] ].headers[ 0 ];
-            this._headers = [ time, ...this._valueKeys ];
-        }
-        
-        // parse data
-
-        const timeObj: ObjectType = {};
-
-        for ( const valueKey of this._valueKeys ) {
-    
-            const temp = result[ valueKey ].data.map( ( row: any[], i: number ) => {
-                const time: string = row[ 0 ];
-                const value: number = Math.round( row[ 1 ] );
-                return { time, value };
-            } );
-
-            temp.forEach( ( row: ObjectType ) => { 
-                const { time, value } = row;
-                if ( ! timeObj[ time ] ) {
-                    timeObj[ time ] = { time };
-                }
-                timeObj[ time ][ valueKey ] = value;
-            } );
-        }
-
-        // calculate ratio against average value
-        // for ( const valueKey of this._valueKeys ) {
-
-        //     const total = Object.values( timeObj )
-        //         .map( row => row[ valueKey ] )
-        //         .reduce( ( tot, val ) => tot + val, 0 );
-
-        //     const average = total / Object.values( timeObj ).length;
-
-        //     Object.values( timeObj ).forEach( row => row[ valueKey ] = row[ valueKey ] / average );
-        // }
-        // this._data = Object.values( timeObj );
-
-        // calculate logarithmic value
-        // for ( const valueKey of this._valueKeys ) {
-        //     Object.values( timeObj ).forEach( row => row[ valueKey ] = Math.log10( row[ valueKey ] ) );
-        // }
-        // this._data = Object.values( timeObj );
-
-        // calculate growth percentage
-        const arr = Object.values( timeObj );
-        console.log( 'arr', arr)
-        for ( const valueKey of this._valueKeys ) {
-
-            // reverse iteration, from last to first
-            // calculate ratio
-            for ( let i = arr.length - 1; i >= 0; i-- ) {
-                if ( i > 0 ) {
-                    arr[ i ][ valueKey ] = Math.round( ( arr[ i ][ valueKey ] / arr[ i - 1 ][ valueKey ] - 1 ) * 100 );
-                } else {
-                    arr[ i ][ valueKey ] = 0;
-                }
-            }
-        }
-        this._data = arr;
-        console.log( 'this._data', this._data)
-
-        // normalize between 0 - 1
-        // const arr = Object.values( timeObj );
-        // console.log( 'arr', arr)
-        // for ( const valueKey of this._valueKeys ) {
-        //     const maxVal = Math.max( ...( arr.map( x => x[ valueKey ] ) ) );
-        //     for ( let i = 0; i <= arr.length - 1; i++ ) {
-        //         arr[ i ][ valueKey ] /= maxVal; 
-        //     }        }
-        // this._data = arr;
-        // console.log( 'this._data', this._data)
-
-    }
-}
-
 type PropsType = {
     endpoint: string
     searchParams: any
@@ -321,28 +233,74 @@ class DataHandlerFactory {
     private _dataHandler: DataHandler;
     private type: string = '';
 
+    private _valueSpecifiers: ValueSpecifier[] = [];
+
     constructor( { endpoint, searchParams, result }: PropsType ) {
 
         switch ( endpoint ) {
 
             case 'savings': {
-                this.type = searchParams.reservoir_aggregation ? 'single' : 'stack';
+                if ( searchParams.reservoir_aggregation ) {
+                    this.type = 'single';
+                    this._valueSpecifiers = [
+                        new TimeValueSpecifier( { isJoinValue: true, index: 0, chartXY: 'X' } ),
+                        new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), chartXY: 'Y' } ),
+                        new SavingsDifferenceValueSpecifier( {} ),
+                        new SavingsGrowthValueSpecifier( {} ),
+                    ];
+                } else {
+                    this.type = 'stack';
+                    this._valueSpecifiers = [
+                        new TimeValueSpecifier( { isJoinValue: true, index: 0, chartXY: 'X' } ),
+                        new ReservoirIdValueSpecifier( { index: 1 } ),
+                        new SavingsValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ), chartXY: 'Y' } ),
+                        new ReservoirsValueSpecifier( {} ),
+                        new ReservoirsSumValueSpecifier( {} ),
+                        new ReservoirsPercentageValueSpecifier( {} )
+                    ];
+                }
                 break;
             } 
             case 'production': {
                 this.type = searchParams.factory_aggregation ? 'single' : 'stack';
+                this._valueSpecifiers = [
+                    new TimeValueSpecifier( { isJoinValue: true, index: 0, chartXY: 'X' } ),
+                    new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), chartXY: 'Y' } ),
+                    new ProductionDifferenceValueSpecifier( {} ),
+                    new ProductionGrowthValueSpecifier( {} ),
+                ];
                 break;
             }
             case 'precipitation': {
                 this.type = searchParams.location_aggregation ? 'single' : 'stack';
+                this._valueSpecifiers = [
+                    new TimeValueSpecifier( { isJoinValue: true, index: 0, chartXY: 'X' } ),
+                    new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), chartXY: 'Y' } ),
+                    new PrecipitationDifferenceValueSpecifier( {} ),
+                    new PrecipitationGrowthValueSpecifier( {} ),
+                ];
                 break;
             }
             case 'savings-production': {
                 this.type = 'multi';
+                this._valueSpecifiers = [
+                    new TimeValueSpecifier( { isJoinValue: true, index: 0, chartXY: 'X' } ),
+                    new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                    new SavingsGrowthValueSpecifier( { chartXY: 'Y', label: 'Αποθέματα' } ),
+                    new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
+                    new ProductionGrowthValueSpecifier( { chartXY: 'Y', label: 'Παραγωγή νερού' } ), 
+                ];
                 break;
             }
             case 'savings-precipitation': {
                 this.type = 'multi';
+                this._valueSpecifiers = [
+                    new TimeValueSpecifier( { isJoinValue: true, index: 0, chartXY: 'X' } ),
+                    new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                    new SavingsGrowthValueSpecifier( { chartXY: 'Y', label: 'Αποθέματα' } ),
+                    new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
+                    new PrecipitationGrowthValueSpecifier( { chartXY: 'Y', label: 'Υετός' } ), 
+                ];
                 break;
             }
             default:
@@ -352,15 +310,15 @@ class DataHandlerFactory {
         switch ( this.type ) {
     
             case 'single': {
-                this._dataHandler = new SingleDataHandler( result );
+                this._dataHandler = new SingleDataHandler( result, this._valueSpecifiers );
                 break;
             }
             case 'stack': {
-                this._dataHandler = new StackDataHandler( result );
+                this._dataHandler = new StackDataHandler( result, this._valueSpecifiers );
                 break;
             }
             case 'multi': {
-                this._dataHandler = new MultiDataHandler( result );
+                this._dataHandler = new MultiDataHandler( result, this._valueSpecifiers );
                 break;
             }
             default:
@@ -374,5 +332,5 @@ class DataHandlerFactory {
 }
 
 export { 
-    DataHandler, SingleDataHandler, StackDataHandler, DataHandlerFactory 
+    DataHandler, SingleDataHandler, MultiDataHandler, StackDataHandler, DataHandlerFactory 
 };

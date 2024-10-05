@@ -11,7 +11,7 @@ import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { MultiTooltip } from '@/components/page/chart/tooltips';
 import { MultiColorLegend } from "@/components/page/chart/legends";
 
-import { SingleDataHandler } from '@/logic/DataHandler';
+import { MultiDataHandler } from '@/logic/DataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
 
 import type { ObjectType } from '@/types';
@@ -19,17 +19,20 @@ import type { ObjectType } from '@/types';
 import "@/styles/chart.css";
 
 type PropsType = { 
-    dataHandler: SingleDataHandler
+    dataHandler: MultiDataHandler
     chartType: string | undefined
     metadataHandler: ObjectType
 }
 
 const ChartContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) => {
 
-    const valueKeys: string[] = dataHandler.valueKeys;
-    const chartHandler: ChartHandler = new ChartHandlerFactory( 'multi', dataHandler.data, valueKeys ).chartHandler;
+    const chartHandler: ChartHandler = new ChartHandlerFactory( 
+        'multi', 
+        dataHandler.data, 
+        dataHandler.valueSpecifiers 
+    ).chartHandler;
 
-    console.log( "rendering: ChartContent..." )//, dataHandler );
+    console.log( "rendering: ChartContent...", chartHandler.getYValueKeys() );
 
     return (
         <div className="ChartContent">
@@ -98,13 +101,12 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <MultiTooltip 
-                        valueLabels={ metadataHandler.valueLabels } 
-                        valueKeys={ chartHandler.valueKeys } 
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> } 
                 />
 
                 <>
-                { chartHandler.valueKeys.map( ( key, i ) => {
+                { chartHandler.getYValueKeys().map( ( key, i ) => {
                     return (
                         <Line
                             key={ i }
@@ -124,7 +126,7 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     height={ 24 }
                     content={ <MultiColorLegend 
                         colorsArray={ metadataHandler.colors }
-                        valueLabels={ metadataHandler.valueLabels }
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> }
                 />
             </LineChart>
@@ -166,13 +168,12 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <MultiTooltip 
-                        valueLabels={ metadataHandler.valueLabels } 
-                        valueKeys={ chartHandler.valueKeys } 
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> } 
                 />
 
                 <>
-                { chartHandler.valueKeys.map( ( key, i ) => {
+                { chartHandler.getYValueKeys().map( ( key, i ) => {
                     return (
                         <Area 
                             key={ i }
@@ -192,8 +193,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     height={ 24 }
                     content={ <MultiColorLegend 
                         colorsArray={ metadataHandler.colors }
-                        valueLabels={ metadataHandler.valueLabels }
-                        valueKeys={ chartHandler.valueKeys } 
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> }
                 />
 
@@ -239,13 +239,12 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ <MultiTooltip 
-                        valueLabels={ metadataHandler.valueLabels } 
-                        valueKeys={ chartHandler.valueKeys } 
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> } 
                 />
 
 <>
-                { chartHandler.valueKeys.map( ( key, i ) => {
+                { chartHandler.getYValueKeys().map( ( key, i ) => {
                     return (
                         <Bar 
                             key={ i }
@@ -264,7 +263,7 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     height={ 24 }
                     content={ <MultiColorLegend 
                         colorsArray={ metadataHandler.colors }
-                        valueLabels={ metadataHandler.valueLabels }
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> }
                 />
 

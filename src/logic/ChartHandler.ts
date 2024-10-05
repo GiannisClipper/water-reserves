@@ -5,19 +5,23 @@ type LineType = 'linear' | 'monotone';
 abstract class ChartHandler {
 
     _data: ObjectType[] = [];
+    _valueSpecifiers: ObjectType[] = [];
+
     _xTicks: string[] = [];
     _yTicks: number[] = [];
+
     _lineType: LineType | null = null
  
     abstract _yValues: number[];
 
-    constructor( data: ObjectType[] ) {
+    constructor( data: ObjectType[], valueSpecifiers: ObjectType[] ) {
         this._data = data;
+        this._valueSpecifiers = valueSpecifiers;
     }
 
     protected calculateXTicks = (): string[] => {
 
-        let values = this._data.map( ( row: ObjectType ) => row.time );
+        let values = this._data.map( ( row: ObjectType ) => row[ this.getXValueKey() ] );
     
         if ( values.length === 0 ) {
             return values;
@@ -84,6 +88,10 @@ abstract class ChartHandler {
         return this._data;
     }
 
+    get valueSpecifiers(): ObjectType[] {
+        return this._valueSpecifiers;
+    }        
+
     get xTicks(): string[] {
         return this._xTicks;
     }
@@ -111,9 +119,28 @@ abstract class ChartHandler {
             : 'monotone'; // in case of aggregated values (months, years, ...)
     }
 
+    getXValueKey(): string {
+        return this._valueSpecifiers.
+            filter( s => s[ 'chartXY' ] === 'X' )[ 0 ]
+            .key;
+    }
+
+    getYValueKey(): string {
+        return this._valueSpecifiers.
+            filter( s => s[ 'chartXY' ] === 'Y' )[ 0 ]
+            .key;
+    }
+
+    getYValueKeys(): string[] {
+        return this._valueSpecifiers.
+            filter( s => s[ 'chartXY' ] === 'Y' )
+            .map( s => s[ 'key' ] );
+    }
+
     public toJSON(): ObjectType {
         return {
             data: this._data,
+            valueSpecifiers: this._valueSpecifiers,
             xTicks: this._xTicks,
             yTicks: this._yTicks,
             yValues: this._yValues,
@@ -125,9 +152,9 @@ class SingleChartHandler extends ChartHandler {
 
     _yValues: number[];
 
-    constructor( data: ObjectType[] ) {
-        super( data );
-        this._yValues = data.map( ( row: ObjectType ) => row.value );
+    constructor( data: ObjectType[], valueSpecifiers: ObjectType[] ) {
+        super( data, valueSpecifiers );
+        this._yValues = data.map( ( row: ObjectType ) => row[ this.YValueKey ] );
 
         this._xTicks = this.calculateXTicks();
         this._yTicks = this.calculateYTicks();
@@ -138,9 +165,12 @@ class StackChartHandler extends ChartHandler {
 
     _yValues: number[];
 
-    constructor( data: ObjectType[] ) {
-        super( data );
+    constructor( data: ObjectType[], valueSpecifiers: ObjectType[] ) {
+    
+        super( data, valueSpecifiers );
+    
         this._yValues = data.map( ( row: ObjectType ) => {
+
             const { total, values } = row;
             const arr: Object[] = Object.values( values );
             return [ total, ...arr.map( ( v: ObjectType ) => v.value ) ];
@@ -158,18 +188,19 @@ class MultiChartHandler extends ChartHandler {
     _lineType: LineType | null = 'linear'
 
     _yValues: number[];
-    _valueKeys: string[];
 
-    constructor( data: ObjectType[], valueKeys: string[] ) {
-        super( data );
-        // this._yValues = data.map( ( row: ObjectType ) => {
-        //     const { time, ...others } = row;
-        //     return Object.values( others );
-        // } ).flat();
+    constructor( data: ObjectType[], valueSpecifiers: ObjectType[] ) {
+    
+        super( data, valueSpecifiers );
+
+        this._yValues = data.map( ( row: ObjectType ) => row[ this.getYValueKey() ] );
+
+        const yValueKeys = this.getYValueKeys();
+
         this._yValues = data.map( ( row: ObjectType ) => {
             const newRow: ObjectType = {};
             for ( const key of Object.keys( row ) ) {
-                if ( valueKeys.includes( key ) ) {
+                if ( yValueKeys.includes( key ) ) {
                     newRow[ key ] = row[ key ]
                 }
             }
@@ -178,19 +209,6 @@ class MultiChartHandler extends ChartHandler {
 
         this._xTicks = this.calculateXTicks();
         this._yTicks = this.calculateYTicks();
-
-        this._valueKeys = valueKeys;
-    }
-
-    get valueKeys(): string[] {
-        return this._valueKeys;
-    }
-
-    public toJSON(): ObjectType {
-        return {
-            ...super.toJSON(),
-            valueKeys: this._valueKeys,
-        }
     }
 }
 
@@ -198,20 +216,20 @@ class ChartHandlerFactory {
 
     private _chartHandler: ChartHandler;
 
-    constructor( type: string, data: ObjectType[], valueKeys?: string[] ) {
+    constructor( type: string, data: ObjectType[], valueSpecifiers: ObjectType[] ) {
 
         switch ( type ) {
 
             case 'single': {
-                this._chartHandler = new SingleChartHandler( data );
+                this._chartHandler = new SingleChartHandler( data, valueSpecifiers );
                 break;
             } 
             case 'stack': {
-                this._chartHandler = new StackChartHandler( data );
+                this._chartHandler = new StackChartHandler( data, valueSpecifiers );
                 break;
             }
             case 'multi': {
-                this._chartHandler = new MultiChartHandler( data, valueKeys as string[] );
+                this._chartHandler = new MultiChartHandler( data, valueSpecifiers );
                 break;
             }
 

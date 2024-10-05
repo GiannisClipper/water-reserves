@@ -27,7 +27,11 @@ const ChartContent = ( { chartType, dataHandler, metadataHandler }: PropsType ) 
 
     console.log( "rendering: ChartContent..." )//, dataHandler.data )
 
-    const chartHandler: ChartHandler = new ChartHandlerFactory( 'single', dataHandler.data ).chartHandler;
+    const chartHandler: ChartHandler = new ChartHandlerFactory( 
+        'single', 
+        dataHandler.data, 
+        dataHandler.valueSpecifiers 
+    ).chartHandler;
 
     return (
         <div className="ChartContent">
@@ -96,12 +100,12 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <SingleTooltip 
-                        metadataHandler={ metadataHandler }
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> } 
                 />
 
                 <Line
-                    dataKey="value"
+                    dataKey={ chartHandler.getYValueKey() }
                     type={ chartHandler.lineType } 
                     stroke={ metadataHandler.colors[ 0 ][ 500 ] } 
                     strokeWidth={ 2 } 
@@ -146,7 +150,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <SingleTooltip 
-                        metadataHandler={ metadataHandler }
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> } 
                 />
 
@@ -199,7 +203,7 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ <SingleTooltip 
-                        metadataHandler={ metadataHandler }
+                        valueSpecifiers={ chartHandler.valueSpecifiers }
                     /> } 
                 />
 
