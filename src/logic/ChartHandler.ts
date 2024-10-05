@@ -162,9 +162,18 @@ class MultiChartHandler extends ChartHandler {
 
     constructor( data: ObjectType[], valueKeys: string[] ) {
         super( data );
+        // this._yValues = data.map( ( row: ObjectType ) => {
+        //     const { time, ...others } = row;
+        //     return Object.values( others );
+        // } ).flat();
         this._yValues = data.map( ( row: ObjectType ) => {
-            const { time, ...others } = row;
-            return Object.values( others );
+            const newRow: ObjectType = {};
+            for ( const key of Object.keys( row ) ) {
+                if ( valueKeys.includes( key ) ) {
+                    newRow[ key ] = row[ key ]
+                }
+            }
+            return Object.values( newRow );
         } ).flat();
 
         this._xTicks = this.calculateXTicks();

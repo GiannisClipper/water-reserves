@@ -1,5 +1,12 @@
 "use client"
 
+import {
+    ROSE, PINK, FUCHSIA, PURPLE, VIOLET,
+    INDIGO, BLUE, SKY, CYAN, TEAL, EMERALD, 
+    GREEN, LIME, YELLOW, AMBER, ORANGE, RED, 
+    STONE, NEUTRAL, ZINC, GRAY, SLATE
+} from '@/helpers/colors';
+
 import { LineChart, Line } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar } from 'recharts';
@@ -88,6 +95,8 @@ type ChartCompositionPropsType = {
 const LineChartComposition = ( { chartHandler, colorArray, items, metadataHandler }: ChartCompositionPropsType ) => {
 
     const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
+    // const lineDashes: string[] = [ "1 0", "1 0", "1 0", "1 0", "1 0", "1 0", "1 0", "1 0", "1 0" ];
+    // colorArray = [ SKY[ 500 ], ROSE[ 500 ], CYAN[ 500 ], AMBER[ 500 ], BLUE[ 500 ], FUCHSIA[ 500 ], TEAL[ 500 ], ORANGE[ 500 ], NEUTRAL[ 900 ] ];
 
     console.log( 'Rerender LineChart...' );
 
@@ -134,10 +143,10 @@ const LineChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                 { items.map( ( r, i ) =>
                     <Line 
                         key={ i }
-                        id={ `${i+1}`} 
+                        id={ `${i+1}`}
                         type={ chartHandler.lineType } 
                         dataKey={ `values.${r.id}.value` }
-                        stroke={ colorArray[ 0 ] } 
+                        stroke={ colorArray[ i ] } 
                         strokeWidth={ 2 } 
                         strokeDasharray={ lineDashes[ i ] }
                         dot={ false }
@@ -149,7 +158,7 @@ const LineChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                     id="0" 
                     type={ chartHandler.lineType } 
                     dataKey="total"
-                    stroke={ colorArray[ 0 ] } 
+                    stroke={ colorArray[ colorArray.length - 1 ] } 
                     strokeWidth={ 2 }
                     dot={ false }
                     legendType="plainline"

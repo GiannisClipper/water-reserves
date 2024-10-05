@@ -282,16 +282,31 @@ class MultiDataHandler extends DataHandler {
         const arr = Object.values( timeObj );
         console.log( 'arr', arr)
         for ( const valueKey of this._valueKeys ) {
+
+            // reverse iteration, from last to first
+            // calculate ratio
             for ( let i = arr.length - 1; i >= 0; i-- ) {
-                console.log( 'i', valueKey, i )
                 if ( i > 0 ) {
-                    arr[ i ][ valueKey ] /= arr[ i - 1 ][ valueKey ];
+                    arr[ i ][ valueKey ] = Math.round( ( arr[ i ][ valueKey ] / arr[ i - 1 ][ valueKey ] - 1 ) * 100 );
                 } else {
                     arr[ i ][ valueKey ] = 0;
                 }
             }
         }
         this._data = arr;
+        console.log( 'this._data', this._data)
+
+        // normalize between 0 - 1
+        // const arr = Object.values( timeObj );
+        // console.log( 'arr', arr)
+        // for ( const valueKey of this._valueKeys ) {
+        //     const maxVal = Math.max( ...( arr.map( x => x[ valueKey ] ) ) );
+        //     for ( let i = 0; i <= arr.length - 1; i++ ) {
+        //         arr[ i ][ valueKey ] /= maxVal; 
+        //     }        }
+        // this._data = arr;
+        // console.log( 'this._data', this._data)
+
     }
 }
 

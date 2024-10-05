@@ -159,7 +159,7 @@ class SavingsPrecipitationMetadataHandler extends MetadataHandler {
         this._title = 'Αποθέματα νερού & Μετρήσεις υετού';
 
         this._unit = '%';
-        this._colors = [ SKY, CYAN ];
+        this._colors = [ SKY, TEAL ];
         this._yLabel += ' (μεταβολή %)';
     }
 }

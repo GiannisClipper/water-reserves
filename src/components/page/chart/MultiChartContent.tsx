@@ -98,6 +98,7 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <MultiTooltip 
+                        valueLabels={ metadataHandler.valueLabels } 
                         valueKeys={ chartHandler.valueKeys } 
                     /> } 
                 />
@@ -165,6 +166,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <MultiTooltip 
+                        valueLabels={ metadataHandler.valueLabels } 
                         valueKeys={ chartHandler.valueKeys } 
                     /> } 
                 />
@@ -191,6 +193,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     content={ <MultiColorLegend 
                         colorsArray={ metadataHandler.colors }
                         valueLabels={ metadataHandler.valueLabels }
+                        valueKeys={ chartHandler.valueKeys } 
                     /> }
                 />
 
@@ -236,6 +239,7 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ <MultiTooltip 
+                        valueLabels={ metadataHandler.valueLabels } 
                         valueKeys={ chartHandler.valueKeys } 
                     /> } 
                 />

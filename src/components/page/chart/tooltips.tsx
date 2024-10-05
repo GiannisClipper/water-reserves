@@ -97,10 +97,11 @@ const StackTooltip = ( { active, payload, items, makeItemsRepr, metadataHandler 
 type MultiTooltipPropsType = {
     active?: boolean
     payload?: any
+    valueLabels: string[]
     valueKeys: string[]
 } 
 
-const MultiTooltip = ( { active, payload, valueKeys }: MultiTooltipPropsType ) => {
+const MultiTooltip = ( { active, payload, valueLabels, valueKeys }: MultiTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -110,9 +111,9 @@ const MultiTooltip = ( { active, payload, valueKeys }: MultiTooltipPropsType ) =
             <div className="Tooltip">
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
                 <>
-                { valueKeys.map( key => {
-                    const value = payload[ 0 ].payload[ key ];
-                    return ( <p key={key}>{ `${key}: ${ Math.round( value * 100 ) / 100 }` }</p> );
+                { valueLabels.map( ( label, i ) => {
+                    const value = payload[ 0 ].payload[ valueKeys[ i ] ];
+                    return ( <p key={i}>{ `${label}: ${value} %` }</p> );
                 } ) }
                 </>
             </div>

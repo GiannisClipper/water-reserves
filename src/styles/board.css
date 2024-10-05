@@ -43,7 +43,7 @@
   .CardLineChart, .CardPieChart {
     @apply 
     border border-solid border-teal-500
-    bg-white bg-opacity-50
+    bg-white bg-opacity-70
     text-gray-600 text-xs
 
   }

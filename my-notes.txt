@@ -75,6 +75,14 @@ Record screen with audio
 How to Install Kazam on Ubuntu?
 https://www.geeksforgeeks.org/how-to-install-kazam-on-ubuntu/
 
+Kazam shortcuts
+
+start recording: Super + Control + r
+pause recording: Super + Control + p
+finish recording: Super + Control + f
+show Kazam: Super + Control + s
+quit Kazam: Super + Control + q
+
 How to Install FFmpeg on Ubuntu 22.04
 https://gcore.com/learning/how-to-install-ffmpeg-on-ubuntu/
 
@@ -99,10 +107,3 @@ https://stackoverflow.com/a/27878699/12138247
 
 ffmpeg -i input.mp4 -vcodec copy -af "volume=3dB" output.mp4
 
-
-possibility of DataSettings (Columns, List, Chart, Tooltip)
-{
-  key:{ repr:'', responseKey: '', responseIndex: 0, unit: '' },
-  key:{ repr:'', transKey: '', transMethod: '', unit: '' }
-  key:{ repr:'', groupKey: '', groupValue: '' }
-}
