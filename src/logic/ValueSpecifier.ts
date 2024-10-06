@@ -22,7 +22,7 @@ interface SecondaryValueSpecifierType extends ValueSpecifierType {
 
 interface NestedValueSpecifierType extends ValueSpecifierType {
     nestedKey?: string
-    nestedValue?: string
+    nestedInnerKey?: string
 }
 
 abstract class ValueSpecifier {
@@ -85,12 +85,12 @@ abstract class SecondaryValueSpecifier extends ValueSpecifier {
 abstract class NestedValueSpecifier extends ValueSpecifier {
 
     nestedKey: string;
-    nestedValue: string;
+    nestedInnerKey: string;
 
-    constructor( { nestedKey, nestedValue, ...otherProps }: NestedValueSpecifierType ) {
+    constructor( { nestedKey, nestedInnerKey, ...otherProps }: NestedValueSpecifierType ) {
         super( otherProps );
         this.nestedKey = nestedKey || 'key';
-        this.nestedValue = nestedValue || 'value';
+        this.nestedInnerKey = nestedInnerKey || 'value';
     }
 }
 
@@ -171,11 +171,11 @@ abstract class NestedSumValueSpecifier extends SecondaryValueSpecifier {
         //     }
         // }
 
-        const [ sourceKey, nestedValueKey ] = this.sourceKey.split( '.' );
+        const [ sourceKey, nestedKey, nestedInnerKey ] = this.sourceKey.split( '.' );
 
         for ( let i = arr.length - 1; i >= 0; i-- ) {
             const sum = Object.values( arr[ i ][ sourceKey ] )
-                .map( o => o[ nestedValueKey ] )
+                .map( o => o[ nestedInnerKey ] )
                 .reduce( ( a, b ) => a + b, 0 );
             arr[ i ][ this.key ] =  sum;
         }
@@ -204,17 +204,17 @@ abstract class NestedPercentageValueSpecifier extends SecondaryValueSpecifier {
         //     }
         // }
 
-        const [ sourceKey, nestedValueKey ] = this.sourceKey.split( '.' );
+        const [ sourceKey, nestedKey, nestedInnerKey ] = this.sourceKey.split( '.' );
 
         for ( let i = arr.length - 1; i >= 0; i-- ) {
 
             const sum: number = Object.values( arr[ i ][ sourceKey ] )
-                .map( o => o[ nestedValueKey ] )
+                .map( o => o[ nestedInnerKey ] )
                 .reduce( ( a, b ) => a + b, 0 );
 
             Object.values( arr[ i ][ sourceKey ] )
                 .forEach( o => { 
-                    o[ this.key ] = Math.round( o[ nestedValueKey ] / sum * 100 );
+                    o[ this.key ] = Math.round( o[ nestedInnerKey ] / sum * 100 );
                 } );
         }
         return arr;
@@ -427,7 +427,7 @@ class ReservoirsValueSpecifier extends NestedValueSpecifier {
     constructor( props: NestedValueSpecifierType ) {
         super( { 
             nestedKey: 'reservoir_id',
-            nestedValue: 'savings',
+            nestedInnerKey: 'savings',
             key: 'reservoirs', 
             label: 'Ταμιευτήρες', 
             ...props 
@@ -440,7 +440,7 @@ class FactoriesValueSpecifier extends NestedValueSpecifier {
     constructor( props: NestedValueSpecifierType ) {
         super( { 
             nestedKey: 'factory_id',
-            nestedValue: 'production',
+            nestedInnerKey: 'production',
             key: 'factories', 
             label: 'Μονάδες επεξεργασίας', 
             ...props 
@@ -453,7 +453,7 @@ class LocationsValueSpecifier extends NestedValueSpecifier {
     constructor( props: NestedValueSpecifierType ) {
         super( { 
             nestedKey: 'location_id',
-            nestedValue: 'precipitation',
+            nestedInnerKey: 'precipitation',
             key: 'locations', 
             label: 'Τοποθεσίες', 
             ...props 
@@ -465,10 +465,42 @@ class ReservoirsSumValueSpecifier extends NestedSumValueSpecifier {
 
     constructor( props: SecondaryValueSpecifierType ) {
         super( { 
-            sourceKey: 'reservoirs.savings',
+            // only the 1st and 3rd parts will be used,
+            // the {2nd} is just to make the structure more clear
+            sourceKey: 'reservoirs.{reservoir_id}.savings',
             key: 'sum', 
             label: 'Σύνολο ταμιευτήρων', 
             unit: 'm3', 
+            ...props 
+        } );
+    }
+}
+
+class FactoriesSumValueSpecifier extends NestedSumValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            // only the 1st and 3rd parts will be used,
+            // the {2nd} is just to make the structure more clear
+            sourceKey: 'factories.{factory_id}.production',
+            key: 'sum', 
+            label: 'Σύνολο μονάδων επεξεργασίας', 
+            unit: 'm3', 
+            ...props 
+        } );
+    }
+}
+
+class LocationsSumValueSpecifier extends NestedSumValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            // only the 1st and 3rd parts will be used,
+            // the {2nd} is just to make the structure more clear
+            sourceKey: 'locations.{factory_id}.precipitation',
+            key: 'sum', 
+            label: 'Σύνολο τοποθεσιών', 
+            unit: 'mm', 
             ...props 
         } );
     }
@@ -478,7 +510,9 @@ class ReservoirsPercentageValueSpecifier extends NestedPercentageValueSpecifier 
 
     constructor( props: SecondaryValueSpecifierType ) {
         super( { 
-            sourceKey: 'reservoirs.savings',
+            // only the 1st and 3rd parts will be used,
+            // the {2nd} is just to make the structure more clear
+            sourceKey: 'reservoirs.{reservoir_id}.savings',
             key: 'percentage', 
             label: 'Μερίδιο', 
             unit: '%', 
@@ -486,6 +520,37 @@ class ReservoirsPercentageValueSpecifier extends NestedPercentageValueSpecifier 
         } );
     }
 }
+
+class FactoriesPercentageValueSpecifier extends NestedPercentageValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            // only the 1st and 3rd parts will be used,
+            // the {2nd} is just to make the structure more clear
+            sourceKey: 'factories.{factory_id}.production',
+            key: 'percentage', 
+            label: 'Μερίδιο', 
+            unit: '%', 
+            ...props 
+        } );
+    }
+}
+
+class LocationsPercentageValueSpecifier extends NestedPercentageValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            // only the 1st and 3rd parts will be used,
+            // the {2nd} is just to make the structure more clear
+            sourceKey: 'locations.{location_id}.precipitation',
+            key: 'percentage', 
+            label: 'Μερίδιο', 
+            unit: '%', 
+            ...props 
+        } );
+    }
+}
+
 
 class ValueSpecifierCollection {
 
@@ -558,6 +623,7 @@ export type { ValueSpecifierType, PrimaryValueSpecifierType, SecondaryValueSpeci
         SavingsRatioValueSpecifier, ProductionRatioValueSpecifier, PrecipitationRatioValueSpecifier,
         ReservoirIdValueSpecifier, FactoryIdValueSpecifier, LocationIdValueSpecifier,
         ReservoirsValueSpecifier, FactoriesValueSpecifier, LocationsValueSpecifier,
-        ReservoirsSumValueSpecifier, ReservoirsPercentageValueSpecifier,
+        ReservoirsSumValueSpecifier, FactoriesSumValueSpecifier, LocationsSumValueSpecifier, 
+        ReservoirsPercentageValueSpecifier, FactoriesPercentageValueSpecifier, LocationsPercentageValueSpecifier,
         ValueSpecifierCollection,
     }

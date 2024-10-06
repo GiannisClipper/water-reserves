@@ -1,7 +1,14 @@
 import { 
-    ValueSpecifier,
     PrimaryValueSpecifier, SecondaryValueSpecifier, NestedValueSpecifier,
     ValueSpecifierCollection,
+    FactoryIdValueSpecifier,
+    FactoriesValueSpecifier,
+    LocationIdValueSpecifier,
+    LocationsValueSpecifier,
+    FactoriesSumValueSpecifier,
+    FactoriesPercentageValueSpecifier,
+    LocationsSumValueSpecifier,
+    LocationsPercentageValueSpecifier,
 } from "./ValueSpecifier";
 
 import { 
@@ -15,7 +22,6 @@ import {
     ReservoirsPercentageValueSpecifier,
 } from "./ValueSpecifier";
 
-import type { ValueSpecifierType } from "./ValueSpecifier";
 import type { ObjectType } from '@/types';
 
 abstract class DataHandler {    
@@ -49,7 +55,8 @@ abstract class DataHandler {
             type: this.type,
             headers: this._headers,
             data: this._data,
-            valueSpecifiers: this.specifierCollection.specifiers.map( s => s.toJSON() )
+            valueSpecifiers: this.specifierCollection
+                .specifiers.map( s => s.toJSON() )
         }
     }
 }
@@ -182,13 +189,15 @@ class StackDataHandler extends DataHandler {
             nestObj[ row[ joinKey ] ] = { [ joinKey ]: row[ joinKey ], [ key ]: {} };
         } );
         arr.forEach( ( row: ObjectType ) => {
-            const key: string = nSpecifier.key;
-            const nestedKey: string = row[ nSpecifier.nestedKey ];
-            const nestedValueKey: string = nSpecifier.nestedValue;
-            const nestedValue: any = row[ nSpecifier.nestedValue ];
-            nestObj[ row[ joinKey ] ][ key ][ nestedKey ] = { 
-                [ nSpecifier.nestedKey ]: nestedKey,
-                [ nestedValueKey ]: nestedValue,
+            const { key, nestedKey, nestedInnerKey } = nSpecifier;
+
+            const nestedKeyValue: string = row[ nestedKey ];
+            const nestedInnerKeyValue: any = row[ nestedInnerKey ];
+
+            // for example: time.locations.2 = { location_id: 2, value: 234 }
+            nestObj[ row[ joinKey ] ][ key ][ nestedKeyValue ] = { 
+                [ nestedKey ]: nestedKeyValue,
+                [ nestedInnerKey ]: nestedInnerKeyValue,
             };
         } );
     
@@ -212,8 +221,8 @@ class StackDataHandler extends DataHandler {
         let items: ObjectType[] = result[ dataset ].legend && result[ dataset ].legend[ this._itemsKey ] || [];
 
         if ( this._data.length ) {
-            const nestObj = this._data[ 0 ][ nSpecifier.key ];
-            const ids: string[] = Object.keys( nestObj ).map( id => `${id}` );
+            const nestedObj = this._data[ 0 ][ nSpecifier.key ];
+            const ids: string[] = Object.keys( nestedObj ).map( id => `${id}` );
             this._items = items.filter( r => ids.includes( `${r.id}` ) );
         }
 
@@ -280,24 +289,49 @@ class DataHandlerFactory {
             } 
 
             case 'production': {
-                this.type = searchParams.factory_aggregation ? 'single' : 'stack';
-                this._specifierCollection = new ValueSpecifierCollection( [
-                    new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                    new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                    new ProductionDifferenceValueSpecifier( {} ),
-                    new ProductionGrowthValueSpecifier( {} ),
-                ] );
+                if ( searchParams.factory_aggregation ) {
+                    this.type = 'single';
+                    this._specifierCollection = new ValueSpecifierCollection( [
+                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new ProductionDifferenceValueSpecifier( {} ),
+                        new ProductionGrowthValueSpecifier( {} ),
+                    ] );
+                } else {
+                    this.type = 'stack';
+                    this._specifierCollection = new ValueSpecifierCollection( [
+                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new FactoryIdValueSpecifier( { index: 1 } ),
+                        new ProductionValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
+                        new FactoriesValueSpecifier( { axeXY: 'Y' } ),
+                        new FactoriesSumValueSpecifier( { axeXY: 'Y' } ),
+                        new FactoriesPercentageValueSpecifier( {} )
+                    ] );
+                }
                 break;
             }
 
             case 'precipitation': {
-                this.type = searchParams.location_aggregation ? 'single' : 'stack';
-                this._specifierCollection = new ValueSpecifierCollection( [
-                    new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                    new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                    new PrecipitationDifferenceValueSpecifier( {} ),
-                    new PrecipitationGrowthValueSpecifier( {} ),
-                ] );
+                if ( searchParams.location_aggregation ) {
+                    this.type = 'single';
+                    this._specifierCollection = new ValueSpecifierCollection( [
+                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new PrecipitationDifferenceValueSpecifier( {} ),
+                        new PrecipitationGrowthValueSpecifier( {} ),
+                    ] );
+                } else {
+                    this.type = 'stack';
+                    this._specifierCollection = new ValueSpecifierCollection( [
+                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new LocationIdValueSpecifier( { index: 1 } ),
+                        new PrecipitationValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
+                        new LocationsValueSpecifier( { axeXY: 'Y' } ),
+                        new LocationsSumValueSpecifier( { axeXY: 'Y' } ),
+                        new LocationsPercentageValueSpecifier( {} )
+                    ] );
+                }
+
                 break;
             }
 

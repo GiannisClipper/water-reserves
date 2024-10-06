@@ -185,7 +185,7 @@ class StackChartHandler extends ChartHandler {
         const nestedValues: number[] = data.map( ( row: ObjectType ) => {
             const values: number[] = [];
             for ( const nestedRow of Object.values( row[ nSpecifier.key ] ) ) {
-                values.push( ( nestedRow as ObjectType )[ nSpecifier.nestedValue ] );
+                values.push( ( nestedRow as ObjectType )[ nSpecifier.nestedInnerKey ] );
             }
             return values;
         } ).flat();
@@ -211,7 +211,7 @@ class StackChartHandler extends ChartHandler {
     public composeNestedValueKey( specifivNestedKey: string ): string {
         // for example: `not_nested_key.${r.id}.nested_value`
         const specifier = this._specifierCollection.getNestedByAxeY()[ 0 ];
-        return `${specifier.key}.${specifivNestedKey}.${specifier.nestedValue}`;
+        return `${specifier.key}.${specifivNestedKey}.${specifier.nestedInnerKey}`;
     }
 }
 

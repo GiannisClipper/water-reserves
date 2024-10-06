@@ -17,7 +17,7 @@ const makeItemsRepr = (
             const { id, name_el: name } = item;
 
             if ( values[ id ] ) {
-                const value: number = values[ id ][ nSpecifier.nestedValue ];
+                const value: number = values[ id ][ nSpecifier.nestedInnerKey ];
                 const percentage: number = values[ id ][ 'percentage' ];
                 return { name, value, percentage };
             }

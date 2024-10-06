@@ -1,3 +1,5 @@
+"use client"
+
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
@@ -16,7 +18,8 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } ).dataHandler;
+    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
+        .dataHandler;
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,

@@ -91,7 +91,7 @@ const MultiTooltip = ( { active, payload, specifierCollection }: TooltipPropsTyp
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
                 <>
                 { ySpecifiers.map( ( s, i ) => {
-                    return ( <p key={i}>{ `${s.label}: ${values[ i ]} ${s.unit}` }</p> );
+                    return ( <p key={i}>{ `${s.label}: ${Math.round( values[ i ] )} ${s.unit}` }</p> );
                 } ) }
                 </>
             </div>
@@ -134,12 +134,12 @@ const StackTooltip = ( { active, payload, specifierCollection, items, makeItemsR
                     <tbody>
                         <tr className='total'>
                             <td>Σύνολο</td> 
-                            <td className='value'>{ withCommas( total ) } <Unit unit={ sumSpecifier.unit }/></td>
+                            <td className='value'>{ withCommas( Math.round( total ) ) } <Unit unit={ sumSpecifier.unit }/></td>
                         </tr>
                         { itemsRepr.map( ( item, i ) =>
                             <tr key={ i }>
                                 <td>{ item.name }</td>
-                                <td className='value'>{ withCommas( item.value )} m<sup>3</sup></td> 
+                                <td className='value'>{ withCommas( Math.round( item.value ) ) } m<sup>3</sup></td> 
                                 <td className='value'>{ `${item.percentage}%` }</td>
                             </tr>
                         ) }
@@ -153,4 +153,4 @@ const StackTooltip = ( { active, payload, specifierCollection, items, makeItemsR
     return null;
 };
 
-export { CardTooltip, SingleTooltip, StackTooltip, MultiTooltip };
+export { CardTooltip, SingleTooltip, MultiTooltip, StackTooltip };
