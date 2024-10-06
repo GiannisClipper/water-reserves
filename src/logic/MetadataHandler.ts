@@ -10,7 +10,7 @@ import {
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
 
-type UnitType = 'm3' | 'mm' | '%';
+type UnitType = 'm3' | 'mm' | '%' | '';
 
 abstract class MetadataHandler {    
 

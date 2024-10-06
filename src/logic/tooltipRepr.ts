@@ -1,16 +1,24 @@
 import type { ObjectType } from '@/types';
 
 import ObjectList from '@/helpers/objects/ObjectList';
+import { NestedValueSpecifier } from './ValueSpecifier';
 
-const makeItemsRepr = ( items: ObjectType[], values: ObjectType ): ObjectType[] => {
+// makeItemsRepr() is used in stacked area and bar charts (in tooltips)
+
+const makeItemsRepr = ( 
+    items: ObjectType[], payload: ObjectType, nSpecifier: NestedValueSpecifier 
+): ObjectType[] => {
+
+    const values = payload[ nSpecifier.key ];
 
     // toReversed: placing from bottom to top the lines in chart
-    const result: any[] = items.toReversed()
-        .map( ( item: ObjectType, i: number ) => {
+    const result: any[] = items.toReversed().map( ( item: ObjectType, i: number ) => {
 
             const { id, name_el: name } = item;
+
             if ( values[ id ] ) {
-                const { value=0, percentage=0 } = values[ id ];
+                const value: number = values[ id ][ nSpecifier.nestedValue ];
+                const percentage: number = values[ id ][ 'percentage' ];
                 return { name, value, percentage };
             }
             return null;
@@ -20,9 +28,13 @@ const makeItemsRepr = ( items: ObjectType[], values: ObjectType ): ObjectType[] 
     return result;
 }
 
-const makeItemsOrderedRepr = ( items: ObjectType[], values: ObjectType ): ObjectType[] => {
+// makeItemsOrderedRepr() is used in stacked line chart (in tooltip)
+ 
+const makeItemsOrderedRepr = ( 
+    items: ObjectType[], payload: ObjectType, nSpecifier: NestedValueSpecifier 
+): ObjectType[] => {
 
-    let result: ObjectType[] = makeItemsRepr( items, values );
+    let result: ObjectType[] = makeItemsRepr( items, payload, nSpecifier );
     result = new ObjectList( result ).sortBy( 'value', 'desc' );
     return result;
 }

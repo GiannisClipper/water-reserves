@@ -1,15 +1,17 @@
 import { ObjectType } from "@/types"
+import type { UnitType } from '@/logic/MetadataHandler';
+
+type XYType = 'X' | 'Y' | '';
 
 interface ValueSpecifierType {
     key?: string
     parser?: CallableFunction
     label?: string
-    unit?: string
-    chartXY?: string
+    unit?: UnitType
+    axeXY?: XYType
 }
 
 interface PrimaryValueSpecifierType extends ValueSpecifierType {
-    isJoinValue?: boolean | undefined
     dataset?: string
     index: number
 }
@@ -28,15 +30,15 @@ abstract class ValueSpecifier {
     key: string;
     parser: CallableFunction;
     label: string;
-    unit: string;
-    chartXY: string;
+    unit: UnitType;
+    axeXY: XYType;
 
-    constructor( { key, parser, label, unit, chartXY }: ValueSpecifierType ) {
+    constructor( { key, parser, label, unit, axeXY }: ValueSpecifierType ) {
         this.key = key || 'value'
         this.parser = parser || this.defaultParser
         this.label = label || '';
         this.unit = unit || '';
-        this.chartXY = chartXY || '';
+        this.axeXY = axeXY || '';
     }
 
     defaultParser = ( ( val: any ): any => val )
@@ -46,7 +48,7 @@ abstract class ValueSpecifier {
             key: this.key,
             label: this.label,
             unit: this.unit,
-            chartXY: this.chartXY,
+            axeXY: this.axeXY,
         }
     }
 }
@@ -55,14 +57,12 @@ abstract class ValueSpecifier {
 
 abstract class PrimaryValueSpecifier extends ValueSpecifier {
 
-    isJoinValue: boolean;
-    dataset: string | undefined;
+    dataset: string | null;
     index: number;
 
-    constructor( { dataset, index, isJoinValue, ...otherProps }: PrimaryValueSpecifierType ) {
+    constructor( { dataset, index, ...otherProps }: PrimaryValueSpecifierType ) {
         super( otherProps );
-        this.isJoinValue = isJoinValue || false;
-        this.dataset = dataset || undefined;
+        this.dataset = dataset || null;
         this.index = index;
     }
 }
@@ -226,7 +226,6 @@ class TimeValueSpecifier extends PrimaryValueSpecifier {
     constructor( props: PrimaryValueSpecifierType ) {
         super( { 
             key: 'time', 
-            isJoinValue: false,
             label: 'Time', 
             ...props 
         } );
@@ -488,6 +487,66 @@ class ReservoirsPercentageValueSpecifier extends NestedPercentageValueSpecifier 
     }
 }
 
+class ValueSpecifierCollection {
+
+    _specifiers: ValueSpecifier[]
+
+    constructor( specifiers: ValueSpecifier[] ) {
+        this._specifiers = specifiers;
+    }
+
+    get specifiers(): ValueSpecifier[] {
+        return this._specifiers
+    }
+
+    getPrimarySpecifiers(): PrimaryValueSpecifier[] {
+        return this._specifiers.filter( s => s instanceof PrimaryValueSpecifier );
+    }
+
+    getSecondarySpecifiers(): SecondaryValueSpecifier[] {
+        return this._specifiers.filter( s => s instanceof SecondaryValueSpecifier );
+    }
+
+    getNestedSpecifiers(): NestedValueSpecifier[] {
+        return this._specifiers.filter( s => s instanceof NestedValueSpecifier );
+    }
+
+    getNotNestedSpecifiers(): ValueSpecifier[] {
+        return this._specifiers.filter( s => ! ( s instanceof NestedValueSpecifier ) );
+    }
+
+    getByDataset( dataset?: string ): PrimaryValueSpecifier[] { 
+        const filter: string | null = dataset || null;
+        return  this.getPrimarySpecifiers().filter( s => s.dataset == dataset );
+    }  
+
+    getDatasets(): string[] {
+        return Array.from( new Set( 
+            this.getPrimarySpecifiers().filter( s => s.dataset ).map( s => s.dataset ) 
+        ) ) as string[];
+    }  
+
+    getByAxeX(): ValueSpecifier[] {
+        return this._specifiers.filter( s => s[ 'axeXY' ] === 'X' );
+    }
+
+    getByAxeY(): ValueSpecifier[] {
+        return this._specifiers.filter( s => s[ 'axeXY' ] === 'Y' );
+    }
+
+    getNestedByAxeY(): NestedValueSpecifier[] {
+        return this.getNestedSpecifiers().filter( s => s[ 'axeXY' ] === 'Y' );
+    }
+
+    getNotNestedByAxeY(): ValueSpecifier[] {
+        return this.getNotNestedSpecifiers().filter( s => s[ 'axeXY' ] === 'Y' );
+    }
+
+    getByKey( key: string ): ValueSpecifier {
+        return this._specifiers.filter( s => s[ 'key' ] === key )[ 0 ];
+    }
+}
+
 export type { ValueSpecifierType, PrimaryValueSpecifierType, SecondaryValueSpecifierType };
 
     export {
@@ -499,5 +558,6 @@ export type { ValueSpecifierType, PrimaryValueSpecifierType, SecondaryValueSpeci
         SavingsRatioValueSpecifier, ProductionRatioValueSpecifier, PrecipitationRatioValueSpecifier,
         ReservoirIdValueSpecifier, FactoryIdValueSpecifier, LocationIdValueSpecifier,
         ReservoirsValueSpecifier, FactoriesValueSpecifier, LocationsValueSpecifier,
-        ReservoirsSumValueSpecifier, ReservoirsPercentageValueSpecifier
+        ReservoirsSumValueSpecifier, ReservoirsPercentageValueSpecifier,
+        ValueSpecifierCollection,
     }

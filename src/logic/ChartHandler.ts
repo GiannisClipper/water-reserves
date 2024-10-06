@@ -1,11 +1,12 @@
 import type { ObjectType } from "@/types";
+import { NestedValueSpecifier, ValueSpecifier, ValueSpecifierCollection } from "./ValueSpecifier";
 
 type LineType = 'linear' | 'monotone';
 
 abstract class ChartHandler {
 
     _data: ObjectType[] = [];
-    _valueSpecifiers: ObjectType[] = [];
+    _specifierCollection: ValueSpecifierCollection;
 
     _xTicks: string[] = [];
     _yTicks: number[] = [];
@@ -14,14 +15,14 @@ abstract class ChartHandler {
  
     abstract _yValues: number[];
 
-    constructor( data: ObjectType[], valueSpecifiers: ObjectType[] ) {
+    constructor( data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
         this._data = data;
-        this._valueSpecifiers = valueSpecifiers;
+        this._specifierCollection = specifierCollection;
     }
 
     protected calculateXTicks = (): string[] => {
 
-        let values = this._data.map( ( row: ObjectType ) => row[ this.getXValueKey() ] );
+        let values = this._data.map( ( row: ObjectType ) => row[ this.xValueKey ] );
     
         if ( values.length === 0 ) {
             return values;
@@ -88,8 +89,8 @@ abstract class ChartHandler {
         return this._data;
     }
 
-    get valueSpecifiers(): ObjectType[] {
-        return this._valueSpecifiers;
+    get specifierCollection(): ValueSpecifierCollection {
+        return this._specifierCollection;
     }        
 
     get xTicks(): string[] {
@@ -119,28 +120,26 @@ abstract class ChartHandler {
             : 'monotone'; // in case of aggregated values (months, years, ...)
     }
 
-    getXValueKey(): string {
-        return this._valueSpecifiers.
-            filter( s => s[ 'chartXY' ] === 'X' )[ 0 ]
-            .key;
+    get xValueKeys(): string[] {
+        return this._specifierCollection.getByAxeX().map( s => s.key );
     }
 
-    getYValueKey(): string {
-        return this._valueSpecifiers.
-            filter( s => s[ 'chartXY' ] === 'Y' )[ 0 ]
-            .key;
+    get xValueKey(): string {
+        return this.xValueKeys[ 0 ];
     }
 
-    getYValueKeys(): string[] {
-        return this._valueSpecifiers.
-            filter( s => s[ 'chartXY' ] === 'Y' )
-            .map( s => s[ 'key' ] );
+    get yValueKeys(): string[] {
+        return this._specifierCollection.getByAxeY().map( s => s.key );
+    }
+
+    get yValueKey(): string {
+        return this.yValueKeys[ 0 ];
     }
 
     public toJSON(): ObjectType {
         return {
             data: this._data,
-            valueSpecifiers: this._valueSpecifiers,
+            specifierCollection: this._specifierCollection,
             xTicks: this._xTicks,
             yTicks: this._yTicks,
             yValues: this._yValues,
@@ -152,9 +151,9 @@ class SingleChartHandler extends ChartHandler {
 
     _yValues: number[];
 
-    constructor( data: ObjectType[], valueSpecifiers: ObjectType[] ) {
-        super( data, valueSpecifiers );
-        this._yValues = data.map( ( row: ObjectType ) => row[ this.YValueKey ] );
+    constructor( data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
+        super( data, specifierCollection );
+        this._yValues = data.map( ( row: ObjectType ) => row[ this.yValueKey ] );
 
         this._xTicks = this.calculateXTicks();
         this._yTicks = this.calculateYTicks();
@@ -165,19 +164,54 @@ class StackChartHandler extends ChartHandler {
 
     _yValues: number[];
 
-    constructor( data: ObjectType[], valueSpecifiers: ObjectType[] ) {
+    constructor( data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
     
-        super( data, valueSpecifiers );
+        super( data, specifierCollection );
     
-        this._yValues = data.map( ( row: ObjectType ) => {
+        // get not nested values
 
-            const { total, values } = row;
-            const arr: Object[] = Object.values( values );
-            return [ total, ...arr.map( ( v: ObjectType ) => v.value ) ];
+        const specifiers: ValueSpecifier[] = this.specifierCollection.getNotNestedByAxeY();
+        const notNestedValues: number[] = data.map( ( row: ObjectType ) => {
+            const values: number[] = [];
+            for ( const specifier of specifiers ) {
+                values.push( row[ specifier.key ] );
+            }
+            return values;
         } ).flat();
+
+        // get nested values
+
+        const nSpecifier: NestedValueSpecifier = this.specifierCollection.getNestedByAxeY()[ 0 ];
+        const nestedValues: number[] = data.map( ( row: ObjectType ) => {
+            const values: number[] = [];
+            for ( const nestedRow of Object.values( row[ nSpecifier.key ] ) ) {
+                values.push( ( nestedRow as ObjectType )[ nSpecifier.nestedValue ] );
+            }
+            return values;
+        } ).flat();
+
+        // merge nested and not nested values
+
+        this._yValues = [ notNestedValues, nestedValues ].flat();
+
+        // calculate X and Y ticks
 
         this._xTicks = this.calculateXTicks();
         this._yTicks = this.calculateYTicks();
+    }
+
+    get yValueKeys(): string[] {
+        return this._specifierCollection.getNotNestedByAxeY().map( s => s.key );
+    }
+
+    get yValueKey(): string {
+        return this.yValueKeys[ 0 ];
+    }
+
+    public composeNestedValueKey( specifivNestedKey: string ): string {
+        // for example: `not_nested_key.${r.id}.nested_value`
+        const specifier = this._specifierCollection.getNestedByAxeY()[ 0 ];
+        return `${specifier.key}.${specifivNestedKey}.${specifier.nestedValue}`;
     }
 }
 
@@ -189,13 +223,13 @@ class MultiChartHandler extends ChartHandler {
 
     _yValues: number[];
 
-    constructor( data: ObjectType[], valueSpecifiers: ObjectType[] ) {
+    constructor( data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
     
-        super( data, valueSpecifiers );
+        super( data, specifierCollection );
 
-        this._yValues = data.map( ( row: ObjectType ) => row[ this.getYValueKey() ] );
+        // this._yValues = data.map( ( row: ObjectType ) => row[ this.yValueKey ] );
 
-        const yValueKeys = this.getYValueKeys();
+        const yValueKeys = this.yValueKeys;
 
         this._yValues = data.map( ( row: ObjectType ) => {
             const newRow: ObjectType = {};
@@ -216,20 +250,20 @@ class ChartHandlerFactory {
 
     private _chartHandler: ChartHandler;
 
-    constructor( type: string, data: ObjectType[], valueSpecifiers: ObjectType[] ) {
+    constructor( type: string, data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
 
         switch ( type ) {
 
             case 'single': {
-                this._chartHandler = new SingleChartHandler( data, valueSpecifiers );
+                this._chartHandler = new SingleChartHandler( data, specifierCollection );
                 break;
             } 
             case 'stack': {
-                this._chartHandler = new StackChartHandler( data, valueSpecifiers );
+                this._chartHandler = new StackChartHandler( data, specifierCollection );
                 break;
             }
             case 'multi': {
-                this._chartHandler = new MultiChartHandler( data, valueSpecifiers );
+                this._chartHandler = new MultiChartHandler( data, specifierCollection );
                 break;
             }
 

@@ -1,6 +1,8 @@
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 
+import { NestedValueSpecifier, ValueSpecifier, ValueSpecifierCollection } from '@/logic/ValueSpecifier';
+
 import type { ObjectType } from '@/types';
 import type { UnitType } from '@/logic/MetadataHandler';
 
@@ -36,37 +38,62 @@ const CardTooltip = ( { active, payload, metadataHandler }: CardTooltipPropsType
 type TooltipPropsType = {
     active?: boolean
     payload?: any
-    valueSpecifiers: ObjectType[]
+    specifierCollection: ValueSpecifierCollection
 } 
 
-const SingleTooltip = ( { active, payload, valueSpecifiers }: TooltipPropsType ) => {
+const SingleTooltip = ( { active, payload, specifierCollection }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         payload = payload[ 0 ].payload;
 
-        const time: ObjectType = valueSpecifiers.filter( s => s[ 'chartXY' ] === 'X' )[ 0 ];
-        const value: ObjectType = valueSpecifiers.filter( s => s[ 'chartXY' ] === 'Y' )[ 0 ];
-        const difference: ObjectType = valueSpecifiers.filter( s => s[ 'key' ] === `${value.key}_difference` )[ 0 ];;
-        const percentage: ObjectType = valueSpecifiers.filter( s => s[ 'key' ] === `${value.key}_percentage` )[ 0 ];;
+        const timeSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
+        const valueSpecifier: ValueSpecifier = specifierCollection.getByAxeY()[ 0 ];
+        const diffSpecifier: ValueSpecifier = specifierCollection.getByKey( `${valueSpecifier.key}_difference` );
+        const pcSpecifier: ValueSpecifier = specifierCollection.getByKey( `${valueSpecifier.key}_percentage` );
 
-        const values = {
-            time: payload[ time[ 'key' ] ],
-            value: payload[ value[ 'key' ] ],
-            difference: payload[ difference[ 'key' ] ],
-            percentage: payload[ percentage[ 'key' ] ],
-        }
+        const time: string = payload[ timeSpecifier.key ];
+        const value: number = payload[ valueSpecifier.key ];
+        const difference: number = payload[ diffSpecifier.key ];
+        const percentage: number = payload[ pcSpecifier.key ];
 
         return (
             <div className="Tooltip">
-                <p>{ `${timeLabel( values.time )}: ${values.time}` }</p>
-                <p>{ `${value[ 'label' ]}: ${withCommas( values.value )} ` } 
-                    <Unit unit={ value[ 'unit' ] }/>
+                <p>{ `${timeLabel( time )}: ${time}` }</p>
+                <p>{ `${valueSpecifier[ 'label' ]}: ${withCommas( value )} ` } 
+                    <Unit unit={ valueSpecifier.unit }/>
                 </p>
-                <p>{ `Μεταβολή: ${withCommas( Math.round( values.difference ) )} ` }
-                    <Unit unit={ value[ 'unit' ] }/>
-                    { ` (${withPlusSign( values.percentage )}%)` }
+                <p>{ `Μεταβολή: ${withCommas( Math.round( difference ) )} ` }
+                    <Unit unit={ valueSpecifier.unit }/>
+                    { ` (${withPlusSign( percentage )}%)` }
                 </p>
+            </div>
+      );
+    }
+  
+    return null;
+};
+
+const MultiTooltip = ( { active, payload, specifierCollection }: TooltipPropsType ) => {
+
+    if ( active && payload && payload.length ) {
+
+        payload = payload[ 0 ].payload;
+
+        const timeSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
+        const ySpecifiers: ValueSpecifier[] = specifierCollection.getByAxeY();
+
+        const time = payload[ timeSpecifier.key ];
+        const values = ySpecifiers.map( s => payload[ s.key ] );
+
+        return (
+            <div className="Tooltip">
+                <p>{ `${timeLabel( time )}: ${time}` }</p>
+                <>
+                { ySpecifiers.map( ( s, i ) => {
+                    return ( <p key={i}>{ `${s.label}: ${values[ i ]} ${s.unit}` }</p> );
+                } ) }
+                </>
             </div>
       );
     }
@@ -77,51 +104,27 @@ const SingleTooltip = ( { active, payload, valueSpecifiers }: TooltipPropsType )
 type StackTooltipPropsType = {
     active?: boolean
     payload?: any
+    specifierCollection: ValueSpecifierCollection
     items: ObjectType[]
     makeItemsRepr: CallableFunction
-    metadataHandler: ObjectType
 } 
 
-const MultiTooltip = ( { active, payload, valueSpecifiers }: TooltipPropsType ) => {
+const StackTooltip = ( { active, payload, specifierCollection, items, makeItemsRepr }: StackTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         payload = payload[ 0 ].payload;
 
-        const timeSpecifier: ObjectType = valueSpecifiers.filter( s => s[ 'chartXY' ] === 'X' )[ 0 ];
-        const ySpecifiers: ObjectType[] = valueSpecifiers.filter( s => s[ 'chartXY' ] === 'Y' );
+        const timeSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
+        const sumSpecifier: ValueSpecifier = specifierCollection.getByKey( 'sum' );
+        const nSpecifier: NestedValueSpecifier = specifierCollection.getNestedByAxeY()[ 0 ];
 
-        const values: ObjectType = {
-            time: payload[ timeSpecifier[ 'key' ] ]
-        }
-        for ( const ySpecifier of ySpecifiers ) {
-            values[ ySpecifier[ 'key'] ] = payload[ ySpecifier[ 'key' ] ]
-        }
+        const time = payload[ timeSpecifier.key ];
+        const total = payload[ sumSpecifier.key ];
 
-        return (
-            <div className="Tooltip">
-                <p>{ `${timeLabel( values.time )}: ${values.time}` }</p>
-                <>
-                { ySpecifiers.map( ( s, i ) => {
-                    // const key = s[ 'key' ].split( '_' )[ 0 ];
-                    // const label = valueSpecifiers.filter( s => s[ 'key' ] === key ).map( s => s[ 'label' ] )[ 0 ];
-                    return ( <p key={i}>{ `${s[ 'label' ]}: ${values[ s[ 'key' ] ]} ${s[ 'unit' ]}` }</p> );
-                } ) }
-                </>
-            </div>
-      );
-    }
-  
-    return null;
-};
+        // const { time, total, values } = payload[ 0 ].payload;
 
-const StackTooltip = ( { active, payload, items, makeItemsRepr, metadataHandler }: StackTooltipPropsType ) => {
-
-    if ( active && payload && payload.length ) {
-
-        const { time, total, values } = payload[ 0 ].payload;
-
-        const itemsRepr: ObjectType[] = makeItemsRepr( items, values );
+        const itemsRepr: ObjectType[] = makeItemsRepr( items, payload, nSpecifier );
 
         return (
             <div className="Tooltip">
@@ -131,13 +134,13 @@ const StackTooltip = ( { active, payload, items, makeItemsRepr, metadataHandler 
                     <tbody>
                         <tr className='total'>
                             <td>Σύνολο</td> 
-                            <td className='value'>{ withCommas( total ) } <Unit unit={ metadataHandler.unit }/></td>
+                            <td className='value'>{ withCommas( total ) } <Unit unit={ sumSpecifier.unit }/></td>
                         </tr>
-                        { itemsRepr.map( ( reservoir, i ) =>
+                        { itemsRepr.map( ( item, i ) =>
                             <tr key={ i }>
-                                <td>{ reservoir.name }</td>
-                                <td className='value'>{ withCommas( reservoir.value )} m<sup>3</sup></td> 
-                                <td className='value'>{ `${reservoir.percentage}%` }</td>
+                                <td>{ item.name }</td>
+                                <td className='value'>{ withCommas( item.value )} m<sup>3</sup></td> 
+                                <td className='value'>{ `${item.percentage}%` }</td>
                             </tr>
                         ) }
                     </tbody>

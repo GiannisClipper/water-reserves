@@ -30,7 +30,7 @@ const ChartContent = ( { chartType, dataHandler, metadataHandler }: PropsType ) 
     const chartHandler: ChartHandler = new ChartHandlerFactory( 
         'single', 
         dataHandler.data, 
-        dataHandler.valueSpecifiers 
+        dataHandler.specifierCollection 
     ).chartHandler;
 
     return (
@@ -83,7 +83,7 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> }
@@ -100,12 +100,12 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <SingleTooltip 
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> } 
                 />
 
                 <Line
-                    dataKey={ chartHandler.getYValueKey() }
+                    dataKey={ chartHandler.yValueKey }
                     type={ chartHandler.lineType } 
                     stroke={ metadataHandler.colors[ 0 ][ 500 ] } 
                     strokeWidth={ 2 } 
@@ -133,7 +133,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -150,12 +150,12 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <SingleTooltip 
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> } 
                 />
 
                 <Area 
-                    dataKey="value"
+                    dataKey={ chartHandler.yValueKey }
                     type={ chartHandler.lineType } 
                     stroke={ metadataHandler.colors[ 0 ][ 400 ] } 
                     fill={ metadataHandler.colors[ 0 ][ 300 ] } 
@@ -184,7 +184,7 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -203,12 +203,12 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ <SingleTooltip 
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> } 
                 />
 
                 <Bar 
-                    dataKey="value" 
+                    dataKey={ chartHandler.yValueKey }
                     stroke={ metadataHandler.colors[ 0 ][ 400 ] } 
                     fill={ metadataHandler.colors[ 0 ][ 300 ] } 
                     fillOpacity={ .65 } 

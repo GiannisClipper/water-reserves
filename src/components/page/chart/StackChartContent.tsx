@@ -19,9 +19,9 @@ import { StackTooltip } from '@/components/page/chart/tooltips';
 import { LineLegend, ColorLegend } from "@/components/page/chart/legends";
 
 import { StackDataHandler } from '@/logic/DataHandler';
-import { ChartHandler, ChartHandlerFactory } from "@/logic/ChartHandler";
-import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/tooltipRepr';
+import { ChartHandler, ChartHandlerFactory, StackChartHandler } from "@/logic/ChartHandler";
 import ObjectList from '@/helpers/objects/ObjectList';
+import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/tooltipRepr';
 
 import type { ObjectType } from '@/types';
 
@@ -38,7 +38,7 @@ const ChartContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) 
     const chartHandler: ChartHandler = new ChartHandlerFactory( 
         'stack', 
         dataHandler.data, 
-        dataHandler.valueSpecifiers 
+        dataHandler.specifierCollection 
     ).chartHandler;
 
     console.log( "rendering: ChartContent...", chartHandler.toJSON() )
@@ -100,8 +100,6 @@ type ChartCompositionPropsType = {
 const LineChartComposition = ( { chartHandler, colorArray, items, metadataHandler }: ChartCompositionPropsType ) => {
 
     const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
-    // const lineDashes: string[] = [ "1 0", "1 0", "1 0", "1 0", "1 0", "1 0", "1 0", "1 0", "1 0" ];
-    // colorArray = [ SKY[ 500 ], ROSE[ 500 ], CYAN[ 500 ], AMBER[ 500 ], BLUE[ 500 ], FUCHSIA[ 500 ], TEAL[ 500 ], ORANGE[ 500 ], NEUTRAL[ 900 ] ];
 
     console.log( 'Rerender LineChart...' );
 
@@ -120,7 +118,7 @@ const LineChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -138,9 +136,9 @@ const LineChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                 <Tooltip 
                     content={ 
                         <StackTooltip 
+                            specifierCollection={ chartHandler.specifierCollection }
                             items={ items } 
                             makeItemsRepr={ makeItemsOrderedRepr }
-                            metadataHandler={ metadataHandler }
                         /> 
                     } 
                 />
@@ -150,7 +148,7 @@ const LineChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                         key={ i }
                         id={ `${i+1}`}
                         type={ chartHandler.lineType } 
-                        dataKey={ `values.${r.id}.value` }
+                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( r.id ) }
                         stroke={ colorArray[ i ] } 
                         strokeWidth={ 2 } 
                         strokeDasharray={ lineDashes[ i ] }
@@ -162,7 +160,7 @@ const LineChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                 <Line 
                     id="0" 
                     type={ chartHandler.lineType } 
-                    dataKey="total"
+                    dataKey={ chartHandler.specifierCollection.getNotNestedByAxeY()[ 0 ].key }
                     stroke={ colorArray[ colorArray.length - 1 ] } 
                     strokeWidth={ 2 }
                     dot={ false }
@@ -202,7 +200,7 @@ const AreaChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -220,9 +218,9 @@ const AreaChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                 <Tooltip 
                     content={ 
                         <StackTooltip 
+                            specifierCollection={ chartHandler.specifierCollection }
                             items={ items } 
                             makeItemsRepr={ makeItemsRepr }
-                            metadataHandler={ metadataHandler }
                         /> 
                     } 
                 />
@@ -231,7 +229,7 @@ const AreaChartComposition = ( { chartHandler, colorArray, items, metadataHandle
                     <Area 
                         key={ i } 
                         type={ chartHandler.lineType } 
-                        dataKey={ `values.${r.id}.value` }
+                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( r.id ) }
                         stackId="a"
                         stroke={ colorArray[ i ] } 
                         fill={ colorArray[ i ] } 
@@ -271,7 +269,7 @@ const BarChartComposition = ( { chartHandler, colorArray, items, metadataHandler
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -291,9 +289,9 @@ const BarChartComposition = ( { chartHandler, colorArray, items, metadataHandler
                     cursor={{ fill: '#eee' }}
                     content={ 
                         <StackTooltip 
+                            specifierCollection={ chartHandler.specifierCollection }
                             items={ items } 
                             makeItemsRepr={ makeItemsRepr }
-                            metadataHandler={ metadataHandler }
                         /> 
                     } 
                 />
@@ -302,7 +300,7 @@ const BarChartComposition = ( { chartHandler, colorArray, items, metadataHandler
                     <Bar 
                         key={ i } 
                         type={ chartHandler.lineType } 
-                        dataKey={ `values.${r.id}.value` }
+                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( r.id ) }
                         stackId="a"
                         fill={ colorArray[ i ] } 
                         fillOpacity={ .65 }

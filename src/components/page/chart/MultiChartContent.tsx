@@ -29,10 +29,10 @@ const ChartContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) 
     const chartHandler: ChartHandler = new ChartHandlerFactory( 
         'multi', 
         dataHandler.data, 
-        dataHandler.valueSpecifiers 
+        dataHandler.specifierCollection 
     ).chartHandler;
 
-    console.log( "rendering: ChartContent...", chartHandler.getYValueKeys() );
+    console.log( "rendering: ChartContent..." );
 
     return (
         <div className="ChartContent">
@@ -84,7 +84,7 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> }
@@ -101,12 +101,12 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <MultiTooltip 
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> } 
                 />
 
                 <>
-                { chartHandler.getYValueKeys().map( ( key, i ) => {
+                { chartHandler.yValueKeys.map( ( key, i ) => {
                     return (
                         <Line
                             key={ i }
@@ -126,7 +126,7 @@ const LineChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     height={ 24 }
                     content={ <MultiColorLegend 
                         colorsArray={ metadataHandler.colors }
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> }
                 />
             </LineChart>
@@ -151,7 +151,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -168,12 +168,12 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
 
                 <Tooltip 
                     content={ <MultiTooltip 
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> } 
                 />
 
                 <>
-                { chartHandler.getYValueKeys().map( ( key, i ) => {
+                { chartHandler.yValueKeys.map( ( key, i ) => {
                     return (
                         <Area 
                             key={ i }
@@ -193,7 +193,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     height={ 24 }
                     content={ <MultiColorLegend 
                         colorsArray={ metadataHandler.colors }
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> }
                 />
 
@@ -220,7 +220,7 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                 />
 
                 <XAxis 
-                    dataKey="time" 
+                    dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -239,12 +239,12 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ <MultiTooltip 
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> } 
                 />
 
-<>
-                { chartHandler.getYValueKeys().map( ( key, i ) => {
+                <>
+                { chartHandler.yValueKeys.map( ( key, i ) => {
                     return (
                         <Bar 
                             key={ i }
@@ -263,7 +263,7 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     height={ 24 }
                     content={ <MultiColorLegend 
                         colorsArray={ metadataHandler.colors }
-                        valueSpecifiers={ chartHandler.valueSpecifiers }
+                        specifierCollection={ chartHandler.specifierCollection }
                     /> }
                 />
 

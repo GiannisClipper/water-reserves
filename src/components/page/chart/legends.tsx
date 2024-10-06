@@ -1,3 +1,4 @@
+import { ValueSpecifier, ValueSpecifierCollection } from '@/logic/ValueSpecifier';
 import type { ObjectType } from '@/types';
 
 type ColorLegendPropsType = {
@@ -30,16 +31,16 @@ const ColorLegend = ( { payload, items, colorsArray }: ColorLegendPropsType ) =>
 type MultiColorLegendPropsType = {
     payload?: any
     colorsArray: string[]
-    valueSpecifiers: ObjectType[]
+    specifierCollection: ValueSpecifierCollection
 }
 
-const MultiColorLegend = ( { payload, colorsArray, valueSpecifiers }: MultiColorLegendPropsType ) => {
+const MultiColorLegend = ( { payload, colorsArray, specifierCollection }: MultiColorLegendPropsType ) => {
 
-    const ySpecifiers: ObjectType[] = valueSpecifiers.filter( s => s[ 'chartXY' ] === 'Y' );
+    const ySpecifiers: ValueSpecifier[] = specifierCollection.getByAxeY();
 
     return (
         <div className='CustomizedLegend'>
-            { ySpecifiers.map( ( s: ObjectType, i: number ) =>
+            { ySpecifiers.map( ( s: ValueSpecifier, i: number ) =>
                 <span 
                     key={ i }
                     style={ { color: colorsArray[ i ][ 500 ] } }
@@ -49,7 +50,7 @@ const MultiColorLegend = ( { payload, colorsArray, valueSpecifiers }: MultiColor
                             <path d="M5 5 l15 0" />
                         </g>
                     </svg>
-                    { s[ 'label' ] }
+                    { s.label }
                 </span>
             ) }
         </div>
