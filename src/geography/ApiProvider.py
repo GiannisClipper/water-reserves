@@ -3,6 +3,9 @@ import time
 from abc import ABC, abstractmethod
 from src.settings import get_settings
 
+RETRY_LIMIT = 3
+RETRY_DELAY = 30
+
 class ApiProvider( ABC ):
 
     _address = None
@@ -45,33 +48,40 @@ class ApiProvider( ABC ):
 
     def request( self ):
 
-        self._error = None
-        self._data = None
+        for retry in range( RETRY_LIMIT ):
+            self._error = None
+            self._data = None
 
-        try:
-            with httpx.Client() as client:
-                print( 'url:', self.url )
-                response = client.get( self.url )
-                # add delay due to Nominatim usage policy:
-                # "No heavy uses (an absolute maximum of 1 request per second)"
-                time.sleep( 1.1 )
+            try:
+                with httpx.Client() as client:
+                    print( f'[retry {retry}] url: {self.url}' )
+                    response = client.get( self.url )
+                    # add delay due to Nominatim usage policy:
+                    # "No heavy uses (an absolute maximum of 1 request per second)"
+                    time.sleep( 1.1 )
 
-                if response.status_code != 200:
-                    self._error = f'{response.status_code} {response.reason_phrase}'
-                    result = { 'error': self.error }
-                    print( f'Error: {self.error}' )
+                    if response.status_code != 200:
+                        self._error = f'{response.status_code} {response.reason_phrase}'
+                        result = { 'error': self.error }
+                        print( f'Error: {self.error}' )
+                        return result
+
+                    print( f'Success: {response.status_code}' )
+                    self.response = response
+                    result = { 'data': self.data }
                     return result
 
-                print( f'Success: {response.status_code}' )
-                self.response = response
-                result = { 'data': self.data }
-                return result
+            except Exception as error:
+                self._error = f'{error}'
+                print( f'Error: {self.error}' )
 
-        except Exception as error:
-            self._error = f'{error}'
-            print( f'Error: {self.error}' )
-            result = { 'error': self.error }
-            return result
+                if retry < RETRY_LIMIT - 1:
+                    print( f'Waiting {RETRY_DELAY} seconds to retry...' )
+                    time.sleep( RETRY_DELAY )
+                    continue
+
+                result = { 'error': self.error }
+                return result
 
 class NominatimApiProvider( ApiProvider ):
 

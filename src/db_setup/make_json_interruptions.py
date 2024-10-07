@@ -91,6 +91,9 @@ def parse_json( monthYear ):
         if interruption.get( 'geo_url' ) != None:
             continue
 
+        if interruption.get( 'geo_failed' ) == True:
+            continue
+
         print()
         print( f'{monthYear} => #{i+1} of {len( interruptions )}')
 
@@ -100,6 +103,7 @@ def parse_json( monthYear ):
 
         if not result:
             interruption[ 'geo_failed' ] = True
+            saveEnabled = True
 
         elif not result.get( 'error' ):
             interruption[ 'geo_url' ] = result[ 'url' ]
@@ -115,33 +119,33 @@ def parse_json( monthYear ):
             save_interruptions( interruptions )
 
 
-def check_json( monthYear ):
+# def check_json( monthYear ):
 
-    interruptions = parse_interruptions( monthYear )
+#     interruptions = parse_interruptions( monthYear )
 
-    for i, interruption in enumerate( interruptions ):
+#     for i, interruption in enumerate( interruptions ):
 
-        if interruption.get( 'geo_url' ) != None:
-            continue
+#         if interruption.get( 'geo_url' ) != None:
+#             continue
 
-        print( f'#{i+1} of {len( interruptions )}')
+#         print( f'#{i+1} of {len( interruptions )}')
 
-        print( interruption )
+#         print( interruption )
 
-def remove_geo_failed( monthYear ):
+# def remove_geo_failed( monthYear ):
 
-    interruptions = parse_interruptions( monthYear )
+#     interruptions = parse_interruptions( monthYear )
 
-    should_save = False
+#     should_save = False
 
-    for i, interruption in enumerate( interruptions ):
+#     for i, interruption in enumerate( interruptions ):
 
-        if interruption.get( 'geo_failed' ):
-            del interruption[ 'geo_failed' ]
-            should_save= True
+#         if interruption.get( 'geo_failed' ):
+#             del interruption[ 'geo_failed' ]
+#             should_save= True
 
-    if should_save:
-        save_interruptions( interruptions )
+#     if should_save:
+#         save_interruptions( interruptions )
 
 
 if __name__ == "__main__":
@@ -149,14 +153,14 @@ if __name__ == "__main__":
     # try:
         monthYears = parse_argv( sys.argv )
 
-        # for monthYear in monthYears:
-        #     parse_json( monthYear )
+        for monthYear in monthYears:
+            parse_json( monthYear )
 
         # for monthYear in monthYears:
         #     check_json( monthYear )
 
-        for monthYear in monthYears:
-            remove_geo_failed( monthYear )
+        # for monthYear in monthYears:
+        #     remove_geo_failed( monthYear )
 
     # except Exception as ex:
     #     # How do I print an exception in Python?

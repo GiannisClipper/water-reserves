@@ -59,7 +59,7 @@ class GeolocationHandler:
             if len( results ) > 0:
                 return results[ 0 ]
 
-        # request (district), (country), area 
+        # request (district), (country), area, NO STREET 
 
         address = AreaAddressParser( self._area ).address
 
