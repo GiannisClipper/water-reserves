@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import httpx
-import time
+import asyncio
 
 class Request( ABC ):
 
@@ -72,31 +72,30 @@ class Request( ABC ):
         return self._data
 
     @abstractmethod
-    def request_method( self, client ):
-        # client.get( self.url )
-        pass # post, put, patch, get, delete
+    async def request_method( self, client ):
+        pass
 
-    def request( self ):
+    async def request( self ):
 
         for retry in range( 1 + self.retry_limit ):
             self._error = None
             self._data = None
 
             try:
-                with httpx.Client() as client:
+                async with httpx.AsyncClient() as client:
                     print( f'[retry {retry}] url: {self.url}' )
-                    response = self.request_method( client )
+                    response = await self.request_method( client )
 
                     # in case of API usage limits 
                     # e.g: nominatim allows at maximum 1 request per second
                     if self.request_delay:
                         print( f'Waiting {self.request_delay} seconds due to api limits...' )
-                        time.sleep( self.request_delay )
+                        asyncio.sleep( self.request_delay )
 
                     if response.status_code != 200:
                         self._error = f'{response.status_code} {response.reason_phrase}'
-                        result = { 'error': self.error }
                         print( f'Error: {self.error}' )
+                        result = { 'error': self.error }
                         return result
 
                     print( f'Success: {response.status_code}' )
@@ -110,7 +109,7 @@ class Request( ABC ):
 
                 if retry < self.retry_limit:
                     print( f'Waiting {self.retry_delay} seconds to retry...' )
-                    time.sleep( self.retry_delay )
+                    asyncio.sleep( self.retry_delay )
                     continue
 
                 result = { 'error': self.error }

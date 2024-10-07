@@ -13,8 +13,8 @@ class InterruptionsPostRequest( Request ):
         settings = get_settings()
         return f'{settings.interruptions_url}/nowater.php'
 
-    def request_method( self, client ):
-        return client.post( 
+    async def request_method( self, client ):
+        return await client.post( 
             self.url, 
             data={ 
                 "sdate": self.params[ 'month_year' ], 
@@ -45,8 +45,8 @@ class InterruptionsGetRequest( Request ):
         settings = get_settings()
         return f'{settings.interruptions_url}/{self.params[ 'file_path' ]}'
 
-    def request_method( self, client ):
-        return client.get( self.url )
+    async def request_method( self, client ):
+        return await client.get( self.url )
 
     @property
     def response( self ):
