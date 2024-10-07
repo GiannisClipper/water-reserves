@@ -4,7 +4,7 @@ import os
 
 class Settings( BaseSettings ):
 
-    cert_file: str = f'{os.getcwd()}/resources/eydap.gr.cert'
+    cert_file: str = f'{os.getcwd()}/resources/eydap.gr.2025.cert'
 
     savings_url: str = 'https://www.eydap.gr/el/Controls/GeneralControls/SavingsDetails.aspx'
     production_url: str = 'https://www.eydap.gr/el/Controls/GeneralControls/DrinkingWaterProductionDetails.aspx'
