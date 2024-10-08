@@ -1,148 +1,89 @@
 from abc import ABC, abstractmethod
-from src.helpers.request.RequestMethod import RequestMethod 
-from src.helpers.request.RequestResponse import RequestResponse
-import httpx
-import time
-import asyncio
+from src.helpers.request.RequestSettings import RequestSettings, GetRequestSettings, PostRequestSettings
 
 class RequestRunner( ABC ):
 
-    _retry_limit = 0
-    _retry_delay = 0
-    _request_delay = 0
+    method_type = None
 
-    _method: RequestMethod = None
-    _response: RequestResponse = None
+    _settings: RequestSettings
 
-    def __init__( self, method: RequestMethod, response: RequestResponse ):
-        self._method = method
-        self._response = response
+    def __init__( self, settings: RequestSettings ):
+        self._settings = settings
 
     @property
-    def retry_limit( self ):
-        return self._retry_limit
+    def settings( self ):
+        return self._settings
 
-    def set_retry_limit( self, limit ):
-        self._retry_limit = limit
-        return self
-
-    @property
-    def retry_delay( self ):
-        return self._retry_delay
-
-    def set_retry_limit( self, delay ):
-        self._retry_delay = delay
-        return self
-
-    @property
-    def request_delay( self ):
-        return self._request_delay
-
-    def set_request_delay( self, delay ):
-        self._request_delay = delay
-        return self
-
-    @property
-    def method( self ):
-        return self._method
-
-    def set_method( self, method ):
-        self._method = method
-        return self
-
-    @property
-    def response( self ):
-        return self._response
-
-    def set_method( self, response ):
-        self._response = response
+    def set_settings( self, settings ):
+        self._settings = settings
         return self
 
     @abstractmethod
-    def request( self ):
-        pass
+    def run_request( self ):
+        pass # sync|async post|get|... 
 
-    def on_complete( self, response ):
 
-        if response.status_code != 200:
-            self.response.error = f'{response.status_code} {response.reason_phrase}'
-            print( f'Error: {self.response.error}' )
-            return
+# extend for different method types POST, GET, ...
 
-        print( f'Success: {response.status_code}' )
-        self.response.parse_response( response )
-        return
+class PostRequestRunner( RequestRunner ):
 
-    def on_exception( self, error ):
+    method_type = 'POST'
 
-        self.response.error = f'{error}'
-        print( f'Error: {self.response.error}' )
-        return
+    def __init__( self, settings: GetRequestSettings ):
+        super().__init__( settings )
 
-class SyncRequestRunner( RequestRunner ):
+    @abstractmethod
+    def run_request( self ):
+        print( self.method_type, self.settings.url, self.settings.body )
 
-    def __init__( self, method: RequestMethod, response: RequestResponse ):
-        super().__init__( method, response )
+class GetRequestRunner( RequestRunner ):
 
-    def request( self ):
+    method_type = 'GET'
 
-        for retry in range( 1 + self.retry_limit ):
-            self._error = None
-            self._data = None
+    def __init__( self, settings: GetRequestSettings ):
+        super().__init__( settings )
 
-            try:
-                with httpx.Client() as client:
-                    print( f'[retry {retry}] url: {self.method.settings.url}' )
-                    response = self.method.run_method( client )
-                    self.on_complete( response )
+    @abstractmethod
+    def run_request( self ):
+        print( self.method_type, self.settings.url )
 
-                # in case of API usage limits 
-                # e.g: nominatim allows at maximum 1 request per second
-                if self.request_delay:
-                    print( f'Waiting {self.request_delay} seconds due to api limits...' )
-                    time.sleep( self.request_delay )
-                return self
 
-            except Exception as error:
-                self.on_exception( error )
+# extend for both SYNC and ASYNC features
 
-                if retry < self.retry_limit:
-                    print( f'Waiting {self.retry_delay} seconds to retry...' )
-                    time.sleep( self.retry_delay )
-                    continue
-                return self
+class SyncPostRequestRunner( PostRequestRunner ):
 
-class AsyncRequestRunner( RequestRunner ):
+    def __init__( self, settings: PostRequestSettings ):
+        super().__init__( settings )
 
-    def __init__( self, method: RequestMethod, response: RequestResponse ):
-        super().__init__( method, response )
+    def run_request( self, client ):
+        super().run_request()
+        return client.post( self.settings.url, data=self.settings.body )
 
-    async def request( self ):
+class AsyncPostRequestRunner( PostRequestRunner ):
 
-        for retry in range( 1 + self.retry_limit ):
-            self._error = None
-            self._data = None
+    def __init__( self, settings: PostRequestSettings ):
+        super().__init__( settings )
 
-            try:
-                async with httpx.AsyncClient() as client:
-                    print( f'[retry {retry}] url: {self.method.settings.url}' )
-                    response = await self.method.run_method( client )
-                    self.on_complete( response )
+    async def run_request( self, client ):
+        super().run_request()
+        return await client.post( self.settings.url, data=self.settings.body )
 
-                # in case of API usage limits 
-                # e.g: nominatim allows at maximum 1 request per second
-                if self.request_delay:
-                    print( f'Waiting {self.request_delay} seconds due to api limits...' )
-                    await asyncio.sleep( self.request_delay )
 
-                return self
+class SyncGetRequestRunner( GetRequestRunner ):
 
-            except Exception as error:
-                self.on_exception( error )
+    def __init__( self, settings: GetRequestSettings ):
+        super().__init__( settings )
 
-                if retry < self.retry_limit:
-                    print( f'Waiting {self.retry_delay} seconds to retry...' )
-                    await asyncio.sleep( self.retry_delay )
-                    continue
+    def run_request( self, client ):
+        super().run_request()
+        return client.get( self.settings.url )
 
-                return self
+class AsyncGetRequestRunner( GetRequestRunner ):
+
+    def __init__( self, settings: GetRequestSettings ):
+        super().__init__( settings )
+
+    async def run_request( self, client ):
+        super().run_request()
+        return await client.get( self.settings.url )
+

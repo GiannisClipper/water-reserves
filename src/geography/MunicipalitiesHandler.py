@@ -11,12 +11,14 @@ class MunicipalitiesHandler:
     geojson_file = settings.municipalities_geojson_file
 
     def __init__( self ):
+
+        # load geojson data
         self.geojson = parse_json_content( self.geojson_file )
 
     def findByPoint( self, lat, lon ):
 
-        # Notice: Rare case to repeat searching with slightly changed coords,
-        # because coords next to coastline was not found in case of Paloukia/ Salamina.
+        # Notice: Repeat searching with slightly changed coords, considering rare cases:
+        # eg. lat/lon next to coastline of Paloukia was not mapped with Salamina municipality.
         coords = (
             ( lat, lon ), 
             ( lat - 0.001, lon ),

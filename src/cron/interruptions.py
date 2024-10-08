@@ -5,10 +5,11 @@ from src.helpers.time import get_next_year_month
 from src.helpers.csv import parse_csv_rows, parse_csv_columns
 from src.db.interruptions import insert_new_month
 
-from src.helpers.request.RequestRunner import AsyncRequestRunner
-from src.helpers.request.RequestMethod import AsyncGetRequestMethod, AsyncPostRequestMethod
+from src.helpers.request.RequestHandler import AsyncRequestHandler
+from src.helpers.request.RequestRunner import AsyncGetRequestRunner, AsyncPostRequestRunner
 from src.helpers.request.RequestSettings import InterruptionsPostSettings, InterruptionsGetSettings
-from src.helpers.request.RequestResponse import InterruptionsPostRequestResponse, InterruptionsGetRequestResponse
+from src.helpers.request.ResponseParser import InterruptionsPostResponseParser, InterruptionsGetResponseParser
+from src.requests.interruptions import InterruptionsAsyncPostRequestFactory, InterruptionsAsyncGetRequestFactory
 
 from . import cron_job
 
@@ -38,26 +39,19 @@ async def interruptions_cron_job() -> None:
     year_month = get_next_year_month( last_year_month )
     month_year = '/'.join( reversed( year_month.split( '-' ) ) )
 
-    runner = AsyncRequestRunner(
-        AsyncPostRequestMethod( InterruptionsPostSettings( { 'month_year': month_year } ) ),
-        InterruptionsPostRequestResponse()
-    )
-    runner.set_request_delay( 1.1 )
-    await runner.request()
-    print( 'error:', runner.response.error )
-    print( 'data:', runner.response.data )
+    req_handler = InterruptionsAsyncPostRequestFactory( { 'month_year': month_year } ).handler
+    await req_handler.request()
+    print( 'error:', req_handler.response.error )
+    print( 'data:', req_handler.response.data )
 
-    if runner.response.data:
-        runner = AsyncRequestRunner(
-            AsyncGetRequestMethod( InterruptionsGetSettings( { 'file_path': runner.response.data } ) ),
-            InterruptionsGetRequestResponse()
-        )
-        runner.set_request_delay( 1.1 )
-        await runner.request()
-        print( 'error:', runner.response.error )
-        print( 'data:', len( runner.response.data ), ' characters' )
+    if req_handler.response.data:
 
-    if not runner.response.data:
+        req_handler = InterruptionsAsyncGetRequestFactory( { 'file_path': req_handler.response.data } ).handler
+        await req_handler.request()
+        print( 'error:', req_handler.response.error )
+        print( 'data:', len( req_handler.response.data ), ' characters' )
+
+    if not req_handler.response.data:
         print( "No data received." )
         return
 
@@ -65,7 +59,7 @@ async def interruptions_cron_job() -> None:
     # integrate the new data #
     ##########################
 
-    rows = parse_csv_rows( runner.response.data )[ 1: ]
+    rows = parse_csv_rows( req_handler.response.data )[ 1: ]
     rows = list( map( lambda row: parse_csv_columns( row ), rows ) )
 
     # limit columns to 100 chars to be compatible with DB fields

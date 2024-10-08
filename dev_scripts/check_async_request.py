@@ -1,34 +1,18 @@
 import asyncio
-from src.helpers.request.RequestRunner import AsyncRequestRunner
-from src.helpers.request.RequestMethod import AsyncGetRequestMethod, AsyncPostRequestMethod
-from src.helpers.request.RequestSettings import InterruptionsPostSettings, InterruptionsGetSettings
-from src.helpers.request.RequestResponse import InterruptionsPostRequestResponse, InterruptionsGetRequestResponse
+from src.requests.interruptions import InterruptionsAsyncPostRequestFactory, InterruptionsAsyncGetRequestFactory
 
 async def main():
 
     print( 'Check ASYNC requests...' )
 
-    req = AsyncRequestRunner(
-        AsyncPostRequestMethod(
-            InterruptionsPostSettings( { 'month_year': '02/2024' } )
-        ),
-        InterruptionsPostRequestResponse()
-    )
-    # print( req.method.settings.params )
-    req.set_request_delay( 1 )
+    req = InterruptionsAsyncPostRequestFactory( { 'month_year': '02/2024' } ).handler
     await req.request()
     print( 'error:', req.response.error )
     print( 'data:', req.response.data )
 
     if req.response.data:
-        req = AsyncRequestRunner(
-            AsyncGetRequestMethod(
-                InterruptionsGetSettings( { 'file_path': req.response.data } )
-            ),
-            InterruptionsGetRequestResponse()
-        )
-        # print( req.method.settings.params )
-        req.set_request_delay( 1 )
+
+        req = InterruptionsAsyncGetRequestFactory( { 'file_path': req.response.data } ).handler
         await req.request()
         print( 'error:', req.response.error )
         print( 'data:', req.response.data )

@@ -1,18 +1,18 @@
-from src.helpers.request.RequestRunner import SyncRequestRunner
-from src.helpers.request.RequestMethod import SyncGetRequestMethod, SyncPostRequestMethod
+from src.helpers.request.RequestHandler import SyncRequestHandler
+from src.helpers.request.RequestRunner import SyncGetRequestRunner, SyncPostRequestRunner
 from src.helpers.request.RequestSettings import InterruptionsPostSettings, InterruptionsGetSettings
-from src.helpers.request.RequestResponse import InterruptionsPostRequestResponse, InterruptionsGetRequestResponse
+from src.helpers.request.ResponseParser import InterruptionsPostResponseParser, InterruptionsGetResponseParser
 
 from src.helpers.csv import parse_csv_rows, parse_csv_columns
 
 def main():
     print( 'Check SYNC requests...' )
 
-    req = SyncRequestRunner(
-        SyncPostRequestMethod(
+    req = SyncRequestHandler(
+        SyncPostRequestRunner(
             InterruptionsPostSettings( { 'month_year': '01/2024' } )
         ),
-        InterruptionsPostRequestResponse()
+        InterruptionsPostResponseParser()
     )
     # print( req.method.settings.params )
     req.set_request_delay( 1 )
@@ -21,11 +21,11 @@ def main():
     print( 'data:', req.response.data )
 
     if req.response.data:
-        req = SyncRequestRunner(
-            SyncGetRequestMethod(
+        req = SyncRequestHandler(
+            SyncGetRequestRunner(
                 InterruptionsGetSettings( { 'file_path': req.response.data } )
             ),
-            InterruptionsGetRequestResponse()
+            InterruptionsGetResponseParser()
         )
         # print( req.method.settings.params )
         req.set_request_delay( 1 )
