@@ -14,7 +14,7 @@ async def main():
         ),
         InterruptionsPostRequestResponse()
     )
-    print( req.method.settings.params )
+    # print( req.method.settings.params )
     req.set_request_delay( 1 )
     await req.request()
     print( 'error:', req.response.error )
@@ -27,7 +27,7 @@ async def main():
             ),
             InterruptionsGetRequestResponse()
         )
-        print( req.method.settings.params )
+        # print( req.method.settings.params )
         req.set_request_delay( 1 )
         await req.request()
         print( 'error:', req.response.error )

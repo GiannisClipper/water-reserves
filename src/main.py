@@ -37,7 +37,7 @@ async def lifespan( app: FastAPI ):
 
     print( 'Loading status...' )
     settings = get_settings()
-    settings.status = Status( None, None, None )
+    settings.status = Status( None, None, None, None, None )
     await settings.status.update()
 
     print()
@@ -56,6 +56,8 @@ async def lifespan( app: FastAPI ):
     print( "Savings cron:", settings.savings_cron )
     print( "Production cron:", settings.production_cron )
     print( "Weather cron:", settings.weather_cron )
+    print( "Interruptions cron:", settings.interruptions_cron )
+    print( "Geolocation cron:", settings.geolocation_cron )
 
     # print( 'scheduler.get_jobs()', scheduler.get_jobs() )
     scheduler.print_jobs()
@@ -103,6 +105,8 @@ from src.routers import factories as factories_router
 from src.routers import production as production_router
 from src.routers import locations as locations_router
 from src.routers import weather as weather_router
+from src.routers import municipalities as municipalities_router
+from src.routers import interruptions as interruptions_router
 
 app.include_router( status_router.router )
 app.include_router( reservoirs_router.router )
@@ -111,3 +115,5 @@ app.include_router( factories_router.router )
 app.include_router( production_router.router )
 app.include_router( locations_router.router )
 app.include_router( weather_router.router )
+app.include_router( municipalities_router.router )
+app.include_router( interruptions_router.router )

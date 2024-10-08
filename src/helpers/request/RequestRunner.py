@@ -93,7 +93,7 @@ class SyncRequestRunner( RequestRunner ):
             try:
                 with httpx.Client() as client:
                     print( f'[retry {retry}] url: {self.method.settings.url}' )
-                    response = self.method.request( client )
+                    response = self.method.run_method( client )
                     self.on_complete( response )
 
                 # in case of API usage limits 
@@ -126,7 +126,7 @@ class AsyncRequestRunner( RequestRunner ):
             try:
                 async with httpx.AsyncClient() as client:
                     print( f'[retry {retry}] url: {self.method.settings.url}' )
-                    response = await self.method.request( client )
+                    response = await self.method.run_method( client )
                     self.on_complete( response )
 
                 # in case of API usage limits 

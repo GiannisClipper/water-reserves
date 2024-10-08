@@ -40,7 +40,7 @@ def parse_interruptions( monthYear ):
 
     # convert to array of dictionaries
     data = []
-    for row in data_as_arr:        
+    for row in data_as_arr:
 
         data.append( {
             "date": '-'.join( reversed( row[ 0 ].split( '/' ) ) ),

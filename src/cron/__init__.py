@@ -36,7 +36,6 @@ async def cron_job(
         try:
             async with httpx.AsyncClient( verify=cert_file ) as client:
                 response = await client.get( URL )
-                
 
                 # request failure
 

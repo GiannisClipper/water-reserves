@@ -1,5 +1,5 @@
-from src.db import savings, production, weather
-from src.db import reservoirs, factories, locations
+from src.db import savings, production, weather, interruptions
+from src.db import reservoirs, factories, locations, municipalities
 from src.helpers.time import get_past_date, get_past_month_day
 
 from abc import ABC
@@ -160,6 +160,24 @@ class WeatherStatus( AbstractTableStatus ):
         )
         self.kmeans = await self.calc_kmeans( data )
 
+@dataclass
+class InterruptionsStatus( AbstractStatus ):
+
+    last_date: str | None
+    municipalities: list[ object ] | None
+
+    async def update( self ):
+        self.last_date = await interruptions.select_last_date()
+        self.municipalities = await municipalities.select_all()
+
+@dataclass
+class GeolocationStatus( AbstractStatus ):
+
+    pending_entries: list[ list ] | None
+
+    async def update( self ):
+        self.pending_entries = await interruptions.select_all_pending()
+
 
 @dataclass
 class Status( AbstractStatus ):
@@ -167,6 +185,8 @@ class Status( AbstractStatus ):
     savings: SavingsStatus | None
     production: ProductionStatus | None
     weather: WeatherStatus | None
+    interruptions: InterruptionsStatus | None
+    geolocation: GeolocationStatus | None
 
     async def update( self ):
 
@@ -178,3 +198,9 @@ class Status( AbstractStatus ):
 
         self.weather = WeatherStatus( None, None, None, None )
         await self.weather.update()
+
+        self.interruptions = InterruptionsStatus( None, None )
+        await self.interruptions.update()
+
+        self.geolocation = GeolocationStatus( None )
+        await self.geolocation.update()

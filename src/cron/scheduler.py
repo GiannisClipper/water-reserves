@@ -8,6 +8,8 @@ from apscheduler.triggers.cron import CronTrigger
 from .savings import savings_cron_job
 from .production import production_cron_job
 from .weather import weather_cron_job
+from .interruptions import interruptions_cron_job
+from .geolocation import geolocation_cron_job
 
 from src.settings import get_settings
 settings = get_settings()
@@ -36,6 +38,12 @@ def async_run_production():
 def async_run_weather():
     asyncio.run( weather_cron_job() )
 
+def async_run_interruptions():
+    asyncio.run( interruptions_cron_job() )
+
+def async_run_geolocation():
+    asyncio.run( geolocation_cron_job() )
+
 scheduler.add_job( 
     async_run_savings,
     CronTrigger.from_crontab( settings.savings_cron ), 
@@ -54,5 +62,19 @@ scheduler.add_job(
     async_run_weather,
     CronTrigger.from_crontab( settings.weather_cron ), 
     id='3', 
+    replace_existing=True 
+)
+
+scheduler.add_job( 
+    async_run_interruptions,
+    CronTrigger.from_crontab( settings.interruptions_cron ), 
+    id='4', 
+    replace_existing=True 
+)
+
+scheduler.add_job( 
+    async_run_geolocation,
+    CronTrigger.from_crontab( settings.geolocation_cron ), 
+    id='5', 
     replace_existing=True 
 )

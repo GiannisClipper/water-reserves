@@ -24,9 +24,11 @@ class Settings( BaseSettings ):
     municipalities_csv_file: str = 'resources/db_setup/interruptions/municipalities.csv'
     municipalities_geojson_file: str = 'resources/geography/dhmoi_okxe_attica.geojson'
 
-    savings_cron: str = "5,25,45 8-21 * * *"
-    production_cron: str = "10,30,50 8-21 * * *"
-    weather_cron: str = "15,35,55 8-21 * * *"
+    savings_cron: str = "1,21,41 8-21 * * *"
+    production_cron: str = "6,26,46 8-21 * * *"
+    weather_cron: str = "11,31,51 8-21 * * *"
+    interruptions_cron: str = "16,36,56 8-21 * * *"
+    geolocation_cron: str = "17,37,57 8-21 * * *"
 
     db_host: str = ""
     db_port: str = ""

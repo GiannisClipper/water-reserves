@@ -38,7 +38,7 @@ class InterruptionsPostRequestResponse( RequestResponse ):
     def parse_response( self, response ):
         result = re.search( 'files(.+?)csv', response.text )
         if result == None:
-            self._error = f'No result for given parameter ({self.params[ 'month_year' ]})'
+            self._error = 'No data available.'
         else:
             self._data = result.group( 0 )
 

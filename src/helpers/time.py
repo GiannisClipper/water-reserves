@@ -224,3 +224,19 @@ def get_past_month_day( val, days: int ) -> str:
     for i in range( 0, days ):
         val = get_prev_month_day( val )
     return val
+
+# not testing yet
+
+def get_next_year_month( val ):
+        
+    assert is_year_month( val )
+
+    year, month = val.split( '-' )
+
+    year = int( year )
+    month = int( month ) + 1
+    if month > 12:
+        year +=1
+        month = 1
+
+    return f'{year:04}-{month:02}'
