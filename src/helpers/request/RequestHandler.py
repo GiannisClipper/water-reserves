@@ -91,7 +91,7 @@ class SyncRequestHandler( RequestHandler ):
             self._data = None
 
             try:
-                with httpx.Client() as client:
+                with httpx.Client( verify=self.runner.settings.certification ) as client:
                     print( f'[retry {retry}] url: {self.runner.settings.url}' )
                     response = self.runner.run_request( client )
                     self.on_complete( response )
@@ -124,7 +124,7 @@ class AsyncRequestHandler( RequestHandler ):
             self._data = None
 
             try:
-                async with httpx.AsyncClient() as client:
+                async with httpx.AsyncClient( verify=self.runner.settings.certification ) as client:
                     print( f'[retry {retry}] url: {self.runner.settings.url}' )
                     response = await self.runner.run_request( client )
                     self.on_complete( response )
@@ -132,7 +132,7 @@ class AsyncRequestHandler( RequestHandler ):
                 # in case of API usage limits 
                 # e.g: nominatim allows at maximum 1 request per second
                 if self.request_delay:
-                    print( f'Waiting {self.request_delay} seconds due to api limits...' )
+                    print( f'Waiting {self.request_delay} seconds (prevent api overloading)...' )
                     await asyncio.sleep( self.request_delay )
 
                 return self

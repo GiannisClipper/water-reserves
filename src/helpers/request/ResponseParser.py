@@ -2,11 +2,20 @@ from abc import ABC, abstractmethod
 
 class ResponseParser( ABC ):
 
+    _params = None
     _error = None
     _data = None
 
-    def __init__( self ):
-        pass
+    def __init__( self, params=None ):
+        self._params = params
+
+    @property
+    def params( self ):
+        return self._params
+
+    def set_params( self, params ):
+        self._params = params
+        return self
 
     @property
     def error( self ):

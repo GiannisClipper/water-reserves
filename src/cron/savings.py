@@ -1,35 +1,43 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from src.requests.savings import SavingsAsyncGetRequestFactory
 from src.settings import get_settings
-from src.helpers.html import scrape_html
 from src.db.savings import insert_date
-from . import cron_job
 
 async def savings_cron_job() -> None:
 
     now: datetime = datetime.now()
-    print( now, "savings cron job" )
+    print( "=>", now, "savings cron job" )
 
     settings = get_settings()
-    cert_file = settings.cert_file
-    last_date = settings.status.savings.last_date
-    # last_date: str = str( now )[ :10 ]
 
-    base_url: str = "https://www.eydap.gr/el/Controls/GeneralControls"
-    get_url: callable = lambda date: f'{base_url}/SavingsDetails.aspx?DaysSpan=Day&Date={'-'.join( reversed( date.split( '-' ) ) )}'
+    while True:
+    
+        last_date = settings.status.savings.last_date
+        request_date: str = str( datetime.strptime( last_date, '%Y-%m-%d' ).date() + timedelta( days=1 ) )
+        limit_date: str = str( datetime.now().date() + timedelta( days=-1 ) ) # days=-1 => until yesterday
 
-    def parse_response( request_date, response ) -> list[ any ]:
-        headers, data = scrape_html( response.content )
-        print( headers, data )
-        data = list( filter( lambda x: x[ 0 ] == request_date, data ) )
-        print( data )
+        # check date, if update required or not #
 
-        if len( data ) > 0:
-            return data[ 0 ]
+        if ( request_date > limit_date ):
+            print( "No update required." )
+            break;
 
-        return None
+        # request for new data #
 
-    store_values: callable = insert_date
+        req_handler = SavingsAsyncGetRequestFactory( { 'date': request_date } ).handler
+        await req_handler.request()
+        print( 'error:', req_handler.response.error )
+        print( 'data:', req_handler.response.data )
 
-    update_status = settings.status.savings.update
+        if not req_handler.response.data:
+            print( "No updates available yet." )
+            break
 
-    await cron_job( last_date, get_url, cert_file, parse_response, store_values, update_status )
+        # store in DB and update status
+
+        print( "Saving data..." )
+        await insert_date( req_handler.response.data )
+
+        print( "Updating status..." )
+        await settings.status.savings.update()

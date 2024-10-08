@@ -1,17 +1,10 @@
 from datetime import datetime
 
 from src.settings import get_settings
+from src.requests.interruptions import InterruptionsAsyncPostRequestFactory, InterruptionsAsyncGetRequestFactory
 from src.helpers.time import get_next_year_month
 from src.helpers.csv import parse_csv_rows, parse_csv_columns
 from src.db.interruptions import insert_new_month
-
-from src.helpers.request.RequestHandler import AsyncRequestHandler
-from src.helpers.request.RequestRunner import AsyncGetRequestRunner, AsyncPostRequestRunner
-from src.helpers.request.RequestSettings import InterruptionsPostSettings, InterruptionsGetSettings
-from src.helpers.request.ResponseParser import InterruptionsPostResponseParser, InterruptionsGetResponseParser
-from src.requests.interruptions import InterruptionsAsyncPostRequestFactory, InterruptionsAsyncGetRequestFactory
-
-from . import cron_job
 
 async def interruptions_cron_job() -> None:
 
