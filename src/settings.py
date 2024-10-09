@@ -10,6 +10,8 @@ class Settings( BaseSettings ):
     production_url: str = 'https://www.eydap.gr/el/Controls/GeneralControls/DrinkingWaterProductionDetails.aspx'
     weather_url: str = 'https://archive-api.open-meteo.com/v1/archive'
     interruptions_url: str = 'https://opendata.eydap.gr'
+    nominatim_url: str = 'https://nominatim.openstreetmap.org/search'
+    geoapify_url: str = 'https://api.geoapify.com/v1/geocode/search'
 
     savings_html_path: str = 'resources/db_setup/savings/html'
     production_html_path: str = 'resources/db_setup/production/html'
@@ -36,7 +38,7 @@ class Settings( BaseSettings ):
     db_user: str = ""
     db_password: str = ""
 
-    # Pydantic will read the environment variables in a case-insensitive way, 
+    # Pydantic will read the environment variables in a case-INsensitive way, 
     # an upper-case variable APP_NAME will still be read for the attribute app_name
     GEOAPIFY_API_KEY: str =""
 

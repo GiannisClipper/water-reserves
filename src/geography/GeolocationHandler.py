@@ -1,5 +1,7 @@
+from src.requests.geolocation.nominatim import NominatimSyncGetRequestFactory
+from src.requests.geolocation.geoapify import GeoapifySyncGetRequestFactory
+
 from .AddressParser import AreaAddressParser, IntersectionAreaAddressParser
-from .ApiProvider import NominatimApiProvider, GeoapifyApiProvider
 from .ResultsFilter import DistrictFilter, AreaFilter, StreetFilter, DistanceFilter
 
 class GeolocationHandler:
@@ -14,8 +16,8 @@ class GeolocationHandler:
     @property
     def result( self ):
 
-        nominatimApiProvider = NominatimApiProvider()
-        geoapifyApiProvider = GeoapifyApiProvider()
+        nominatimHandler = NominatimSyncGetRequestFactory().handler
+        geoapifyHandler = GeoapifySyncGetRequestFactory().handler
 
         # request (district), (country), area, street
 
@@ -25,7 +27,13 @@ class GeolocationHandler:
 
         # use Nominatim Api
         for address in address_list:
-            results = nominatimApiProvider.set_address( address ).request()
+            nominatimHandler.set_params( { 'address': address } )
+            nominatimHandler.request()
+            results = {
+                'error': nominatimHandler.response.error,
+                'data': nominatimHandler.response.data
+            }
+
             if results.get( 'error' ):
                 return results
             if not results.get( 'data' ):
@@ -43,7 +51,13 @@ class GeolocationHandler:
 
         # use Geoapify Api
         for address in address_list:
-            results = geoapifyApiProvider.set_address( address ).request()
+            geoapifyHandler.set_params( { 'address': address } )
+            geoapifyHandler.request()
+            results = {
+                'error': nominatimHandler.response.error,
+                'data': nominatimHandler.response.data
+            }
+
             if results.get( 'error' ):
                 return results
             if not results.get( 'data' ):
@@ -71,7 +85,13 @@ class GeolocationHandler:
             return results[ 0 ]
 
         # use Nominatim Api
-        results = nominatimApiProvider.set_address( address ).request()
+        nominatimHandler.set_params( { 'address': address } )
+        nominatimHandler.request()
+        results = {
+            'error': nominatimHandler.response.error,
+            'data': nominatimHandler.response.data
+        }
+
         if results.get( 'error' ):
             return results
         if results.get( 'data' ):
@@ -83,7 +103,13 @@ class GeolocationHandler:
                 return results[ 0 ]
 
         # use Geoapify Api
-        results = geoapifyApiProvider.set_address( address ).request()
+        geoapifyHandler.set_params( { 'address': address } )
+        geoapifyHandler.request()
+        results = {
+            'error': nominatimHandler.response.error,
+            'data': nominatimHandler.response.data
+        }
+
         if results.get( 'error' ):
             return results
         if results.get( 'data' ):

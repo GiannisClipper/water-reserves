@@ -6,7 +6,6 @@ from src.helpers.request.RequestRunner import AsyncGetRequestRunner
 from src.helpers.request.ResponseParser import ResponseParser
 
 from src.settings import Settings, get_settings
-from src.helpers.html import scrape_html
 
 class WeatherGetSettings( GetRequestSettings ):
 

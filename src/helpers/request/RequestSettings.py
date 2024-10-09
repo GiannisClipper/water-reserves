@@ -5,7 +5,7 @@ class RequestSettings( ABC ):
     _params = None
     _certification = None
 
-    def __init__( self, params=None, certification=None ):
+    def __init__( self, params:dict={}, certification:str=None ):
         self._params = params
         self._certification = certification
 
@@ -21,7 +21,7 @@ class RequestSettings( ABC ):
     def certification( self ):
         return self._certification
 
-    def set_params( self, certification ):
+    def set_certification( self, certification ):
         self._certification = certification
         return self
 
@@ -32,12 +32,12 @@ class RequestSettings( ABC ):
 
 class GetRequestSettings( RequestSettings ):
 
-    def __init__( self, params=None, certification=None ):
+    def __init__( self, params:dict={}, certification:str=None ):
         super().__init__( params, certification )
 
 class PostRequestSettings( RequestSettings ):
 
-    def __init__( self, params=None, certification=None ):
+    def __init__( self, params:dict={}, certification:str=None ):
         super().__init__( params, certification )
 
     @property

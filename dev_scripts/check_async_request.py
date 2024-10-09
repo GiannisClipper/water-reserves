@@ -1,8 +1,10 @@
 import asyncio
-from src.requests.interruptions import InterruptionsAsyncPostRequestFactory, InterruptionsAsyncGetRequestFactory
 from src.requests.savings import SavingsAsyncGetRequestFactory
 from src.requests.production import ProductionAsyncGetRequestFactory
 from src.requests.weather import WeatherAsyncGetRequestFactory
+from src.requests.interruptions import InterruptionsAsyncPostRequestFactory, InterruptionsAsyncGetRequestFactory
+from src.requests.geolocation.nominatim import NominatimAsyncGetRequestFactory
+from src.requests.geolocation.geoapify import GeoapifyAsyncGetRequestFactory
 
 import psycopg
 import src.db as db
@@ -22,16 +24,16 @@ from src.db import locations
 #     print( 'error:', req.response.error )
 #     print( 'data:', req.response.data )
 
-async def main():
-    print( 'Check ASYNC weather requests...' )
-    await db.pool.open()
-    await db.pool.wait()
-    loc = await locations.select_all()
-    await db.pool.close()
-    req = WeatherAsyncGetRequestFactory( { 'date': '2024-10-07', 'locations': loc } ).handler
-    await req.request()
-    print( 'error:', req.response.error )
-    print( 'data:', req.response.data )
+# async def main():
+#     print( 'Check ASYNC weather requests...' )
+#     await db.pool.open()
+#     await db.pool.wait()
+#     loc = await locations.select_all()
+#     await db.pool.close()
+#     req = WeatherAsyncGetRequestFactory( { 'date': '2024-10-07', 'locations': loc } ).handler
+#     await req.request()
+#     print( 'error:', req.response.error )
+#     print( 'data:', req.response.data )
 
 # async def main():
 #     print( 'Check ASYNC interruptions requests...' )
@@ -47,6 +49,19 @@ async def main():
 #         print( 'error:', req.response.error )
 #         print( 'data:', req.response.data )
 
+# async def main():
+#     print( 'Check ASYNC geolocation.nominatim requests...' )
+#     req = NominatimAsyncGetRequestFactory( { 'address': 'Αιτωλικού,Πειραιάς,Attica,Greece' } ).handler
+#     await req.request()
+#     print( 'error:', req.response.error )
+#     print( 'data:', req.response.data )
+
+async def main():
+    print( 'Check ASYNC geolocation.geoapify requests...' )
+    req = GeoapifyAsyncGetRequestFactory( { 'address': 'Αιτωλικού,Πειραιάς,Attica,Greece' } ).handler
+    await req.request()
+    print( 'error:', req.response.error )
+    print( 'data:', req.response.data )
 
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop( loop )
