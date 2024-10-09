@@ -27,17 +27,17 @@ async def production_cron_job() -> None:
 
         req_handler = ProductionAsyncGetRequestFactory( { 'date': request_date } ).handler
         await req_handler.request()
-        print( 'error:', req_handler.response.error )
-        print( 'data:', req_handler.response.data )
+        print( 'error:', req_handler.parser.error )
+        print( 'data:', req_handler.parser.data )
 
-        if not req_handler.response.data:
+        if not req_handler.parser.data:
             print( "No updates available yet." )
             break
 
         # store in DB and update status
 
         print( "Saving data..." )
-        await insert_date( req_handler.response.data )
+        await insert_date( req_handler.parser.data )
 
         print( "Updating status..." )
         await settings.status.production.update()

@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from src.helpers.request.RequestFactory import RequestFactory
 from src.helpers.request.RequestHandler import SyncRequestHandler, AsyncRequestHandler
 from src.helpers.request.RequestSettings import GetRequestSettings
@@ -6,10 +7,8 @@ from src.helpers.request.ResponseParser import ResponseParser
 
 from src.settings import Settings, get_settings
 
+@dataclass
 class GeoapifyGetSettings( GetRequestSettings ):
-
-    def __init__( self, params:dict={} ):
-        super().__init__( params )
 
     @property
     def url( self ):
@@ -18,10 +17,8 @@ class GeoapifyGetSettings( GetRequestSettings ):
         address: str = self.params.get( 'address' )
         return f"{settings.geoapify_url}?apiKey={api_key}&lang=el&text={address}"
 
+@dataclass
 class GeoapifyGetResponseParser( ResponseParser ):
-
-    def __init__( self, params ):
-        super().__init__( params )
 
     def parse_response( self, response ):
         response = response.json()
@@ -57,31 +54,27 @@ class GeoapifyGetResponseParser( ResponseParser ):
                 'lon': row[ 'properties' ][ 'lon' ]
             } )
 
-        self._data = data
+        self.data = data
 
+@dataclass
 class GeoapifySyncRequestHandler( SyncRequestHandler ):
 
-    def __init__( self, runner, response ):
-        super().__init__( runner, response )
+    def set_params( self, params ):
+        self.runner.settings.set_params( params )
+        params[ 'url' ] = self.runner.settings.url
+        self.parser.params = params
+
+@dataclass
+class GeoapifyAsyncRequestHandler( AsyncRequestHandler ):
 
     def set_params( self, params ):
         self.runner.settings.set_params( params )
         params[ 'url' ] = self.runner.settings.url
-        self.response.set_params( params )
-
-class GeoapifyAsyncRequestHandler( SyncRequestHandler ):
-
-    def __init__( self, runner, response ):
-        super().__init__( runner, response )
-
-    def set_params( self, params ):
-        self.runner.settings.set_params( params )
-        params[ 'url' ] = self.runner.settings.url
-        self.response.set_params( params )
+        self.parser.params = params
 
 class GeoapifySyncGetRequestFactory( RequestFactory ):
 
-    def __init__( self, params:dict={} ):
+    def __init__( self, params: dict = {} ):
 
         settings = GeoapifyGetSettings( params )
         runner = SyncGetRequestRunner( settings )
@@ -90,25 +83,25 @@ class GeoapifySyncGetRequestFactory( RequestFactory ):
         params[ 'url' ] = 'settings.url'
 
         parser = GeoapifyGetResponseParser( params )
-        self._handler = GeoapifySyncRequestHandler( runner, parser )
+        self.handler = GeoapifySyncRequestHandler( runner, parser )
 
         # for standardization, delay followes Nominatim usage policy:
         # "No heavy uses (an absolute maximum of 1 request per second)"
-        self._handler.set_request_delay( 1.1 )
+        self.handler.request_delay = 1.1
 
 class GeoapifyAsyncGetRequestFactory( RequestFactory ):
 
-    def __init__( self, params:dict={} ):
+    def __init__( self, params: dict = {} ):
 
-        settings = GeoapifyGetSettings( params )
-        runner = AsyncGetRequestRunner( settings )
+        settings = GeoapifyGetSettings( params=params )
+        runner = AsyncGetRequestRunner( settings=settings )
 
         # to pass url in response parser
         params[ 'url' ] = settings.url
 
-        parser = GeoapifyGetResponseParser( params )
-        self._handler = GeoapifyAsyncRequestHandler( runner, parser )
+        parser = GeoapifyGetResponseParser( params=params )
+        self.handler = GeoapifyAsyncRequestHandler( runner=runner, parser=parser )
 
         # for standardization, delay followes Nominatim usage policy:
         # "No heavy uses (an absolute maximum of 1 request per second)"
-        self._handler.set_request_delay( 1.1 )
+        self.handler.request_delay = 1.1

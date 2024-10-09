@@ -34,17 +34,17 @@ async def interruptions_cron_job() -> None:
 
     req_handler = InterruptionsAsyncPostRequestFactory( { 'month_year': month_year } ).handler
     await req_handler.request()
-    print( 'error:', req_handler.response.error )
-    print( 'data:', req_handler.response.data )
+    print( 'error:', req_handler.parser.error )
+    print( 'data:', req_handler.parser.data )
 
-    if req_handler.response.data:
+    if req_handler.parser.data:
 
-        req_handler = InterruptionsAsyncGetRequestFactory( { 'file_path': req_handler.response.data } ).handler
+        req_handler = InterruptionsAsyncGetRequestFactory( { 'file_path': req_handler.parser.data } ).handler
         await req_handler.request()
-        print( 'error:', req_handler.response.error )
-        print( 'data:', len( req_handler.response.data ), ' characters' )
+        print( 'error:', req_handler.parser.error )
+        print( 'data:', len( req_handler.parser.data ), ' characters' )
 
-    if not req_handler.response.data:
+    if not req_handler.parser.data:
         print( "No data received." )
         return
 
@@ -52,7 +52,7 @@ async def interruptions_cron_job() -> None:
     # integrate the new data #
     ##########################
 
-    rows = parse_csv_rows( req_handler.response.data )[ 1: ]
+    rows = parse_csv_rows( req_handler.parser.data )[ 1: ]
     rows = list( map( lambda row: parse_csv_columns( row ), rows ) )
 
     # limit columns to 100 chars to be compatible with DB fields

@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from src.helpers.request.RequestFactory import RequestFactory
 from src.helpers.request.RequestHandler import AsyncRequestHandler
 from src.helpers.request.RequestSettings import GetRequestSettings, PostRequestSettings
@@ -8,20 +9,16 @@ from src.settings import get_settings
 
 import re
 
+@dataclass
 class InterruptionsGetSettings( GetRequestSettings ):
-
-    def __init__( self, params=None ):
-        super().__init__( params )
 
     @property
     def url( self ):
         settings = get_settings()
         return f'{settings.interruptions_url}/{self.params[ 'file_path' ]}'
 
+@dataclass
 class InterruptionsPostSettings( PostRequestSettings ):
-
-    def __init__( self, params=None ):
-        super().__init__( params )
 
     @property
     def url( self ):
@@ -35,40 +32,36 @@ class InterruptionsPostSettings( PostRequestSettings ):
             "edate": self.params[ 'month_year' ]
         }
 
+@dataclass
 class InterruptionsGetResponseParser( ResponseParser ):
 
-    def __init__( self ):
-        super().__init__()
-
     def parse_response( self, response ):
-        self._data = response.text
+        self.data = response.text
 
+@dataclass
 class InterruptionsPostResponseParser( ResponseParser ):
-
-    def __init__( self ):
-        super().__init__()
 
     def parse_response( self, response ):
         result = re.search( 'files(.+?)csv', response.text )
         if result == None:
-            self._error = 'No data available.'
+            self.error = 'No data available.'
         else:
-            self._data = result.group( 0 )
+            self.data = result.group( 0 )
 
 class InterruptionsAsyncPostRequestFactory( RequestFactory ):
 
-    def __init__( self, params: dict ):
+    def __init__( self, params: dict = None ):
         settings = InterruptionsPostSettings( params )
         runner = AsyncPostRequestRunner( settings )
         parser = InterruptionsPostResponseParser()
-        self._handler = AsyncRequestHandler( runner, parser )
-        # self._runner.set_request_delay( 1.1 )
+        self.handler = AsyncRequestHandler( runner, parser )
+        self.handler.request_delay = 5
 
 class InterruptionsAsyncGetRequestFactory( RequestFactory ):
 
-    def __init__( self, params: dict ):
-        settings = InterruptionsGetSettings( params )
-        runner = AsyncGetRequestRunner( settings )
+    def __init__( self, params: dict = None ):
+        settings = InterruptionsGetSettings( params=params )
+        runner = AsyncGetRequestRunner( settings=settings )
         parser = InterruptionsGetResponseParser()
-        self._handler = AsyncRequestHandler( runner, parser )
-        # self._runner.set_request_delay( 1.1 )
+        self.handler = AsyncRequestHandler( runner=runner, parser=parser )
+        self.handler.request_delay = 5

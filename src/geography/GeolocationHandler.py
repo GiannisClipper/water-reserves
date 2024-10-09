@@ -30,8 +30,8 @@ class GeolocationHandler:
             nominatimHandler.set_params( { 'address': address } )
             nominatimHandler.request()
             results = {
-                'error': nominatimHandler.response.error,
-                'data': nominatimHandler.response.data
+                'error': nominatimHandler.parser.error,
+                'data': nominatimHandler.parser.data
             }
 
             if results.get( 'error' ):
@@ -54,8 +54,8 @@ class GeolocationHandler:
             geoapifyHandler.set_params( { 'address': address } )
             geoapifyHandler.request()
             results = {
-                'error': nominatimHandler.response.error,
-                'data': nominatimHandler.response.data
+                'error': nominatimHandler.parser.error,
+                'data': nominatimHandler.parser.data
             }
 
             if results.get( 'error' ):
@@ -88,8 +88,8 @@ class GeolocationHandler:
         nominatimHandler.set_params( { 'address': address } )
         nominatimHandler.request()
         results = {
-            'error': nominatimHandler.response.error,
-            'data': nominatimHandler.response.data
+            'error': nominatimHandler.parser.error,
+            'data': nominatimHandler.parser.data
         }
 
         if results.get( 'error' ):
@@ -106,8 +106,8 @@ class GeolocationHandler:
         geoapifyHandler.set_params( { 'address': address } )
         geoapifyHandler.request()
         results = {
-            'error': nominatimHandler.response.error,
-            'data': nominatimHandler.response.data
+            'error': nominatimHandler.parser.error,
+            'data': nominatimHandler.parser.data
         }
 
         if results.get( 'error' ):

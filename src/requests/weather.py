@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 from src.helpers.request.RequestFactory import RequestFactory
 from src.helpers.request.RequestHandler import AsyncRequestHandler
@@ -7,10 +8,8 @@ from src.helpers.request.ResponseParser import ResponseParser
 
 from src.settings import Settings, get_settings
 
+@dataclass
 class WeatherGetSettings( GetRequestSettings ):
-
-    def __init__( self, params=None ):
-        super().__init__( params )
 
     @property
     def url( self ):
@@ -35,10 +34,8 @@ class WeatherGetSettings( GetRequestSettings ):
 
         return f"{settings.weather_url}?daily={daily}&timezone={timezone}&past_days={past_days}&latitude={latitude}&longitude={longitude}"
 
+@dataclass
 class WeatherGetResponseParser( ResponseParser ):
-
-    def __init__( self, params ):
-        super().__init__( params )
 
     def parse_response( self, response ):
         rows = response.json()
@@ -69,14 +66,14 @@ class WeatherGetResponseParser( ResponseParser ):
             if len( nulls ) > 0:
                 return
 
-        self._data = rows
+        self.data = rows
 
 class WeatherAsyncGetRequestFactory( RequestFactory ):
 
-    def __init__( self, params: dict ):
+    def __init__( self, params: dict = None ):
 
-        settings = WeatherGetSettings( params )
-        runner = AsyncGetRequestRunner( settings )
-        parser = WeatherGetResponseParser( params )
-        self._handler = AsyncRequestHandler( runner, parser )
-        self._handler.set_request_delay( 5 )
+        settings = WeatherGetSettings( params=params )
+        runner = AsyncGetRequestRunner( settings=settings )
+        parser = WeatherGetResponseParser( params=params )
+        self.handler = AsyncRequestHandler( runner=runner, parser=parser )
+        self.handler.request_delay = 5
