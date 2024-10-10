@@ -8,6 +8,8 @@ from src.queries.factories import FactoriesOnceQueryFactory
 from src.queries.production import ProductionOnceQueryFactory
 from src.queries.locations import LocationsOnceQueryFactory
 from src.queries.weather import WeatherOnceQueryFactory
+from src.queries.municipalities import MunicipalitiesOnceQueryFactory
+from src.queries.interruptions import InterruptionsOnceQueryFactory
 
 from src.settings import get_settings
 import psycopg
@@ -17,16 +19,6 @@ from .read_csv import read_reservoirs, read_factories, read_locations, read_muni
 from .read_html import read_html
 from .read_json import read_weather
 from .read_json import read_interruptions
-
-from .create_tables import create_reservoirs, create_savings
-from .create_tables import create_factories, create_production
-from .create_tables import create_locations, create_weather
-from .create_tables import create_municipalities, create_interruptions
-
-from .insert_rows import insert_reservoirs, insert_savings
-from .insert_rows import insert_factories, insert_production
-from .insert_rows import insert_locations, insert_weather
-from .insert_rows import insert_municipalities, insert_interruptions
 
 def make_tables( names ):
     try:
@@ -38,41 +30,27 @@ def make_tables( names ):
 
                 if name == 'reservoirs':
                     make_reservoirs()
-                    # create_reservoirs( conn )
-                    # insert_reservoirs( conn )
 
                 elif name == 'savings':
                     make_savings()
-                    # create_savings( conn )
-                    # insert_savings( conn )
 
                 elif name == 'factories':
                     make_factories()
-                    # create_factories( conn )
-                    # insert_factories( conn )
 
                 elif name == 'production':
                     make_production()
-                    # create_production( conn )
-                    # insert_production( conn )
 
                 elif name == 'locations':
                     make_locations()
-                    # create_locations( conn )
-                    # insert_locations( conn )
 
                 elif name == 'weather':
                     make_weather()
-                    # create_weather( conn )
-                    # insert_weather( conn )
 
                 elif name == 'municipalities':
-                    create_municipalities( conn )
-                    insert_municipalities( conn )
+                    make_municipalities()
 
                 elif name == 'interruptions':
-                    create_interruptions( conn )
-                    insert_interruptions( conn )
+                    make_interruptions()
 
     except Exception as error:
         print( 'Error: ' + repr( error ) )
@@ -222,6 +200,65 @@ def make_weather():
 
             weather_handler.maker.insert_into( data )
             weather_handler.run_query()
+
+def make_municipalities():
+
+    interruptions_handler = InterruptionsOnceQueryFactory().handler
+    municipalities_handler = MunicipalitiesOnceQueryFactory().handler
+
+    print( f'Drop table interruptions' )
+    interruptions_handler.maker.drop_table()
+    interruptions_handler.run_query()
+
+    print( f'Drop table municipalities' )
+    municipalities_handler.maker.drop_table()
+    municipalities_handler.run_query()
+
+    print( f'Create table municipalities' )
+    municipalities_handler.maker.create_table()
+    municipalities_handler.run_query()
+
+    print( f'Insert into municipalities' )
+    headers, data = read_municipalities()
+    municipalities_handler.maker.insert_into( data )
+    municipalities_handler.run_query()
+
+def make_interruptions():
+
+    interruptions_handler = InterruptionsOnceQueryFactory().handler
+
+    print( f'Drop table interruptions' )
+    interruptions_handler.maker.drop_table()
+    interruptions_handler.run_query()
+
+    print( f'Create table interruptions' )
+    interruptions_handler.maker.create_table()
+    interruptions_handler.run_query()
+
+    print( f'Insert into interruptions' )
+
+    # Get municipalities from csv
+    headers, data = read_municipalities()
+    municipalities = {}
+    for row in data:
+        id, name_el, prefecture = row
+        municipalities[ name_el ] = id
+
+    path = get_settings().interruptions_json_path
+    jsonfiles = [ f for f in listdir( path ) if isfile( join( path, f ) ) ]
+    jsonfiles.sort()
+
+    for jsonfile in jsonfiles:
+        # Get content from json
+        data = read_interruptions( join( path, jsonfile ) )
+
+        # Replace municipality_name_el with municipality_id 
+        for row in data:
+            name_el = row[ -1 ]
+            row[ -1 ] = municipalities.get( name_el )
+
+        interruptions_handler.maker.insert_into( data )
+        interruptions_handler.run_query()
 
 if __name__ == "__main__":
 

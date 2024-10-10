@@ -31,6 +31,8 @@ class InterruptionsQueryMaker( QueryMaker ):
     def insert_into( self, data: list[ list ] ) -> None:
 
         query = '''INSERT INTO {table} ( date, scheduled, intersection, area, geo_failed, geo_url, geo_descr, lat, lon, municipality_id ) VALUES '''
+        query = query.replace( '{table}', self.table_name )
+
         for date, scheduled, intersection, area, geo_failed, geo_url, geo_descr, lat, lon, municipality_id in data:
 
             # denote possible single quotes as part of the value (not as part of sql syntax)
@@ -52,7 +54,9 @@ class InterruptionsQueryMaker( QueryMaker ):
 
     def insert_pending( self, data: list[ list ] ) -> None:
 
-        sql = '''INSERT INTO {table} ( date, scheduled, intersection, area ) VALUES '''
+        query = '''INSERT INTO {table} ( date, scheduled, intersection, area ) VALUES '''
+        query = query.replace( '{table}', self.table_name )
+
         for date, scheduled, intersection, area in data:
 
             # denote possible single quotes as part of the value (not as part of sql syntax)
