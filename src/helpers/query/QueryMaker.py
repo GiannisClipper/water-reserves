@@ -35,8 +35,8 @@ class QueryMaker( ABC ):
     RowModel: BaseModel = None
 
     def exists_table( self ) -> tuple[ str, tuple ]:
-        self.query = EXISTS_TABLE.replace( '{table}', self.table_name )
-        self.params = None
+        self.query = EXISTS_TABLE
+        self.params = [ self.table_name ]
         return self.query
 
     def drop_table( self ) -> tuple[ str, tuple ]:
@@ -50,7 +50,7 @@ class QueryMaker( ABC ):
 
     @abstractmethod
     def insert_into( self, data: list ) -> None:
-            pass
+        pass
 
     def select_all( self ) -> tuple[ str, BaseModel ]:
         self.query = SELECT_ALL.replace( '{table}', self.table_name )
@@ -73,3 +73,12 @@ class ExtendedQueryMaker( QueryMaker ):
     @abstractmethod
     def select_where( self ) -> tuple[ str, tuple ]:
         pass
+
+class ReadonlyQueryMaker( QueryMaker ):
+
+    def create_table( self ) -> tuple[ str, tuple ]:
+        pass
+
+    def insert_into( self, data: list ) -> None:
+        pass
+

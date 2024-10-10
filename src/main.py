@@ -1,18 +1,18 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from datetime import datetime
-import os
 
 import src.db as db
 from src.db_setup.make_tables import make_tables
 from .settings import get_settings
+from src.db_setup.exists_tables import exists_tables
 
 print( datetime.now(), "Starting water reserves back-end..." )
 print()
 print( "+-----------------------+" )
 print( "|  1. Data initializer  |" )
 print( "+-----------------------+" )
-if not db.tables_exists( db.tables ):
+if not exists_tables( db.tables ):
     try:
         print( "Initializing DB tables..." )
         make_tables( db.tables )
