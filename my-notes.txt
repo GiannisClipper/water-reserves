@@ -1,3 +1,9 @@
+# Documentation
+
+UML Class Diagram Relationships Explained with Examples
+https://creately.com/guides/class-diagram-relationships/
+
+
 # Python (in general)
 
 Exploring Pydantic and Dataclasses in Python: A Comprehensive Comparison

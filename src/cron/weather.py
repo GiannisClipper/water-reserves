@@ -38,6 +38,9 @@ async def weather_cron_job() -> None:
         # store in DB and update status
 
         print( "Saving data..." )
+        for location_id, row in enumerate( req_handler.parser.data ):
+            location_id += 1
+            row.append( location_id )
         await insert_date( req_handler.parser.data )
 
         print( "Updating status..." )
