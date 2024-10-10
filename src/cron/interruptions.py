@@ -1,10 +1,11 @@
 from datetime import datetime
 
-from src.settings import get_settings
 from src.requests.interruptions import InterruptionsAsyncPostRequestFactory, InterruptionsAsyncGetRequestFactory
+from src.queries.interruptions import InterruptionsPoolQueryFactory
+
+from src.settings import get_settings
 from src.helpers.time import get_next_year_month
 from src.helpers.csv import parse_csv_rows, parse_csv_columns
-from src.db.interruptions import insert_new_month
 
 async def interruptions_cron_job() -> None:
 
@@ -61,7 +62,8 @@ async def interruptions_cron_job() -> None:
         list( map( lambda col: col[ :100 ], row ) ), 
     rows ) )
 
-    # exclude row dublicates (if any exists, properly not)
+    # exclude row dublicates (if exists)
+    # properly not happens, no such cases has been objerved
 
     unique_rows = []
     last_row = []
@@ -75,7 +77,9 @@ async def interruptions_cron_job() -> None:
     # store in DB and update status
 
     print( "Saving data..." )
-    await insert_new_month( rows )
+    query_handler = InterruptionsPoolQueryFactory().handler
+    query_handler.maker.insert_pending( rows )
+    await query_handler.run_query()
 
     print( "Updating status..." )
     await settings.status.interruptions.update()

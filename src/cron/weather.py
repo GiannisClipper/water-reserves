@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
 from src.requests.weather import WeatherAsyncGetRequestFactory
+from src.queries.weather import WeatherPoolQueryFactory
 from src.settings import get_settings
-from src.db.weather import insert_date
 
 async def weather_cron_job() -> None:
 
@@ -35,13 +35,18 @@ async def weather_cron_job() -> None:
             print( "No updates available yet." )
             break
 
-        # store in DB and update status
-
-        print( "Saving data..." )
+        # fill in the location_id
         for location_id, row in enumerate( req_handler.parser.data ):
             location_id += 1
             row.append( location_id )
-        await insert_date( req_handler.parser.data )
+
+        # store in DB and update status
+
+        print( "Saving data..." )
+
+        query_handler = WeatherPoolQueryFactory().handler
+        query_handler.maker.insert_into( req_handler.parser.data )
+        await query_handler.run_query()
 
         print( "Updating status..." )
         await settings.status.weather.update()

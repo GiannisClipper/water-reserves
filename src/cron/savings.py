@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
 from src.requests.savings import SavingsAsyncGetRequestFactory
+from src.queries.savings import SavingsPoolQueryFactory
 from src.settings import get_settings
-from src.db.savings import insert_date
 
 async def savings_cron_job() -> None:
 
@@ -37,7 +37,10 @@ async def savings_cron_job() -> None:
         # store in DB and update status
 
         print( "Saving data..." )
-        await insert_date( req_handler.parser.data )
+        query_handler = SavingsPoolQueryFactory().handler
+        # insert_into() receives list of list (bulk inputs)
+        query_handler.maker.insert_into( [ req_handler.parser.data ] )
+        await query_handler.run_query()
 
         print( "Updating status..." )
         await settings.status.savings.update()

@@ -64,7 +64,7 @@ class InterruptionsQueryMaker( QueryMaker ):
             area = area.replace( "'", "''" )
 
             values = f"('{date}','{scheduled}','{intersection[:100]}','{area}'),"
-            sql += values
+            query += values
 
         query = query[ 0:-1 ] + ';' # change last comma with semicolumn
         self.query = query

@@ -22,7 +22,7 @@ class SavingsQueryMaker( QueryMaker ):
         self.params = None
         return self.query
 
-    def insert_into( self, data: list[ list ] ) -> None:
+    def insert_into( self, data: list[ list ] ) -> str:
 
         query = '''INSERT INTO {table} ( date, reservoir_id, quantity ) VALUES '''
         query = query.replace( '{table}', self.table_name )

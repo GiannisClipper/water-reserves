@@ -1,9 +1,7 @@
 from datetime import datetime
 
+from src.queries.interruptions import InterruptionsPoolQueryFactory
 from src.settings import get_settings
-from src.helpers.time import get_next_year_month
-from src.helpers.csv import parse_csv_rows, parse_csv_columns
-from src.db.interruptions import update_pending
 
 from src.geography.MunicipalitiesHandler import MunicipalitiesHandler
 from src.geography.GeolocationHandler import GeolocationHandler
@@ -67,7 +65,9 @@ async def geolocation_cron_job() -> None:
 
         if saveEnabled:
             print( "Updating data..." )
-            await update_pending( interruption )
+            query_handler = InterruptionsPoolQueryFactory().handler
+            query_handler.maker.update_pending( interruption )
+            await query_handler.run_query()
             settings.status.geolocation.pending_entries = settings.status.geolocation.pending_entries[ 1: ]
 
     # update status

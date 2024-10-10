@@ -51,9 +51,11 @@ scheduler.add_job(
     replace_existing=True 
 )
 
+
 scheduler.add_job( 
     async_run_production,
     CronTrigger.from_crontab( settings.production_cron ), 
+    # CronTrigger.from_crontab( "* * * * *" ), # at every minute
     id='2', 
     replace_existing=True 
 )

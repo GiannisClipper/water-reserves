@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 
 from src.requests.production import ProductionAsyncGetRequestFactory
+from src.queries.production import ProductionPoolQueryFactory
+
 from src.settings import get_settings
-from src.db.production import insert_date
 
 async def production_cron_job() -> None:
 
@@ -37,7 +38,10 @@ async def production_cron_job() -> None:
         # store in DB and update status
 
         print( "Saving data..." )
-        await insert_date( req_handler.parser.data )
+        query_handler = ProductionPoolQueryFactory().handler
+        # insert_into() receives list of list (bulk inputs)
+        query_handler.maker.insert_into( [ req_handler.parser.data ] )
+        await query_handler.run_query()
 
         print( "Updating status..." )
         await settings.status.production.update()

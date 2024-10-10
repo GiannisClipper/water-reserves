@@ -60,7 +60,7 @@ class GeoapifyGetResponseParser( ResponseParser ):
 class GeoapifySyncRequestHandler( SyncRequestHandler ):
 
     def set_params( self, params ):
-        self.runner.settings.set_params( params )
+        self.runner.settings.params = params
         params[ 'url' ] = self.runner.settings.url
         self.parser.params = params
 
@@ -68,7 +68,7 @@ class GeoapifySyncRequestHandler( SyncRequestHandler ):
 class GeoapifyAsyncRequestHandler( AsyncRequestHandler ):
 
     def set_params( self, params ):
-        self.runner.settings.set_params( params )
+        self.runner.settings.params = params
         params[ 'url' ] = self.runner.settings.url
         self.parser.params = params
 
