@@ -32,7 +32,13 @@ class OnceQueryRunner( QueryRunner ):
 
         with psycopg.connect( conninfo=conninfo ) as conn, conn.cursor( row_factory=row_factory ) as cur:
             cur.execute( query, params )
-            return cur.fetchall()
+            conn.commit()
+
+            # in cases of DROP TABLE, CREATE TABLE fetchAll() raises 
+            # ProgrammingError: the last operation didn't produce a result
+            if 'SELECT ' in query.upper():
+                return cur.fetchall()
+            return None
 
 @dataclass
 class PoolQueryRunner( QueryRunner ):
@@ -47,5 +53,11 @@ class PoolQueryRunner( QueryRunner ):
 
         async with pool.connection() as conn, conn.cursor( row_factory=row_factory ) as cur:
             await cur.execute( query, params )
-            return await cur.fetchall()
+            await conn.commit()
+
+            # in cases of DROP TABLE, CREATE TABLE fetchAll() raises 
+            # ProgrammingError: the last operation didn't produce a result
+            if 'SELECT ' in query.upper():
+                return cur.fetchall()
+            return None
 

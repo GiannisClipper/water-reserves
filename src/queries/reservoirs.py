@@ -35,7 +35,7 @@ class ReservoirsQueryMaker( QueryMaker ):
     def insert_into( self, data: list ) -> None:
 
         query = '''INSERT INTO {table} ( name_el, name_en, lat, lon, start ) VALUES '''
-        query = CREATE_TABLE.replace( '{table}', self.table_name )
+        query = query.replace( '{table}', self.table_name )
 
         for row in data:
             name_el, name_en, lat, lon, start = row
@@ -66,7 +66,7 @@ class ReservoirsOnceQueryFactory( QueryFactory ):
             RowModel=Reservoir
         )
         runner = OnceQueryRunner()
-        self.handler = AsyncQueryHandler( maker=maker, runner=runner )
+        self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
 class ReservoirsPoolQueryFactory( QueryFactory ):
 

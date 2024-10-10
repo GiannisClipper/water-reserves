@@ -32,9 +32,8 @@ class LocationsQueryMaker( QueryMaker ):
 
     def insert_into( self, data: list ) -> None:
 
-        query = '''INSERT INTO {table} ( name_el, name_en, lat, lon, start ) VALUES '''
-
-        query = CREATE_TABLE.replace( '{table}', self.table_name )
+        query = '''INSERT INTO {table} ( name_el, name_en, lat, lon ) VALUES '''
+        query = query.replace( '{table}', self.table_name )
 
         for row in data:
             name_el, name_en, lat, lon = row

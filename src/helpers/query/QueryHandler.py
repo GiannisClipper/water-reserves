@@ -30,6 +30,7 @@ class SyncQueryHandler( QueryHandler ):
             )
 
         except Exception as error:
+            # print( f"{type( error ).__name__} at line { error.__traceback__.tb_lineno } of { __file__ }: { error }")
             print( 'Error:', error )
             self.error = error
 

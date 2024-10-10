@@ -25,6 +25,8 @@ class SavingsQueryMaker( QueryMaker ):
     def insert_into( self, data: list[ list ] ) -> None:
 
         query = '''INSERT INTO {table} ( date, reservoir_id, quantity ) VALUES '''
+        query = query.replace( '{table}', self.table_name )
+
         for date, q1, q2, q3, q4, total in data:
             one_date = f"('{date}',1,{q1}),('{date}',2,{q2}),('{date}',3,{q3}),('{date}',4,{q4}),"
             query += one_date

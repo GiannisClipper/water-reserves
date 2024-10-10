@@ -6,7 +6,9 @@ from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 CREATE_TABLE: str = """
     CREATE TABLE weather (
         id SERIAL PRIMARY KEY,
+        location_id SERIAL NOT NULL,
         date DATE NOT NULL,
+        weather_code INTEGER,
         temperature_2m_mean REAL,
         temperature_2m_min REAL,
         temperature_2m_max REAL,
@@ -33,6 +35,7 @@ class WeatherQueryMaker( QueryMaker ):
             temperature_2m_min, temperature_2m_mean, temperature_2m_max, 
             precipitation_sum, rain_sum, snowfall_sum
         ) VALUES '''
+        query = query.replace( '{table}', self.table_name )
 
         for date, weather_code, \
             temperature_2m_min, temperature_2m_mean, temperature_2m_max, \

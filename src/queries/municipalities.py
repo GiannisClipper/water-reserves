@@ -35,7 +35,7 @@ class MunicipalitiesQueryMaker( QueryMaker ):
     def insert_into( self, data: list ) -> None:
 
         query = '''INSERT INTO {table} ( id, name_el, prefecture ) VALUES '''
-        query = CREATE_TABLE.replace( '{table}', self.table_name )
+        query = query.replace( '{table}', self.table_name )
 
         for row in data:
             id, name_el, prefecture = row
