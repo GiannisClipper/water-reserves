@@ -1,7 +1,7 @@
 from src.helpers.query.QueryFactory import QueryFactory
 from src.helpers.query.QueryMaker import QueryMaker
-from src.helpers.query.QueryRunner import PoolAsyncQueryRunner
-from src.helpers.query.QueryHandler import AsyncQueryHandler
+from src.helpers.query.QueryRunner import OnceQueryRunner, PoolQueryRunner
+from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 
 CREATE_TABLE: str = """
     CREATE TABLE production (
@@ -33,12 +33,22 @@ class ProductionQueryMaker( QueryMaker ):
         self.query = query
         return self.query
     
-class ProductionQueryFactory( QueryFactory ):
+class ProductionOnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
         maker = ProductionQueryMaker(
             table_name='production',
         )
-        runner = PoolAsyncQueryRunner()
+        runner = OnceQueryRunner()
+        self.handler = SyncQueryHandler( maker=maker, runner=runner )
+
+class ProductionPoolQueryFactory( QueryFactory ):
+
+    def __init__( self ):
+
+        maker = ProductionQueryMaker(
+            table_name='production',
+        )
+        runner = PoolQueryRunner()
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )

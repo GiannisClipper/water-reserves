@@ -1,10 +1,9 @@
-from dataclasses import dataclass
 from pydantic import BaseModel
 
 from src.helpers.query.QueryFactory import QueryFactory
 from src.helpers.query.QueryMaker import QueryMaker
-from src.helpers.query.QueryRunner import PoolAsyncQueryRunner
-from src.helpers.query.QueryHandler import AsyncQueryHandler
+from src.helpers.query.QueryRunner import OnceQueryRunner, PoolQueryRunner
+from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 
 CREATE_TABLE: str = """
     CREATE TABLE {table} (
@@ -52,7 +51,7 @@ class MunicipalitiesQueryMaker( QueryMaker ):
         self.params = ( id, )
         return self.query, self.params, self.RowModel
 
-class MunicipalitiesQueryFactory( QueryFactory ):
+class MunicipalitiesOnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
@@ -60,5 +59,16 @@ class MunicipalitiesQueryFactory( QueryFactory ):
             table_name='municipalities',
             RowModel=Municipality
         )
-        runner = PoolAsyncQueryRunner()
+        runner = OnceQueryRunner()
+        self.handler = SyncQueryHandler( maker=maker, runner=runner )
+
+class MunicipalitiesPoolQueryFactory( QueryFactory ):
+
+    def __init__( self ):
+
+        maker = MunicipalitiesQueryMaker(
+            table_name='municipalities',
+            RowModel=Municipality
+        )
+        runner = PoolQueryRunner()
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )

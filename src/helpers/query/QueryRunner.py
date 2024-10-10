@@ -17,23 +17,7 @@ class QueryRunner( ABC ):
         pass
 
 @dataclass
-class PoolAsyncQueryRunner( QueryRunner ):
-
-    async def run_query( 
-        self, query: str, params: tuple = None, RowModel: BaseModel = None 
-    ) -> any:
-
-        row_factory: BaseRowFactory = None
-        if RowModel:
-            row_factory = class_row( RowModel)
-
-        async with pool.connection() as conn, conn.cursor( row_factory=row_factory ) as cur:
-            await cur.execute( query, params )
-            return await cur.fetchall()
-
-
-@dataclass
-class SyncQueryRunner( QueryRunner ):
+class OnceQueryRunner( QueryRunner ):
 
     def run_query( 
         self, query: str, params: tuple = None, RowModel: BaseModel = None 
@@ -49,3 +33,19 @@ class SyncQueryRunner( QueryRunner ):
         with psycopg.connect( conninfo=conninfo ) as conn, conn.cursor( row_factory=row_factory ) as cur:
             cur.execute( query, params )
             return cur.fetchall()
+
+@dataclass
+class PoolQueryRunner( QueryRunner ):
+
+    async def run_query( 
+        self, query: str, params: tuple = None, RowModel: BaseModel = None 
+    ) -> any:
+
+        row_factory: BaseRowFactory = None
+        if RowModel:
+            row_factory = class_row( RowModel)
+
+        async with pool.connection() as conn, conn.cursor( row_factory=row_factory ) as cur:
+            await cur.execute( query, params )
+            return await cur.fetchall()
+

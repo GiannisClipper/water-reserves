@@ -22,7 +22,7 @@ class SyncQueryHandler( QueryHandler ):
 
         query = self.maker.query
         params = self.maker.params
-        RowModel = self.RowModel
+        RowModel = self.maker.RowModel
 
         try:
             self.data = self.runner.run_query( 

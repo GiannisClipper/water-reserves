@@ -1,7 +1,7 @@
 from src.helpers.query.QueryFactory import QueryFactory
 from src.helpers.query.QueryMaker import QueryMaker
-from src.helpers.query.QueryRunner import PoolAsyncQueryRunner
-from src.helpers.query.QueryHandler import AsyncQueryHandler
+from src.helpers.query.QueryRunner import OnceQueryRunner, PoolQueryRunner
+from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 
 CREATE_TABLE: str = """
     CREATE TABLE interruptions (
@@ -89,12 +89,22 @@ class InterruptionsQueryMaker( QueryMaker ):
         self.query = query
         return self.query
 
-class InterruptionsQueryFactory( QueryFactory ):
+class InterruptionsOnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
         maker = InterruptionsQueryMaker(
             table_name='interruptions',
         )
-        runner = PoolAsyncQueryRunner()
+        runner = OnceQueryRunner()
+        self.handler = SyncQueryHandler( maker=maker, runner=runner )
+
+class InterruptionsPoolQueryFactory( QueryFactory ):
+
+    def __init__( self ):
+
+        maker = InterruptionsQueryMaker(
+            table_name='interruptions',
+        )
+        runner = PoolQueryRunner()
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )
