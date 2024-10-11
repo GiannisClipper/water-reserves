@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 
-from src.helpers.query.QueryFactory import QueryFactory
-from src.helpers.query.QueryMaker import QueryMaker
-from src.helpers.query.QueryRunner import OnceQueryRunner, PoolQueryRunner
-from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
+from src.queries._abstract.QueryFactory import QueryFactory
+from src.queries._abstract.QueryMaker import QueryMaker
+from src.queries._abstract.QueryRunner import OnceQueryRunner, PoolQueryRunner
+from src.queries._abstract.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 
 from src.db import conninfo, pool
 

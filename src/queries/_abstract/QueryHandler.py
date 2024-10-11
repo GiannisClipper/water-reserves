@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from src.helpers.query.QueryMaker import QueryMaker
-from src.helpers.query.QueryRunner import QueryRunner 
+from src.queries._abstract.QueryMaker import QueryMaker
+from src.queries._abstract.QueryRunner import QueryRunner 
 
 @dataclass
 class QueryHandler( ABC ):

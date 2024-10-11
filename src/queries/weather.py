@@ -1,7 +1,7 @@
-from src.helpers.query.QueryFactory import QueryFactory
-from src.helpers.query.QueryMaker import ExtendedQueryMaker
-from src.helpers.query.QueryRunner import OnceQueryRunner, PoolQueryRunner
-from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
+from src.queries._abstract.QueryFactory import QueryFactory
+from src.queries._abstract.QueryMaker import ExtendedQueryMaker
+from src.queries._abstract.QueryRunner import OnceQueryRunner, PoolQueryRunner
+from src.queries._abstract.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 
 from src.helpers.time import get_first_date, get_last_date
 from src.helpers.text import set_indentation, get_query_headers

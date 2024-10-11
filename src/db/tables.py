@@ -1,7 +1,9 @@
-from src.helpers.query.QueryFactory import QueryFactory
-from src.helpers.query.QueryMaker import ReadonlyQueryMaker
-from src.helpers.query.QueryRunner import OnceQueryRunner
-from src.helpers.query.QueryHandler import SyncQueryHandler
+from src.queries._abstract.QueryFactory import QueryFactory
+from src.queries._abstract.QueryMaker import ReadonlyQueryMaker
+from src.queries._abstract.QueryRunner import OnceQueryRunner
+from src.queries._abstract.QueryHandler import SyncQueryHandler
+
+from src.db import conninfo
 
 tables: tuple[ str ] = ( 
     'reservoirs', 'savings', 
@@ -14,7 +16,9 @@ class OnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
         maker = ReadonlyQueryMaker()
-        runner = OnceQueryRunner()
+        runner = OnceQueryRunner(
+            connection_string=conninfo
+        )
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
 def exists( table_names: tuple ):
