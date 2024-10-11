@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from pydantic import BaseModel
+from src.helpers.text import get_query_headers
 
 EXISTS_TABLE: str = """
     SELECT EXISTS (
@@ -61,7 +62,7 @@ class QueryMaker( ABC ):
         self.query = SELECT_BY_ID.replace( '{table}', self.table_name )
         self.params = ( id, )
         return self.query, self.params, self.RowModel
-
+    
 @dataclass
 class ExtendedQueryMaker( QueryMaker ):
 
@@ -73,6 +74,12 @@ class ExtendedQueryMaker( QueryMaker ):
     @abstractmethod
     def select_where( self ) -> tuple[ str, tuple ]:
         pass
+
+    def get_headers( self ) -> list[ str ]:
+        if not self.query:
+            return None
+        return get_query_headers( self.query )
+
 
 class ReadonlyQueryMaker( QueryMaker ):
 

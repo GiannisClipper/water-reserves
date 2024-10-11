@@ -61,12 +61,12 @@ class ProductionQueryMaker( ExtendedQueryMaker ):
 
     def select_where(
         self,
-        time_range: str | None, 
-        factory_filter: str | None,
-        interval_filter: str | None,
-        factory_aggregation: str | None,
-        time_aggregation: str | None,
-        year_start: str | None
+        time_range: str | None = None, 
+        factory_filter: str | None = None,
+        interval_filter: str | None = None,
+        factory_aggregation: str | None = None,
+        time_aggregation: str | None = None,
+        year_start: str | None = None
     ):
         self.time_range = time_range
         self.factory_filter = factory_filter

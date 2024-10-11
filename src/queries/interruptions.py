@@ -112,21 +112,20 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
 
         self.query = query
 
-    async def select_pending( self ) -> None:
+    def select_pending( self ) -> None:
 
-        query = 'SELECT id, date, area, intersection FROM interruptions WHERE geo_failed IS NOT False AND geo_url IS NULL ORDER BY id'
+        query = 'SELECT id, date, area, intersection FROM interruptions WHERE geo_failed IS NOT False AND geo_url IS NULL ORDER BY id;'
         self.query = query
         self.params = None
-        return self.query
 
     def select_where(
         self,
-        time_range: list[ str, str ] | None, 
-        municipality_filter: str | None,
-        interval_filter: str | None,
-        municipality_aggregation: str | None,
-        time_aggregation: str | None,
-        year_start: str | None
+        time_range: list[ str, str ] | None = None, 
+        municipality_filter: str | None = None,
+        interval_filter: str | None = None,
+        municipality_aggregation: str | None = None,
+        time_aggregation: str | None = None,
+        year_start: str | None = None
     ):
         self.time_range = time_range
         self.municipality_filter = municipality_filter

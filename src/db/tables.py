@@ -3,6 +3,13 @@ from src.helpers.query.QueryMaker import ReadonlyQueryMaker
 from src.helpers.query.QueryRunner import OnceQueryRunner
 from src.helpers.query.QueryHandler import SyncQueryHandler
 
+tables: tuple[ str ] = ( 
+    'reservoirs', 'savings', 
+    'factories', 'production', 
+    'locations', 'weather',
+    'municipalities', 'interruptions'  
+)
+
 class OnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
@@ -10,7 +17,7 @@ class OnceQueryFactory( QueryFactory ):
         runner = OnceQueryRunner()
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
-def exists_tables( table_names: tuple ):
+def exists( table_names: tuple ):
 
     final_result = True
 
