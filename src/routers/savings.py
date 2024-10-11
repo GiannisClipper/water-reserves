@@ -6,8 +6,9 @@ from pydantic.functional_validators import AfterValidator
 from src.validators import validate_time_range, validate_interval_filter, validate_time_aggregation, validate_year_start
 from src.validators.savings import validate_reservoir_filter, validate_reservoir_aggregation
 
-from src.db.savings import select_all
-from src.db.reservoirs import select_all as select_all_reservoirs
+from src.queries.savings import SavingsPoolQueryFactory
+from src.queries.reservoirs import ReservoirsPoolQueryFactory
+from src.helpers.text import get_query_headers
 
 @dataclass
 class Legend:
@@ -31,14 +32,22 @@ async def get_all(
     year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
 ):
 
-    headers, data = await select_all( 
+    query_handler = SavingsPoolQueryFactory().handler
+    query_handler.maker.select_where(
         time_range, reservoir_filter, interval_filter, 
         reservoir_aggregation, time_aggregation, year_start
     )
+    await query_handler.run_query()
+
+    headers = get_query_headers( query_handler.maker.query )
+    data = query_handler.data
 
     if reservoir_aggregation != None:
         return SavingsResponse( headers, data )
     
-    reservoirs = await select_all_reservoirs()
+    query_handler = ReservoirsPoolQueryFactory().handler
+    query_handler.maker.select_all()
+    await query_handler.run_query()
+    reservoirs = query_handler.data
     legend = Legend( reservoirs )
     return SavingsResponse( headers, data, legend )

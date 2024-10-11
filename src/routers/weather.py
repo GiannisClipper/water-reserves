@@ -6,9 +6,9 @@ from pydantic.functional_validators import AfterValidator
 from src.validators import validate_time_range, validate_interval_filter, validate_time_aggregation, validate_year_start
 from src.validators.weather import validate_location_aggregation, validate_location_filter
 
-from src.db.weather import select_all
-
-from src.db.locations import select_all as select_all_locations
+from src.queries.weather import WeatherPoolQueryFactory
+from src.queries.locations import LocationsPoolQueryFactory
+from src.helpers.text import get_query_headers
 
 @dataclass
 class Legend:
@@ -32,14 +32,22 @@ async def get_all(
     year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
 ):
 
-    headers, data = await select_all( 
+    query_handler = WeatherPoolQueryFactory().handler
+    query_handler.maker.select_where(
         time_range, location_filter, interval_filter, 
         location_aggregation, time_aggregation, year_start
     )
+    await query_handler.run_query()
+
+    headers = get_query_headers( query_handler.maker.query )
+    data = query_handler.data
 
     if location_aggregation != None:
         return WeatherResponse( headers, data )
     
-    locations = await select_all_locations()
+    query_handler = LocationsPoolQueryFactory().handler
+    query_handler.maker.select_all()
+    await query_handler.run_query()
+    locations = query_handler.data
     legend = Legend( locations )
     return WeatherResponse( headers, data, legend )

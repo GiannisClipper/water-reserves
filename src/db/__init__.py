@@ -1,6 +1,4 @@
-import psycopg
 from psycopg_pool import AsyncConnectionPool
-
 from src.settings import get_settings
 settings = get_settings()
 

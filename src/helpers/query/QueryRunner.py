@@ -58,6 +58,6 @@ class PoolQueryRunner( QueryRunner ):
             # in cases of DROP TABLE, CREATE TABLE fetchAll() raises 
             # ProgrammingError: the last operation didn't produce a result
             if 'SELECT ' in query.upper():
-                return cur.fetchall()
+                return await cur.fetchall()
             return None
 
