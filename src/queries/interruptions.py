@@ -6,6 +6,8 @@ from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 from src.helpers.time import get_first_date, get_last_date
 from src.helpers.text import set_indentation, get_query_headers
 
+from src.db import conninfo, pool
+
 CREATE_TABLE: str = """
     CREATE TABLE interruptions (
         id SERIAL PRIMARY KEY,
@@ -30,7 +32,9 @@ class InterruptionsOnceQueryFactory( QueryFactory ):
         maker = InterruptionsQueryMaker(
             table_name='interruptions',
         )
-        runner = OnceQueryRunner()
+        runner = OnceQueryRunner(
+            connection_string=conninfo
+        )
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
 class InterruptionsPoolQueryFactory( QueryFactory ):
@@ -40,7 +44,9 @@ class InterruptionsPoolQueryFactory( QueryFactory ):
         maker = InterruptionsQueryMaker(
             table_name='interruptions',
         )
-        runner = PoolQueryRunner()
+        runner = PoolQueryRunner(
+            pool=pool
+        )
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )
 
 class InterruptionsQueryMaker( ExtendedQueryMaker ):

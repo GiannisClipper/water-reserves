@@ -6,6 +6,8 @@ from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 from src.helpers.time import get_first_date, get_last_date
 from src.helpers.text import set_indentation, get_query_headers
 
+from src.db import conninfo, pool
+
 CREATE_TABLE: str = """
     CREATE TABLE production (
         id SERIAL PRIMARY KEY,
@@ -23,9 +25,11 @@ class ProductionOnceQueryFactory( QueryFactory ):
     def __init__( self ):
 
         maker = ProductionQueryMaker(
-            table_name='production',
+            table_name='production'
         )
-        runner = OnceQueryRunner()
+        runner = OnceQueryRunner(
+            connection_string=conninfo
+        )
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
 class ProductionPoolQueryFactory( QueryFactory ):
@@ -33,9 +37,11 @@ class ProductionPoolQueryFactory( QueryFactory ):
     def __init__( self ):
 
         maker = ProductionQueryMaker(
-            table_name='production',
+            table_name='production'
         )
-        runner = PoolQueryRunner()
+        runner = PoolQueryRunner(
+            pool=pool
+        )
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )
 
 class ProductionQueryMaker( ExtendedQueryMaker ):

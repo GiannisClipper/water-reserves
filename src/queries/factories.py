@@ -5,6 +5,8 @@ from src.helpers.query.QueryMaker import QueryMaker
 from src.helpers.query.QueryRunner import OnceQueryRunner, PoolQueryRunner
 from src.helpers.query.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 
+from src.db import conninfo, pool
+
 CREATE_TABLE: str = """
     CREATE TABLE {table} (
         id SERIAL PRIMARY KEY,
@@ -54,7 +56,9 @@ class FactoriesOnceQueryFactory( QueryFactory ):
             table_name='factories',
             RowModel=Factory
         )
-        runner = OnceQueryRunner()
+        runner = OnceQueryRunner(
+            connection_string=conninfo
+        )
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
 class FactoriesPoolQueryFactory( QueryFactory ):
@@ -65,5 +69,7 @@ class FactoriesPoolQueryFactory( QueryFactory ):
             table_name='factories',
             RowModel=Factory
         )
-        runner = PoolQueryRunner()
+        runner = PoolQueryRunner(
+            pool=pool
+        )
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )

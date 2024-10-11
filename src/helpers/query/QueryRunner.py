@@ -3,9 +3,7 @@ from abc import ABC, abstractmethod
 
 import psycopg
 from psycopg.rows import class_row, BaseRowFactory
-
-from src.settings import get_settings
-from src.db import pool
+from psycopg_pool import AsyncConnectionPool
 
 from pydantic import BaseModel
 
@@ -19,18 +17,20 @@ class QueryRunner( ABC ):
 @dataclass
 class OnceQueryRunner( QueryRunner ):
 
-    def run_query( 
-        self, query: str, params: tuple = None, RowModel: BaseModel = None 
-    ) -> any:
+    connection_string: str
 
-        settings = get_settings()
-        conninfo = f"user={settings.db_user} password={settings.db_password} host={settings.db_host} port={settings.db_port} dbname={settings.db_name}"
+    def run_query( 
+        self, 
+        query: str, 
+        params: tuple = None, 
+        RowModel: BaseModel = None 
+    ) -> any:
 
         row_factory: BaseRowFactory = None
         if RowModel:
             row_factory = class_row( RowModel)
 
-        with psycopg.connect( conninfo=conninfo ) as conn, conn.cursor( row_factory=row_factory ) as cur:
+        with psycopg.connect( conninfo=self.connection_string ) as conn, conn.cursor( row_factory=row_factory ) as cur:
             cur.execute( query, params )
             conn.commit()
 
@@ -43,15 +43,20 @@ class OnceQueryRunner( QueryRunner ):
 @dataclass
 class PoolQueryRunner( QueryRunner ):
 
+    pool: AsyncConnectionPool
+
     async def run_query( 
-        self, query: str, params: tuple = None, RowModel: BaseModel = None 
+        self, 
+        query: str, 
+        params: tuple = None, 
+        RowModel: BaseModel = None 
     ) -> any:
 
         row_factory: BaseRowFactory = None
         if RowModel:
             row_factory = class_row( RowModel)
 
-        async with pool.connection() as conn, conn.cursor( row_factory=row_factory ) as cur:
+        async with self.pool.connection() as conn, conn.cursor( row_factory=row_factory ) as cur:
             await cur.execute( query, params )
             await conn.commit()
 
