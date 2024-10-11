@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from src.helpers.request.RequestFactory import RequestFactory
-from src.helpers.request.RequestHandler import AsyncRequestHandler
-from src.helpers.request.RequestSettings import GetRequestSettings
-from src.helpers.request.RequestRunner import AsyncGetRequestRunner
-from src.helpers.request.ResponseParser import ResponseParser
+from src.requests._abstract.RequestFactory import RequestFactory
+from src.requests._abstract.RequestHandler import AsyncRequestHandler
+from src.requests._abstract.RequestSettings import GetRequestSettings
+from src.requests._abstract.RequestRunner import AsyncGetRequestRunner
+from src.requests._abstract.ResponseParser import ResponseParser
 
 from src.settings import Settings, get_settings
 from src.helpers.html import scrape_html

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from src.helpers.request.RequestSettings import RequestSettings, GetRequestSettings, PostRequestSettings
+from src.requests._abstract.RequestSettings import RequestSettings, GetRequestSettings, PostRequestSettings
 
 @dataclass
 class RequestRunner( ABC ):

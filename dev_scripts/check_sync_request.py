@@ -1,7 +1,7 @@
-from src.helpers.request.RequestHandler import SyncRequestHandler
-from src.helpers.request.RequestRunner import SyncGetRequestRunner, SyncPostRequestRunner
-from src.helpers.request.RequestSettings import InterruptionsPostSettings, InterruptionsGetSettings
-from src.helpers.request.ResponseParser import InterruptionsPostResponseParser, InterruptionsGetResponseParser
+from src.requests._abstract.RequestHandler import SyncRequestHandler
+from src.requests._abstract.RequestRunner import SyncGetRequestRunner, SyncPostRequestRunner
+from src.requests._abstract.RequestSettings import InterruptionsPostSettings, InterruptionsGetSettings
+from src.requests._abstract.ResponseParser import InterruptionsPostResponseParser, InterruptionsGetResponseParser
 
 from src.helpers.csv import parse_csv_rows, parse_csv_columns
 

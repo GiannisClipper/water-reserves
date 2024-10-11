@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from src.helpers.request.RequestFactory import RequestFactory
-from src.helpers.request.RequestHandler import AsyncRequestHandler
-from src.helpers.request.RequestSettings import GetRequestSettings, PostRequestSettings
-from src.helpers.request.RequestRunner import AsyncGetRequestRunner, AsyncPostRequestRunner
-from src.helpers.request.ResponseParser import ResponseParser
+from src.requests._abstract.RequestFactory import RequestFactory
+from src.requests._abstract.RequestHandler import AsyncRequestHandler
+from src.requests._abstract.RequestSettings import GetRequestSettings, PostRequestSettings
+from src.requests._abstract.RequestRunner import AsyncGetRequestRunner, AsyncPostRequestRunner
+from src.requests._abstract.ResponseParser import ResponseParser
 
 from src.settings import get_settings
 

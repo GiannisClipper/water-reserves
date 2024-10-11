@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from src.helpers.request.RequestRunner import RequestRunner 
-from src.helpers.request.ResponseParser import ResponseParser
+from src.requests._abstract.RequestRunner import RequestRunner 
+from src.requests._abstract.ResponseParser import ResponseParser
 import httpx
 import time
 import asyncio
