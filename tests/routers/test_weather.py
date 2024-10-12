@@ -10,7 +10,7 @@ async def test_select_dates_range( client, assert_against_csv ):
 
     assert_against_csv( f'{csvpath}/select_dates-range.csv', response.json() )
     # csv content comes from: 
-    # SELECT id, date, location_id, precipitation_sum FROM weather 
+    # SELECT id, date, location_id, precipitation_sum, temperature_2m_min, temperature_2m_mean, temperature_2m_max FROM weather 
     # WHERE date>='2023-07-28' AND date<='2023-08-06' ORDER BY date, location_id;
 
 
@@ -21,7 +21,7 @@ async def test_select_months_range( client, assert_against_csv ):
 
     assert_against_csv( f'{csvpath}/select_months-range.csv', response.json() )
     # csv content comes from:
-    # SELECT id, date, location_id, precipitation_sum FROM weather 
+    # SELECT id, date, location_id, precipitation_sum, temperature_2m_min, temperature_2m_mean, temperature_2m_max FROM weather 
     # WHERE date>='2023-07-01' AND date<='2023-07-31' ORDER BY date, location_id;
 
 
@@ -32,6 +32,14 @@ async def test_select_dates_range_momths_avg( client, assert_against_csv ):
 
     assert_against_csv( f'{csvpath}/select_dates-range_months-avg.csv', response.json() )
     # csv content comes from: 
+    # SELECT SUBSTR(date::text,1,7) AS month, location_id, 
+    # ROUND(AVG(precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    # FROM weather WHERE date>='2023-07-28' AND date<='2023-08-06'
+    # GROUP BY SUBSTR(date::text,1,7), location_id ORDER BY SUBSTR(date::text,1,7), location_id;
+
     # SELECT SUBSTR(date,1,7) AS month, location_id, ROUND(AVG(precipitation_sum)::numeric,2) AS precipitation_sum FROM weather 
     # WHERE date>='2023-07-28' AND date<='2023-08-06'
     # GROUP BY SUBSTR(date,1,7), location_id ORDER BY SUBSTR(date,1,7), location_id;
@@ -44,9 +52,13 @@ async def test_select_years_range_years_sum( client, assert_against_csv ):
 
     assert_against_csv( f'{csvpath}/select_years-range_years-sum.csv', response.json() )
     # csv content comes from: 
-    # SELECT SUBSTR(date,1,4) AS year, location_id, ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum FROM weather 
-    # WHERE date>='2022-01-01' AND date<='2023-12-31'
-    # GROUP BY SUBSTR(date,1,4), location_id ORDER BY SUBSTR(date,1,4), location_id;
+    # SELECT SUBSTR(date::text,1,4) AS month, location_id, 
+    # ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    # FROM weather WHERE date>='2022-01-01' AND date<='2023-12-31'
+    # GROUP BY SUBSTR(date::text,1,4), location_id ORDER BY SUBSTR(date::text,1,4), location_id;
 
 
 @pytest.mark.asyncio
@@ -56,8 +68,12 @@ async def test_select_dates_range_locations_sum( client, assert_against_csv ):
 
     assert_against_csv( f'{csvpath}/select_dates-range_locations-sum.csv', response.json() )
     # csv content comes from: 
-    # SELECT date, ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum FROM weather 
-    # WHERE date>='2023-07-28' AND date<='2023-08-06' GROUP BY date ORDER BY date;
+    # SELECT date,  
+    # ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    # FROM weather WHERE date>='2023-07-28' AND date<='2023-08-06' GROUP BY date ORDER BY date;
 
 
 @pytest.mark.asyncio
@@ -67,12 +83,20 @@ async def test_select_dates_range_locations_sum_momths_sum( client, assert_again
 
     assert_against_csv( f'{csvpath}/select_dates-range_locations-sum_months-sum.csv', response.json() )
     # csv content comes from: 
-    # SELECT SUBSTR(date,1,7) AS month, ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum FROM 
-    # (
-    #   SELECT date, ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum FROM weather 
-    #   WHERE date>='2023-07-28' AND date<='2023-08-06' GROUP BY date
+    # SELECT SUBSTR(date::text,1,7) AS month, 
+    # ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    # FROM (
+    # SELECT date, 
+    # ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    # FROM weather WHERE date>='2023-07-28' AND date<='2023-08-06' GROUP BY date
     # ) a
-    # GROUP BY SUBSTR(a.date,1,7) ORDER BY SUBSTR(a.date,1,7);
+    # GROUP BY SUBSTR(a.date::text,1,7) ORDER BY SUBSTR(a.date::text,1,7);
 
 
 @pytest.mark.asyncio
@@ -82,12 +106,20 @@ async def test_select_years_range_locations_sum_years_sum( client, assert_agains
 
     assert_against_csv( f'{csvpath}/select_years-range_locations-sum_years-sum.csv', response.json() )
     # csv content comes from: 
-    # SELECT SUBSTR(date,1,4) AS year, ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum FROM 
-    # (
-    #   SELECT date, ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum FROM weather 
-    #   WHERE date>='2022-01-01' AND date<='2023-12-31' GROUP BY date
+    # SELECT SUBSTR(date::text,1,4) AS year, 
+    # ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    # FROM (
+    #   SELECT date, 
+    #   ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum,
+    #   ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    #   ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    #   ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    #    FROM weather WHERE date>='2022-01-01' AND date<='2023-12-31' GROUP BY date
     # ) a
-    # GROUP BY SUBSTR(a.date,1,4) ORDER BY SUBSTR(a.date,1,4);
+    # GROUP BY SUBSTR(a.date::text,1,4) ORDER BY SUBSTR(a.date::text,1,4);
 
 
 @pytest.mark.asyncio
@@ -97,8 +129,9 @@ async def test_select_years_range_interval_filter( client, assert_against_csv ):
 
     assert_against_csv( f'{csvpath}/select_years-range_interval-filter.csv', response.json() )
     # csv content comes from: 
-    # SELECT id, date, location_id, precipitation_sum FROM weather 
-    # WHERE date>='2022-01-01' AND date<='2023-12-31' AND (SUBSTR(date,6,5)>='07-28' AND SUBSTR(date,6,5)<='08-16')
+    # SELECT id, date, location_id, 
+    # precipitation_sum, temperature_2m_min, temperature_2m_mean, temperature_2m_max FROM weather 
+    # WHERE date>='2022-01-01' AND date<='2023-12-31' AND (SUBSTR(date::text,6,5)>='07-28' AND SUBSTR(date::text,6,5)<='08-16')
     # ORDER BY date, location_id;
 
 
@@ -109,12 +142,20 @@ async def test_select_years_range_locations_sum_years_avg_interval_filter( clien
 
     assert_against_csv( f'{csvpath}/select_years-range_locations-sum_years-avg_interval-filter.csv', response.json() )
     # csv content comes from: 
-    # SELECT SUBSTR(date,1,4) AS year, ROUND(AVG(precipitation_sum)::numeric,2) AS precipitation_sum FROM 
-    # (
-    #   SELECT date, ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum FROM weather 
-    #   WHERE date>='2022-01-01' AND date<='2023-12-31' AND (SUBSTR(date,6,5)>='07-28' AND SUBSTR(date,6,5)<='08-16') GROUP BY date
+    # SELECT SUBSTR(date::text,1,4) AS year, 
+    # ROUND(AVG(precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    # FROM (
+    # SELECT date, 
+    # ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    # FROM weather WHERE date>='2022-01-01' AND date<='2023-12-31' AND (SUBSTR(date::text,6,5)>='07-28' AND SUBSTR(date::text,6,5)<='08-16') GROUP BY date
     # ) a
-    # GROUP BY SUBSTR(a.date,1,4) ORDER BY SUBSTR(a.date,1,4);
+    # GROUP BY SUBSTR(a.date::text,1,4) ORDER BY SUBSTR(a.date::text,1,4);
 
 
 @pytest.mark.asyncio
@@ -124,15 +165,22 @@ async def test_select_dates_range_custom_years_sum( client, assert_against_csv )
 
     assert_against_csv( f'{csvpath}/select_dates-range_custom-years-sum.csv', response.json() )
     # csv content comes from: 
-    # SELECT b.custom_year, b.location_id, ROUND(SUM(b.precipitation_sum)::numeric,2) AS precipitation_sum
+    # SELECT b.custom_year, b.location_id, 
+    # ROUND(SUM(b.precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(b.temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(b.temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(b.temperature_2m_max)::numeric,2) AS temperature_2m_max
     # FROM (
     # SELECT
-    #     CASE WHEN SUBSTR(a.date,6,5)>='10-01'
-    #     THEN SUBSTR(a.date,1,4) || '-' || CAST(SUBSTR(a.date,1,4) AS INTEGER)+1
-    #     ELSE CAST(SUBSTR(a.date,1,4) AS INTEGER)-1 || '-' || SUBSTR(a.date,1,4) 
+    #     CASE WHEN SUBSTR(a.date::text,6,5)>='10-01'
+    #     THEN SUBSTR(a.date::text,1,4) || '-' || CAST(SUBSTR(a.date::text,1,4) AS INTEGER)+1
+    #     ELSE CAST(SUBSTR(a.date::text,1,4) AS INTEGER)-1 || '-' || SUBSTR(a.date::text,1,4) 
     #     END AS custom_year,
     #     a.location_id,
-    #     a.precipitation_sum
+    #     a.precipitation_sum,
+    #     a.temperature_2m_min,
+    #     a.temperature_2m_mean,
+    #     a.temperature_2m_max
     # FROM ( 
     #     SELECT * FROM weather WHERE date>='2021-10-01' AND date<='2023-09-30' 
     # ) a
@@ -148,17 +196,28 @@ async def test_select_dates_range_locations_sum_custom_years_avg( client, assert
 
     assert_against_csv( f'{csvpath}/select_dates-range_locations-sum_custom-years-avg.csv', response.json() )
     # csv content comes from: 
-    # SELECT b.custom_year, ROUND(AVG(b.precipitation_sum)::numeric,2) AS precipitation_sum
+    # SELECT b.custom_year, 
+    # ROUND(AVG(b.precipitation_sum)::numeric,2) AS precipitation_sum,
+    # ROUND(AVG(b.temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    # ROUND(AVG(b.temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    # ROUND(AVG(b.temperature_2m_max)::numeric,2) AS temperature_2m_max
     # FROM (
-    # SELECT
-    #     CASE WHEN SUBSTR(a.date,6,5)>='10-01'
-    #     THEN SUBSTR(a.date,1,4) || '-' || CAST(SUBSTR(a.date,1,4) AS INTEGER)+1
-    #     ELSE CAST(SUBSTR(a.date,1,4) AS INTEGER)-1 || '-' || SUBSTR(a.date,1,4) 
+    #     SELECT
+    #     CASE WHEN SUBSTR(a.date::text,6,5)>='10-01'
+    #     THEN SUBSTR(a.date::text,1,4) || '-' || CAST(SUBSTR(a.date::text,1,4) AS INTEGER)+1
+    #     ELSE CAST(SUBSTR(a.date::text,1,4) AS INTEGER)-1 || '-' || SUBSTR(a.date::text,1,4) 
     #     END AS custom_year,
-    #     a.precipitation_sum
+    #     a.precipitation_sum,
+    #     a.temperature_2m_min,
+    #     a.temperature_2m_mean,
+    #     a.temperature_2m_max
     # FROM ( 
-    #     SELECT date, ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum FROM weather 
-    #     WHERE date>='2021-10-01' AND date<='2023-09-30'
+    #     SELECT date, 
+    #     ROUND(SUM(precipitation_sum)::numeric,2) AS precipitation_sum,
+    #     ROUND(AVG(temperature_2m_min)::numeric,2) AS temperature_2m_min,
+    #     ROUND(AVG(temperature_2m_mean)::numeric,2) AS temperature_2m_mean,
+    #     ROUND(AVG(temperature_2m_max)::numeric,2) AS temperature_2m_max
+    #     FROM weather WHERE date>='2021-10-01' AND date<='2023-09-30'
     #     GROUP BY date
     # ) a
     # ) b
