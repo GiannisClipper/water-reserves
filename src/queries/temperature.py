@@ -12,24 +12,16 @@ class TemperatureOnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
-        maker = TemperatureQueryMaker(
-            table_name='weather'
-        )
-        runner = OnceQueryRunner(
-            connection_string=conninfo
-        )
+        maker = TemperatureQueryMaker()
+        runner = OnceQueryRunner( connection_string=conninfo )
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
 class TemperaturePoolQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
-        maker = TemperatureQueryMaker(
-            table_name='weather',
-        )
-        runner = PoolQueryRunner(
-            pool=pool
-        )
+        maker = TemperatureQueryMaker()
+        runner = PoolQueryRunner( pool=pool )
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )
 
 class TemperatureQueryMaker( WeatherQueryMaker ):

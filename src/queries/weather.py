@@ -29,27 +29,22 @@ class WeatherOnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
-        maker = WeatherQueryMaker(
-            table_name='weather'
-        )
-        runner = OnceQueryRunner(
-            connection_string=conninfo
-        )
+        maker = WeatherQueryMaker()
+        runner = OnceQueryRunner( connection_string=conninfo )
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
 class WeatherPoolQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
-        maker = WeatherQueryMaker(
-            table_name='weather',
-        )
-        runner = PoolQueryRunner(
-            pool=pool
-        )
+        maker = WeatherQueryMaker()
+        runner = PoolQueryRunner( pool=pool )
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )
 
 class WeatherQueryMaker( ExtendedQueryMaker ):
+
+    def __init__( self ):
+        super().__init__( table_name='weather' )
 
     def create_table( self ) -> tuple[ str, tuple ]:
 

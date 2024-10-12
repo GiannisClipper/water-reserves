@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from ._abstract import AbstractTableStatus
+from ._abstract import AbstractTableStatus, StatusAnalysis
 
 from src.queries.production import ProductionPoolQueryFactory
 from src.queries.factories import FactoriesPoolQueryFactory
@@ -8,7 +8,7 @@ from src.queries.factories import FactoriesPoolQueryFactory
 @dataclass
 class ProductionStatus( AbstractTableStatus ):
 
-    factories: list[ object ] | None
+    factories: list[ object ] | None = None
 
     async def update( self ) -> None:
 
@@ -52,4 +52,9 @@ class ProductionStatus( AbstractTableStatus ):
         )
         await production_handler.run_query()
         data = production_handler.data
-        self.kmeans = await self.calc_kmeans( data )
+
+        self.analysis = {}
+        analysis = StatusAnalysis( interval=interval )
+        partial_data = map( lambda row: [ row[ 0 ], row[ 1 ] ], data )
+        analysis.calc_kmeans( partial_data )
+        self.analysis[ 'quantity' ] = analysis

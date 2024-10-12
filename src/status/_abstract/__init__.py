@@ -10,14 +10,16 @@ INTERVAL_DAYS: int = 30
 
 @dataclass
 class AbstractStatus( ABC ):
+
     async def update( self ):
         pass
 
 @dataclass
 class AbstractTableStatus( AbstractStatus ):
+
     last_date: str | None
     recent_entries: list[ list ] | None
-    kmeans: dict[ str, list[ dict ] ] | None
+    analysis: dict | None = None
 
     def get_time_range( self ) -> tuple:
         from_date: str = get_past_date( self.last_date, INTERVAL_DAYS - 1 )
@@ -37,8 +39,15 @@ class AbstractTableStatus( AbstractStatus ):
         from_interval ,to_interval = self.get_interval()
         return from_interval if from_interval > to_interval else None
 
-    async def calc_kmeans( self, data: list[ list[ str, int | float ] ] ) -> dict[ str, str | list ]:
+@dataclass
+class StatusAnalysis( ABC ):
+
+    interval: tuple[ str ] | None = None
+    kmeans: dict[ str, list[ dict ] ] | None = None
+
+    def calc_kmeans( self, data: list[ list[ str, int | float ] ] ) -> dict[ str, str | list ]:
     
+        data = list( data )
         lst = list( map( lambda x: x[ 1 ], data ) ) # ( year, quantity ) or ( year, precipitation_sum ) or ...
         arr = np.array( lst )
         # print( lst, arr )
@@ -66,6 +75,6 @@ class AbstractTableStatus( AbstractStatus ):
 
         # format result
 
-        interval = self.get_interval()
-        clusters = [ { "year": x[0][0], "qunatity": int( x[0][1] ), "cluster": x[1] } for x in list( zip( data, clusters ) ) ]
-        return { "interval": interval, "centers": centers, "clusters": clusters }
+        clusters = [ { "year": x[0][0], "quantity": int( x[0][1] ), "cluster": x[1] } for x in list( zip( data, clusters ) ) ]
+        
+        self.kmeans = { "centers": centers, "clusters": clusters }

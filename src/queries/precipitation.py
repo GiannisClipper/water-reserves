@@ -12,24 +12,16 @@ class PrecipitationOnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
-        maker = PrecipitationQueryMaker(
-            table_name='weather'
-        )
-        runner = OnceQueryRunner(
-            connection_string=conninfo
-        )
+        maker = PrecipitationQueryMaker()
+        runner = OnceQueryRunner( connection_string=conninfo )
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
 class PrecipitationPoolQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
-        maker = PrecipitationQueryMaker(
-            table_name='weather',
-        )
-        runner = PoolQueryRunner(
-            pool=pool
-        )
+        maker = PrecipitationQueryMaker()
+        runner = PoolQueryRunner( pool=pool )
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )
 
 class PrecipitationQueryMaker( WeatherQueryMaker ):
