@@ -1,5 +1,5 @@
 from src.queries._abstract.QueryFactory import QueryFactory
-from src.queries._abstract.QueryMaker import ExtendedQueryMaker
+from src.queries.weather import WeatherQueryMaker
 from src.queries._abstract.QueryRunner import OnceQueryRunner, PoolQueryRunner
 from src.queries._abstract.QueryHandler import SyncQueryHandler, AsyncQueryHandler
 
@@ -8,28 +8,11 @@ from src.helpers.text import set_indentation, get_query_headers
 
 from src.db import conninfo, pool
 
-CREATE_TABLE: str = """
-    CREATE TABLE weather (
-        id SERIAL PRIMARY KEY,
-        location_id SERIAL NOT NULL,
-        date DATE NOT NULL,
-        weather_code INTEGER,
-        temperature_2m_mean REAL,
-        temperature_2m_min REAL,
-        temperature_2m_max REAL,
-        precipitation_sum REAL,
-        rain_sum REAL,
-        snowfall_sum REAL,
-        FOREIGN KEY( location_id ) REFERENCES locations( id ),
-        UNIQUE( location_id, date )
-    );
-"""
-
-class WeatherOnceQueryFactory( QueryFactory ):
+class TemperatureOnceQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
-        maker = WeatherQueryMaker(
+        maker = TemperatureQueryMaker(
             table_name='weather'
         )
         runner = OnceQueryRunner(
@@ -37,11 +20,11 @@ class WeatherOnceQueryFactory( QueryFactory ):
         )
         self.handler = SyncQueryHandler( maker=maker, runner=runner )
 
-class WeatherPoolQueryFactory( QueryFactory ):
+class TemperaturePoolQueryFactory( QueryFactory ):
 
     def __init__( self ):
 
-        maker = WeatherQueryMaker(
+        maker = TemperatureQueryMaker(
             table_name='weather',
         )
         runner = PoolQueryRunner(
@@ -49,36 +32,7 @@ class WeatherPoolQueryFactory( QueryFactory ):
         )
         self.handler = AsyncQueryHandler( maker=maker, runner=runner )
 
-class WeatherQueryMaker( ExtendedQueryMaker ):
-
-    def create_table( self ) -> tuple[ str, tuple ]:
-
-        self.query = CREATE_TABLE.replace( '{table}', self.table_name )
-        self.params = None
-        return self.query
-
-    def insert_into( self, data: list[ list ] ) -> None:
-
-        query = '''INSERT INTO {table} ( 
-            date, location_id, weather_code, 
-            temperature_2m_min, temperature_2m_mean, temperature_2m_max, 
-            precipitation_sum, rain_sum, snowfall_sum
-        ) VALUES '''
-        query = query.replace( '{table}', self.table_name )
-
-        for date, weather_code, \
-            temperature_2m_min, temperature_2m_mean, temperature_2m_max, \
-            precipitation_sum, rain_sum, snowfall_sum, location_id in data:
-            entry = f"(\
-                '{date}',{location_id},{weather_code},\
-                {temperature_2m_min},{temperature_2m_mean},{temperature_2m_max},\
-                {precipitation_sum},{rain_sum},{snowfall_sum}\
-            ),"
-            query += entry
-
-        query = query[ 0:-1 ] + ';' # change last comma with semicolumn
-        self.query = query
-        return self.query
+class TemperatureQueryMaker( WeatherQueryMaker ):
 
     def select_where(
         self,
@@ -144,11 +98,7 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
             where_clause = ''
 
         self.query = f'''
-            SELECT id, date, location_id, 
-            precipitation_sum, 
-            temperature_2m_min, 
-            temperature_2m_mean, 
-            temperature_2m_max
+            SELECT id, date, location_id, temperature_2m_mean 
             FROM weather
             {where_clause}'''
 
@@ -156,11 +106,7 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
 
         self.query = f'''
             SELECT 
-            {alias}.date AS date, 
-            ROUND(SUM({alias}.precipitation_sum)::numeric,2) AS precipitation_sum,
-            ROUND(AVG({alias}.temperature_2m_min)::numeric,2) AS temperature_2m_min, 
-            ROUND(AVG({alias}.temperature_2m_mean)::numeric,2) AS temperature_2m_mean, 
-            ROUND(AVG({alias}.temperature_2m_max)::numeric,2) AS temperature_2m_max 
+            {alias}.date AS date, ROUND(AVG({alias}.temperature_2m_mean)::numeric,2) AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -170,24 +116,18 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
     def __expand_query_with_month_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
-        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,2)" 
-        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)"
-        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,2)" 
+        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)" 
 
         # ::numeric is used to handle => 
         # psycopg.errors.UndefinedFunction: function round(double precision, integer) does not exist
-        # LINE 6: ROUND(AVG(b.precipitation_sum),2) AS precipitation_sum
+        # LINE 6: ROUND(AVG(b.temperature_2m_mean),2) AS temperature_2m_mean
         # https://stackoverflow.com/questions/58731907/error-function-rounddouble-precision-integer-does-not-exist
 
         if self.location_aggregation:
             self.query = f'''
             SELECT 
             SUBSTR({alias}.date::text,1,7) AS month, 
-            {precipitation_sum} AS precipitation_sum, 
-            {temperature_2m_min} AS temperature_2m_min, 
-            {temperature_2m_mean} AS temperature_2m_mean,
-            {temperature_2m_max} AS temperature_2m_max 
+            {temperature_2m_mean} AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -199,10 +139,7 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
             SELECT 
             SUBSTR({alias}.date::text,1,7) AS month, 
             {alias}.location_id AS location_id, 
-            {precipitation_sum} AS precipitation_sum, 
-            {temperature_2m_min} AS temperature_2m_min, 
-            {temperature_2m_mean} AS temperature_2m_mean,
-            {temperature_2m_max} AS temperature_2m_max 
+            {temperature_2m_mean} AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -213,19 +150,13 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
     def __expand_query_with_year_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
-        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,2)" 
-        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)"
-        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,2)" 
+        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)" 
 
         if self.location_aggregation:
             self.query = f'''
             SELECT
             SUBSTR({alias}.date::text,1,4) AS year, 
-            {precipitation_sum} AS precipitation_sum, 
-            {temperature_2m_min} AS temperature_2m_min, 
-            {temperature_2m_mean} AS temperature_2m_mean,
-            {temperature_2m_max} AS temperature_2m_max
+            {temperature_2m_mean} AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -237,10 +168,7 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
             SELECT
             SUBSTR({alias}.date::text,1,4) AS year, 
             {alias}.location_id AS location_id, 
-            {precipitation_sum} AS precipitation_sum, 
-            {temperature_2m_min} AS temperature_2m_min, 
-            {temperature_2m_mean} AS temperature_2m_mean, 
-            {temperature_2m_max} AS temperature_2m_max 
+            {temperature_2m_mean} AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -260,10 +188,7 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
             self.query = f'''
             SELECT 
             {custom_year} AS custom_year,
-            {alias}.precipitation_sum AS precipitation_sum, 
-            {alias}.temperature_2m_min AS temperature_2m_min, 
-            {alias}.temperature_2m_mean AS temperature_2m_mean, 
-            {alias}.temperature_2m_max AS temperature_2m_max 
+            {alias}.temperature_2m_mean AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}'''
@@ -272,10 +197,7 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
             SELECT 
             {custom_year} AS custom_year,
             {alias}.location_id AS location_id, 
-            {alias}.precipitation_sum AS precipitation_sum, 
-            {alias}.temperature_2m_min AS temperature_2m_min, 
-            {alias}.temperature_2m_mean AS temperature_2m_mean, 
-            {alias}.temperature_2m_max AS temperature_2m_max 
+            {alias}.temperature_2m_mean AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}'''
@@ -283,19 +205,13 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
     def __expand_query_with_custom_year_aggregation( self, alias ):
 
         method = self.time_aggregation[ 1 ]
-        precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
-        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,2)" 
-        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)"
-        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,2)" 
+        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)" 
 
         if self.location_aggregation:
             self.query = f'''
             SELECT 
             {alias}.custom_year AS custom_year, 
-            {precipitation_sum} AS precipitation_sum, 
-            {temperature_2m_min} AS temperature_2m_min, 
-            {temperature_2m_mean} AS temperature_2m_mean,
-            {temperature_2m_max} AS temperature_2m_max 
+            {temperature_2m_mean} AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}
@@ -307,10 +223,7 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
             SELECT 
             {alias}.custom_year AS custom_year, 
             {alias}.location_id AS location_id, 
-            {precipitation_sum} AS precipitation_sum, 
-            {temperature_2m_min} AS temperature_2m_min, 
-            {temperature_2m_mean} AS temperature_2m_mean,
-            {temperature_2m_max} AS temperature_2m_max 
+            {temperature_2m_mean} AS temperature_2m_mean 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}

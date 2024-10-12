@@ -4,7 +4,8 @@ from ._abstract import AbstractStatus
 
 from .savings import SavingsStatus
 from .production import ProductionStatus
-from .weather import WeatherStatus
+from .precipitation import PrecipitationStatus
+from .temperature import TemperatureStatus
 from .interruptions import InterruptionsStatus
 from .geolocation import GeolocationStatus
 
@@ -13,7 +14,8 @@ class Status( AbstractStatus ):
 
     savings: SavingsStatus | None
     production: ProductionStatus | None
-    weather: WeatherStatus | None
+    precipitation: PrecipitationStatus | None
+    temperature: TemperatureStatus | None
     interruptions: InterruptionsStatus | None
     geolocation: GeolocationStatus | None
 
@@ -25,8 +27,11 @@ class Status( AbstractStatus ):
         self.production = ProductionStatus( None, None, None, None )
         await self.production.update()
 
-        self.weather = WeatherStatus( None, None, None, None )
-        await self.weather.update()
+        self.precipitation = PrecipitationStatus( None, None, None, None )
+        await self.precipitation.update()
+
+        self.temperature = TemperatureStatus( None, None, None, None )
+        await self.temperature.update()
 
         self.interruptions = InterruptionsStatus( None, None )
         await self.interruptions.update()

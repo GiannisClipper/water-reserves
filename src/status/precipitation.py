@@ -2,11 +2,11 @@ from dataclasses import dataclass
 
 from ._abstract import AbstractTableStatus
 
-from src.queries.weather import WeatherPoolQueryFactory
+from src.queries.precipitation import PrecipitationPoolQueryFactory
 from src.queries.locations import LocationsPoolQueryFactory
 
 @dataclass
-class WeatherStatus( AbstractTableStatus ):
+class PrecipitationStatus( AbstractTableStatus ):
 
     locations: list[ object ] | None
 
@@ -14,7 +14,7 @@ class WeatherStatus( AbstractTableStatus ):
 
         # Get the last date inserted in table
 
-        weather_handler = WeatherPoolQueryFactory().handler
+        weather_handler = PrecipitationPoolQueryFactory().handler
         weather_handler.maker.select_last_date()
         await weather_handler.run_query()
 
@@ -46,7 +46,7 @@ class WeatherStatus( AbstractTableStatus ):
         year_start = self.get_year_start()
         weather_handler.maker.select_where(
             interval_filter=interval,
-            location_aggregation='sum', 
+            location_aggregation='sum',
             time_aggregation=( 'year', 'sum' ),
             year_start=year_start
         )

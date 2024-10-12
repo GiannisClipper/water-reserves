@@ -39,7 +39,7 @@ class AbstractTableStatus( AbstractStatus ):
 
     async def calc_kmeans( self, data: list[ list[ str, int | float ] ] ) -> dict[ str, str | list ]:
     
-        lst = list( map( lambda x: x[ 1 ], data ) ) # ( year, quantity )
+        lst = list( map( lambda x: x[ 1 ], data ) ) # ( year, quantity ) or ( year, precipitation_sum ) or ...
         arr = np.array( lst )
         # print( lst, arr )
 

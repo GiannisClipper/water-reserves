@@ -13,8 +13,8 @@ async def weather_cron_job() -> None:
 
     while True:
     
-        locations = settings.status.weather.locations
-        last_date = settings.status.weather.last_date
+        locations = settings.status.precipitation.locations
+        last_date = settings.status.precipitation.last_date
         request_date: str = str( datetime.strptime( last_date, '%Y-%m-%d' ).date() + timedelta( days=1 ) )
         limit_date: str = str( datetime.now().date() + timedelta( days=-1 ) ) # days=-1 => until yesterday
 
@@ -49,4 +49,5 @@ async def weather_cron_job() -> None:
         await query_handler.run_query()
 
         print( "Updating status..." )
-        await settings.status.weather.update()
+        await settings.status.precipitation.update()
+        await settings.status.temperature.update()
