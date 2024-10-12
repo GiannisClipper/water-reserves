@@ -3,12 +3,12 @@ from dataclasses import dataclass
 from ._abstract import AbstractTableStatus, StatusAnalysis
 
 from src.queries.weather import WeatherPoolQueryFactory
-from src.queries.locations import LocationsPoolQueryFactory
+from src.queries.locations import LocationsPoolQueryFactory, Location
 
 @dataclass
 class WeatherStatus( AbstractTableStatus ):
 
-    locations: list[ object ] | None = None
+    locations: list[ Location ] | None = None
 
     async def update( self ) -> None:
 

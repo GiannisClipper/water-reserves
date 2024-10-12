@@ -18,7 +18,7 @@ class AbstractStatus( ABC ):
 class AbstractTableStatus( AbstractStatus ):
 
     last_date: str | None
-    recent_entries: list[ list ] | None
+    recent_entries: list[ dict ] | None
     analysis: dict | None = None
 
     def get_time_range( self ) -> tuple:

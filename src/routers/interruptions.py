@@ -7,14 +7,14 @@ from src.validators import validate_time_range, validate_interval_filter, valida
 from src.validators.interruptions import validate_municipality_filter, validate_municipality_aggregation
 
 from src.queries.interruptions import InterruptionsPoolQueryFactory
-from src.queries.municipalities import MunicipalitiesPoolQueryFactory
+from src.queries.municipalities import MunicipalitiesPoolQueryFactory, Municipality
 from src.helpers.text import get_query_headers
 
 import src.docs as docs
 
 @dataclass
 class Legend:
-    municipalities: list[ any ] = None
+    municipalities: list[ Municipality ] = None
 
 @dataclass
 class InterruptionsResponse:
@@ -32,7 +32,7 @@ async def get_all(
     municipality_aggregation: Annotated[ str | None, AfterValidator( validate_municipality_aggregation ) ] = None, 
     time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None,
     year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
-):
+) -> InterruptionsResponse:
 
     query_handler = InterruptionsPoolQueryFactory().handler
     query_handler.maker.select_where(

@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from datetime import datetime
+from pydantic import BaseModel
 
 from .settings import get_settings
 
@@ -100,8 +101,11 @@ app = FastAPI(
 
 # app.middleware( 'http' )( catch_exceptions_middleware )
 
+class HomeResponse( BaseModel ):
+    message: str
+
 @app.get( '/', tags=[ docs.tag_home ] )
-async def home():
+async def home() -> HomeResponse:
     # for debugging/control purposes
     print( scheduler.print_jobs() )
 

@@ -2,11 +2,12 @@ from fastapi import APIRouter, HTTPException
 from src.queries.locations import LocationsPoolQueryFactory
 
 import src.docs as docs
+from src.queries.locations import Location
 
 router = APIRouter( prefix="/api/v1/locations" )
 
 @router.get( "", tags=[ docs.tag_weather ] )
-async def get_all():
+async def get_all() -> list[ Location ]:
 
     query_handler = LocationsPoolQueryFactory().handler
     query_handler.maker.select_all()
@@ -15,7 +16,7 @@ async def get_all():
     return result
 
 @router.get( "/{id}", tags=[ docs.tag_weather ] )
-async def get_one_by_id( id: int ):
+async def get_one_by_id( id: int ) -> Location:
 
     query_handler = LocationsPoolQueryFactory().handler
     query_handler.maker.select_by_id( id )

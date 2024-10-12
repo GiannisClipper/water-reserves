@@ -2,11 +2,12 @@ from fastapi import APIRouter, Request, HTTPException
 from src.queries.municipalities import MunicipalitiesPoolQueryFactory
 
 import src.docs as docs
+from src.queries.municipalities import Municipality
 
 router = APIRouter( prefix="/api/v1/municipalities" )
 
 @router.get( "", tags=[ docs.tag_interruptions ] )
-async def get_all( request: Request ):
+async def get_all( request: Request ) -> list[ Municipality ]:
 
     query_handler = MunicipalitiesPoolQueryFactory().handler
     query_handler.maker.select_all()
@@ -15,7 +16,7 @@ async def get_all( request: Request ):
     return result
 
 @router.get( "/{id}", tags=[ docs.tag_interruptions ] )
-async def get_one_by_id( id: int ):
+async def get_one_by_id( id: int ) -> Municipality:
 
     query_handler = MunicipalitiesPoolQueryFactory().handler
     query_handler.maker.select_by_id( id )

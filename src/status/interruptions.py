@@ -3,13 +3,13 @@ from dataclasses import dataclass
 from ._abstract import AbstractStatus
 
 from src.queries.interruptions import InterruptionsPoolQueryFactory
-from src.queries.municipalities import MunicipalitiesPoolQueryFactory
+from src.queries.municipalities import MunicipalitiesPoolQueryFactory, Municipality
 
 @dataclass
 class InterruptionsStatus( AbstractStatus ):
 
     last_date: str | None
-    municipalities: list[ object ] | None
+    municipalities: list[ Municipality ] | None
 
     async def update( self ):
 

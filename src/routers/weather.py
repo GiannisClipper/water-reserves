@@ -7,14 +7,14 @@ from src.validators import validate_time_range, validate_interval_filter, valida
 from src.validators.weather import validate_location_aggregation, validate_location_filter
 
 from src.queries.weather import WeatherPoolQueryFactory
-from src.queries.locations import LocationsPoolQueryFactory
+from src.queries.locations import LocationsPoolQueryFactory, Location
 from src.helpers.text import get_query_headers
 
 import src.docs as docs
 
 @dataclass
 class Legend:
-    locations: list[ any ] = None
+    locations: list[ Location ] = None
 
 @dataclass
 class WeatherResponse:
@@ -32,7 +32,7 @@ async def get_all(
     location_aggregation: Annotated[ str | None, AfterValidator( validate_location_aggregation ) ] = None, 
     time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None,
     year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
-):
+) -> WeatherResponse:
 
     query_handler = WeatherPoolQueryFactory().handler
     query_handler.maker.select_where(

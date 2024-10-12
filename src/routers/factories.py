@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException
 from src.queries.factories import FactoriesPoolQueryFactory
 import src.docs as docs
+from src.queries.factories import Factory
 
 router = APIRouter( prefix="/api/v1/factories" )
 
 @router.get( "", tags=[ docs.tag_production ] )
-async def get_all():
+async def get_all() -> list[ Factory ]:
 
     query_handler = FactoriesPoolQueryFactory().handler
     query_handler.maker.select_all()
@@ -14,7 +15,7 @@ async def get_all():
     return result
 
 @router.get( "/{id}", tags=[ docs.tag_production ] )
-async def get_one_by_id( id: int ):
+async def get_one_by_id( id: int ) -> Factory:
 
     query_handler = FactoriesPoolQueryFactory().handler
     query_handler.maker.select_by_id( id )

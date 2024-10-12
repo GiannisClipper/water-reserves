@@ -3,12 +3,12 @@ from dataclasses import dataclass
 from ._abstract import AbstractTableStatus, StatusAnalysis
 
 from src.queries.production import ProductionPoolQueryFactory
-from src.queries.factories import FactoriesPoolQueryFactory
+from src.queries.factories import FactoriesPoolQueryFactory, Factory
 
 @dataclass
 class ProductionStatus( AbstractTableStatus ):
 
-    factories: list[ object ] | None = None
+    factories: list[ Factory ] | None = None
 
     async def update( self ) -> None:
 

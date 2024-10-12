@@ -3,12 +3,12 @@ from dataclasses import dataclass
 from ._abstract import AbstractTableStatus, StatusAnalysis
 
 from src.queries.savings import SavingsPoolQueryFactory
-from src.queries.reservoirs import ReservoirsPoolQueryFactory
+from src.queries.reservoirs import ReservoirsPoolQueryFactory, Reservoir
 
 @dataclass
 class SavingsStatus( AbstractTableStatus ):
 
-    reservoirs: list[ object ] | None = None
+    reservoirs: list[ Reservoir ] | None = None
 
     async def update( self ) -> None:
 

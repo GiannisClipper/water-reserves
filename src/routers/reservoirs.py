@@ -2,11 +2,12 @@ from fastapi import APIRouter, Request, HTTPException
 from src.queries.reservoirs import ReservoirsPoolQueryFactory
 
 import src.docs as docs
+from src.queries.reservoirs import Reservoir
 
 router = APIRouter( prefix="/api/v1/reservoirs" )
 
 @router.get( "", tags=[ docs.tag_savings ] )
-async def get_all( request: Request ):
+async def get_all( request: Request ) -> list[ Reservoir ]:
 
     query_handler = ReservoirsPoolQueryFactory().handler
     query_handler.maker.select_all()
@@ -15,7 +16,7 @@ async def get_all( request: Request ):
     return result
 
 @router.get( "/{id}", tags=[ docs.tag_savings ] )
-async def get_one_by_id( id: int ):
+async def get_one_by_id( id: int ) -> Reservoir:
 
     query_handler = ReservoirsPoolQueryFactory().handler
     query_handler.maker.select_by_id( id )

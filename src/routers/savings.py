@@ -1,23 +1,22 @@
 from fastapi import APIRouter
 from typing import Annotated
 from dataclasses import dataclass
+from pydantic import BaseModel
 from pydantic.functional_validators import AfterValidator
 
 from src.validators import validate_time_range, validate_interval_filter, validate_time_aggregation, validate_year_start
 from src.validators.savings import validate_reservoir_filter, validate_reservoir_aggregation
 
 from src.queries.savings import SavingsPoolQueryFactory
-from src.queries.reservoirs import ReservoirsPoolQueryFactory
+from src.queries.reservoirs import ReservoirsPoolQueryFactory, Reservoir
 from src.helpers.text import get_query_headers
 
 import src.docs as docs
 
-@dataclass
-class Legend:
-    reservoirs: list[ any ] = None
+class Legend( BaseModel ):
+    reservoirs: list[ Reservoir ] = None
 
-@dataclass
-class SavingsResponse:
+class SavingsResponse( BaseModel ):
     headers: list[ str ]
     data: list[ list ]
     legend: Legend | None = None
@@ -32,7 +31,7 @@ async def get_all(
     reservoir_aggregation: Annotated[ str | None, AfterValidator( validate_reservoir_aggregation ) ] = None, 
     time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None,
     year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
-):
+) -> SavingsResponse:
 
     query_handler = SavingsPoolQueryFactory().handler
     query_handler.maker.select_where(

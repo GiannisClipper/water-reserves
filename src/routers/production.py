@@ -7,14 +7,14 @@ from src.validators import validate_time_range, validate_interval_filter, valida
 from src.validators.production import validate_factory_aggregation, validate_factory_filter
 
 from src.queries.production import ProductionPoolQueryFactory
-from src.queries.factories import FactoriesPoolQueryFactory
+from src.queries.factories import FactoriesPoolQueryFactory, Factory
 from src.helpers.text import get_query_headers
 
 import src.docs as docs
 
 @dataclass
 class Legend:
-    factories: list[ any ] = None
+    factories: list[ Factory ] = None
 
 @dataclass
 class ProductionResponse:
@@ -32,7 +32,7 @@ async def get_all(
     factory_aggregation: Annotated[ str | None, AfterValidator( validate_factory_aggregation ) ] = None, 
     time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None,
     year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
-):
+) -> ProductionResponse:
 
     query_handler = ProductionPoolQueryFactory().handler
     query_handler.maker.select_where(
