@@ -10,6 +10,8 @@ from src.queries.interruptions import InterruptionsPoolQueryFactory
 from src.queries.municipalities import MunicipalitiesPoolQueryFactory
 from src.helpers.text import get_query_headers
 
+import src.docs as docs
+
 @dataclass
 class Legend:
     municipalities: list[ any ] = None
@@ -22,7 +24,7 @@ class InterruptionsResponse:
 
 router = APIRouter( prefix="/api/v1/interruptions" )
 
-@router.get( "" )
+@router.get( "", tags=[ docs.tag_interruptions ] )
 async def get_all( 
     time_range: Annotated[ str | None, AfterValidator( validate_time_range ) ] = None, 
     municipality_filter: Annotated[ str | None, AfterValidator( validate_municipality_filter ) ] = None, 

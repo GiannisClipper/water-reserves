@@ -10,6 +10,8 @@ from src.queries.savings import SavingsPoolQueryFactory
 from src.queries.reservoirs import ReservoirsPoolQueryFactory
 from src.helpers.text import get_query_headers
 
+import src.docs as docs
+
 @dataclass
 class Legend:
     reservoirs: list[ any ] = None
@@ -22,7 +24,7 @@ class SavingsResponse:
 
 router = APIRouter( prefix="/api/v1/savings" )
 
-@router.get( "" )
+@router.get( "", tags=[ docs.tag_savings ] )
 async def get_all( 
     time_range: Annotated[ str | None, AfterValidator( validate_time_range ) ] = None, 
     reservoir_filter: Annotated[ str | None, AfterValidator( validate_reservoir_filter ) ] = None, 

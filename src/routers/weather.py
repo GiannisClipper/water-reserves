@@ -10,6 +10,8 @@ from src.queries.weather import WeatherPoolQueryFactory
 from src.queries.locations import LocationsPoolQueryFactory
 from src.helpers.text import get_query_headers
 
+import src.docs as docs
+
 @dataclass
 class Legend:
     locations: list[ any ] = None
@@ -22,7 +24,7 @@ class WeatherResponse:
 
 router = APIRouter( prefix="/api/v1/weather" )
 
-@router.get( "" )
+@router.get( "", tags=[ docs.tag_weather ] )
 async def get_all( 
     time_range: Annotated[ str | None, AfterValidator( validate_time_range ) ] = None, 
     location_filter: Annotated[ str | None, AfterValidator( validate_location_filter ) ] = None, 

@@ -8,6 +8,8 @@ import src.db as db
 from src.db.tables import exists, tables
 from src.db_setup.make_tables import make_tables
 
+import src.docs as docs
+
 print( datetime.now(), "Starting water reserves back-end..." )
 print()
 print( "+-----------------------+" )
@@ -79,7 +81,13 @@ async def lifespan( app: FastAPI ):
     print( 'Closing DB pool...' )
     await db.pool.close()
 
-app = FastAPI( lifespan=lifespan )
+app = FastAPI( 
+    lifespan = lifespan,
+    title = docs.title,
+    version = docs.version,
+    description = docs.description,
+    openapi_tags = docs.tags_metadata
+)
 
 # Catch `Exception` globally in FastAPI
 # https://stackoverflow.com/a/62407111/12138247
@@ -92,7 +100,7 @@ app = FastAPI( lifespan=lifespan )
 
 # app.middleware( 'http' )( catch_exceptions_middleware )
 
-@app.get( '/', description="This is the home endpoint." )
+@app.get( '/', tags=[ docs.tag_home ] )
 async def home():
     # for debugging/control purposes
     print( scheduler.print_jobs() )

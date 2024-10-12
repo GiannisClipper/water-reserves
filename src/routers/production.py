@@ -10,6 +10,8 @@ from src.queries.production import ProductionPoolQueryFactory
 from src.queries.factories import FactoriesPoolQueryFactory
 from src.helpers.text import get_query_headers
 
+import src.docs as docs
+
 @dataclass
 class Legend:
     factories: list[ any ] = None
@@ -22,7 +24,7 @@ class ProductionResponse:
 
 router = APIRouter( prefix="/api/v1/production" )
 
-@router.get( "" )
+@router.get( "", tags=[ docs.tag_production ] )
 async def get_all( 
     time_range: Annotated[ str | None, AfterValidator( validate_time_range ) ] = None, 
     factory_filter: Annotated[ str | None, AfterValidator( validate_factory_filter ) ] = None, 
