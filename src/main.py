@@ -87,7 +87,10 @@ app = FastAPI(
     title = docs.title,
     version = docs.version,
     description = docs.description,
-    openapi_tags = docs.tags_metadata
+    openapi_tags = docs.tags_metadata,
+    openapi_url = "/api/v1/openapi.json", # by default is served at /openapi.json
+    docs_url = "/api/v1/docs", # by default is served at /docs
+    redoc_url = "/api/v1/redoc" # by default is served at /redoc
 )
 
 # Catch `Exception` globally in FastAPI

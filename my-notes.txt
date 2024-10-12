@@ -54,6 +54,9 @@ https://github.com/fullstackbook/fullstackbook-fastapi-psycopg3
 Asynchronous Postgres with Python, FastAPI, and Psycopg 3
 https://medium.com/@benshearlaw/asynchronous-postgres-with-python-fastapi-and-psycopg-3-fafa5faa2c08
 
+How to Document an API for Python FastAPI: Best Practices for Maintainable and Readable Code
+https://medium.com/codex/how-to-document-an-api-for-python-fastapi-best-practices-for-maintainable-and-readable-code-a183a3f7f036
+
 
 # Testing
 

@@ -21,5 +21,7 @@ router = APIRouter( prefix="/api/v1/status" )
 
 @router.get( "", tags=[ docs.tag_status ] )
 async def get_status( request: Request ) -> StatusResponse:
-
+    """
+    Παρουσίαση της τρέχουσας κατάστασης και αξιολόγησή της.
+    """
     return get_settings().status

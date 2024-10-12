@@ -11,6 +11,8 @@ from src.queries.locations import LocationsPoolQueryFactory, Location
 from src.helpers.text import get_query_headers
 
 import src.docs as docs
+from src.docs.query import timeRangeQuery, intervalFilterQuery, timeΑggregationQuery, yearStartQuery
+from src.docs.query import locationFilterQuery, locationΑggregationQuery
 
 @dataclass
 class Legend:
@@ -26,12 +28,12 @@ router = APIRouter( prefix="/api/v1/weather" )
 
 @router.get( "", tags=[ docs.tag_weather ] )
 async def get_all( 
-    time_range: Annotated[ str | None, AfterValidator( validate_time_range ) ] = None, 
-    location_filter: Annotated[ str | None, AfterValidator( validate_location_filter ) ] = None, 
-    interval_filter: Annotated[ str | None, AfterValidator( validate_interval_filter ) ] = None, 
-    location_aggregation: Annotated[ str | None, AfterValidator( validate_location_aggregation ) ] = None, 
-    time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None,
-    year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
+    time_range: Annotated[ str | None, timeRangeQuery, AfterValidator( validate_time_range ) ] = None, 
+    interval_filter: Annotated[ str | None, intervalFilterQuery, AfterValidator( validate_interval_filter ) ] = None, 
+    location_filter: Annotated[ str | None, locationFilterQuery, AfterValidator( validate_location_filter ) ] = None, 
+    location_aggregation: Annotated[ str | None, locationΑggregationQuery, AfterValidator( validate_location_aggregation ) ] = None, 
+    time_aggregation: Annotated[ str | None, timeΑggregationQuery, AfterValidator( validate_time_aggregation ) ] = None,
+    year_start: Annotated[ str | None, yearStartQuery, AfterValidator( validate_year_start ) ] = None
 ) -> WeatherResponse:
 
     query_handler = WeatherPoolQueryFactory().handler

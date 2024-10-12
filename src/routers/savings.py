@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from typing import Annotated
 from dataclasses import dataclass
 from pydantic import BaseModel
@@ -12,6 +12,8 @@ from src.queries.reservoirs import ReservoirsPoolQueryFactory, Reservoir
 from src.helpers.text import get_query_headers
 
 import src.docs as docs
+from src.docs.query import timeRangeQuery, intervalFilterQuery, timeΑggregationQuery, yearStartQuery
+from src.docs.query import reservoirFilterQuery, reservoirΑggregationQuery
 
 class Legend( BaseModel ):
     reservoirs: list[ Reservoir ] = None
@@ -25,12 +27,12 @@ router = APIRouter( prefix="/api/v1/savings" )
 
 @router.get( "", tags=[ docs.tag_savings ] )
 async def get_all( 
-    time_range: Annotated[ str | None, AfterValidator( validate_time_range ) ] = None, 
-    reservoir_filter: Annotated[ str | None, AfterValidator( validate_reservoir_filter ) ] = None, 
-    interval_filter: Annotated[ str | None, AfterValidator( validate_interval_filter ) ] = None, 
-    reservoir_aggregation: Annotated[ str | None, AfterValidator( validate_reservoir_aggregation ) ] = None, 
-    time_aggregation: Annotated[ str | None, AfterValidator( validate_time_aggregation ) ] = None,
-    year_start: Annotated[ str | None, AfterValidator( validate_year_start ) ] = None
+    time_range: Annotated[ str | None, timeRangeQuery, AfterValidator( validate_time_range ) ] = None, 
+    interval_filter: Annotated[ str | None, intervalFilterQuery, AfterValidator( validate_interval_filter ) ] = None, 
+    reservoir_filter: Annotated[ str | None, reservoirFilterQuery, AfterValidator( validate_reservoir_filter ) ] = None, 
+    reservoir_aggregation: Annotated[ str | None, reservoirΑggregationQuery, AfterValidator( validate_reservoir_aggregation ) ] = None, 
+    time_aggregation: Annotated[ str | None, timeΑggregationQuery, AfterValidator( validate_time_aggregation ) ] = None,
+    year_start: Annotated[ str | None, yearStartQuery, AfterValidator( validate_year_start ) ] = None
 ) -> SavingsResponse:
 
     query_handler = SavingsPoolQueryFactory().handler
