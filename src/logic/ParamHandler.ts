@@ -1,6 +1,7 @@
 import SavingsParamValues from './ParamValues/SavingsParamValues';
 import ProductionParamValues from './ParamValues/ProductionParamValues';
 import WeatherParamValues from './ParamValues/WeatherParamValues';
+import TemperatureParamValues from './ParamValues/TemperatureParamValues';
 import { ParamValues, SavingsProductionParamValues, SavingsPrecipitationParamValues } from './ParamValues';
 
 import type { ObjectType } from '@/types';
@@ -226,6 +227,11 @@ class ParamHandlerFactory {
             }
             case 'precipitation': {
                 const paramValues = new WeatherParamValues( searchParams, items || [] );
+                this._paramHandler = new WeatherParamHandler( paramValues );
+                break;
+            }
+            case 'temperature': {
+                const paramValues = new TemperatureParamValues( searchParams, items || [] );
                 this._paramHandler = new WeatherParamHandler( paramValues );
                 break;
             }

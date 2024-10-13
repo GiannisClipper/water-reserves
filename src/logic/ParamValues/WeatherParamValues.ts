@@ -18,13 +18,13 @@ class WeatherParamValues extends ParamValues {
         super( searchParams );
 
         this._locations = locations;
-        this.convertFactoryFilter( weatherSearchParams.location_filter );
+        this.convertLocationFilter( weatherSearchParams.location_filter );
         this._locationAggregation = Object.keys( weatherSearchParams ).length
             ? weatherSearchParams.location_aggregation || ''
             : 'sum';
     }
 
-    convertFactoryFilter( val: string | undefined ) {
+    convertLocationFilter( val: string | undefined ) {
 
         if ( val ) {
             this._locations.forEach( r => this._locationFilter[ r.id ] = false );

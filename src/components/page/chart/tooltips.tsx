@@ -1,17 +1,11 @@
+import { Unit } from "@/components/Unit";
+
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 
 import { NestedValueSpecifier, ValueSpecifier, ValueSpecifierCollection } from '@/logic/ValueSpecifier';
 
 import type { ObjectType } from '@/types';
-import type { UnitType } from '@/logic/MetadataHandler';
-
-const Unit = ( { unit }: { unit: UnitType } ) => {
-    if ( unit === 'm3' ) {
-        return ( <>m<sup>3</sup></> );
-    }
-    return unit;
-}
 
 type CardTooltipPropsType = {
     active?: boolean

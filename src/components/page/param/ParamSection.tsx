@@ -16,6 +16,7 @@ const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
         'savings': 'reservoirs',
         'production': 'factories',
         'precipitation': 'locations',
+        'temperature': 'locations',
     };
 
     let error = null, result = null;

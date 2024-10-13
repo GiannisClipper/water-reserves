@@ -16,6 +16,8 @@ import {
     SavingsValueSpecifier, SavingsDifferenceValueSpecifier, SavingsGrowthValueSpecifier, 
     ProductionValueSpecifier, ProductionDifferenceValueSpecifier, ProductionGrowthValueSpecifier,
     PrecipitationValueSpecifier, PrecipitationDifferenceValueSpecifier, PrecipitationGrowthValueSpecifier,
+    TemperatureMinValueSpecifier, TemperatureMeanValueSpecifier, TemperatureMaxValueSpecifier,
+    TemperatureMeanDifferenceValueSpecifier, TemperatureMeanGrowthValueSpecifier,
     ReservoirsValueSpecifier,
     ReservoirsSumValueSpecifier,
     ReservoirIdValueSpecifier,
@@ -331,7 +333,33 @@ class DataHandlerFactory {
                         new LocationsPercentageValueSpecifier( {} )
                     ] );
                 }
+                break;
+            }
 
+            case 'temperature': {
+                if ( searchParams.location_aggregation ) {
+                    this.type = 'single';
+                    this._specifierCollection = new ValueSpecifierCollection( [
+                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new TemperatureMeanValueSpecifier( { index: 3, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new TemperatureMeanDifferenceValueSpecifier( {} ),
+                        new TemperatureMeanGrowthValueSpecifier( {} ),
+                        new TemperatureMinValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new TemperatureMaxValueSpecifier( { index: 4, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                    ] );
+                } else {
+                    this.type = 'stack';
+                    this._specifierCollection = new ValueSpecifierCollection( [
+                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new LocationIdValueSpecifier( { index: 1 } ),
+                        new TemperatureMinValueSpecifier( { index: 3, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMeanValueSpecifier( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMaxValueSpecifier( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
+                        new LocationsValueSpecifier( { axeXY: 'Y' } ),
+                        new LocationsSumValueSpecifier( { axeXY: 'Y' } ),
+                        new LocationsPercentageValueSpecifier( {} )
+                    ] );
+                }
                 break;
             }
 

@@ -277,6 +277,12 @@ class ApiRequestFactory {
                 ] );
                 break;
             }
+            case 'temperature': {
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new WeatherApiRequest( searchParams || {} )
+                ] );
+                break;
+            }
             case 'savings-production': {
                 const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
                 const searchParams2 = { ...searchParams, factory_aggregation: 'sum' };

@@ -10,7 +10,7 @@ import {
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
 
-type UnitType = 'm3' | 'mm' | '%' | '';
+type UnitType = 'm3' | 'mm' | '%' | 'oC' | '';
 
 abstract class MetadataHandler {    
 
@@ -126,6 +126,29 @@ class PrecipitationMetadataHandler extends MetadataHandler {
     }
 }
 
+class TemperatureMetadataHandler extends MetadataHandler {
+
+    _title: string;
+    _unit: UnitType;
+    _colors: ObjectType[];
+    // _valueLabels: string[] = [ 'Υετός' ];
+
+    constructor( searchParams: ObjectType ) {
+
+        super( searchParams );
+        
+        this._title = 'Μέση θερμοκρασία ' + ( 
+            searchParams.location_aggregation 
+                ? '(συνολικά)'
+                : '(ανά τοποθεσία)'
+        );
+
+        this._unit = 'oC';
+        this._colors = [ YELLOW ];
+        this._yLabel += ' (oC)';
+    }
+}
+
 class SavingsProductionMetadataHandler extends MetadataHandler {
 
     _title: string;
@@ -183,8 +206,10 @@ class MetadataHandlerFactory {
             case 'precipitation': {
                 this._metadataHandler = new PrecipitationMetadataHandler( searchParams );
                 break;
-            }
-            case 'savings-production': {
+            } case 'temperature': {
+                    this._metadataHandler = new TemperatureMetadataHandler( searchParams );
+                    break;
+            } case 'savings-production': {
                 this._metadataHandler = new SavingsProductionMetadataHandler( searchParams );
                 break;
             }

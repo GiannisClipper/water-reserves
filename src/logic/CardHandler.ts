@@ -9,7 +9,7 @@ import {
 
 import type { ObjectType } from '@/types';
 
-type UnitType = 'm3' | 'mm' | '%';
+type UnitType = 'm3' | 'mm' | '%' | 'oC';
 
 abstract class CardHandler {    
 
@@ -20,8 +20,8 @@ abstract class CardHandler {
     abstract _unit: UnitType;
     abstract _recentEntries: ObjectType[];
 
-    _clusters: ObjectType[];
-    _cluster: number;
+    abstract _clusters: ObjectType[];
+    abstract _cluster: number;
 
     constructor( result: ObjectType, key: string ) {
 
@@ -34,9 +34,6 @@ abstract class CardHandler {
         this._interval = `${firstDay}-${lastDay}`;
 
         this._date = lastEntry.date.split( '-' ).reverse().join( '/' );
-
-        this._clusters = result[ key ].kmeans.clusters;
-        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
     }
 
     get interval(): string {
@@ -86,10 +83,16 @@ class SavingsCardHandler extends CardHandler {
     _unit: UnitType = 'm3';
     _recentEntries: ObjectType[];
 
+    _clusters: ObjectType[];
+    _cluster: number;
+
     constructor( result: any ) {
 
         const key: string = 'savings';
         super( result, key );
+
+        this._clusters = result[ key ].analysis.quantity.kmeans.clusters;
+        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
         this._value = recent_entries[ recent_entries.length - 1 ].quantity;
@@ -107,10 +110,16 @@ class ProductionCardHandler extends CardHandler {
     _unit: UnitType = 'm3';
     _recentEntries: ObjectType[];
 
+    _clusters: ObjectType[];
+    _cluster: number;
+
     constructor( result: any ) {
 
         const key: string = 'production';
         super( result, key );
+
+        this._clusters = result[ key ].analysis.quantity.kmeans.clusters;
+        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
         this._value = recent_entries[ recent_entries.length - 1 ].quantity;
@@ -128,10 +137,16 @@ class PrecipitationCardHandler extends CardHandler {
     _unit: UnitType = 'mm';
     _recentEntries: ObjectType[];
 
+    _clusters: ObjectType[];
+    _cluster: number;
+
     constructor( result: any ) {
 
         const key: string = 'weather';
         super( result, key );
+
+        this._clusters = result[ key ].analysis.precipitation.kmeans.clusters;
+        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
         this._value = recent_entries[ recent_entries.length - 1 ].precipitation_sum;
@@ -139,6 +154,33 @@ class PrecipitationCardHandler extends CardHandler {
         this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
             value: entry.precipitation_sum, 
+        } ) );
+    }
+}
+
+class TemperatureCardHandler extends CardHandler {
+
+    _value: number;
+    _unit: UnitType = 'oC';
+    _recentEntries: ObjectType[];
+
+    _clusters: ObjectType[];
+    _cluster: number;
+
+    constructor( result: any ) {
+
+        const key: string = 'weather';
+        super( result, key );
+
+        this._clusters = result[ key ].analysis.temperature_mean.kmeans.clusters;
+        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
+
+        const { recent_entries } = result[ key ];
+        this._value = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
+
+        this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
+            date: entry.date,
+            value: entry.temperature_2m_mean, 
         } ) );
     }
 }
@@ -161,6 +203,10 @@ class CardHandlerFactory {
             }
             case 'precipitation': {
                 this._cardHandler = new PrecipitationCardHandler( result );
+                break;
+            }
+            case 'temperature': {
+                this._cardHandler = new TemperatureCardHandler( result );
                 break;
             }
             default:

@@ -272,6 +272,48 @@ class PrecipitationValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
+class TemperatureMinValueSpecifier extends PrimaryValueSpecifier {
+
+    constructor( props: PrimaryValueSpecifierType ) {
+        super( { 
+            dataset: 'weather', 
+            key: 'temperature_min', 
+            label: 'Θερμοκρασία', 
+            unit: 'oC', 
+            ...props 
+        } );
+
+    }
+}
+
+class TemperatureMeanValueSpecifier extends PrimaryValueSpecifier {
+
+    constructor( props: PrimaryValueSpecifierType ) {
+        super( { 
+            dataset: 'weather', 
+            key: 'temperature_mean', 
+            label: 'Θερμοκρασία', 
+            unit: 'oC', 
+            ...props 
+        } );
+
+    }
+}
+
+class TemperatureMaxValueSpecifier extends PrimaryValueSpecifier {
+
+    constructor( props: PrimaryValueSpecifierType ) {
+        super( { 
+            dataset: 'weather', 
+            key: 'temperature_max', 
+            label: 'Θερμοκρασία', 
+            unit: 'oC', 
+            ...props 
+        } );
+
+    }
+}
+
 class SavingsDifferenceValueSpecifier extends DifferenceValueSpecifier {
 
     constructor( props: SecondaryValueSpecifierType ) {
@@ -306,6 +348,19 @@ class PrecipitationDifferenceValueSpecifier extends DifferenceValueSpecifier {
             key: 'precipitation_difference', 
             label: 'Διαφορά', 
             unit: 'mm', 
+            ...props 
+        } );
+    }
+}
+
+class TemperatureMeanDifferenceValueSpecifier extends DifferenceValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            sourceKey: 'temperature_mean',
+            key: 'temperature_mean_difference', 
+            label: 'Διαφορά', 
+            unit: 'oC', 
             ...props 
         } );
     }
@@ -350,6 +405,19 @@ class PrecipitationGrowthValueSpecifier extends GrowthValueSpecifier {
     }
 }
 
+class TemperatureMeanGrowthValueSpecifier extends GrowthValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            sourceKey: 'temperature_mean',
+            key: 'temperature_mean_percentage', 
+            label: 'Μεταβολή', 
+            unit: '%', 
+            ...props 
+        } );
+    }
+}
+
 class SavingsRatioValueSpecifier extends RatioValueSpecifier {
 
     constructor( props: SecondaryValueSpecifierType ) {
@@ -380,6 +448,18 @@ class PrecipitationRatioValueSpecifier extends RatioValueSpecifier {
         super( { 
             sourceKey: 'precipitation',
             key: 'precipitation_ratio', 
+            label: 'Αναλογία (0..1)', 
+            ...props 
+        } );
+    }
+}
+
+class TemperatureMeanRatioValueSpecifier extends RatioValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            sourceKey: 'temperature_mean',
+            key: 'temperature_mean_ratio', 
             label: 'Αναλογία (0..1)', 
             ...props 
         } );
@@ -617,10 +697,11 @@ export type { ValueSpecifierType, PrimaryValueSpecifierType, SecondaryValueSpeci
     export {
         ValueSpecifier, PrimaryValueSpecifier, SecondaryValueSpecifier, NestedValueSpecifier,
         TimeValueSpecifier,
-        SavingsValueSpecifier, ProductionValueSpecifier, PrecipitationValueSpecifier,
-        SavingsDifferenceValueSpecifier, ProductionDifferenceValueSpecifier, PrecipitationDifferenceValueSpecifier,
-        SavingsGrowthValueSpecifier, ProductionGrowthValueSpecifier, PrecipitationGrowthValueSpecifier,
-        SavingsRatioValueSpecifier, ProductionRatioValueSpecifier, PrecipitationRatioValueSpecifier,
+        SavingsValueSpecifier, ProductionValueSpecifier, PrecipitationValueSpecifier, 
+        TemperatureMinValueSpecifier, TemperatureMeanValueSpecifier, TemperatureMaxValueSpecifier,
+        SavingsDifferenceValueSpecifier, ProductionDifferenceValueSpecifier, PrecipitationDifferenceValueSpecifier, TemperatureMeanDifferenceValueSpecifier,
+        SavingsGrowthValueSpecifier, ProductionGrowthValueSpecifier, PrecipitationGrowthValueSpecifier, TemperatureMeanGrowthValueSpecifier,
+        SavingsRatioValueSpecifier, ProductionRatioValueSpecifier, PrecipitationRatioValueSpecifier, TemperatureMeanRatioValueSpecifier,
         ReservoirIdValueSpecifier, FactoryIdValueSpecifier, LocationIdValueSpecifier,
         ReservoirsValueSpecifier, FactoriesValueSpecifier, LocationsValueSpecifier,
         ReservoirsSumValueSpecifier, FactoriesSumValueSpecifier, LocationsSumValueSpecifier, 

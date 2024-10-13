@@ -1,7 +1,7 @@
 "use client"
 
 import { CardLineChart, CardPieChart } from "./Charts";
-import { Unit } from "@/components/page/chart/tooltips";
+import { Unit } from "@/components/Unit";
 
 import { CardHandlerFactory } from "@/logic/CardHandler";
 import { withCommas } from "@/helpers/numbers";
@@ -23,6 +23,7 @@ const Card = ( { option, result }: PropsType ) => {
         'savings': 'Αποθέματα νερού',
         'production': 'Παραγωγή πόσιμου νερού',
         'precipitation': 'Μετρήσεις υετού',
+        'temperature': 'Μέση θερμοκρασία (Αθήνα)',
     }
     const title = titles[ option ];
 
@@ -36,7 +37,7 @@ const Card = ( { option, result }: PropsType ) => {
             <div className="Info">
                 <div>Τελευταία ενημέρωση: { cardHandler.date } </div>
                 <div>
-                    Ποσότητα: { withCommas(cardHandler.value) } { cardHandler.unit }
+                    Μέτρηση: { withCommas(cardHandler.value) } <Unit unit={ cardHandler.unit }/>
                 </div>
             </div>
 

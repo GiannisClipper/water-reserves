@@ -5,7 +5,8 @@ const APP_SUBTITLE: string = "Σύστημα παρακολούθησης υδά
 const STATUS: string = "Τρέχουσα κατάσταση";
 const SAVINGS: string = "Αποθέματα νερού";
 const PRODUCTION: string = "Παραγωγή πόσιμου νερού";
-const PRECIPITATION: string = "Μετρήσεις υετού";
+const PRECIPITATION: string = "Ενδεικτικές μετρήσεις υετού";
+const TEMPERATURE: string = "Θερμοκρασίες Αθήνας";
 const SAVINGS_PRODUCTION: string = "Αποθέματα και παραγωγή νερού";
 const SAVINGS_PRECIPITATION: string = "Αποθέματα και μετρήσεις υετού";
 
@@ -18,6 +19,7 @@ export {
     SAVINGS,
     PRODUCTION,
     PRECIPITATION,
+    TEMPERATURE,
     SAVINGS_PRODUCTION,
     SAVINGS_PRECIPITATION,
 };

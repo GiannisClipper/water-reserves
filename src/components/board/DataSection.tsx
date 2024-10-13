@@ -47,6 +47,10 @@ const DataSection = async ( { endpoint }: PropsType ) => {
                 option='precipitation'
                 result={ result }
             />
+            <Card
+                option='temperature'
+                result={ result }
+            />
         </div>
     );
 }
