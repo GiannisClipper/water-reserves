@@ -52,11 +52,11 @@ async def get_all(
     # )
 
     if factory_aggregation != None:
-        return ProductionResponse( headers, data )
+        return ProductionResponse( headers=headers, data=data )
     
     query_handler = FactoriesPoolQueryFactory().handler
     query_handler.maker.select_all()
     await query_handler.run_query()
     factories = query_handler.data
     legend = Legend( factories )
-    return ProductionResponse( headers, data, legend )
+    return ProductionResponse( headers=headers, data=data, legend=legend )

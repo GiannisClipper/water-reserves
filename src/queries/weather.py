@@ -153,9 +153,9 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
             SELECT 
             {alias}.date AS date, 
             ROUND(SUM({alias}.precipitation_sum)::numeric,2) AS precipitation_sum,
-            ROUND(AVG({alias}.temperature_2m_min)::numeric,2) AS temperature_2m_min, 
-            ROUND(AVG({alias}.temperature_2m_mean)::numeric,2) AS temperature_2m_mean, 
-            ROUND(AVG({alias}.temperature_2m_max)::numeric,2) AS temperature_2m_max 
+            ROUND(AVG({alias}.temperature_2m_min)::numeric,1) AS temperature_2m_min, 
+            ROUND(AVG({alias}.temperature_2m_mean)::numeric,1) AS temperature_2m_mean, 
+            ROUND(AVG({alias}.temperature_2m_max)::numeric,1) AS temperature_2m_max 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -166,9 +166,9 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
 
         method = self.time_aggregation[ 1 ]
         precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
-        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,2)" 
-        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)"
-        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,2)" 
+        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,1)" 
+        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,1)"
+        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,1)" 
 
         # ::numeric is used to handle => 
         # psycopg.errors.UndefinedFunction: function round(double precision, integer) does not exist
@@ -209,9 +209,9 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
 
         method = self.time_aggregation[ 1 ]
         precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
-        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,2)" 
-        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)"
-        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,2)" 
+        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,1)" 
+        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,1)"
+        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,1)" 
 
         if self.location_aggregation:
             self.query = f'''
@@ -279,9 +279,9 @@ class WeatherQueryMaker( ExtendedQueryMaker ):
 
         method = self.time_aggregation[ 1 ]
         precipitation_sum = f"ROUND(AVG({alias}.precipitation_sum)::numeric,2)" if method == 'avg' else f"ROUND(SUM({alias}.precipitation_sum)::numeric,2)"
-        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,2)" 
-        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,2)"
-        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,2)" 
+        temperature_2m_min = f"ROUND(AVG({alias}.temperature_2m_min)::numeric,1)" 
+        temperature_2m_mean = f"ROUND(AVG({alias}.temperature_2m_mean)::numeric,1)"
+        temperature_2m_max = f"ROUND(AVG({alias}.temperature_2m_max)::numeric,1)" 
 
         if self.location_aggregation:
             self.query = f'''

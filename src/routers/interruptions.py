@@ -47,11 +47,11 @@ async def get_all(
     data = query_handler.data
 
     if municipality_aggregation != None:
-        return InterruptionsResponse( headers, data )
+        return InterruptionsResponse( headers=headers, data=data )
 
     query_handler = MunicipalitiesPoolQueryFactory().handler
     query_handler.maker.select_all()
     await query_handler.run_query()
     municipalities = query_handler.data
     legend = Legend( municipalities )
-    return InterruptionsResponse( headers, data, legend )
+    return InterruptionsResponse( headers=headers, data=data, legend=legend )

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter
 from typing import Annotated
 from dataclasses import dataclass
 from pydantic import BaseModel
@@ -15,10 +15,12 @@ import src.docs as docs
 from src.docs.query import timeRangeQuery, intervalFilterQuery, timeΑggregationQuery, yearStartQuery
 from src.docs.query import reservoirFilterQuery, reservoirΑggregationQuery
 
-class Legend( BaseModel ):
+@dataclass
+class Legend:
     reservoirs: list[ Reservoir ] = None
 
-class SavingsResponse( BaseModel ):
+@dataclass
+class SavingsResponse:
     headers: list[ str ]
     data: list[ list ]
     legend: Legend | None = None
@@ -46,11 +48,11 @@ async def get_all(
     data = query_handler.data
 
     if reservoir_aggregation != None:
-        return SavingsResponse( headers, data )
+        return SavingsResponse( headers=headers, data=data )
     
     query_handler = ReservoirsPoolQueryFactory().handler
     query_handler.maker.select_all()
     await query_handler.run_query()
     reservoirs = query_handler.data
     legend = Legend( reservoirs )
-    return SavingsResponse( headers, data, legend )
+    return SavingsResponse( headers=headers, data=data, legend=legend )
