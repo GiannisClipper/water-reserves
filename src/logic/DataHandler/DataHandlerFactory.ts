@@ -45,7 +45,7 @@ import {
 
 import DataHandler from ".";
 import SingleDataHandler from "./SingleDataHandler";
-import TimelessDataHandler from "./TimelessHandler";
+import TimelessDataHandler from "./TimelessDataHandler";
 import MultiDataHandler from "./MultiDataHandler";
 import StackDataHandler from "./StackDataHandler";
 

@@ -141,7 +141,7 @@ class TemperatureMetadataHandler extends MetadataHandler {
             : 'Μέσες θερμοκρασίες Αθήνας'
 
         this._unit = 'oC';
-        this._colors = [ CYAN, LIME, ORANGE ];
+        this._colors = [ CYAN, YELLOW, ORANGE ];
         this._yLabel = 'Βαθμοί κελσίου';
     }
 }
@@ -156,7 +156,7 @@ class InterruptionsMetadataHandler extends MetadataHandler {
 
         super( searchParams );
         
-        this._title = 'Διακοπές/ βλάβες υδροδότησης'
+        this._title = 'Διακοπές υδροδότησης'
 
         this._unit = '';
         this._colors = [ RED ];

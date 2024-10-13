@@ -3,7 +3,7 @@
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
-import { DataHandlerFactory } from "@/logic/DataHandler";
+import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
 import { MetadataHandlerFactory } from "@/logic/MetadataHandler";
 
 import type { ObjectType } from "@/types";

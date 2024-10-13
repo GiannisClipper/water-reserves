@@ -1,7 +1,7 @@
 import type { ObjectType } from '@/types';
 
 import ObjectList from '@/helpers/objects/ObjectList';
-import { NestedValueSpecifier } from './ValueSpecifier';
+import { NestedValueSpecifier } from '@/logic/ValueSpecifier';
 
 // makeItemsRepr() is used in stacked area and bar charts (in tooltips)
 

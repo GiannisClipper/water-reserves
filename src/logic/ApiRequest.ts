@@ -78,6 +78,7 @@ abstract class ApiRequestWithParams extends ApiRequest {
 
     constructor( searchParams: SearchParamsType ) {
         super();
+        console.log( 'searchParams', searchParams)
         this.searchParams = searchParams;
     }
 

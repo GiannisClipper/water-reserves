@@ -116,9 +116,11 @@ const reprTimeAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
         '': 'Ανά ημέρα',
+        'date': 'Ανά ημέρα',
         'month': 'Ανά μήνα', 
         'year': 'Ανά έτος', 
-        'custom_year': 'Ανά υδρολογικό έτος'
+        'custom_year': 'Ανά υδρολογικό έτος',
+        'alltime': 'Συνολικά', 
     };
 
     if ( key in values ) {

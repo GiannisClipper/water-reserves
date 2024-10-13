@@ -3,7 +3,7 @@ import SingleListContent from "@/components/page/list/SingleListContent";
 import StackListContent from "@/components/page/list/StackListContent";
 import MultiListContent from "@/components/page/list/MultiListContent";
 
-import { DataHandlerFactory } from "@/logic/DataHandler";
+import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";

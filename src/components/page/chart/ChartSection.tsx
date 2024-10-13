@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 
 import ChartLabel from "./ChartLabel";
+import TimelessChartContent from "@/components/page/chart/TimelessChartContent";
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 
-import { DataHandlerFactory } from "@/logic/DataHandler";
+import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
 import { MetadataHandlerFactory } from "@/logic/MetadataHandler";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
@@ -31,6 +32,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         .toJSON();
 
     const chartContents: ObjectType = {
+        'timeless': TimelessChartContent,
         'single': SingleChartContent,
         'stack': StackChartContent,
         'multi': MultiChartContent,

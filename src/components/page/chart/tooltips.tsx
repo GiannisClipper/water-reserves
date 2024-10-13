@@ -68,6 +68,38 @@ const SingleTooltip = ( { active, payload, specifierCollection }: TooltipPropsTy
     return null;
 };
 
+type TimelessTooltipPropsType = {
+    active?: boolean
+    payload?: any
+    specifierCollection: ValueSpecifierCollection
+    items: ObjectType
+} 
+
+const TimelessTooltip = ( { active, payload, specifierCollection, items }: TimelessTooltipPropsType ) => {
+
+    if ( active && payload && payload.length ) {
+
+        payload = payload[ 0 ].payload;
+
+        const itemSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
+        const valueSpecifier: ValueSpecifier = specifierCollection.getByAxeY()[ 0 ];
+
+        const item: string = payload[ itemSpecifier.key ];
+        const value: number = payload[ valueSpecifier.key ];
+
+        return (
+            <div className="Tooltip">
+                <p>{ `${itemSpecifier[ 'label' ]}: ${items[ item ]}` }</p>
+                <p>{ `${valueSpecifier[ 'label' ]}: ${withCommas( value )} ` } 
+                    <Unit unit={ valueSpecifier.unit }/>
+                </p>
+            </div>
+      );
+    }
+  
+    return null;
+};
+
 const MultiTooltip = ( { active, payload, specifierCollection }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
@@ -152,4 +184,4 @@ const StackTooltip = ( { active, payload, specifierCollection, items, makeItemsR
     return null;
 };
 
-export { CardTooltip, SingleTooltip, MultiTooltip, StackTooltip };
+export { CardTooltip, SingleTooltip, TimelessTooltip, MultiTooltip, StackTooltip };

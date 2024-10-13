@@ -39,12 +39,14 @@ class ParamHandler {
             setTimeAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
                 const timeAggregation = e.target.value;
                 const valueAggregation = timeAggregation ? params.valueAggregation || 'avg' : '';
+                // console.log( timeAggregation, valueAggregation );
                 setParams( { ...params, timeAggregation, valueAggregation } )
             },
     
             setValueAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
                 const valueAggregation = e.target.value;
                 const timeAggregation = valueAggregation ? params.timeAggregation || 'month' : '';
+                // console.log( timeAggregation, valueAggregation );
                 setParams( { ...params, timeAggregation, valueAggregation } )
             },
         }
@@ -184,14 +186,26 @@ class WeatherParamHandler extends ParamHandlerWithItems {
 
 class InterruptionsParamHandler extends ParamHandler {
 
+    static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
+
+        return {
+            ...super.getStateSetters( { params, setParams } ),
+
+            setTimeAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+                const timeAggregation = e.target.value;
+                const valueAggregation = timeAggregation ? params.valueAggregation || 'sum' : '';
+                setParams( { ...params, timeAggregation, valueAggregation } );
+            },
+        }
+    }
+
     public Class = InterruptionsParamHandler;
 
-    getTimeAggregationOptions(): string[] {
-        return [ 'month', 'year', 'custom_year' ];
-    };
+    // get itemsLabel(): string { return 'Δήμοι Αττικής'; }
+    // get itemsAggregationKey(): string { return 'municipalityAggregation'; }
 
-    getValueAggregationOptions(): string[] {
-        return [ 'sum' ];
+    getTimeAggregationOptions(): string[] {
+        return [ 'date', 'month', 'year', 'custom_year', 'alltime' ];
     };
 }
 

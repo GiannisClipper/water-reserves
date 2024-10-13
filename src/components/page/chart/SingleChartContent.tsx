@@ -136,7 +136,7 @@ const AreaChartComposition = ( { chartHandler, metadataHandler }: ChartCompositi
                     dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.data } /> } 
+                    tick={ <XAxisTick data={ chartHandler.data } /> }
                     label={ <XAxisLabel label={ metadataHandler.xLabel } /> }
                 />
 
@@ -187,7 +187,7 @@ const BarChartComposition = ( { chartHandler, metadataHandler }: ChartCompositio
                     dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.data } /> } 
+                    tick={ <XAxisTick data={ chartHandler.data } /> }
                     label={ <XAxisLabel label={ metadataHandler.xLabel } /> }
                 />
 

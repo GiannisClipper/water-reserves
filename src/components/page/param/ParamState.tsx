@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import ParamLabel from "@/components/page/param/ParamLabel";
+import InterruptionsParamContent from "@/components/page/param/InterruptionsParamContent"
 import ParamContent1 from "@/components/page/param/ParamContent1";
 import ParamContent2 from "@/components/page/param/ParamContent2";
 import ParamContent3 from "@/components/page/param/ParamContent3";

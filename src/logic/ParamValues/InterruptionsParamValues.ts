@@ -10,11 +10,15 @@ import { ObjectType } from "@/types";
 
 class InterruptionsParamValues extends ParamValues {
 
-    _municipalityAggregation: string = 'sum';
-
     constructor( interruptionsSearchParams: SavingsSearchParamsType, municipalities: { [ key: string ]: any }[] ) {
         const searchParams: SearchParamsType = interruptionsSearchParams;
         super( searchParams );
+    }
+
+    get municipalityAggregation() {
+        return this._timeAggregation !== 'alltime' 
+            ? 'sum' 
+            : '';
     }
 
     fromJSON( values: ObjectType ): InterruptionsParamValues {
@@ -25,7 +29,7 @@ class InterruptionsParamValues extends ParamValues {
     toJSON(): ObjectType {
         return {
             ...super.toJSON(),
-            municipalityAggregation: this._municipalityAggregation,
+            municipalityAggregation: this.municipalityAggregation,
         }
     }
 
@@ -35,7 +39,7 @@ class InterruptionsParamValues extends ParamValues {
 
         const result: InterruptionsSearchParamsType = { 
             ...searchParams,
-            municipality_aggregation: this._municipalityAggregation
+            municipality_aggregation: this.municipalityAggregation
          };
     
         return result;    

@@ -171,6 +171,7 @@ abstract class NestedSumValueSpecifier extends SecondaryValueSpecifier {
         //     }
         // }
 
+        // an example of this.sourceKey -> 'reservoirs.{reservoir_id}.savings',
         const [ sourceKey, nestedKey, nestedInnerKey ] = this.sourceKey.split( '.' );
 
         for ( let i = arr.length - 1; i >= 0; i-- ) {
@@ -204,6 +205,7 @@ abstract class NestedPercentageValueSpecifier extends SecondaryValueSpecifier {
         //     }
         // }
 
+        // an example of this.sourceKey -> 'reservoirs.{reservoir_id}.savings',
         const [ sourceKey, nestedKey, nestedInnerKey ] = this.sourceKey.split( '.' );
 
         for ( let i = arr.length - 1; i >= 0; i-- ) {

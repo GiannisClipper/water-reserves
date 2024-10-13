@@ -22,7 +22,7 @@ class ObjectList {
 
     sortBy( key: string, order: 'asc' | 'desc' = 'asc' ) {
         const ones: [ number, number ] = order !== 'desc' ? [ 1, -1 ] : [ -1, 1 ]; 
-        this.list.sort( (a, b ) => ( a[ key ] > b[ key ] ) ? ones[ 0 ] : ones[ 1 ] );
+        this.list.sort( ( a, b ) => ( a[ key ] > b[ key ] ) ? ones[ 0 ] : ones[ 1 ] );
         return this.list;
     }
 }
