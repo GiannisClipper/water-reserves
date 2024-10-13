@@ -278,7 +278,7 @@ class TemperatureMinValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'weather', 
             key: 'temperature_min', 
-            label: 'Θερμοκρασία', 
+            label: 'Ελάχιστη', 
             unit: 'oC', 
             ...props 
         } );
@@ -292,7 +292,7 @@ class TemperatureMeanValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'weather', 
             key: 'temperature_mean', 
-            label: 'Θερμοκρασία', 
+            label: 'Μέση', 
             unit: 'oC', 
             ...props 
         } );
@@ -306,7 +306,7 @@ class TemperatureMaxValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'weather', 
             key: 'temperature_max', 
-            label: 'Θερμοκρασία', 
+            label: 'Μέγιστη', 
             unit: 'oC', 
             ...props 
         } );

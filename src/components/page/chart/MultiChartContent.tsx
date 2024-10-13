@@ -32,7 +32,7 @@ const ChartContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) 
         dataHandler.specifierCollection 
     ).chartHandler;
 
-    console.log( "rendering: ChartContent..." );
+    console.log( "rendering: ChartContent..." )// , metadataHandler );
 
     return (
         <div className="ChartContent">

@@ -7,8 +7,7 @@ import { Form, FormSection, FormButtonMore, FormButtonLess } from "@/components/
 import { 
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
-    FieldItemsAggregation, FieldValueAggregation, FieldTimeAggregation,
-    CheckField
+    FieldValueAggregation, FieldTimeAggregation,
 } from "@/components/Field";
 
 import { ParamHandler, ParamHandlerFactory } from "@/logic/ParamHandler";

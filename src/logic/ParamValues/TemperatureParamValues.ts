@@ -13,10 +13,9 @@ class TemperatureParamValues extends WeatherParamValues {
 
     constructor( weatherSearchParams: WeatherSearchParamsType, locations: { [ key: string ]: any }[] ) {
         const searchParams: SearchParamsType = weatherSearchParams;
+        searchParams.location_filter = '1';
+        searchParams.location_aggregation = '';
         super( searchParams, locations );
-        this._locationAggregation = Object.keys( weatherSearchParams ).length
-            ? weatherSearchParams.location_aggregation || ''
-            : 'avg';
     }
 }
 

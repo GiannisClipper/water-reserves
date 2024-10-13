@@ -131,21 +131,18 @@ class TemperatureMetadataHandler extends MetadataHandler {
     _title: string;
     _unit: UnitType;
     _colors: ObjectType[];
-    // _valueLabels: string[] = [ 'Υετός' ];
 
     constructor( searchParams: ObjectType ) {
 
         super( searchParams );
         
-        this._title = 'Μέση θερμοκρασία ' + ( 
-            searchParams.location_aggregation 
-                ? '(συνολικά)'
-                : '(ανά τοποθεσία)'
-        );
+        this._title = ! searchParams.time_aggregation
+            ? 'Ημερήσιες θερμοκρασίες Αθήνας'
+            : 'Μέσες θερμοκρασίες Αθήνας'
 
         this._unit = 'oC';
-        this._colors = [ YELLOW ];
-        this._yLabel += ' (oC)';
+        this._colors = [ CYAN, LIME, ORANGE ];
+        this._yLabel = 'Βαθμοί κελσίου';
     }
 }
 
@@ -206,7 +203,8 @@ class MetadataHandlerFactory {
             case 'precipitation': {
                 this._metadataHandler = new PrecipitationMetadataHandler( searchParams );
                 break;
-            } case 'temperature': {
+            } 
+            case 'temperature': {
                     this._metadataHandler = new TemperatureMetadataHandler( searchParams );
                     break;
             } case 'savings-production': {
