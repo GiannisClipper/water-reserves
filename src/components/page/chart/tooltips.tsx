@@ -85,7 +85,12 @@ const MultiTooltip = ( { active, payload, specifierCollection }: TooltipPropsTyp
                 <p>{ `${timeLabel( time )}: ${time}` }</p>
                 <>
                 { ySpecifiers.map( ( s, i ) => {
-                    return ( <p key={i}>{ `${s.label}: ${Math.round( values[ i ] )} ${s.unit}` }</p> );
+                    return ( 
+                        <p key={i}>
+                            <span>{s.label}: {Math.round( values[ i ] )} </span>
+                            <Unit unit={ s.unit } />
+                        </p> 
+                    );
                 } ) }
                 </>
             </div>

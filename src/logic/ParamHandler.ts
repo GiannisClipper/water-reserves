@@ -6,6 +6,7 @@ import { ParamValues, SavingsProductionParamValues, SavingsPrecipitationParamVal
 
 import type { ObjectType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
+import InterruptionsParamValues from './ParamValues/InterruptionsParamValues';
 
 type StateSettersPropsType = {
     params: { [ key: string ]: any }
@@ -181,6 +182,19 @@ class WeatherParamHandler extends ParamHandlerWithItems {
     };
 }
 
+class InterruptionsParamHandler extends ParamHandler {
+
+    public Class = InterruptionsParamHandler;
+
+    getTimeAggregationOptions(): string[] {
+        return [ 'month', 'year', 'custom_year' ];
+    };
+
+    getValueAggregationOptions(): string[] {
+        return [ 'sum' ];
+    };
+}
+
 class SavingsProductionParamHandler extends ParamHandler {
 
     public Class = SavingsProductionParamHandler;
@@ -233,6 +247,11 @@ class ParamHandlerFactory {
             case 'temperature': {
                 const paramValues = new TemperatureParamValues( searchParams, items || [] );
                 this._paramHandler = new WeatherParamHandler( paramValues );
+                break;
+            }
+            case 'interruptions': {
+                const paramValues = new InterruptionsParamValues( searchParams, items || [] );
+                this._paramHandler = new InterruptionsParamHandler( paramValues );
                 break;
             }
             case 'savings-production': {

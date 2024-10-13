@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { Left, Right } from "@/components/Generics";
-import { GaugeIcon, WaterIcon, FaucetIcon, RainIcon, TemperatureIcon, ComposeIcon } from "@/components/Icons";
+import { GaugeIcon, WaterIcon, FaucetIcon, RainIcon, TemperatureIcon, ToolIcon, ComposeIcon } from "@/components/Icons";
 
 import { 
     STATUS,
     SAVINGS,
     PRODUCTION,
     PRECIPITATION,
-    TEMPERATURE,    
+    TEMPERATURE, 
+    INTERRUPTIONS,
     SAVINGS_PRODUCTION, 
     SAVINGS_PRECIPITATION,
 } from "./settings";
@@ -64,6 +65,15 @@ export default function Options() {
                 </Left>
                 <Right className='text'>
                     { TEMPERATURE }
+                </Right>
+            </Link>
+
+            <Link className="Option" href="/interruptions">
+                <Left className='icon'>
+                    <ToolIcon />
+                </Left>
+                <Right className='text'>
+                    { INTERRUPTIONS }
                 </Right>
             </Link>
 

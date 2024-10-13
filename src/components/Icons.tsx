@@ -12,6 +12,7 @@ import { faWater } from '@fortawesome/free-solid-svg-icons';
 import { faFaucetDrip } from '@fortawesome/free-solid-svg-icons';
 import { faCloudRain } from '@fortawesome/free-solid-svg-icons';
 import { faTemperatureHigh } from '@fortawesome/free-solid-svg-icons';
+import { faWrench } from '@fortawesome/free-solid-svg-icons';
 import{ faDownLeftAndUpRightToCenter } from '@fortawesome/free-solid-svg-icons';
 
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
@@ -42,6 +43,7 @@ const WaterIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } i
 const FaucetIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faFaucetDrip} />
 const RainIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faCloudRain} />
 const TemperatureIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faTemperatureHigh} />
+const ToolIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faWrench} />
 const ComposeIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faDownLeftAndUpRightToCenter} />
 
 const ChartLineIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faChartLine} />
@@ -68,7 +70,7 @@ const PlusIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } ic
 const MinusIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faMinus} />
 
 export { 
-    GaugeIcon, WaterIcon, FaucetIcon, RainIcon, TemperatureIcon, ComposeIcon,
+    GaugeIcon, WaterIcon, FaucetIcon, RainIcon, TemperatureIcon, ToolIcon, ComposeIcon,
     ChartLineIcon, ChartAreaIcon, ChartBarIcon,
     ExpandIcon, CompressIcon, ScreenIcon,
     WriteIcon, SearchIcon, DownloadIcon, LinkIcon, 

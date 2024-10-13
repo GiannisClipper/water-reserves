@@ -28,6 +28,11 @@ interface WeatherSearchParamsType extends SearchParamsType {
     location_aggregation?: string
 }
 
+interface InterruptionsSearchParamsType extends SearchParamsType {
+    municipality_filter?: string
+    municipality_aggregation?: string
+}
+
 export type { 
     ViewType, 
     ChartType, 
@@ -35,4 +40,5 @@ export type {
     SavingsSearchParamsType,
     ProductionSearchParamsType,
     WeatherSearchParamsType,
+    InterruptionsSearchParamsType,
 };

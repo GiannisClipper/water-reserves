@@ -146,6 +146,24 @@ class TemperatureMetadataHandler extends MetadataHandler {
     }
 }
 
+class InterruptionsMetadataHandler extends MetadataHandler {
+
+    _title: string;
+    _unit: UnitType;
+    _colors: ObjectType[];
+
+    constructor( searchParams: ObjectType ) {
+
+        super( searchParams );
+        
+        this._title = 'Διακοπές/ βλάβες υδροδότησης'
+
+        this._unit = '';
+        this._colors = [ RED ];
+        this._yLabel = 'Αριθμός συμβάντων';
+    }
+}
+
 class SavingsProductionMetadataHandler extends MetadataHandler {
 
     _title: string;
@@ -207,7 +225,12 @@ class MetadataHandlerFactory {
             case 'temperature': {
                     this._metadataHandler = new TemperatureMetadataHandler( searchParams );
                     break;
-            } case 'savings-production': {
+            } 
+            case 'interruptions': {
+                this._metadataHandler = new InterruptionsMetadataHandler( searchParams );
+                break;
+            } 
+            case 'savings-production': {
                 this._metadataHandler = new SavingsProductionMetadataHandler( searchParams );
                 break;
             }

@@ -31,7 +31,7 @@ const ParamState = ( { endpoint, searchParams, error, items }: PropsType ) => {
             />
 
             { 
-            endpoint === 'temperature'
+            [ 'temperature', 'interruptions' ].includes( endpoint )
             ?
             <ParamContent1
                 endpoint={ endpoint }

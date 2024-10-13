@@ -9,6 +9,8 @@ import {
     FactoriesPercentageValueSpecifier,
     LocationsSumValueSpecifier,
     LocationsPercentageValueSpecifier,
+    InterruptionsDifferenceValueSpecifier,
+    InterruptionsGrowthValueSpecifier,
 } from "./ValueSpecifier";
 
 import { 
@@ -18,6 +20,7 @@ import {
     PrecipitationValueSpecifier, PrecipitationDifferenceValueSpecifier, PrecipitationGrowthValueSpecifier,
     TemperatureMinValueSpecifier, TemperatureMeanValueSpecifier, TemperatureMaxValueSpecifier,
     TemperatureMeanDifferenceValueSpecifier, TemperatureMeanGrowthValueSpecifier,
+    InterruptionsValueSpecifier,
     ReservoirsValueSpecifier,
     ReservoirsSumValueSpecifier,
     ReservoirIdValueSpecifier,
@@ -355,6 +358,17 @@ class DataHandlerFactory {
                         new TemperatureMaxValueSpecifier( { index: 6, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
                     ] );
                 }
+                break;
+            }
+
+            case 'interruptions': {
+                this.type = 'single';
+                this._specifierCollection = new ValueSpecifierCollection( [
+                    new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                    new InterruptionsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                    new InterruptionsDifferenceValueSpecifier( {} ),
+                    new InterruptionsGrowthValueSpecifier( {} ),
+                ] );
                 break;
             }
 

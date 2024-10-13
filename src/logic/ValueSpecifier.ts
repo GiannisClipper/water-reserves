@@ -314,6 +314,20 @@ class TemperatureMaxValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
+class InterruptionsValueSpecifier extends PrimaryValueSpecifier {
+
+    constructor( props: PrimaryValueSpecifierType ) {
+        super( { 
+            dataset: 'interruptions', 
+            key: 'points', 
+            label: 'Συμβάντα', 
+            unit: '', 
+            ...props 
+        } );
+
+    }
+}
+
 class SavingsDifferenceValueSpecifier extends DifferenceValueSpecifier {
 
     constructor( props: SecondaryValueSpecifierType ) {
@@ -366,6 +380,19 @@ class TemperatureMeanDifferenceValueSpecifier extends DifferenceValueSpecifier {
     }
 }
 
+class InterruptionsDifferenceValueSpecifier extends DifferenceValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            sourceKey: 'points',
+            key: 'points_difference', 
+            label: 'Διαφορά', 
+            unit: '', 
+            ...props 
+        } );
+    }
+}
+
 class SavingsGrowthValueSpecifier extends GrowthValueSpecifier {
 
     constructor( props: SecondaryValueSpecifierType ) {
@@ -411,6 +438,19 @@ class TemperatureMeanGrowthValueSpecifier extends GrowthValueSpecifier {
         super( { 
             sourceKey: 'temperature_mean',
             key: 'temperature_mean_percentage', 
+            label: 'Μεταβολή', 
+            unit: '%', 
+            ...props 
+        } );
+    }
+}
+
+class InterruptionsGrowthValueSpecifier extends GrowthValueSpecifier {
+
+    constructor( props: SecondaryValueSpecifierType ) {
+        super( { 
+            sourceKey: 'points',
+            key: 'points_percentage', 
             label: 'Μεταβολή', 
             unit: '%', 
             ...props 
@@ -699,6 +739,7 @@ export type { ValueSpecifierType, PrimaryValueSpecifierType, SecondaryValueSpeci
         TimeValueSpecifier,
         SavingsValueSpecifier, ProductionValueSpecifier, PrecipitationValueSpecifier, 
         TemperatureMinValueSpecifier, TemperatureMeanValueSpecifier, TemperatureMaxValueSpecifier,
+        InterruptionsValueSpecifier, InterruptionsDifferenceValueSpecifier, InterruptionsGrowthValueSpecifier,
         SavingsDifferenceValueSpecifier, ProductionDifferenceValueSpecifier, PrecipitationDifferenceValueSpecifier, TemperatureMeanDifferenceValueSpecifier,
         SavingsGrowthValueSpecifier, ProductionGrowthValueSpecifier, PrecipitationGrowthValueSpecifier, TemperatureMeanGrowthValueSpecifier,
         SavingsRatioValueSpecifier, ProductionRatioValueSpecifier, PrecipitationRatioValueSpecifier, TemperatureMeanRatioValueSpecifier,

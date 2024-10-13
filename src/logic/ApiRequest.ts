@@ -10,6 +10,7 @@ import type {
     SavingsSearchParamsType,
     ProductionSearchParamsType,
     WeatherSearchParamsType,
+    InterruptionsSearchParamsType,
 } from "@/types/searchParams";
 
 abstract class ApiRequest {    
@@ -153,6 +154,21 @@ class LocationsApiRequest extends ApiRequest {
     }
 }
 
+class MunicipalitiesApiRequest extends ApiRequest { 
+        
+    endpoint = 'municipalities';
+
+    constructor() { super(); }
+
+    public async request() {
+        await super.request();
+        if ( this._result ) {
+            this._result = new ObjectList( this._result as ObjectType[] ).sortBy( 'id', 'asc' );
+        }
+        return this;
+    }
+}
+
 class SavingsApiRequest extends ApiRequestWithParams { 
     
     endpoint = 'savings';
@@ -176,6 +192,15 @@ class WeatherApiRequest extends ApiRequestWithParams {
     endpoint = 'weather';
 
     constructor( searchParams: WeatherSearchParamsType ) {
+        super( searchParams );
+    }
+}
+
+class InterruptionsApiRequest extends ApiRequestWithParams { 
+    
+    endpoint = 'interruptions';
+
+    constructor( searchParams: InterruptionsSearchParamsType ) {
         super( searchParams );
     }
 }
@@ -259,6 +284,12 @@ class ApiRequestFactory {
                 ] );
                 break;
             }
+            case 'municipalities': {
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new MunicipalitiesApiRequest()
+                ] );
+                break;
+            }
             case 'savings': {
                 this._apiRequestCollection = new ApiRequestCollection( [
                     new SavingsApiRequest( searchParams || {} )
@@ -280,6 +311,12 @@ class ApiRequestFactory {
             case 'temperature': {
                 this._apiRequestCollection = new ApiRequestCollection( [
                     new WeatherApiRequest( searchParams || {} )
+                ] );
+                break;
+            }
+            case 'interruptions': {
+                this._apiRequestCollection = new ApiRequestCollection( [
+                    new InterruptionsApiRequest( searchParams || {} )
                 ] );
                 break;
             }
@@ -323,5 +360,6 @@ export {
     SavingsApiRequest, 
     ProductionApiRequest,
     WeatherApiRequest,
+    InterruptionsApiRequest,
     ApiRequestFactory
 };

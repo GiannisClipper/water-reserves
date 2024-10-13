@@ -7,6 +7,7 @@ const SAVINGS: string = "Αποθέματα νερού";
 const PRODUCTION: string = "Παραγωγή πόσιμου νερού";
 const PRECIPITATION: string = "Ενδεικτικές μετρήσεις υετού";
 const TEMPERATURE: string = "Θερμοκρασίες Αθήνας";
+const INTERRUPTIONS: string = "Διακοπές υδροδότησης";
 const SAVINGS_PRODUCTION: string = "Αποθέματα και παραγωγή νερού";
 const SAVINGS_PRECIPITATION: string = "Αποθέματα και μετρήσεις υετού";
 
@@ -20,6 +21,7 @@ export {
     PRODUCTION,
     PRECIPITATION,
     TEMPERATURE,
+    INTERRUPTIONS,
     SAVINGS_PRODUCTION,
     SAVINGS_PRECIPITATION,
 };
