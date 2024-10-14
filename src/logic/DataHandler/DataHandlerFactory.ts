@@ -164,8 +164,6 @@ class DataHandlerFactory {
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
                         new InterruptionsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new InterruptionsDifferenceValueSpecifier( {} ),
-                        new InterruptionsGrowthValueSpecifier( {} ),
                     ] );
                 }
                 else {
@@ -173,8 +171,6 @@ class DataHandlerFactory {
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new MunicipalityIdValueSpecifier( { index: 0, axeXY: 'X' } ),
                         new InterruptionsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new InterruptionsDifferenceValueSpecifier( {} ),
-                        new InterruptionsGrowthValueSpecifier( {} ),
                     ] );
                 }
                 break;

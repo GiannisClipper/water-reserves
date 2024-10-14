@@ -1,9 +1,12 @@
 "use client"
 
-import { useRef } from 'react';
-import { MapContainer, TileLayer, ZoomControl, GeoJSON, Polygon, Marker, Popup, Tooltip } from 'react-leaflet'
+import TimelessDataHandler from '@/logic/DataHandler/TimelessDataHandler';
+import { MapContainer, TileLayer, ZoomControl, GeoJSON, Tooltip, Marker, Popup } from 'react-leaflet'
+import { withCommas } from '@/helpers/numbers';
 import 'leaflet/dist/leaflet.css'
 import geojson from '@/geography/dhmoi_okxe_attica.json';
+
+import type { ObjectType } from '@/types';
 
 import "@/styles/chart.css";
 
@@ -13,25 +16,58 @@ const MyTooltip = props => {
     return <Tooltip>sticky Tooltip for Geojson</Tooltip>;
 }
 
-const MapContent = () => {
+type PropsType = { 
+    dataHandler: TimelessDataHandler
+    chartType: string | undefined
+    metadataHandler: ObjectType
+}
 
+const MapContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) => {
+
+    const municipalities: ObjectType = {}; 
+    for ( const row of dataHandler._items ) {
+        municipalities[ row.id ] = row;
+    }
+
+    const points: ObjectType = {}; 
+    for ( const row of dataHandler.data ) {
+        points[ row.municipality_id ] = row;
+    }
+
+    for ( const feature of geojson.features ) {
+        const id: string = feature.properties.KWD_YPES;
+        feature[ 'points' ] = 0
+        feature[ 'population' ] = 0;
+        feature[ 'perPoint' ] = 0
+        if ( points[ id ] ) {
+            feature[ 'points' ] = points[ id ].points;
+            feature[ 'population' ] = municipalities[ id ].population;
+            feature[ 'perPoint' ] = Math.round( municipalities[ id ].population / points[ id ].points );
+        }
+    }
+ 
     const setStyle = feature => {
+
+        const color = feature.points
+            ? 'red'
+            : 'lightgreen';
+
         return { 
             weight: .25,
-            color: "red",
+            color: color,
             opacity: 0.65
         };
     };
     
     const position: [ number, number ] = [ 37.98, 23.73 ];
 
-    console.log( "rendering: ChartContent..." )// , metadataHandler );
+    console.log( "rendering: MapContent..." )//, dataHandler.data, dataHandler._items, dataHandler );
 
     return (
         <div className="ChartContent">
             <MapContainer 
                 center={ position } 
-                zoom={ 12 } 
+                zoom={ 11 } 
                 zoomControl={ false }
                 scrollWheelZoom={ false } 
                 style={ { height: '100%' } }
@@ -54,9 +90,9 @@ const MapContent = () => {
                     >
                         <Tooltip sticky>
                             <strong><p>Δήμος { f.properties.NAME }</p></strong>
-                            <p>Συμβάντα: 0</p>
-                            <p>Κάτοικοι: 0</p>
-                            <p>Κάτοικοι ανά συμβάν: 0</p>
+                            <p>Συμβάντα διακοπής νερού: { withCommas( f.points) }</p>
+                            <p>Σύνολο κατοίκων στο δήμο: { withCommas( f.population ) }</p>
+                            <p>Ένα συμβάν για κάθε { withCommas( f.perPoint ) } κατοίκους.</p>
                         </Tooltip>
                     </GeoJSON>
                 )}

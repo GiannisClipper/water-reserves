@@ -41,7 +41,12 @@ const ChartContent = ( { chartType, dataHandler, metadataHandler }: PropsType ) 
             items[ item.id ] = item.name_el;
         }
     }
-    console.log( 'items', items)
+    // console.log( 'items', items)
+
+    // for ( const row of dataHandler.data ) {
+    //     row.points = items[ row.municipality_id ].population / row.points; 
+    //     console.log( 'row.municipality_id', row.municipality_id, items[ row.municipality_id ].population, row.points )
+    // }
 
     return (
         <div className="ChartContent">
