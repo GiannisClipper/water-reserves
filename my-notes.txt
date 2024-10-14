@@ -62,6 +62,29 @@ How to Convert a React Component to an Image
 https://dev.to/saranshk/how-to-convert-a-react-component-to-an-image-2jon
 
 
+Leaflet (installation)
+
+leaflet library and React wrapper: 
+npm install leaflet react-leaflet
+
+types for the leaflet library: 
+npm install -D @types/leaflet
+
+library containing the default icons (icons might not display properly if this step is omitted):
+npm install leaflet-defaulticon-compatibility
+
+
+Leaflet
+
+React Leaflet
+https://react-leaflet.js.org/
+
+Embed OpenStreetMap in a Next.js project
+https://cloudinary.com/blog/guest_post/embed-openstreetmap-in-a-next-js-project
+
+Displaying a Leaflet Map in NextJS
+https://medium.com/@tomisinabiodun/displaying-a-leaflet-map-in-nextjs-85f86fccc10c
+
 
 Chrome long screenshot
 

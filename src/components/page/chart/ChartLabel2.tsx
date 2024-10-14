@@ -15,8 +15,6 @@ type PropsType = {
 export default function ChartLabel( { setChartType }: PropsType ) {
 
     const setChartLine = () => setChartType( 'line' );
-    const setChartArea = () => setChartType( 'area' );
-    const setChartBar = () => setChartType( 'bar' );
     const setMap = () => setChartType( 'map' );
     
     const expandChart = (): void => {
@@ -26,7 +24,7 @@ export default function ChartLabel( { setChartType }: PropsType ) {
         url.openBlank();
     }
 
-    console.log( "rendering: ChartLabel..." )
+    console.log( "rendering: ChartLabel2..." )
 
     return (
         <div className="Label ChartLabel">
@@ -35,8 +33,6 @@ export default function ChartLabel( { setChartType }: PropsType ) {
             </Left>
             <Right>
                 <ChartLineIcon className="icon" title="Γράφημα γραμμής" onClick={ setChartLine } />
-                <ChartAreaIcon className="icon" title="Γράφημα περιοχής" onClick={ setChartArea } />
-                <ChartBarIcon className="icon" title="Γράφημα με μπάρες" onClick={ setChartBar } />
                 <MapIcon className="icon" title="Χάρτης" onClick={ setMap } />
                 <ScreenIcon className="icon" title="Ευρεία οθόνη" onClick={ expandChart } />
                 <LinkIcon className="icon" title="Σύνδεσμος ευρείας οθόνης" />
