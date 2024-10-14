@@ -12,7 +12,9 @@ CREATE_TABLE: str = """
         id CHAR(4) PRIMARY KEY,
         name_el VARCHAR(30) UNIQUE NOT NULL,
         name_en VARCHAR(30) UNIQUE,
-        prefecture VARCHAR(30) NOT NULL
+        prefecture VARCHAR(30) NOT NULL,
+        area real,
+        population integer
     );
 """
 
@@ -25,6 +27,8 @@ class Municipality( BaseModel ):
     name_el: str
     name_en: str | None
     prefecture: str
+    area: float
+    population: int
 
 class MunicipalitiesQueryMaker( QueryMaker ):
 
@@ -36,12 +40,12 @@ class MunicipalitiesQueryMaker( QueryMaker ):
 
     def insert_into( self, data: list ) -> None:
 
-        query = '''INSERT INTO {table} ( id, name_el, prefecture ) VALUES '''
+        query = '''INSERT INTO {table} ( id, name_el, prefecture, area, population ) VALUES '''
         query = query.replace( '{table}', self.table_name )
 
         for row in data:
-            id, name_el, prefecture = row
-            row = f"('{id}','{name_el}','{prefecture}'),"
+            id, name_el, prefecture, area, population = row
+            row = f"('{id}','{name_el}','{prefecture}',{area},{population}),"
             query += row
 
         query = query[ 0:-1 ] + ';' # change last comma with semicolumn

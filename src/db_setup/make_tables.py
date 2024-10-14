@@ -13,7 +13,7 @@ from src.queries.interruptions import InterruptionsOnceQueryFactory
 
 from src.settings import get_settings
 import psycopg
-import src.db as db
+from src.db.tables import tables
 
 from .read_csv import read_reservoirs, read_factories, read_locations, read_municipalities
 from .read_html import read_html
@@ -22,35 +22,33 @@ from .read_json import read_interruptions
 
 def make_tables( names ):
     try:
-    
-        with psycopg.connect( conninfo=db.conninfo ) as conn:
 
-            for name in names:
-                print( f'- Table: {name}' )
+        for name in names:
+            print( f'- Table: {name}' )
 
-                if name == 'reservoirs':
-                    make_reservoirs()
+            if name == 'reservoirs':
+                make_reservoirs()
 
-                elif name == 'savings':
-                    make_savings()
+            elif name == 'savings':
+                make_savings()
 
-                elif name == 'factories':
-                    make_factories()
+            elif name == 'factories':
+                make_factories()
 
-                elif name == 'production':
-                    make_production()
+            elif name == 'production':
+                make_production()
 
-                elif name == 'locations':
-                    make_locations()
+            elif name == 'locations':
+                make_locations()
 
-                elif name == 'weather':
-                    make_weather()
+            elif name == 'weather':
+                make_weather()
 
-                elif name == 'municipalities':
-                    make_municipalities()
+            elif name == 'municipalities':
+                make_municipalities()
 
-                elif name == 'interruptions':
-                    make_interruptions()
+            elif name == 'interruptions':
+                make_interruptions()
 
     except Exception as error:
         print( 'Error: ' + repr( error ) )
@@ -241,7 +239,7 @@ def make_interruptions():
     headers, data = read_municipalities()
     municipalities = {}
     for row in data:
-        id, name_el, prefecture = row
+        id, name_el, prefecture, area, population = row
         municipalities[ name_el ] = id
 
     path = get_settings().interruptions_json_path
@@ -269,7 +267,7 @@ if __name__ == "__main__":
 
         names = sys.argv[ 1: ]
         for name in names:
-            if not name in db.tables:
+            if not name in tables:
                raise Exception( f'No table: {name}' )
 
     except Exception as error:

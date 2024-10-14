@@ -147,6 +147,12 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
         if self.municipality_aggregation:
             query = self.__expand_query_with_municipality_aggregation( aliases.pop() )
 
+        if self.time_aggregation and self.time_aggregation[ 0 ] == 'alltime':
+            self.__expand_query_with_alltime_aggregation( aliases.pop() )
+
+        if self.time_aggregation and self.time_aggregation[ 0 ] == 'date':
+            self.__expand_query_with_date_aggregation( aliases.pop() )
+
         if self.time_aggregation and self.time_aggregation[ 0 ] == 'month':
             self.__expand_query_with_month_aggregation( aliases.pop() )
 
@@ -158,6 +164,8 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
                 self.__expand_query_with_custom_year_aggregation( aliases.pop() )
 
         self.__expand_query_with_order()
+        print( self.time_aggregation, self.query )
+
 
     def __create_base_query( self ):
 
@@ -202,6 +210,54 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             ) {alias} 
             GROUP BY 
             {alias}.date'''
+
+    def __expand_query_with_alltime_aggregation( self, alias ):
+
+        if self.municipality_aggregation:
+            self.query = f'''
+            SELECT
+            SUM({alias}.points) AS points 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias}'''
+
+        else:
+            self.query = f'''
+            SELECT
+            {alias}.municipality_id AS municipality_id, 
+            SUM({alias}.points) AS points 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias} 
+            GROUP BY 
+            {alias}.municipality_id'''
+
+    def __expand_query_with_date_aggregation( self, alias ):
+
+        if self.municipality_aggregation:
+            self.query = f'''
+            SELECT 
+            {alias}.date AS date,
+            SUM({alias}.points) AS points 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias} 
+            GROUP BY 
+            {alias}.date'''
+
+        else:
+            self.query = f'''
+            SELECT 
+            {alias}.date AS date,
+            {alias}.municipality_id AS municipality_id, 
+            SUM({alias}.points) AS points 
+            FROM (
+            {set_indentation( 4, self.query )}
+            ) {alias} 
+            GROUP BY 
+            {alias}.date,
+            {alias}.municipality_id'''
+
 
     def __expand_query_with_month_aggregation( self, alias ):
 

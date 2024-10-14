@@ -3,8 +3,8 @@ from typing import Annotated
 from dataclasses import dataclass
 from pydantic.functional_validators import AfterValidator
 
-from src.validators import validate_time_range, validate_interval_filter, validate_time_aggregation, validate_year_start
-from src.validators.interruptions import validate_municipality_filter, validate_municipality_aggregation
+from src.validators import validate_time_range, validate_interval_filter, validate_year_start
+from src.validators.interruptions import validate_time_aggregation, validate_municipality_filter, validate_municipality_aggregation
 
 from src.queries.interruptions import InterruptionsPoolQueryFactory
 from src.queries.municipalities import MunicipalitiesPoolQueryFactory, Municipality
