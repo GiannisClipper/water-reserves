@@ -86,6 +86,11 @@ Displaying a Leaflet Map in NextJS
 https://medium.com/@tomisinabiodun/displaying-a-leaflet-map-in-nextjs-85f86fccc10c
 
 
+https://leaflet-extras.github.io/leaflet-providers/preview/
+
+https://codesandbox.io/p/sandbox/react-leaflet-geojson-773y5?file=%2Fsrc%2Findex.js
+
+
 Chrome long screenshot
 
 1. Open the Inspect Window
