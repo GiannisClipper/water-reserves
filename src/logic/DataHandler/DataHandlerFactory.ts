@@ -46,10 +46,13 @@ import {
 } from "@/logic/ValueSpecifier/interruptions";
 
 import DataHandler from ".";
-import SingleDataHandler from "./SingleDataHandler";
-import TimelessDataHandler from "./TimelessDataHandler";
+import { SingleDataHandler, SingleTimelessDataHandler} from "./SingleDataHandler";
 import MultiDataHandler from "./MultiDataHandler";
-import StackDataHandler from "./StackDataHandler";
+import {
+    StackDataHandler, ReservoirsStackDataHandler, FactoriesStackDataHandler
+} from "./StackDataHandler";
+import { Class } from "leaflet";
+import { ObjectType } from "@/types";
 
 type PropsType = {
     endpoint: string
@@ -172,7 +175,7 @@ class DataHandlerFactory {
                     ] );
                 }
                 else {
-                    this.type = 'timeless';
+                    this.type = 'single,timeless';
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new MunicipalityIdValueSpecifier( { index: 0, axeXY: 'X' } ),
                         new InterruptionsPointsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
@@ -205,28 +208,38 @@ class DataHandlerFactory {
                 ] );
                 break;
             }
+
             default:
                 throw `Invalid endpoint (${endpoint}) used in DataHandlerFactory()`;
         }
     
         switch ( this.type ) {
     
-            case 'timeless': {
-                this._dataHandler = new TimelessDataHandler( result, this._specifierCollection );
-                break;
-            }
             case 'single': {
                 this._dataHandler = new SingleDataHandler( result, this._specifierCollection );
                 break;
             }
-            case 'stack': {
-                this._dataHandler = new StackDataHandler( result, this._specifierCollection );
+
+            case 'single,timeless': {
+                this._dataHandler = new SingleTimelessDataHandler( result, this._specifierCollection );
                 break;
             }
+
+            case 'stack': {
+                const DataHandlerClass: ObjectType = {
+                    'savings': ReservoirsStackDataHandler,
+                    'production': FactoriesStackDataHandler,
+                    'precipitation': StackDataHandler,
+                }
+                this._dataHandler = new DataHandlerClass[ endpoint ]( result, this._specifierCollection );
+                break;
+            }
+
             case 'multi': {
                 this._dataHandler = new MultiDataHandler( result, this._specifierCollection );
                 break;
             }
+
             default:
                 throw `Invalid type (${this.type}) used in DataHandlerFactory()`;
         }

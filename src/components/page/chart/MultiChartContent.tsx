@@ -26,11 +26,12 @@ type PropsType = {
 
 const ChartContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) => {
 
-    const chartHandler: ChartHandler = new ChartHandlerFactory( 
-        'multi', 
-        dataHandler.data, 
-        dataHandler.specifierCollection 
-    ).chartHandler;
+    const chartHandler: ChartHandler = new ChartHandlerFactory( {
+        type: 'multi', 
+        data : dataHandler.data, 
+        legend: dataHandler.legend || {}, 
+        specifierCollection: dataHandler.specifierCollection
+    } ).chartHandler;
 
     console.log( "rendering: ChartContent..." )// , layoutSpecifier );
 

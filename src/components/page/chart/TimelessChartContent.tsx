@@ -8,7 +8,7 @@ import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels
 import { XAxisTimelessTick, YAxisTick } from '@/components/page/chart/ticks';
 import { TimelessTooltip } from '@/components/page/chart/tooltips';
 
-import TimelessDataHandler from '@/logic/DataHandler/TimelessDataHandler';
+import { SingleTimelessDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
 
 import type { ObjectType } from '@/types';
@@ -17,13 +17,13 @@ import "@/styles/chart.css";
 
 type PropsType = { 
     chartType: string | undefined
-    dataHandler: TimelessDataHandler
+    dataHandler: SingleTimelessDataHandler
     layoutSpecifier: ObjectType
 }
 
 const ChartContent = ( { chartType, dataHandler, layoutSpecifier }: PropsType ) => {
 
-    console.log( "rendering: ChartContent..." )//, dataHandler.data )
+    console.log( "rendering: TimelessChartContent...", dataHandler )
 
     if ( chartType === 'line2' ) {
         dataHandler.specifierCollection._specifiers[1].axeXY=''
@@ -33,21 +33,23 @@ const ChartContent = ( { chartType, dataHandler, layoutSpecifier }: PropsType ) 
         dataHandler.specifierCollection._specifiers[2].axeXY=''
     }
 
-    const chartHandler: ChartHandler = new ChartHandlerFactory( 
-        'single', 
-        dataHandler.data, 
-        dataHandler.specifierCollection 
-    ).chartHandler;
+    const chartHandler: ChartHandler = new ChartHandlerFactory( {
+        type: 'single', 
+        data : dataHandler.data, 
+        legend: dataHandler.legend || {}, 
+        specifierCollection: dataHandler.specifierCollection
+    } ).chartHandler;
 
     chartHandler.data.sort( ( a, b ) => ( a[ chartHandler.yValueKey ] < b[ chartHandler.yValueKey ] ? 1 : -1 ) )
 
     // prepare items as object, with ids as keys
 
+    const itemsKey = Object.keys( chartHandler.legend )[ 0 ];
+    const legendItems = chartHandler.legend[ itemsKey ] || [];
+
     let items: ObjectType = {}
-    if ( dataHandler._items ) {
-        for ( const item of dataHandler._items ) {
-            items[ item.id ] = item.name_el;
-        }
+    for ( const item of legendItems ) {
+        items[ item.id ] = item.name_el;
     }
     // console.log( 'items', items)
 
@@ -56,7 +58,7 @@ const ChartContent = ( { chartType, dataHandler, layoutSpecifier }: PropsType ) 
     //     console.log( 'row.municipality_id', row.municipality_id, items[ row.municipality_id ].population, row.points )
     // }
 
-    console.log( "rendering: ChartContent...", chartHandler._specifierCollection )//, dataHandler.data, dataHandler.legend );
+    console.log( "rendering: ChartContent...", items )//, dataHandler.data, dataHandler.legend );
 
     return (
         <div className="ChartContent">

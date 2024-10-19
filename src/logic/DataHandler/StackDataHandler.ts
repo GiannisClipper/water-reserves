@@ -4,18 +4,17 @@ import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierColle
 import { PrimaryValueSpecifier, SecondaryValueSpecifier, NestedValueSpecifier } from '@/logic/ValueSpecifier';
 
 import type { ObjectType } from '@/types';
+import ObjectList from '@/helpers/objects/ObjectList';
 
 class StackDataHandler extends DataHandler {    
 
     type: string = 'stack';
 
-    _items: ObjectType[] = [];
-    _itemsKey: string = '';
-
     constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
         super( responseResult, specifierCollection );
 
         let result: Object = responseResult || {};
+        //console.log( 'result', result )
 
         // get the join key (no dataset assigned) and the dataset (one dataset in this handler)
     
@@ -47,6 +46,11 @@ class StackDataHandler extends DataHandler {
         // process the nested values
 
         const nSpecifier: NestedValueSpecifier = specifierCollection.getNestedSpecifiers()[ 0 ];
+        // example of nSpecifier =>:
+        // key: 'reservoirs', 
+        // label: 'Ταμιευτήρες', 
+        // nestedKey: 'reservoir_id',
+        // nestedInnerKey: 'savings',
 
         const nestObj: ObjectType = {};    
         arr.forEach( ( row: ObjectType ) => { 
@@ -75,40 +79,41 @@ class StackDataHandler extends DataHandler {
         for ( const specifier of specifiers2 ) {
             specifier.parser( this.data, this.legend );
         }
-        
         // console.log( 'this.data', this.data)
+        console.log( 'this.legend', this.legend, result)
+    }
+}
 
-        // parse itemsKey, items 
+class ReservoirsStackDataHandler extends StackDataHandler {
 
-        this._itemsKey = Object.keys( result[ dataset ].legend )[ 0 ];
-
-        let items: ObjectType[] = result[ dataset ].legend && result[ dataset ].legend[ this._itemsKey ] || [];
+    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+        super( responseResult, specifierCollection );
 
         if ( this.data.length ) {
-            const nestedObj = this.data[ 0 ][ nSpecifier.key ];
+            const nestedObj = this.data[ 0 ][ 'reservoirs' ];
             const ids: string[] = Object.keys( nestedObj ).map( id => `${id}` );
-            this._items = items.filter( r => ids.includes( `${r.id}` ) );
-        }
-
-        console.log( 'this._items', this._items)
-
-    }
-
-    get items(): ObjectType[] {
-        return this._items;
-    }
-
-    get itemsKey(): string {
-        return this._itemsKey;
-    }
-
-    toJSON(): ObjectType {
-        return {
-            ...super.toJSON(),
-            items: this._items,
-            itemsKey: this._itemsKey,
+            if ( this.legend ) {
+                const filtered: ObjectType[] = this.legend[ 'reservoirs' ].filter( r => ids.includes( `${r.id}` ) );
+                this.legend [ 'reservoirs' ] = new ObjectList( filtered ).sortBy( 'start', 'asc' );
+            }
         }
     }
 }
 
-export default StackDataHandler;
+class FactoriesStackDataHandler extends StackDataHandler {
+
+    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+        super( responseResult, specifierCollection );
+
+        if ( this.data.length ) {
+            const nestedObj = this.data[ 0 ][ 'factories' ];
+            const ids: string[] = Object.keys( nestedObj ).map( id => `${id}` );
+            if ( this.legend ) {
+                const filtered: ObjectType[] = this.legend[ 'factories' ].filter( r => ids.includes( `${r.id}` ) )
+                this.legend [ 'factories' ] = new ObjectList( filtered ).sortBy( 'start', 'asc' );
+            }
+        }
+    }
+}
+
+export { StackDataHandler, ReservoirsStackDataHandler, FactoriesStackDataHandler };

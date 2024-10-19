@@ -8,7 +8,7 @@ abstract class DataHandler {
 
     private _headers: string[] = [];
     private _data: ObjectType[] = [];
-    private _legend: ObjectType | undefined;
+    private _legend: ObjectType = {};
     private _specifierCollection: ValueSpecifierCollection
 
     constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
@@ -23,7 +23,7 @@ abstract class DataHandler {
                     ...( this._legend || {} ), 
                     ...result[ key ].legend
                 };
-            }            
+            }
         }
 
         this._specifierCollection = specifierCollection;

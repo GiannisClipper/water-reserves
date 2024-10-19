@@ -1,6 +1,6 @@
 "use client"
 
-import TimelessDataHandler from '@/logic/DataHandler/TimelessDataHandler';
+import { SingleTimelessDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 import { MapContainer, TileLayer, ZoomControl, GeoJSON, Tooltip, Marker, Popup } from 'react-leaflet'
 import { withCommas } from '@/helpers/numbers';
 import 'leaflet/dist/leaflet.css'
@@ -17,7 +17,7 @@ const MyTooltip = props => {
 }
 
 type PropsType = { 
-    dataHandler: TimelessDataHandler
+    dataHandler: SingleTimelessDataHandler
     chartType: string | undefined
     layoutSpecifier: ObjectType
 }
@@ -25,8 +25,10 @@ type PropsType = {
 const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) => {
 
     const municipalities: ObjectType = {}; 
-    for ( const row of dataHandler._items ) {
-        municipalities[ row.id ] = row;
+    if ( dataHandler.legend ) {
+        for ( const row of dataHandler.legend[ 'municipalities' ] ) {
+            municipalities[ row.id ] = row;
+        }
     }
 
     const points: ObjectType = {}; 

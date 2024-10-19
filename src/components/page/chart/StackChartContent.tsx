@@ -11,9 +11,8 @@ import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { StackTooltip } from '@/components/page/chart/tooltips';
 import { LineLegend, ColorLegend } from "@/components/page/chart/legends";
 
-import StackDataHandler from '@/logic/DataHandler/StackDataHandler';
+import { StackDataHandler } from '@/logic/DataHandler/StackDataHandler';
 import { ChartHandler, ChartHandlerFactory, StackChartHandler } from "@/logic/ChartHandler";
-import ObjectList from '@/helpers/objects/ObjectList';
 import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/tooltipRepr';
 
 import type { ObjectType } from '@/types';
@@ -28,16 +27,14 @@ type PropsType = {
 
 const ChartContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) => {
 
-    const chartHandler: ChartHandler = new ChartHandlerFactory( 
-        'stack', 
-        dataHandler.data, 
-        dataHandler.specifierCollection 
-    ).chartHandler;
+    const chartHandler: ChartHandler = new ChartHandlerFactory( {
+        type: 'stack', 
+        data : dataHandler.data, 
+        legend: dataHandler.legend || {}, 
+        specifierCollection: dataHandler.specifierCollection
+    } ).chartHandler;
 
     console.log( "rendering: ChartContent...", chartHandler.toJSON() )
-
-    const items = new ObjectList( dataHandler.items ).sortBy( 'start', 'asc' );
-    // sortBy start: chart lines will be displayed from bottom to top (most recent reservoir on top)
 
     const colorArray: string[] = [ 
         layoutSpecifier.colors[ 0 ][ 600 ], 
@@ -57,7 +54,6 @@ const ChartContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) 
                 chartHandler={ chartHandler }
                 layoutSpecifier={ layoutSpecifier }
                 colorArray={ colorArray }
-                items={ items }
             />
 
             :
@@ -67,7 +63,6 @@ const ChartContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) 
                 chartHandler={ chartHandler }
                 layoutSpecifier={ layoutSpecifier }
                 colorArray={ colorArray }
-                items={ items }
             />
 
             :
@@ -75,7 +70,6 @@ const ChartContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) 
                 chartHandler={ chartHandler }
                 layoutSpecifier={ layoutSpecifier }
                 colorArray={ colorArray }
-                items={ items }
             />
             }
                 
@@ -86,13 +80,15 @@ const ChartContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) 
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
     colorArray: string[]
-    items: ObjectType[]
     layoutSpecifier: ObjectType
 }
 
-const LineChartComposition = ( { chartHandler, colorArray, items, layoutSpecifier }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { chartHandler, colorArray, layoutSpecifier }: ChartCompositionPropsType ) => {
 
     const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
+
+    const key = Object.keys( chartHandler.legend )[ 0 ];
+    const legendItems: [] = chartHandler.legend[ key ];
 
     console.log( 'Rerender LineChart...' );
 
@@ -129,19 +125,18 @@ const LineChartComposition = ( { chartHandler, colorArray, items, layoutSpecifie
                 <Tooltip 
                     content={ 
                         <StackTooltip 
-                            specifierCollection={ chartHandler.specifierCollection }
-                            items={ items } 
+                            chartHandler={ chartHandler }
                             makeItemsRepr={ makeItemsOrderedRepr }
                         /> 
                     } 
                 />
 
-                { items.map( ( r, i ) =>
+                { legendItems.map( ( l: ObjectType, i: number ) =>
                     <Line 
                         key={ i }
                         id={ `${i+1}`}
                         type={ chartHandler.lineType } 
-                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( r.id ) }
+                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( l.id ) }
                         stroke={ colorArray[ i ] } 
                         strokeWidth={ 2 } 
                         strokeDasharray={ lineDashes[ i ] }
@@ -165,7 +160,7 @@ const LineChartComposition = ( { chartHandler, colorArray, items, layoutSpecifie
                     verticalAlign='top'
                     height={ 24 }
                     content={ <LineLegend 
-                        items={ items }
+                        items={ legendItems }
                         colorsArray={ colorArray }
                         strokeDasharray={ lineDashes }
                     /> }
@@ -175,7 +170,10 @@ const LineChartComposition = ( { chartHandler, colorArray, items, layoutSpecifie
     );
 }
 
-const AreaChartComposition = ( { chartHandler, colorArray, items, layoutSpecifier }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { chartHandler, colorArray, layoutSpecifier }: ChartCompositionPropsType ) => {
+
+    const key = Object.keys( chartHandler.legend )[ 0 ];
+    const legendItems: [] = chartHandler.legend[ key ];
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -211,18 +209,17 @@ const AreaChartComposition = ( { chartHandler, colorArray, items, layoutSpecifie
                 <Tooltip 
                     content={ 
                         <StackTooltip 
-                            specifierCollection={ chartHandler.specifierCollection }
-                            items={ items } 
+                            chartHandler={ chartHandler }
                             makeItemsRepr={ makeItemsRepr }
                         /> 
                     } 
                 />
 
-                { items.map( ( r, i ) =>
+                { legendItems.map( ( l: ObjectType, i: number ) =>
                     <Area 
                         key={ i } 
                         type={ chartHandler.lineType } 
-                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( r.id ) }
+                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( l.id ) }
                         stackId="a"
                         stroke={ colorArray[ i ] } 
                         fill={ colorArray[ i ] } 
@@ -235,7 +232,7 @@ const AreaChartComposition = ( { chartHandler, colorArray, items, layoutSpecifie
                     verticalAlign='top' 
                     height={ 24 }
                     content={ <ColorLegend 
-                        items={ items }
+                        items={ legendItems }
                         colorsArray={ colorArray }
                     /> }
                 />
@@ -244,7 +241,10 @@ const AreaChartComposition = ( { chartHandler, colorArray, items, layoutSpecifie
     );
 }
 
-const BarChartComposition = ( { chartHandler, colorArray, items, layoutSpecifier }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { chartHandler, colorArray, layoutSpecifier }: ChartCompositionPropsType ) => {
+
+    const key = Object.keys( chartHandler.legend )[ 0 ];
+    const legendItems: [] = chartHandler.legend[ key ];
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -282,18 +282,17 @@ const BarChartComposition = ( { chartHandler, colorArray, items, layoutSpecifier
                     cursor={{ fill: '#eee' }}
                     content={ 
                         <StackTooltip 
-                            specifierCollection={ chartHandler.specifierCollection }
-                            items={ items } 
+                            chartHandler={ chartHandler }
                             makeItemsRepr={ makeItemsRepr }
                         /> 
                     } 
                 />
 
-                { items.map( ( r, i ) =>
+                { legendItems.map( ( l: ObjectType, i: number ) =>
                     <Bar 
                         key={ i } 
                         type={ chartHandler.lineType } 
-                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( r.id ) }
+                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( l.id ) }
                         stackId="a"
                         fill={ colorArray[ i ] } 
                         fillOpacity={ .65 }
@@ -305,7 +304,7 @@ const BarChartComposition = ( { chartHandler, colorArray, items, layoutSpecifier
                     verticalAlign='top' 
                     height={ 24 }
                     content={ <ColorLegend 
-                        items={ items }
+                        items={ legendItems }
                         colorsArray={ colorArray }
                     /> }
                 />

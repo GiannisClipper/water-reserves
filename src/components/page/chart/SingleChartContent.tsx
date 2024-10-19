@@ -10,7 +10,7 @@ import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { SingleTooltip } from '@/components/page/chart/tooltips';
 
-import SingleDataHandler from '@/logic/DataHandler/SingleDataHandler';
+import { SingleDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
 
 import type { ObjectType } from '@/types';
@@ -27,11 +27,18 @@ const ChartContent = ( { chartType, dataHandler, layoutSpecifier }: PropsType ) 
 
     console.log( "rendering: ChartContent..." )//, dataHandler.data )
 
-    const chartHandler: ChartHandler = new ChartHandlerFactory( 
-        'single', 
-        dataHandler.data, 
-        dataHandler.specifierCollection 
-    ).chartHandler;
+    const chartHandler: ChartHandler = new ChartHandlerFactory( {
+        type: 'single', 
+        data : dataHandler.data, 
+        legend: dataHandler.legend || {}, 
+        specifierCollection: dataHandler.specifierCollection
+    } ).chartHandler;
+
+    // const chartHandler: ChartHandler = new ChartHandlerFactory( 
+    //     'single', 
+    //     dataHandler.data, 
+    //     dataHandler.specifierCollection 
+    // ).chartHandler;
 
     return (
         <div className="ChartContent">

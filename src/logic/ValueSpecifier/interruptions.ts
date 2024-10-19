@@ -73,7 +73,7 @@ class InterruptionsPopulationValueSpecifier extends SecondaryValueSpecifier {
         // make municipalities dictionary for quick search
 
         const municipalities: ObjectType = {}; 
-        if ( legend ) {
+        if ( legend && Object.keys( legend ).length ) {
             for ( const row of legend.municipalities ) {
                 municipalities[ row.id ] = row;
             }

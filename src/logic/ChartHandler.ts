@@ -5,9 +5,16 @@ import type { ObjectType } from "@/types";
 
 type LineType = 'linear' | 'monotone';
 
+interface ChartHandlerType {
+    data: ObjectType[]
+    legend: ObjectType
+    specifierCollection: ValueSpecifierCollection
+}
+
 abstract class ChartHandler {
 
     _data: ObjectType[] = [];
+    _legend: ObjectType = {};
     _specifierCollection: ValueSpecifierCollection;
 
     _xTicks: string[] = [];
@@ -17,8 +24,9 @@ abstract class ChartHandler {
  
     abstract _yValues: number[];
 
-    constructor( data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
+    constructor( { data, legend, specifierCollection }: ChartHandlerType ) {
         this._data = data;
+        this._legend = legend;
         this._specifierCollection = specifierCollection;
     }
 
@@ -91,6 +99,10 @@ abstract class ChartHandler {
         return this._data;
     }
 
+    get legend(): ObjectType {
+        return this._legend;
+    }
+
     get specifierCollection(): ValueSpecifierCollection {
         return this._specifierCollection;
     }        
@@ -141,6 +153,7 @@ abstract class ChartHandler {
     public toJSON(): ObjectType {
         return {
             data: this._data,
+            legend: this._legend,
             specifierCollection: this._specifierCollection,
             xTicks: this._xTicks,
             yTicks: this._yTicks,
@@ -153,8 +166,8 @@ class SingleChartHandler extends ChartHandler {
 
     _yValues: number[];
 
-    constructor( data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
-        super( data, specifierCollection );
+    constructor( { data, legend, specifierCollection }: ChartHandlerType ) {
+        super( { data, legend, specifierCollection } );
         this._yValues = data.map( ( row: ObjectType ) => row[ this.yValueKey ] );
 
         this._xTicks = this.calculateXTicks();
@@ -166,9 +179,8 @@ class StackChartHandler extends ChartHandler {
 
     _yValues: number[];
 
-    constructor( data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
-    
-        super( data, specifierCollection );
+    constructor( { data, legend, specifierCollection }: ChartHandlerType ) {
+        super( { data, legend, specifierCollection } );
     
         // get not nested values
 
@@ -225,9 +237,8 @@ class MultiChartHandler extends ChartHandler {
 
     _yValues: number[];
 
-    constructor( data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
-    
-        super( data, specifierCollection );
+    constructor( { data, legend, specifierCollection }: ChartHandlerType ) {
+        super( { data, legend, specifierCollection } );
 
         // this._yValues = data.map( ( row: ObjectType ) => row[ this.yValueKey ] );
 
@@ -248,24 +259,28 @@ class MultiChartHandler extends ChartHandler {
     }
 }
 
+interface ChartHandlerFactoryType extends ChartHandlerType {
+    type: string
+}
+
 class ChartHandlerFactory {
 
     private _chartHandler: ChartHandler;
 
-    constructor( type: string, data: ObjectType[], specifierCollection: ValueSpecifierCollection ) {
+    constructor( { type, data, legend, specifierCollection }: ChartHandlerFactoryType ) {
 
         switch ( type ) {
 
             case 'single': {
-                this._chartHandler = new SingleChartHandler( data, specifierCollection );
+                this._chartHandler = new SingleChartHandler( { data, legend, specifierCollection } );
                 break;
             } 
             case 'stack': {
-                this._chartHandler = new StackChartHandler( data, specifierCollection );
+                this._chartHandler = new StackChartHandler( { data, legend, specifierCollection } );
                 break;
             }
             case 'multi': {
-                this._chartHandler = new MultiChartHandler( data, specifierCollection );
+                this._chartHandler = new MultiChartHandler( { data, legend, specifierCollection } );
                 break;
             }
 

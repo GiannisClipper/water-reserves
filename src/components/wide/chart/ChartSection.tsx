@@ -4,7 +4,7 @@ import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
-import LayoutSpecifierFactory from "@/logic/LayoutSpecifier/LayoutSpecifierFactory";
+import ChartLayoutSpecifierFactory from "@/logic/LayoutSpecifier/ChartLayoutSpecifierFactory";
 
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
@@ -30,7 +30,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartType = searchParams.chart_type;
 
-    const layoutSpecifier: ObjectType = new LayoutSpecifierFactory( endpoint, searchParams )
+    const layoutSpecifier: ObjectType = new ChartLayoutSpecifierFactory( endpoint, searchParams )
         .layoutSpecifier
         .toJSON();
 

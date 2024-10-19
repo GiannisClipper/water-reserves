@@ -1,4 +1,5 @@
-import { ValueSpecifier, ValueSpecifierCollection } from '@/logic/ValueSpecifier';
+import { ValueSpecifier } from '@/logic/ValueSpecifier';
+import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
 import type { ObjectType } from '@/types';
 
 type ColorLegendPropsType = {

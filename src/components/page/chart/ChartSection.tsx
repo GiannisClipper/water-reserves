@@ -16,7 +16,7 @@ import dynamic from 'next/dynamic'
 const MapContent = dynamic( () => import( './MapContent' ), { ssr: false } )
 
 import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
-import LayoutSpecifierFactory from "@/logic/LayoutSpecifier/LayoutSpecifierFactory";
+import ChartLayoutSpecifierFactory from "@/logic/LayoutSpecifier/ChartLayoutSpecifierFactory";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
 import type { SearchParamsType } from "@/types/searchParams";
@@ -34,25 +34,26 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
         .dataHandler;
 
-    const layoutSpecifier: ObjectType = new LayoutSpecifierFactory( endpoint, searchParams )
+    const layoutSpecifier: ObjectType = new ChartLayoutSpecifierFactory( endpoint, searchParams )
         .layoutSpecifier
         .toJSON();
 
     const chartLabels: ObjectType = {
-        'timeless': ChartLabel2,
         'single': ChartLabel1,
+        'single,timeless': ChartLabel2,
         'stack': ChartLabel1,
         'multi': ChartLabel1,
     };
-    
+
+    const ChartLabel = chartLabels[ dataHandler.type ];
+
     const chartContents: ObjectType = {
-        'timeless': TimelessChartContent,
         'single': SingleChartContent,
+        'single,timeless': TimelessChartContent,
         'stack': StackChartContent,
         'multi': MultiChartContent,
     };
 
-    let ChartLabel = chartLabels[ dataHandler.type ];
     let ChartContent = chartContents[ dataHandler.type ];
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
