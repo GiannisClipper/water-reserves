@@ -7,7 +7,7 @@ import { CardHandlerFactory } from "@/logic/CardHandler";
 import { withCommas } from "@/helpers/numbers";
 
 import type { ObjectType } from "@/types";
-import { MetadataHandlerFactory } from "@/logic/MetadataHandler";
+import LayoutSpecifierFactory from "@/logic/LayoutSpecifier/LayoutSpecifierFactory";
 
 type PropsType = { 
     option: string
@@ -16,10 +16,10 @@ type PropsType = {
 
 const Card = ( { option, result }: PropsType ) => {
 
-    const metadataHandler = new MetadataHandlerFactory( option, {} ).metadataHandler;
+    const layoutSpecifier = new LayoutSpecifierFactory( option, {} ).layoutSpecifier;
     // to get the middle color for the mean temperature
     if ( option === 'temperature' ) {
-        metadataHandler._colors = [ metadataHandler._colors[1] ];
+        layoutSpecifier.colors = [ layoutSpecifier.colors[1] ];
     }
     const cardHandler = new CardHandlerFactory( option, result ).cardHandler;
 
@@ -48,13 +48,13 @@ const Card = ( { option, result }: PropsType ) => {
             <CardLineChart 
                 data={ cardHandler.recentEntries }
                 label={ `Πρόσφατες μετρήσεις: ${cardHandler.interval}` }
-                metadataHandler={ metadataHandler }
+                layoutSpecifier={ layoutSpecifier }
             />
 
             <CardPieChart 
                 cluster={ cardHandler.cluster } 
                 label={ pieLabel }
-                metadataHandler={ metadataHandler }
+                layoutSpecifier={ layoutSpecifier }
             />
         </div>
     );

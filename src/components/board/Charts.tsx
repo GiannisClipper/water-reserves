@@ -1,22 +1,24 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Customized } from 'recharts';
 import { PieChart, Pie, Cell } from 'recharts';
 
-import type { ObjectType } from "@/types";
 import { calcTicks } from '@/helpers/ticks';
 import { CardTooltip } from '@/components/page/chart/tooltips';
-import { MetadataHandler } from '@/logic/MetadataHandler';
+
+import { LayoutSpecifier } from '@/logic/LayoutSpecifier';
+
+import type { ObjectType } from "@/types";
 
 type LineChartPropsType = { 
     data: ObjectType[]
     label: string
-    metadataHandler: MetadataHandler
+    layoutSpecifier: LayoutSpecifier
 };
 
 import "@/styles/chart.css";
 
-const CardLineChart = ( { data, label, metadataHandler }: LineChartPropsType ) => {
+const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) => {
 
-    const color = metadataHandler._colors[ 0 ]
+    const color = layoutSpecifier.colors[ 0 ]
 
     const WIDTH: number = 400;
     const HEIGHT: number = 240;
@@ -47,7 +49,7 @@ const CardLineChart = ( { data, label, metadataHandler }: LineChartPropsType ) =
                 />
                 <Tooltip 
                     content={ <CardTooltip 
-                        metadataHandler={ metadataHandler }
+                        layoutSpecifier={ layoutSpecifier }
                     /> } 
                 />
                 <Customized
@@ -70,12 +72,12 @@ const CardLineChart = ( { data, label, metadataHandler }: LineChartPropsType ) =
 type PieChartPropsType = { 
     cluster: number
     label: string
-    metadataHandler: MetadataHandler
+    layoutSpecifier: LayoutSpecifier
 };
 
-const CardPieChart = ( { cluster, label, metadataHandler }: PieChartPropsType ) => {
+const CardPieChart = ( { cluster, label, layoutSpecifier }: PieChartPropsType ) => {
 
-    const color = metadataHandler._colors[ 0 ]
+    const color = layoutSpecifier.colors[ 0 ]
 
     const WIDTH: number = 400;
     const HEIGHT: number = 200;

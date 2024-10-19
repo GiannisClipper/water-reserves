@@ -3,17 +3,18 @@ import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 
-import { NestedValueSpecifier, ValueSpecifier, ValueSpecifierCollection } from '@/logic/ValueSpecifier';
+import { NestedValueSpecifier, ValueSpecifier } from '@/logic/ValueSpecifier';
+import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
 
 import type { ObjectType } from '@/types';
 
 type CardTooltipPropsType = {
     active?: boolean
     payload?: any
-    metadataHandler: ObjectType
+    layoutSpecifier: ObjectType
 } 
 
-const CardTooltip = ( { active, payload, metadataHandler }: CardTooltipPropsType ) => {
+const CardTooltip = ( { active, payload, layoutSpecifier }: CardTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -21,7 +22,7 @@ const CardTooltip = ( { active, payload, metadataHandler }: CardTooltipPropsType
         return (
             <div className="Tooltip">
                 <p>{ `Ημ/νία: ${date}` }</p>
-                <p>{ `Ποσότητα: ${withCommas( value )}` } <Unit unit={ metadataHandler._unit }/></p>
+                <p>{ `Ποσότητα: ${withCommas( value )}` } <Unit unit={ layoutSpecifier.unit }/></p>
             </div>
       );
     }
@@ -145,7 +146,6 @@ const StackTooltip = ( { active, payload, specifierCollection, items, makeItemsR
     if ( active && payload && payload.length ) {
 
         payload = payload[ 0 ].payload;
-
         const timeSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
         const sumSpecifier: ValueSpecifier = specifierCollection.getByKey( 'sum' );
         const nSpecifier: NestedValueSpecifier = specifierCollection.getNestedByAxeY()[ 0 ];

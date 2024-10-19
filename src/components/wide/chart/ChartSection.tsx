@@ -4,7 +4,7 @@ import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
-import { MetadataHandlerFactory } from "@/logic/MetadataHandler";
+import LayoutSpecifierFactory from "@/logic/LayoutSpecifier/LayoutSpecifierFactory";
 
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
@@ -30,8 +30,8 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartType = searchParams.chart_type;
 
-    const metadataHandler: ObjectType = new MetadataHandlerFactory( endpoint, searchParams )
-        .metadataHandler
+    const layoutSpecifier: ObjectType = new LayoutSpecifierFactory( endpoint, searchParams )
+        .layoutSpecifier
         .toJSON();
 
     console.log( "rendering: ChartSection..." )
@@ -44,7 +44,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
                 // Classes or null prototypes are not supported.
                 dataHandler={ dataHandler }
                 chartType={ chartType }
-                metadataHandler={ metadataHandler }
+                layoutSpecifier={ layoutSpecifier }
             />
         </div>
     );

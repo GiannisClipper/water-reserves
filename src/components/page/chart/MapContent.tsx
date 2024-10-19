@@ -19,10 +19,10 @@ const MyTooltip = props => {
 type PropsType = { 
     dataHandler: TimelessDataHandler
     chartType: string | undefined
-    metadataHandler: ObjectType
+    layoutSpecifier: ObjectType
 }
 
-const MapContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) => {
+const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) => {
 
     const municipalities: ObjectType = {}; 
     for ( const row of dataHandler._items ) {

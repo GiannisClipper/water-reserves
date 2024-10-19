@@ -16,7 +16,7 @@ import dynamic from 'next/dynamic'
 const MapContent = dynamic( () => import( './MapContent' ), { ssr: false } )
 
 import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
-import { MetadataHandlerFactory } from "@/logic/MetadataHandler";
+import LayoutSpecifierFactory from "@/logic/LayoutSpecifier/LayoutSpecifierFactory";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
 import type { SearchParamsType } from "@/types/searchParams";
@@ -34,8 +34,8 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
         .dataHandler;
 
-    const metadataHandler: ObjectType = new MetadataHandlerFactory( endpoint, searchParams )
-        .metadataHandler
+    const layoutSpecifier: ObjectType = new LayoutSpecifierFactory( endpoint, searchParams )
+        .layoutSpecifier
         .toJSON();
 
     const chartLabels: ObjectType = {
@@ -80,7 +80,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
             <ChartContent 
                 dataHandler={ dataHandler }
-                metadataHandler={ metadataHandler }
+                layoutSpecifier={ layoutSpecifier }
                 chartType={ chartType }
             />
         </div>
