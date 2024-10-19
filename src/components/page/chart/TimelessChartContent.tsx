@@ -49,7 +49,7 @@ const ChartContent = ( { chartType, dataHandler, layoutSpecifier }: PropsType ) 
 
     let items: ObjectType = {}
     for ( const item of legendItems ) {
-        items[ item.id ] = item.name_el;
+        items[ item.id ] = item.name_en;
     }
     // console.log( 'items', items)
 

@@ -30,15 +30,15 @@ export default function ChartLabel( { setChartType }: PropsType ) {
     return (
         <div className="Label ChartLabel">
             <Left>
-                Γραφήματα
+                Charts
             </Left>
             <Right>
-                <ChartLineIcon className="icon" title="Γράφημα γραμμής" onClick={ setChartLine } />
-                <ChartAreaIcon className="icon" title="Γράφημα περιοχής" onClick={ setChartArea } />
-                <ChartBarIcon className="icon" title="Γράφημα με μπάρες" onClick={ setChartBar } />
-                <ScreenIcon className="icon" title="Ευρεία οθόνη" onClick={ expandChart } />
-                <LinkIcon className="icon" title="Σύνδεσμος ευρείας οθόνης" />
-                <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" onClick={ downloadChart } />
+                <ChartLineIcon className="icon" title="Line chart" onClick={ setChartLine } />
+                <ChartAreaIcon className="icon" title="Area chart" onClick={ setChartArea } />
+                <ChartBarIcon className="icon" title="Bar chart" onClick={ setChartBar } />
+                <ScreenIcon className="icon" title="Wide view" onClick={ expandChart } />
+                <LinkIcon className="icon" title="Wide view link" />
+                <DownloadIcon className="icon" title="Download as image" onClick={ downloadChart } />
             </Right>
         </div>
     );

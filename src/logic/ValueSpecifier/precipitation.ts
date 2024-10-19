@@ -10,7 +10,7 @@ class PrecipitationValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'weather', 
             key: 'precipitation', 
-            label: 'Ποσότητα υετού', 
+            label: 'Precipitation', 
             unit: 'mm', 
             ...props 
         } );
@@ -24,7 +24,7 @@ class PrecipitationDifferenceValueSpecifier extends DifferenceValueSpecifier {
         super( { 
             sourceKey: 'precipitation',
             key: 'precipitation_difference', 
-            label: 'Διαφορά', 
+            label: 'Difference', 
             unit: 'mm', 
             ...props 
         } );
@@ -37,7 +37,7 @@ class PrecipitationGrowthValueSpecifier extends GrowthValueSpecifier {
         super( { 
             sourceKey: 'precipitation',
             key: 'precipitation_percentage', 
-            label: 'Μεταβολή', 
+            label: 'Change', 
             unit: '%', 
             ...props 
         } );
@@ -50,7 +50,7 @@ class PrecipitationRatioValueSpecifier extends RatioValueSpecifier {
         super( { 
             sourceKey: 'precipitation',
             key: 'precipitation_ratio', 
-            label: 'Αναλογία (0..1)', 
+            label: 'Ratio (0..1)', 
             ...props 
         } );
     }
@@ -62,7 +62,7 @@ class LocationIdValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'weather',
             key: 'location_id', 
-            label: 'Τοποθεσία', 
+            label: 'Location', 
             ...props 
         } );
     }
@@ -75,7 +75,7 @@ class LocationsValueSpecifier extends NestedValueSpecifier {
             nestedKey: 'location_id',
             nestedInnerKey: 'precipitation',
             key: 'locations', 
-            label: 'Τοποθεσίες', 
+            label: 'Locations', 
             ...props 
         } );
     }
@@ -89,7 +89,7 @@ class LocationsSumValueSpecifier extends NestedSumValueSpecifier {
             // the {2nd} is just to make the structure more clear
             sourceKey: 'locations.{factory_id}.precipitation',
             key: 'sum', 
-            label: 'Σύνολο τοποθεσιών', 
+            label: 'Locations in total', 
             unit: 'mm', 
             ...props 
         } );
@@ -104,7 +104,7 @@ class LocationsPercentageValueSpecifier extends NestedPercentageValueSpecifier {
             // the {2nd} is just to make the structure more clear
             sourceKey: 'locations.{location_id}.precipitation',
             key: 'percentage', 
-            label: 'Μερίδιο', 
+            label: 'Percentage', 
             unit: '%', 
             ...props 
         } );

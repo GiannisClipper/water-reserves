@@ -53,7 +53,7 @@ const ParamContentWithItems = ( { endpoint, searchParams, onPageRequest, items }
     return (
         <Form className="ParamContent">
 
-            <FormSection label="Περίοδος δεδομένων">
+            <FormSection label="Time range">
                 <FieldFromDate
                     value={ params.fromDate }
                     onChange={ setFromDate }
@@ -80,7 +80,7 @@ const ParamContentWithItems = ( { endpoint, searchParams, onPageRequest, items }
                     <CheckField
                         key={ r.id }
                         name={ r.id }
-                        label={ r.name_el }
+                        label={ r.name_en }
                         checked={ params[ paramHandler.itemsFilterKey ][ r.id ] }
                         onChange={ setItemsFilter }
                     /> 
@@ -100,7 +100,7 @@ const ParamContentWithItems = ( { endpoint, searchParams, onPageRequest, items }
 
             { showMore
                 ?
-                <FormSection label="Παράθυρο ενδιαφέροντος">
+                <FormSection label="Interval filter">
                     <FieldFromInterval
                         value={ params.fromInterval }
                         onChange={ setFromInterval }

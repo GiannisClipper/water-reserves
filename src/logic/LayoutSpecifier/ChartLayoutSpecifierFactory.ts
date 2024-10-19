@@ -92,7 +92,7 @@ class LayoutSpecifierFactory {
         
                 const title: string = ! timeAggregation
                     ? 'Daily temperatures in Athens'
-                    : 'Mean daily temperatures in Athens';
+                    : 'Temperatures in Athens (daily)';
 
                 const unit: UnitType = 'oC';
                 const colors: ObjectType[] = [ CYAN, YELLOW, ORANGE ];

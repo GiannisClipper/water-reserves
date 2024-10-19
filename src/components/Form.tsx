@@ -77,7 +77,7 @@ const FormButtonMore = ( { className, onClick }: FormButtonPropsType_ ) => {
     return (
         <FormButton 
             className={ className }
-            label="Περισσότερα"
+            label="More"
             icon={ <PlusIcon /> }
             onClick={ onClick }
         />
@@ -88,7 +88,7 @@ const FormButtonLess = ( { className, onClick }: FormButtonPropsType_ ) => {
     return (
         <FormButton 
         className={ className }
-        label="Λιγότερα"
+        label="Less"
         icon={ <MinusIcon /> }
         onClick={ onClick }
         />

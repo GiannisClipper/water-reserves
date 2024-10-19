@@ -103,7 +103,7 @@ class SavingsParamHandler extends ParamHandlerWithItems {
 
     public Class = SavingsParamHandler;
 
-    get itemsLabel(): string { return 'Ταμιευτήρες'; }
+    get itemsLabel(): string { return 'Reservoirs'; }
     get itemsFilterKey(): string { return 'reservoirFilter'; }
     get itemsAggregationKey(): string { return 'reservoirAggregation'; }
 
@@ -135,7 +135,7 @@ class ProductionParamHandler extends ParamHandlerWithItems {
 
     public Class = ProductionParamHandler;
 
-    get itemsLabel(): string { return 'Μονάδες επεξεργασίας'; }
+    get itemsLabel(): string { return 'Plants'; }
     get itemsFilterKey(): string { return 'factoryFilter'; }
     get itemsAggregationKey(): string { return 'factoryAggregation'; }
 
@@ -173,7 +173,7 @@ class WeatherParamHandler extends ParamHandlerWithItems {
 
     public Class = WeatherParamHandler;
 
-    get itemsLabel(): string { return 'Τοποθεσίες'; }
+    get itemsLabel(): string { return 'Locations'; }
     get itemsFilterKey(): string { return 'locationFilter'; }
     get itemsAggregationKey(): string { return 'locationAggregation'; }
 

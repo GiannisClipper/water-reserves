@@ -3,13 +3,13 @@ import { CubicMeters } from "@/components/Symbols";
 import { withCommas } from "@/helpers/numbers";
 import ObjectList from "@/helpers/objects/ObjectList";
 
-import { StackDataHandler } from '@/logic/DataHandler';
+import DataHandler from '@/logic/DataHandler';
 import { lexicon } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
 
 type PropsType = { 
-    dataHandler: StackDataHandler
+    dataHandler: DataHandler
 }
 
 const ListContent = ( { dataHandler }: PropsType ) => {
@@ -20,7 +20,7 @@ const ListContent = ( { dataHandler }: PropsType ) => {
     // sortBy start: most recent at the beggining
 
     // update lexicon
-    items.forEach( r => lexicon[ r.name_en ] = r.name_el );
+    items.forEach( r => lexicon[ r.name_en ] = r.name_en );
 
     console.log( `rendering: StackListContent...`, headers, data )
 

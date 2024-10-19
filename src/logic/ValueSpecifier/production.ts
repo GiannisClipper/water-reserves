@@ -10,7 +10,7 @@ class ProductionValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'production', 
             key: 'production', 
-            label: 'Παραγωγή νερού', 
+            label: 'Water production', 
             unit: 'm3', 
             ...props 
         } );
@@ -23,7 +23,7 @@ class ProductionDifferenceValueSpecifier extends DifferenceValueSpecifier {
         super( { 
             sourceKey: 'production', 
             key: 'production_difference', 
-            label: 'Διαφορά', 
+            label: 'Difference', 
             unit: 'm3', 
             ...props 
         } );
@@ -35,7 +35,7 @@ class ProductionGrowthValueSpecifier extends GrowthValueSpecifier {
         super( { 
             sourceKey: 'production', 
             key: 'production_percentage', 
-            label: 'Μεταβολή', 
+            label: 'Change', 
             unit: '%', 
             ...props 
         } );
@@ -48,7 +48,7 @@ class ProductionRatioValueSpecifier extends RatioValueSpecifier {
         super( { 
             sourceKey: 'production', 
             key: 'production_ratio', 
-            label: 'Αναλογία (0..1)', 
+            label: 'Ratio (0..1)', 
             ...props 
         } );
     }
@@ -60,7 +60,7 @@ class FactoryIdValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'production',
             key: 'factory_id', 
-            label: 'Μονάδα επεξεργασίας', 
+            label: 'Plant', 
             ...props 
         } );
     }
@@ -73,7 +73,7 @@ class FactoriesValueSpecifier extends NestedValueSpecifier {
             nestedKey: 'factory_id',
             nestedInnerKey: 'production',
             key: 'factories', 
-            label: 'Μονάδες επεξεργασίας', 
+            label: 'Plants', 
             ...props 
         } );
     }
@@ -87,7 +87,7 @@ class FactoriesSumValueSpecifier extends NestedSumValueSpecifier {
             // the {2nd} is just to make the structure more clear
             sourceKey: 'factories.{factory_id}.production',
             key: 'sum', 
-            label: 'Σύνολο μονάδων επεξεργασίας', 
+            label: 'Plants in total', 
             unit: 'm3', 
             ...props 
         } );
@@ -102,7 +102,7 @@ class FactoriesPercentageValueSpecifier extends NestedPercentageValueSpecifier {
             // the {2nd} is just to make the structure more clear
             sourceKey: 'factories.{factory_id}.production',
             key: 'percentage', 
-            label: 'Μερίδιο', 
+            label: 'Percentage', 
             unit: '%', 
             ...props 
         } );

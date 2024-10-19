@@ -48,7 +48,7 @@ const ParamContent = ( { endpoint, searchParams, onPageRequest }: PropsType ) =>
     return (
         <Form className="ParamContent">
 
-            <FormSection label="Περίοδος δεδομένων">
+            <FormSection label="Time range">
                 <FieldFromDate
                     value={ params.fromDate }
                     onChange={ setFromDate }
@@ -76,7 +76,7 @@ const ParamContent = ( { endpoint, searchParams, onPageRequest }: PropsType ) =>
 
             { showMore
                 ?
-                <FormSection label="Παράθυρο ενδιαφέροντος">
+                <FormSection label="Interval filter">
                     <FieldFromInterval
                         value={ params.fromInterval }
                         onChange={ setFromInterval }

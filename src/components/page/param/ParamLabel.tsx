@@ -19,20 +19,20 @@ export default function ParamLabel( { searchParams, setOnPageRequest }: PropsTyp
     return (
         <div className="Label ParamLabel">
             <Left>
-                Παράμετροι
+                Parameters
             </Left>
             <Right>
                 <SearchIcon 
                     onClick={ () => setOnPageRequest( true ) } 
                     className="icon" 
-                    title="Αναζήτηση-επεξεργασία δεδομένων" 
+                    title="Search / process data" 
                 />
 
                 { Object.keys( searchParams ).length > 0
                     ?
                     <LinkIcon 
                         className="icon" 
-                        title="Σύνδεσμος σελίδας" 
+                        title="Page link" 
                     />
                     :
                     null

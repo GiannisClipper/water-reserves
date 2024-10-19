@@ -10,7 +10,7 @@ class SavingsValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'savings', 
             key: 'savings', 
-            label: 'Αποθέματα νερού', 
+            label: 'Water reserves', 
             unit: 'm3', 
             ...props 
         } );
@@ -23,7 +23,7 @@ class SavingsDifferenceValueSpecifier extends DifferenceValueSpecifier {
         super( { 
             sourceKey: 'savings', 
             key: 'savings_difference', 
-            label: 'Διαφορά', 
+            label: 'Difference', 
             unit: 'm3', 
             ...props 
         } );
@@ -36,7 +36,7 @@ class SavingsGrowthValueSpecifier extends GrowthValueSpecifier {
         super( { 
             sourceKey: 'savings',
             key: 'savings_percentage', 
-            label: 'Μεταβολή', 
+            label: 'Change', 
             unit: '%', 
             ...props 
         } );
@@ -49,7 +49,7 @@ class SavingsRatioValueSpecifier extends RatioValueSpecifier {
         super( { 
             sourceKey: 'savings',
             key: 'savings_ratio', 
-            label: 'Αναλογία (0..1)', 
+            label: 'Ratio (0..1)', 
             ...props 
         } );
     }
@@ -61,7 +61,7 @@ class ReservoirIdValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'savings',
             key: 'reservoir_id', 
-            label: 'Ταμιευτήρας', 
+            label: 'Reservoir', 
             ...props 
         } );
     }
@@ -74,7 +74,7 @@ class ReservoirsValueSpecifier extends NestedValueSpecifier {
             nestedKey: 'reservoir_id',
             nestedInnerKey: 'savings',
             key: 'reservoirs', 
-            label: 'Ταμιευτήρες', 
+            label: 'Reservoirs', 
             ...props 
         } );
     }
@@ -88,7 +88,7 @@ class ReservoirsSumValueSpecifier extends NestedSumValueSpecifier {
             // the {2nd} is just to make the structure more clear
             sourceKey: 'reservoirs.{reservoir_id}.savings',
             key: 'sum', 
-            label: 'Σύνολο ταμιευτήρων', 
+            label: 'Reservoirs in total', 
             unit: 'm3', 
             ...props 
         } );
@@ -103,7 +103,7 @@ class ReservoirsPercentageValueSpecifier extends NestedPercentageValueSpecifier 
             // the {2nd} is just to make the structure more clear
             sourceKey: 'reservoirs.{reservoir_id}.savings',
             key: 'percentage', 
-            label: 'Μερίδιο', 
+            label: 'Percentage', 
             unit: '%', 
             ...props 
         } );

@@ -22,8 +22,8 @@ const CardTooltip = ( { active, payload, layoutSpecifier }: CardTooltipPropsType
         const { date, value } = payload[ 0 ].payload;
         return (
             <div className="Tooltip">
-                <p>{ `Ημ/νία: ${date}` }</p>
-                <p>{ `Ποσότητα: ${withCommas( value )}` } <Unit unit={ layoutSpecifier.unit }/></p>
+                <p>{ `Date: ${date}` }</p>
+                <p>{ `Quantity: ${withCommas( value )}` } <Unit unit={ layoutSpecifier.unit }/></p>
             </div>
       );
     }
@@ -59,7 +59,7 @@ const SingleTooltip = ( { active, payload, specifierCollection }: TooltipPropsTy
                 <p>{ `${valueSpecifier[ 'label' ]}: ${withCommas( value )} ` } 
                     <Unit unit={ valueSpecifier.unit }/>
                 </p>
-                <p>{ `Μεταβολή: ${withCommas( Math.round( difference ) )} ` }
+                <p>{ `Growth/shrink: ${withCommas( Math.round( difference ) )} ` }
                     <Unit unit={ valueSpecifier.unit }/>
                     { ` (${withPlusSign( percentage )}%)` }
                 </p>
@@ -167,13 +167,13 @@ const StackTooltip = ( { active, payload, chartHandler, makeItemsRepr }: StackTo
                 <table>
                     <tbody>
                         <tr className='total'>
-                            <td>Σύνολο</td> 
+                            <td>Total</td> 
                             <td className='value'>{ withCommas( Math.round( total ) ) } <Unit unit={ sumSpecifier.unit }/></td>
                         </tr>
                         { legendRepr.map( ( item, i ) =>
                             <tr key={ i }>
                                 <td>{ item.name }</td>
-                                <td className='value'>{ withCommas( Math.round( item.value ) ) } m<sup>3</sup></td> 
+                                <td className='value'>{ withCommas( Math.round( item.value ) ) } <Unit unit={ sumSpecifier.unit }/></td> 
                                 <td className='value'>{ `${item.percentage}%` }</td>
                             </tr>
                         ) }

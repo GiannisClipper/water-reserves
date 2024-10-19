@@ -13,12 +13,12 @@ const ListLabel = () => {
     return (
         <div className="Label ListLabel">
             <Left>
-                Λίστα δεδομένων
+                List
             </Left>
             <Right>
-                <ScreenIcon className="icon" title="Ευρεία οθόνη" />
-                <LinkIcon className="icon" title="Σύνδεσμος ευρείας οθόνης" />
-                <DownloadIcon className="icon" title="Κατέβασμα σε αρχείο" onClick={ downloadList } />
+                <ScreenIcon className="icon" title="Wide view" />
+                <LinkIcon className="icon" title="Wide view link" />
+                <DownloadIcon className="icon" title="Download as file" onClick={ downloadList } />
             </Right>
         </div>
     );

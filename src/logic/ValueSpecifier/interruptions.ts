@@ -9,7 +9,7 @@ class MunicipalityIdValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             // dataset: 'interruptions', # no dataset to operate as join key
             key: 'municipality_id', 
-            label: 'Δήμος', 
+            label: 'Municipality', 
             ...props 
         } );
     }
@@ -21,7 +21,7 @@ class InterruptionsPointsValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'interruptions', 
             key: 'points', 
-            label: 'Συμβάντα', 
+            label: 'Events', 
             unit: '', 
             ...props 
         } );
@@ -35,7 +35,7 @@ class InterruptionsDifferenceValueSpecifier extends DifferenceValueSpecifier {
         super( { 
             sourceKey: 'points',
             key: 'points_difference', 
-            label: 'Διαφορά', 
+            label: 'Difference', 
             unit: '', 
             ...props 
         } );
@@ -48,7 +48,7 @@ class InterruptionsGrowthValueSpecifier extends GrowthValueSpecifier {
         super( { 
             sourceKey: 'points',
             key: 'points_percentage', 
-            label: 'Μεταβολή', 
+            label: 'Change', 
             unit: '%', 
             ...props 
         } );
@@ -61,7 +61,7 @@ class InterruptionsPopulationValueSpecifier extends SecondaryValueSpecifier {
         super( { 
             sourceKey: 'points',
             key: 'points_population', 
-            label: 'Ανά αριθμό κατοίκων', 
+            label: 'Per residents', 
             unit: '', 
             ...props 
         } );

@@ -14,7 +14,7 @@ const makeItemsRepr = (
     // toReversed: placing from bottom to top the lines in chart
     const result: any[] = items.toReversed().map( ( item: ObjectType, i: number ) => {
 
-            const { id, name_el: name } = item;
+            const { id, name_en: name } = item;
 
             if ( values[ id ] ) {
                 const value: number = values[ id ][ nSpecifier.nestedInnerKey ];

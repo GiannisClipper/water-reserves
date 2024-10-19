@@ -190,9 +190,9 @@ class DataHandlerFactory {
                 this._specifierCollection = new ValueSpecifierCollection( [
                     new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
                     new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                    new SavingsGrowthValueSpecifier( { axeXY: 'Y', label: 'Αποθέματα' } ),
+                    new SavingsGrowthValueSpecifier( { axeXY: 'Y', label: 'Reserves' } ),
                     new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
-                    new ProductionGrowthValueSpecifier( { axeXY: 'Y', label: 'Παραγωγή νερού' } ), 
+                    new ProductionGrowthValueSpecifier( { axeXY: 'Y', label: 'Production' } ), 
                 ] );
                 break;
             }
@@ -202,9 +202,9 @@ class DataHandlerFactory {
                 this._specifierCollection = new ValueSpecifierCollection( [
                     new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
                     new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                    new SavingsGrowthValueSpecifier( { axeXY: 'Y', label: 'Αποθέματα' } ),
+                    new SavingsGrowthValueSpecifier( { axeXY: 'Y', label: 'Reserves' } ),
                     new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
-                    new PrecipitationGrowthValueSpecifier( { axeXY: 'Y', label: 'Υετός' } ), 
+                    new PrecipitationGrowthValueSpecifier( { axeXY: 'Y', label: 'Precipitation' } ), 
                 ] );
                 break;
             }

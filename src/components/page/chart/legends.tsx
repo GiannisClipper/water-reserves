@@ -22,7 +22,7 @@ const ColorLegend = ( { payload, items, colorsArray }: ColorLegendPropsType ) =>
                             <path d="M5 5 l15 0" />
                         </g>
                     </svg>
-                    { r.name_el }
+                    { r.name_en }
                 </span>
             ) }
         </div>
@@ -79,7 +79,7 @@ const LineLegend = ( { payload, items, colorsArray, strokeDasharray }: LineLegen
                                 <path strokeDasharray={ strokeDasharray[ i ] } d="M5 5 l25 0" />
                         </g>
                     </svg>
-                    { r.name_el }
+                    { r.name_en }
                 </span>
             ) }
             <span

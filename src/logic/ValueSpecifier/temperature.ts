@@ -8,7 +8,7 @@ class TemperatureMinValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'weather', 
             key: 'temperature_min', 
-            label: 'Ελάχιστη', 
+            label: 'Min', 
             unit: 'oC', 
             ...props 
         } );
@@ -22,7 +22,7 @@ class TemperatureMeanValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'weather', 
             key: 'temperature_mean', 
-            label: 'Μέση', 
+            label: 'Mean', 
             unit: 'oC', 
             ...props 
         } );
@@ -36,7 +36,7 @@ class TemperatureMaxValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'weather', 
             key: 'temperature_max', 
-            label: 'Μέγιστη', 
+            label: 'Max', 
             unit: 'oC', 
             ...props 
         } );
@@ -50,7 +50,7 @@ class TemperatureMeanDifferenceValueSpecifier extends DifferenceValueSpecifier {
         super( { 
             sourceKey: 'temperature_mean',
             key: 'temperature_mean_difference', 
-            label: 'Διαφορά', 
+            label: 'Difference', 
             unit: 'oC', 
             ...props 
         } );
@@ -63,7 +63,7 @@ class TemperatureMeanGrowthValueSpecifier extends GrowthValueSpecifier {
         super( { 
             sourceKey: 'temperature_mean',
             key: 'temperature_mean_percentage', 
-            label: 'Μεταβολή', 
+            label: 'Change', 
             unit: '%', 
             ...props 
         } );
@@ -76,7 +76,7 @@ class TemperatureMeanRatioValueSpecifier extends RatioValueSpecifier {
         super( { 
             sourceKey: 'temperature_mean',
             key: 'temperature_mean_ratio', 
-            label: 'Αναλογία (0..1)', 
+            label: 'Ratio (0..1)', 
             ...props 
         } );
     }

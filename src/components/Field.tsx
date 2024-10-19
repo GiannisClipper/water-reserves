@@ -36,11 +36,11 @@ const Field = ( { className, label, value }: FieldPropsType ) => {
 
 const FieldFromDate = ( props: any ) => {
 
-    props = { placeholder: 'EEEE-MM-HH', ...props }
+    props = { placeholder: 'YYYY-MM-DD', ...props }
 
     return (
         <Field
-            label = { <span>Από</span> }
+            label = { <span>From</span> }
             value = { <input {...props} /> }
         />
     );
@@ -48,12 +48,12 @@ const FieldFromDate = ( props: any ) => {
 
 const FieldToDate = ( props: any ) => {
 
-    props = { placeholder: 'EEEE-MM-HH', ...props }
+    props = { placeholder: 'YYYY-MM-DD', ...props }
 
     return (
 
         <Field
-            label = { <span>Έως</span> }
+            label = { <span>To</span> }
             value = { <input {...props} /> }
         />
     );
@@ -61,11 +61,11 @@ const FieldToDate = ( props: any ) => {
 
 const FieldFromInterval = ( props: any ) => {
 
-    props = { placeholder: 'MM-HH', ...props }
+    props = { placeholder: 'MM-DD', ...props }
 
     return (
         <Field
-            label = { <span>Από</span> }
+            label = { <span>From</span> }
             value = { <input {...props} /> }
         />
     );
@@ -73,12 +73,12 @@ const FieldFromInterval = ( props: any ) => {
 
 const FieldToInterval = ( props: any ) => {
 
-    props = { placeholder: 'MM-HH', ...props }
+    props = { placeholder: 'MM-DD', ...props }
 
     return (
 
         <Field
-            label = { <span>Έως</span> }
+            label = { <span>To</span> }
             value = { <input {...props} /> }
         />
     );
@@ -87,8 +87,8 @@ const FieldToInterval = ( props: any ) => {
 const reprItemsAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
-        '': 'Αναλυτικά',
-        'sum': 'Συγκεντρωτικά',
+        '': 'Separately',
+        'sum': 'Aggregated',
     };
 
     if ( key in values ) {
@@ -100,10 +100,10 @@ const reprItemsAggregation = ( key: string ): string => {
 const reprValueAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
-        '': 'Ημερήσια ποσότητα',
-        'avg': 'Μέση ημερήσια ποσότητα',
-        'sum': 'Συνολική ποσότητα',
-        'growth': 'Ποσοστό αύξησης/μείωσης',
+        '': 'Daily quantity',
+        'avg': 'Mean daily quantity',
+        'sum': 'Total quantity',
+        'growth': 'Growth/shrink percentage',
     };
 
     if ( key in values ) {
@@ -115,12 +115,12 @@ const reprValueAggregation = ( key: string ): string => {
 const reprTimeAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
-        '': 'Ανά ημέρα',
-        'date': 'Ανά ημέρα',
-        'month': 'Ανά μήνα', 
-        'year': 'Ανά έτος', 
-        'custom_year': 'Ανά υδρολογικό έτος',
-        'alltime': 'Συνολικά', 
+        '': 'Per date',
+        'date': 'Per date',
+        'month': 'Per month', 
+        'year': 'Per year', 
+        'custom_year': 'Per hydrological year',
+        'alltime': 'In total', 
     };
 
     if ( key in values ) {
@@ -132,7 +132,7 @@ const reprTimeAggregation = ( key: string ): string => {
 const FieldItemsAggregation = ( props: any ) => (
 
     <Field
-        label = {<span>Ανάλυση</span>}
+        label = {<span>Density</span>}
         value = {
             <select { ...props }>
                 <option value="sum">{reprItemsAggregation( "sum" )}</option>
@@ -145,7 +145,7 @@ const FieldItemsAggregation = ( props: any ) => (
 const FieldTimeAggregation = ( { values, ...props } ) => (
 
     <Field
-        label = {<span>Ανάλυση</span>}
+        label = {<span>Density</span>}
         value = {
             <select { ...props } disabled={ values.length <= 1 }>
                 { values.map( v => <option key={v} value={v}>{reprTimeAggregation( v )}</option> ) }
@@ -164,7 +164,7 @@ const FieldTimeAggregation = ( { values, ...props } ) => (
 const FieldValueAggregation = ( { values, ...props } ) => (
 
     <Field
-        label = {<span>Τιμή</span>}
+        label = {<span>Value</span>}
         value = {
             <select { ...props } disabled={ values.length <= 1 }>
                 { values.map( v => <option key={v} value={v}>{reprValueAggregation( v )}</option> ) }

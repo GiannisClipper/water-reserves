@@ -17,13 +17,13 @@ const timeLabel = ( value: string ): string => {
 
     switch ( value.length ) {
         case 10:
-            return 'Ημ/νία';
+            return 'Date';
         case 7:
-            return 'Μήνας';
+            return 'Month';
         case 4:
-            return 'Έτος';
+            return 'Year';
         case 9:
-            return 'Υδρολογικό έτος';
+            return 'Hydrologic year';
     
     }
     return '';
