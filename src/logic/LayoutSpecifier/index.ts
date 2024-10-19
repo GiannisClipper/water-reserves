@@ -52,4 +52,24 @@ class ChartLayoutSpecifier extends LayoutSpecifier {
     }
 }
 
-export { LayoutSpecifier, ChartLayoutSpecifier };
+type EvaluationType = { 
+    [ key: number ]: string 
+}
+
+class CardLayoutSpecifier extends LayoutSpecifier {
+
+    static evaluation: EvaluationType = { 0: 'lower', 1: 'low', 2: 'mid', 3:'high', 4: 'higher' };
+
+    constructor( props: LayoutSpecifierType ) {
+        super( props );
+    }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            evaluation: CardLayoutSpecifier.evaluation
+        }
+    }
+}
+
+export { LayoutSpecifier, ChartLayoutSpecifier, CardLayoutSpecifier };

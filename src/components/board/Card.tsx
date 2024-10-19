@@ -7,7 +7,8 @@ import { CardHandlerFactory } from "@/logic/CardHandler";
 import { withCommas } from "@/helpers/numbers";
 
 import type { ObjectType } from "@/types";
-import LayoutSpecifierFactory from "@/logic/LayoutSpecifier/LayoutSpecifierFactory";
+import CardLayoutSpecifierFactory from "@/logic/LayoutSpecifier/CardLayoutSpecifierFactory";
+import { CardLayoutSpecifier } from "@/logic/LayoutSpecifier";
 
 type PropsType = { 
     option: string
@@ -16,27 +17,19 @@ type PropsType = {
 
 const Card = ( { option, result }: PropsType ) => {
 
-    const layoutSpecifier = new LayoutSpecifierFactory( option, {} ).layoutSpecifier;
+    const layoutSpecifier = new CardLayoutSpecifierFactory( option ).layoutSpecifier;
     // to get the middle color for the mean temperature
     if ( option === 'temperature' ) {
         layoutSpecifier.colors = [ layoutSpecifier.colors[1] ];
     }
     const cardHandler = new CardHandlerFactory( option, result ).cardHandler;
 
-    const titles: ObjectType = { 
-        'savings': 'Αποθέματα νερού',
-        'production': 'Παραγωγή πόσιμου νερού',
-        'precipitation': 'Μετρήσεις υετού',
-        'temperature': 'Μέση θερμοκρασία (Αθήνα)',
-    }
-    const title = titles[ option ];
-
-    const levelRepr: ObjectType = { 0: 'χαμηλότερη', 1: 'χαμηλή', 2: 'μεσαία', 3:'υψηλή', 4: 'υψηλότερη' };
-    const pieLabel = `Αξιολόγηση: ${cardHandler.cluster+1} (${levelRepr[ cardHandler.cluster ]})`;
+    const evaluation: string = CardLayoutSpecifier.evaluation[ cardHandler.cluster ];
+    const pieLabel = `Αξιολόγηση: ${cardHandler.cluster+1} (${evaluation})`;
 
     return (
         <div className="Card">
-            <div className="Title">{ title }</div>
+            <div className="Title">{ layoutSpecifier.title }</div>
 
             <div className="Info">
                 <div>Τελευταία ενημέρωση: { cardHandler.date } </div>

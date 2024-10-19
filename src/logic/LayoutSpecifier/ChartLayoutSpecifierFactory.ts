@@ -1,6 +1,6 @@
 import { LayoutSpecifier, ChartLayoutSpecifier } from ".";
 
-import { SearchParamsType, SavingsSearchParamsType } from "@/types/searchParams";
+import { SearchParamsType } from "@/types/searchParams";
 import { ParamValues } from "../ParamValues";
 
 import {
