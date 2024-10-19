@@ -22,7 +22,7 @@ class Legend:
 @dataclass
 class SavingsResponse:
     headers: list[ str ]
-    data: list[ list ]
+    data: list[ tuple ]
     legend: Legend | None = None
 
 router = APIRouter( prefix="/api/v1/savings" )
@@ -49,6 +49,7 @@ async def get_all(
 
     if reservoir_aggregation != None:
         return SavingsResponse( headers=headers, data=data )
+        # return { 'headers': headers, 'data': data }
     
     query_handler = ReservoirsPoolQueryFactory().handler
     query_handler.maker.select_all()
@@ -56,3 +57,4 @@ async def get_all(
     reservoirs = query_handler.data
     legend = Legend( reservoirs )
     return SavingsResponse( headers=headers, data=data, legend=legend )
+    # return { 'headers': headers, 'data': data, 'legend': legend }

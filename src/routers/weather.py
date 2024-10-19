@@ -21,7 +21,7 @@ class Legend:
 @dataclass
 class WeatherResponse:
     headers: list[ str ]
-    data: list[ list ]
+    data: list[ tuple ]
     legend: Legend | None = None
 
 router = APIRouter( prefix="/api/v1/weather" )

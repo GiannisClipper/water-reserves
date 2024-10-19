@@ -1,3 +1,4 @@
+import decimal
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from src.queries._abstract.QueryMaker import QueryMaker
@@ -46,6 +47,18 @@ class AsyncQueryHandler( QueryHandler ):
             self.data = await self.runner.run_query( 
                 query, params, RowModel 
             )
+
+            # for massive responses (lists of tuples) like savings, production, weather,
+            # due to round operations, query results may contain decimal data type values,
+            # which getting converted into string in json response,
+            # so here are converted into float in advance
+            if self.data and type( self.data[ 0 ] ) is tuple:
+                for i, row in enumerate( self.data ):
+                    row = list( row )
+                    for j, d in enumerate( row ):
+                        if type( d ) is decimal.Decimal:
+                            row[ j ] = float( d )
+                    self.data[ i ] = tuple( row )
 
         except Exception as error:
             print( 'Error:', error )
