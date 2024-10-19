@@ -41,7 +41,7 @@ const ParamContent = ( { endpoint, searchParams, onPageRequest }: PropsType ) =>
     const setMore = () => setShowMore( true );
     const setLess = () => setShowMore( false );
 
-    console.log( "rendering: ParamContent..." );
+    console.log( "rendering: ParamContent...", params );
 
     usePageRequest( { onPageRequest, params, paramHandler } );
 

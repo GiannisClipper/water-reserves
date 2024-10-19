@@ -70,7 +70,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
-    console.log( "rendering: ChartSection..." )//, dataHandler.toJSON() )
+    console.log( "rendering: ChartSection...", dataHandler )//, dataHandler.toJSON() )
 
     return (
         <div className="ChartSection">

@@ -1,5 +1,5 @@
 import { ObjectType } from "@/types"
-import type { UnitType } from '@/logic/MetadataHandler';
+import type { UnitType } from '@/types';
 
 type XYType = 'X' | 'Y' | '';
 
@@ -41,7 +41,7 @@ abstract class ValueSpecifier {
         this.axeXY = axeXY || '';
     }
 
-    defaultParser = ( ( val: any ): any => val )
+    defaultParser = ( ( data: ObjectType[], legend: ObjectType | undefined ) => {} )
 
     toJSON(): ObjectType {
         return {
@@ -101,15 +101,15 @@ abstract class DifferenceValueSpecifier extends SecondaryValueSpecifier {
         this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( arr: ObjectType[] ): ObjectType[] => {
-        for ( let i = arr.length - 1; i >= 0; i-- ) {
+    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
+
+        for ( let i = data.length - 1; i >= 0; i-- ) {
             if ( i > 0 ) {
-                arr[ i ][ this.key ] =  arr[ i ][ this.sourceKey ] - arr[ i - 1 ][ this.sourceKey ];
+                data[ i ][ this.key ] =  data[ i ][ this.sourceKey ] - data[ i - 1 ][ this.sourceKey ];
             } else {
-                arr[ i ][ this.key ] = 0;
+                data[ i ][ this.key ] = 0;
             }
         }
-        return arr;
     }
 }
 
@@ -120,18 +120,17 @@ abstract class GrowthValueSpecifier extends SecondaryValueSpecifier {
         this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( arr: ObjectType[] ): ObjectType[] => {
+    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
 
-        for ( let i = arr.length - 1; i >= 0; i-- ) {
+        for ( let i = data.length - 1; i >= 0; i-- ) {
             if ( i > 0 ) {
-                arr[ i ][ this.key ] = Math.round( 
-                    ( arr[ i ][ this.sourceKey ] / arr[ i - 1 ][ this.sourceKey ] - 1 ) * 100 
+                data[ i ][ this.key ] = Math.round( 
+                    ( data[ i ][ this.sourceKey ] / data[ i - 1 ][ this.sourceKey ] - 1 ) * 100 
                 );
             } else {
-                arr[ i ][ this.key ] = 0;
+                data[ i ][ this.key ] = 0;
             }
         }
-        return arr;
     }
 }
 
@@ -142,12 +141,12 @@ abstract class RatioValueSpecifier extends SecondaryValueSpecifier {
         this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( arr: ObjectType[] ): ObjectType[] => {
-        const maxVal = Math.max( ...( arr.map( x => x[ this.sourceKey ] ) ) );
-        for ( let i = 0; i <= arr.length - 1; i++ ) {
-            arr[ i ][ this.key ] /= maxVal; // normalize between 0..1
+    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
+
+        const maxVal = Math.max( ...( data.map( x => x[ this.sourceKey ] ) ) );
+        for ( let i = 0; i <= data.length - 1; i++ ) {
+            data[ i ][ this.key ] /= maxVal; // normalize between 0..1
         }
-        return arr;
     }
 }
 
@@ -158,7 +157,8 @@ abstract class NestedSumValueSpecifier extends SecondaryValueSpecifier {
         this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( arr: ObjectType[] ): ObjectType[] => {
+    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
+
         // an example for the row structure
         // {
         //     time: "2023",
@@ -174,14 +174,12 @@ abstract class NestedSumValueSpecifier extends SecondaryValueSpecifier {
         // an example of this.sourceKey -> 'reservoirs.{reservoir_id}.savings',
         const [ sourceKey, nestedKey, nestedInnerKey ] = this.sourceKey.split( '.' );
 
-        for ( let i = arr.length - 1; i >= 0; i-- ) {
-            const sum = Object.values( arr[ i ][ sourceKey ] )
+        for ( let i = data.length - 1; i >= 0; i-- ) {
+            const sum = Object.values( data[ i ][ sourceKey ] )
                 .map( o => o[ nestedInnerKey ] )
                 .reduce( ( a, b ) => a + b, 0 );
-            arr[ i ][ this.key ] =  sum;
+            data[ i ][ this.key ] =  sum;
         }
-
-        return arr;
     }
 }
 
@@ -192,7 +190,8 @@ abstract class NestedPercentageValueSpecifier extends SecondaryValueSpecifier {
         this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( arr: ObjectType[] ): ObjectType[] => {
+    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
+
         // an example for the row structure
         // {
         //     time: "2023",
@@ -208,18 +207,17 @@ abstract class NestedPercentageValueSpecifier extends SecondaryValueSpecifier {
         // an example of this.sourceKey -> 'reservoirs.{reservoir_id}.savings',
         const [ sourceKey, nestedKey, nestedInnerKey ] = this.sourceKey.split( '.' );
 
-        for ( let i = arr.length - 1; i >= 0; i-- ) {
+        for ( let i = data.length - 1; i >= 0; i-- ) {
 
-            const sum: number = Object.values( arr[ i ][ sourceKey ] )
+            const sum: number = Object.values( data[ i ][ sourceKey ] )
                 .map( o => o[ nestedInnerKey ] )
                 .reduce( ( a, b ) => a + b, 0 );
 
-            Object.values( arr[ i ][ sourceKey ] )
+            Object.values( data[ i ][ sourceKey ] )
                 .forEach( o => { 
                     o[ this.key ] = Math.round( o[ nestedInnerKey ] / sum * 100 );
                 } );
         }
-        return arr;
     }
 }
 
@@ -234,66 +232,6 @@ class TimeValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class ValueSpecifierCollection {
-
-    _specifiers: ValueSpecifier[]
-
-    constructor( specifiers: ValueSpecifier[] ) {
-        this._specifiers = specifiers;
-    }
-
-    get specifiers(): ValueSpecifier[] {
-        return this._specifiers
-    }
-
-    getPrimarySpecifiers(): PrimaryValueSpecifier[] {
-        return this._specifiers.filter( s => s instanceof PrimaryValueSpecifier );
-    }
-
-    getSecondarySpecifiers(): SecondaryValueSpecifier[] {
-        return this._specifiers.filter( s => s instanceof SecondaryValueSpecifier );
-    }
-
-    getNestedSpecifiers(): NestedValueSpecifier[] {
-        return this._specifiers.filter( s => s instanceof NestedValueSpecifier );
-    }
-
-    getNotNestedSpecifiers(): ValueSpecifier[] {
-        return this._specifiers.filter( s => ! ( s instanceof NestedValueSpecifier ) );
-    }
-
-    getByDataset( dataset?: string ): PrimaryValueSpecifier[] { 
-        const filter: string | null = dataset || null;
-        return  this.getPrimarySpecifiers().filter( s => s.dataset == dataset );
-    }  
-
-    getDatasets(): string[] {
-        return Array.from( new Set( 
-            this.getPrimarySpecifiers().filter( s => s.dataset ).map( s => s.dataset ) 
-        ) ) as string[];
-    }  
-
-    getByAxeX(): ValueSpecifier[] {
-        return this._specifiers.filter( s => s[ 'axeXY' ] === 'X' );
-    }
-
-    getByAxeY(): ValueSpecifier[] {
-        return this._specifiers.filter( s => s[ 'axeXY' ] === 'Y' );
-    }
-
-    getNestedByAxeY(): NestedValueSpecifier[] {
-        return this.getNestedSpecifiers().filter( s => s[ 'axeXY' ] === 'Y' );
-    }
-
-    getNotNestedByAxeY(): ValueSpecifier[] {
-        return this.getNotNestedSpecifiers().filter( s => s[ 'axeXY' ] === 'Y' );
-    }
-
-    getByKey( key: string ): ValueSpecifier {
-        return this._specifiers.filter( s => s[ 'key' ] === key )[ 0 ];
-    }
-}
-
 export type { 
     ValueSpecifierType, PrimaryValueSpecifierType, SecondaryValueSpecifierType, 
     NestedValueSpecifierType, XYType };
@@ -302,6 +240,5 @@ export {
     ValueSpecifier, PrimaryValueSpecifier, SecondaryValueSpecifier,
     DifferenceValueSpecifier, GrowthValueSpecifier, RatioValueSpecifier,
     NestedValueSpecifier, NestedSumValueSpecifier, NestedPercentageValueSpecifier,
-    TimeValueSpecifier,
-    ValueSpecifierCollection,
+    TimeValueSpecifier
 }

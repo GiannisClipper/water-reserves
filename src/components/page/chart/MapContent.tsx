@@ -67,7 +67,7 @@ const MapContent = ( { dataHandler, chartType, metadataHandler }: PropsType ) =>
         <div className="ChartContent">
             <MapContainer 
                 center={ position } 
-                zoom={ 11 } 
+                zoom={ 10 } 
                 zoomControl={ false }
                 scrollWheelZoom={ false } 
                 style={ { height: '100%' } }

@@ -1,4 +1,4 @@
-import { ValueSpecifierCollection } from "@/logic/ValueSpecifier";
+import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierCollection";
 
 import type { ObjectType } from '@/types';
 
@@ -6,12 +6,28 @@ abstract class DataHandler {
 
     abstract type: string;
 
-    abstract _specifierCollection: ValueSpecifierCollection
+    private _headers: string[] = [];
+    private _data: ObjectType[] = [];
+    private _legend: ObjectType | undefined;
+    private _specifierCollection: ValueSpecifierCollection
 
-    _headers: string[] = [];
-    _data: ObjectType[] = [];
+    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
 
-    constructor() {};
+        let result: ObjectType = responseResult || {};
+
+        // get legend data if exists
+
+        for ( const key of Object.keys( result ) ) {
+            if ( result[ key ].legend ) {
+                this._legend = { 
+                    ...( this._legend || {} ), 
+                    ...result[ key ].legend
+                };
+            }            
+        }
+
+        this._specifierCollection = specifierCollection;
+    }        
 
     get headers(): string[] {
         return this._headers;
@@ -19,6 +35,14 @@ abstract class DataHandler {
 
     get data(): ObjectType[] {
         return this._data;
+    }
+
+    set data( data: ObjectType[] ) {
+        this._data = data;
+    }
+
+    get legend(): ObjectType | undefined {
+        return this._legend;
     }
 
     get specifierCollection(): ValueSpecifierCollection {
@@ -33,6 +57,7 @@ abstract class DataHandler {
             type: this.type,
             headers: this._headers,
             data: this._data,
+            legend: this._legend,
             valueSpecifiers: this.specifierCollection.specifiers.map( s => s.toJSON() )
         }
     }

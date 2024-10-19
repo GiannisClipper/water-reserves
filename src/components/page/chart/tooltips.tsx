@@ -90,7 +90,7 @@ const TimelessTooltip = ( { active, payload, specifierCollection, items }: Timel
         return (
             <div className="Tooltip">
                 <p>{ `${itemSpecifier[ 'label' ]}: ${items[ item ]}` }</p>
-                <p>{ `${valueSpecifier[ 'label' ]}: ${withCommas( value )} ` } 
+                <p>{ `${valueSpecifier[ 'label' ]}: ${withCommas( Math.round( value ) )} ` } 
                     <Unit unit={ valueSpecifier.unit }/>
                 </p>
             </div>

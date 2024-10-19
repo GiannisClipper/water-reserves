@@ -1,11 +1,7 @@
 import DataHandler from '.';
 
-import { 
-    ValueSpecifierCollection, 
-    PrimaryValueSpecifier, 
-    SecondaryValueSpecifier, 
-    NestedValueSpecifier 
-} from '@/logic/ValueSpecifier';
+import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierCollection";
+import { PrimaryValueSpecifier, SecondaryValueSpecifier, NestedValueSpecifier } from '@/logic/ValueSpecifier';
 
 import type { ObjectType } from '@/types';
 
@@ -13,22 +9,19 @@ class StackDataHandler extends DataHandler {
 
     type: string = 'stack';
 
-    _specifierCollection: ValueSpecifierCollection;
-
     _items: ObjectType[] = [];
     _itemsKey: string = '';
 
     constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
-        super();
+        super( responseResult, specifierCollection );
 
         let result: Object = responseResult || {};
 
         // get the join key (no dataset assigned) and the dataset (one dataset in this handler)
     
-        this._specifierCollection = specifierCollection;
-        const joinSpecifier: PrimaryValueSpecifier = this._specifierCollection.getByDataset()[ 0 ];
+        const joinSpecifier: PrimaryValueSpecifier = this.specifierCollection.getByDataset()[ 0 ];
         const joinKey: string = joinSpecifier[ 'key' ];
-        const dataset: string = this._specifierCollection.getDatasets()[ 0 ];
+        const dataset: string = this.specifierCollection.getDatasets()[ 0 ];
 
         // get the primary values, these comming directly from http response 
 
@@ -73,18 +66,17 @@ class StackDataHandler extends DataHandler {
             };
         } );
     
-        arr = Object.values( nestObj );
+        this.data = Object.values( nestObj );
 
         // get the secondary values, these resulting from primary values calculation
 
         const specifiers2: SecondaryValueSpecifier[] = specifierCollection.getSecondarySpecifiers();
 
         for ( const specifier of specifiers2 ) {
-            arr = specifier.parser( arr );
+            specifier.parser( this.data, this.legend );
         }
         
-        this._data = arr;
-        // console.log( 'this._data', this._data)
+        // console.log( 'this.data', this.data)
 
         // parse itemsKey, items 
 
@@ -92,8 +84,8 @@ class StackDataHandler extends DataHandler {
 
         let items: ObjectType[] = result[ dataset ].legend && result[ dataset ].legend[ this._itemsKey ] || [];
 
-        if ( this._data.length ) {
-            const nestedObj = this._data[ 0 ][ nSpecifier.key ];
+        if ( this.data.length ) {
+            const nestedObj = this.data[ 0 ][ nSpecifier.key ];
             const ids: string[] = Object.keys( nestedObj ).map( id => `${id}` );
             this._items = items.filter( r => ids.includes( `${r.id}` ) );
         }

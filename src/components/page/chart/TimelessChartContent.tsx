@@ -25,6 +25,14 @@ const ChartContent = ( { chartType, dataHandler, metadataHandler }: PropsType ) 
 
     console.log( "rendering: ChartContent..." )//, dataHandler.data )
 
+    if ( chartType === 'line2' ) {
+        dataHandler.specifierCollection._specifiers[1].axeXY=''
+        dataHandler.specifierCollection._specifiers[2].axeXY='Y'
+    } else {
+        dataHandler.specifierCollection._specifiers[1].axeXY='Y'
+        dataHandler.specifierCollection._specifiers[2].axeXY=''
+    }
+
     const chartHandler: ChartHandler = new ChartHandlerFactory( 
         'single', 
         dataHandler.data, 
@@ -47,6 +55,8 @@ const ChartContent = ( { chartType, dataHandler, metadataHandler }: PropsType ) 
     //     row.points = items[ row.municipality_id ].population / row.points; 
     //     console.log( 'row.municipality_id', row.municipality_id, items[ row.municipality_id ].population, row.points )
     // }
+
+    console.log( "rendering: ChartContent...", chartHandler._specifierCollection )//, dataHandler.data, dataHandler.legend );
 
     return (
         <div className="ChartContent">

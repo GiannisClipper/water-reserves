@@ -1,5 +1,7 @@
+import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierCollection";
+import { NestedValueSpecifier, ValueSpecifier } from "@/logic/ValueSpecifier";
+
 import type { ObjectType } from "@/types";
-import { NestedValueSpecifier, ValueSpecifier, ValueSpecifierCollection } from "@/logic/ValueSpecifier";
 
 type LineType = 'linear' | 'monotone';
 

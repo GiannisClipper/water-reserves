@@ -17,6 +17,10 @@ type PropsType = {
 const Card = ( { option, result }: PropsType ) => {
 
     const metadataHandler = new MetadataHandlerFactory( option, {} ).metadataHandler;
+    // to get the middle color for the mean temperature
+    if ( option === 'temperature' ) {
+        metadataHandler._colors = [ metadataHandler._colors[1] ];
+    }
     const cardHandler = new CardHandlerFactory( option, result ).cardHandler;
 
     const titles: ObjectType = { 

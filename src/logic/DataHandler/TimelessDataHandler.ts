@@ -1,5 +1,5 @@
 import MultiDataHandler from '@/logic/DataHandler/MultiDataHandler';
-import { ValueSpecifierCollection } from '@/logic/ValueSpecifier';
+import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
 
 import type { ObjectType } from '@/types';
 
@@ -17,8 +17,7 @@ class TimelessDataHandler extends MultiDataHandler {
 
         // parse itemsKey, items
 
-        this._specifierCollection = specifierCollection;
-        const dataset: string = this._specifierCollection.getDatasets()[ 0 ];
+        const dataset: string = this.specifierCollection.getDatasets()[ 0 ];
         this._itemsKey = Object.keys( result[ dataset ].legend )[ 0 ];
         this._items = result[ dataset ].legend[ this._itemsKey ] || [];
     }

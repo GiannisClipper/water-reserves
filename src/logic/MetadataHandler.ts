@@ -7,10 +7,8 @@ import {
     STONE, NEUTRAL, ZINC, GRAY, SLATE
 } from '@/helpers/colors';
 
-import type { ObjectType } from '@/types';
+import type { ObjectType, UnitType } from '@/types';
 import type { SearchParamsType } from '@/types/searchParams';
-
-type UnitType = 'm3' | 'mm' | '%' | 'oC' | '';
 
 abstract class MetadataHandler {    
 
@@ -164,6 +162,15 @@ class InterruptionsMetadataHandler extends MetadataHandler {
     }
 }
 
+class Interruptions2MetadataHandler extends InterruptionsMetadataHandler {
+
+    constructor( searchParams: ObjectType ) {
+
+        super( searchParams );
+        this._xLabel = 'Δήμοι Αττικής'
+    }
+}
+
 class SavingsProductionMetadataHandler extends MetadataHandler {
 
     _title: string;
@@ -227,7 +234,11 @@ class MetadataHandlerFactory {
                     break;
             } 
             case 'interruptions': {
-                this._metadataHandler = new InterruptionsMetadataHandler( searchParams );
+                if ( searchParams.time_aggregation?.startsWith( 'alltime' ) ) {
+                    this._metadataHandler = new Interruptions2MetadataHandler( searchParams );
+                } else {
+                    this._metadataHandler = new InterruptionsMetadataHandler( searchParams );
+                }
                 break;
             } 
             case 'savings-production': {

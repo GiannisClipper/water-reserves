@@ -1,4 +1,5 @@
-import { ValueSpecifierCollection, TimeValueSpecifier } from "@/logic/ValueSpecifier";
+import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierCollection";
+import { TimeValueSpecifier } from "@/logic/ValueSpecifier";
 
 import {
     SavingsValueSpecifier, 
@@ -37,10 +38,11 @@ import {
 } from "@/logic/ValueSpecifier/temperature";
 
 import {
-    InterruptionsValueSpecifier, 
-    InterruptionsDifferenceValueSpecifier, 
-    InterruptionsGrowthValueSpecifier,
     MunicipalityIdValueSpecifier,
+    InterruptionsPointsValueSpecifier, 
+    InterruptionsDifferenceValueSpecifier,
+    InterruptionsGrowthValueSpecifier,
+    InterruptionsPopulationValueSpecifier, 
 } from "@/logic/ValueSpecifier/interruptions";
 
 import DataHandler from ".";
@@ -163,14 +165,18 @@ class DataHandlerFactory {
                     this.type = 'single';
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new InterruptionsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new InterruptionsPointsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new InterruptionsDifferenceValueSpecifier( {} ),
+                        new InterruptionsGrowthValueSpecifier( {} ),
+                        new InterruptionsPopulationValueSpecifier( { axeXY: 'Y' } ),
                     ] );
                 }
                 else {
                     this.type = 'timeless';
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new MunicipalityIdValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new InterruptionsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new InterruptionsPointsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new InterruptionsPopulationValueSpecifier( { axeXY: 'Y' } ),
                     ] );
                 }
                 break;

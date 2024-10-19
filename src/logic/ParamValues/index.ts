@@ -55,7 +55,7 @@ class ParamValues {
             val = val.split( ',' )[ 0 ];
         }
 
-        this._timeAggregation = val && [ "month", "year" ].includes( val )
+        this._timeAggregation = val && [ "month", "year", "alltime" ].includes( val )
             ? val 
             : '';
     }
