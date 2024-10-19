@@ -25,22 +25,22 @@ const Card = ( { option, result }: PropsType ) => {
     const cardHandler = new CardHandlerFactory( option, result ).cardHandler;
 
     const evaluation: string = CardLayoutSpecifier.evaluation[ cardHandler.cluster ];
-    const pieLabel = `Αξιολόγηση: ${cardHandler.cluster+1} (${evaluation})`;
+    const pieLabel = `Evaluation: ${cardHandler.cluster+1} (${evaluation})`;
 
     return (
         <div className="Card">
             <div className="Title">{ layoutSpecifier.title }</div>
 
             <div className="Info">
-                <div>Τελευταία ενημέρωση: { cardHandler.date } </div>
+                <div>Last update: { cardHandler.date } </div>
                 <div>
-                    Μέτρηση: { withCommas(cardHandler.value) } <Unit unit={ cardHandler.unit }/>
+                    Measurement: { withCommas(cardHandler.value) } <Unit unit={ layoutSpecifier.unit }/>
                 </div>
             </div>
 
             <CardLineChart 
                 data={ cardHandler.recentEntries }
-                label={ `Πρόσφατες μετρήσεις: ${cardHandler.interval}` }
+                label={ `Recent measurements: ${cardHandler.interval}` }
                 layoutSpecifier={ layoutSpecifier }
             />
 

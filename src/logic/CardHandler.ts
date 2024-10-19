@@ -1,15 +1,4 @@
-import ParamValues from '@/logic/ParamValues';
-
-import {
-    ROSE, PINK, FUCHSIA, PURPLE, VIOLET,
-    INDIGO, BLUE, SKY, CYAN, TEAL, EMERALD, 
-    GREEN, LIME, YELLOW, AMBER, ORANGE, RED, 
-    STONE, NEUTRAL, ZINC, GRAY, SLATE
-} from '@/helpers/colors';
-
 import type { ObjectType } from '@/types';
-
-type UnitType = 'm3' | 'mm' | '%' | 'oC';
 
 abstract class CardHandler {    
 
@@ -17,7 +6,6 @@ abstract class CardHandler {
 
     _date: string;
     abstract _value: number;
-    abstract _unit: UnitType;
     abstract _recentEntries: ObjectType[];
 
     abstract _clusters: ObjectType[];
@@ -48,10 +36,6 @@ abstract class CardHandler {
         return this._value;
     }
 
-    get unit(): UnitType {
-        return this._unit;
-    }
-
     get recentEntries(): ObjectType[] {
         return this._recentEntries;
     }
@@ -69,7 +53,6 @@ abstract class CardHandler {
             interval: this.interval,
             date: this.date, 
             value: this.value,
-            unit: this.unit,
             recentEntries: this.recentEntries,
             clusters: this.clusters,
             cluster: this.clusters,
@@ -80,7 +63,6 @@ abstract class CardHandler {
 class SavingsCardHandler extends CardHandler {
 
     _value: number;
-    _unit: UnitType = 'm3';
     _recentEntries: ObjectType[];
 
     _clusters: ObjectType[];
@@ -107,7 +89,6 @@ class SavingsCardHandler extends CardHandler {
 class ProductionCardHandler extends CardHandler {
 
     _value: number;
-    _unit: UnitType = 'm3';
     _recentEntries: ObjectType[];
 
     _clusters: ObjectType[];
@@ -134,7 +115,6 @@ class ProductionCardHandler extends CardHandler {
 class PrecipitationCardHandler extends CardHandler {
 
     _value: number;
-    _unit: UnitType = 'mm';
     _recentEntries: ObjectType[];
 
     _clusters: ObjectType[];
@@ -161,7 +141,6 @@ class PrecipitationCardHandler extends CardHandler {
 class TemperatureCardHandler extends CardHandler {
 
     _value: number;
-    _unit: UnitType = 'oC';
     _recentEntries: ObjectType[];
 
     _clusters: ObjectType[];
