@@ -39,10 +39,14 @@ import {
 
 import {
     MunicipalityIdValueSpecifier,
-    InterruptionsPointsValueSpecifier, 
+    InterruptionsEventsValueSpecifier, 
     InterruptionsDifferenceValueSpecifier,
     InterruptionsGrowthValueSpecifier,
-    InterruptionsPopulationValueSpecifier, 
+    MunicipalityNameValueSpecifier,
+    MunicipalityAreaValueSpecifier,
+    MunicipalityPopulationValueSpecifier,
+    InterruptionsOverAreaValueSpecifier,
+    InterruptionsOverPopulationValueSpecifier, 
 } from "@/logic/ValueSpecifier/interruptions";
 
 import DataHandler from ".";
@@ -53,6 +57,7 @@ import {
 } from "./StackDataHandler";
 import { Class } from "leaflet";
 import { ObjectType } from "@/types";
+import ParamValues from "../ParamValues";
 
 type PropsType = {
     endpoint: string
@@ -168,20 +173,36 @@ class DataHandlerFactory {
                     this.type = 'single';
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new InterruptionsPointsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new InterruptionsEventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
                         new InterruptionsDifferenceValueSpecifier( {} ),
                         new InterruptionsGrowthValueSpecifier( {} ),
-                        new InterruptionsPopulationValueSpecifier( { axeXY: 'Y' } ),
                     ] );
                 }
                 else {
                     this.type = 'single,timeless';
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new MunicipalityIdValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new InterruptionsPointsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new InterruptionsPopulationValueSpecifier( { axeXY: 'Y' } ),
+                        new InterruptionsEventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new InterruptionsOverAreaValueSpecifier( {} ),
+                        new InterruptionsOverPopulationValueSpecifier( {} ),
+                        new MunicipalityNameValueSpecifier( {} ),
+                        new MunicipalityAreaValueSpecifier( {} ),
+                        new MunicipalityPopulationValueSpecifier( {} )
                     ] );
-                }
+
+                    // select parameter for Y-axis considering searchParams
+                    const params = new ParamValues( searchParams ).toJSON();
+                    const { valueAggregation } = params;
+                    if ( valueAggregation  === 'sum,over-area' ) {
+                        this._specifierCollection._specifiers[1].axeXY=''
+                        this._specifierCollection._specifiers[2].axeXY='Y'
+                        this._specifierCollection._specifiers[3].axeXY=''
+                    } else if ( valueAggregation  === 'sum,over-population' ) {
+                        this._specifierCollection._specifiers[1].axeXY=''
+                        this._specifierCollection._specifiers[2].axeXY=''
+                        this._specifierCollection._specifiers[3].axeXY='Y'
+                    }
+                }            
                 break;
             }
 

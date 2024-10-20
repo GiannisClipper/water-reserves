@@ -14,7 +14,7 @@ class ParamValidation {
 
         if ( ! this.time_range ) {
             const error: ErrorType = {
-                message: "Δεν έχει οριστεί χρονική περίοδος δεδομένων."
+                message: "No time range has been defined."
             };
             return error;
         }

@@ -146,7 +146,7 @@ class ProductionParamHandler extends ParamHandlerWithItems {
     };
 }
 
-class WeatherParamHandler extends ParamHandlerWithItems {
+class PrecipitationParamHandler extends ParamHandlerWithItems {
 
     static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
 
@@ -171,7 +171,7 @@ class WeatherParamHandler extends ParamHandlerWithItems {
         }
     }
 
-    public Class = WeatherParamHandler;
+    public Class = PrecipitationParamHandler;
 
     get itemsLabel(): string { return 'Locations'; }
     get itemsFilterKey(): string { return 'locationFilter'; }
@@ -180,6 +180,30 @@ class WeatherParamHandler extends ParamHandlerWithItems {
     getValueAggregationOptions( timeAggregation: string ): string[] {
         return timeAggregation
             ? [ 'sum' ]
+            : [ '' ];
+    };
+}
+
+class TemperatureParamHandler extends ParamHandler {
+
+    static getStateSetters( { params, setParams }: StateSettersPropsType ): StateSettersResultType {
+
+        return {
+            ...super.getStateSetters( { params, setParams } ),
+
+            setTimeAggregation: ( e: React.ChangeEvent<HTMLInputElement> ): void => {
+                const timeAggregation = e.target.value;
+                const valueAggregation = timeAggregation ? params.valueAggregation || 'avg' : '';
+                setParams( { ...params, timeAggregation, valueAggregation } )
+            },
+        }
+    }
+
+    public Class = TemperatureParamHandler;
+
+    getValueAggregationOptions( timeAggregation: string ): string[] {
+        return timeAggregation
+            ? [ 'avg' ]
             : [ '' ];
     };
 }
@@ -205,7 +229,13 @@ class InterruptionsParamHandler extends ParamHandler {
     // get itemsAggregationKey(): string { return 'municipalityAggregation'; }
 
     getTimeAggregationOptions(): string[] {
-        return [ 'date', 'month', 'year', 'custom_year', 'alltime' ];
+        return [ '', 'month', 'year', 'custom_year', 'alltime' ];
+    };
+
+    getValueAggregationOptions( timeAggregation: string ): string[] {
+        return timeAggregation === 'alltime'
+            ? [ 'sum', 'sum,over-area', 'sum,over-population' ]
+            : [ 'sum' ];
     };
 }
 
@@ -255,12 +285,12 @@ class ParamHandlerFactory {
             }
             case 'precipitation': {
                 const paramValues = new WeatherParamValues( searchParams, items || [] );
-                this._paramHandler = new WeatherParamHandler( paramValues );
+                this._paramHandler = new PrecipitationParamHandler( paramValues );
                 break;
             }
             case 'temperature': {
                 const paramValues = new TemperatureParamValues( searchParams, items || [] );
-                this._paramHandler = new WeatherParamHandler( paramValues );
+                this._paramHandler = new TemperatureParamHandler( paramValues );
                 break;
             }
             case 'interruptions': {

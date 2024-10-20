@@ -100,10 +100,12 @@ const reprItemsAggregation = ( key: string ): string => {
 const reprValueAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
-        '': 'Daily quantity',
-        'avg': 'Mean daily quantity',
-        'sum': 'Total quantity',
-        'growth': 'Growth/shrink percentage',
+        '': 'Daily value',
+        'avg': 'Average daily value',
+        'sum': 'Sum daily values',
+        'growth': 'Change percentage',
+        'sum,over-area': 'Sum values over area',
+        'sum,over-population': 'Sum values over population',
     };
 
     if ( key in values ) {

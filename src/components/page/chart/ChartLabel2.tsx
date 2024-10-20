@@ -1,7 +1,7 @@
 "use client"
 
 import { Left, Right } from "@/components/Generics";
-import { ChartLineIcon, MapIcon, LinkIcon, ScreenIcon, DownloadIcon } from "@/components/Icons";
+import { ChartBarIcon, MapIcon, LinkIcon, ScreenIcon, DownloadIcon } from "@/components/Icons";
 
 import { downloadChart } from "@/logic/download";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
@@ -14,8 +14,7 @@ type PropsType = {
 
 export default function ChartLabel( { setChartType }: PropsType ) {
 
-    const setChartLine = () => setChartType( 'line' );
-    const setChartLine2 = () => setChartType( 'line2' );
+    const setChartBar = () => setChartType( 'bar' );
     const setMap = () => setChartType( 'map' );
     
     const expandChart = (): void => {
@@ -33,8 +32,7 @@ export default function ChartLabel( { setChartType }: PropsType ) {
                 Charts
             </Left>
             <Right>
-                <ChartLineIcon className="icon" title="Line chart" onClick={ setChartLine } />
-                <ChartLineIcon className="icon" title="Line chart (2)" onClick={ setChartLine2 } />
+                <ChartBarIcon className="icon" title="Bar chart" onClick={ setChartBar } />
                 <MapIcon className="icon" title="Map" onClick={ setMap } />
                 <ScreenIcon className="icon" title="Wide view" onClick={ expandChart } />
                 <LinkIcon className="icon" title="Wide view link" />
@@ -43,5 +41,3 @@ export default function ChartLabel( { setChartType }: PropsType ) {
         </div>
     );
 }
-
-

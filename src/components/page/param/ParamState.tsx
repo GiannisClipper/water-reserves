@@ -3,8 +3,6 @@
 import { useState } from "react";
 
 import ParamLabel from "@/components/page/param/ParamLabel";
-import InterruptionsParamContent from "@/components/page/param/InterruptionsParamContent"
-import ParamContent1 from "@/components/page/param/ParamContent1";
 import ParamContent2 from "@/components/page/param/ParamContent2";
 import ParamContent3 from "@/components/page/param/ParamContent3";
 
@@ -32,16 +30,7 @@ const ParamState = ( { endpoint, searchParams, error, items }: PropsType ) => {
             />
 
             { 
-            [ 'temperature', 'interruptions' ].includes( endpoint )
-            ?
-            <ParamContent1
-                endpoint={ endpoint }
-                searchParams={ searchParams }
-                error={ error }
-                onPageRequest={ onPageRequest }
-            />
-            :
-            endpoint === 'savings-production'
+            [ 'temperature', 'interruptions', 'savings-production', 'savings-precipitation' ].includes( endpoint )
             ?
             <ParamContent2
                 endpoint={ endpoint }

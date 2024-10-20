@@ -13,7 +13,7 @@ const ListContent = ( { dataHandler }: PropsType ) => {
     const headers: string[] = dataHandler.headers;
     const data: ObjectType[] = dataHandler.data;
 
-    console.log( `rendering: ListContent...`, JSON.stringify(headers), JSON.stringify(data) )
+    console.log( `rendering: ListContent...` )//, JSON.stringify(headers), JSON.stringify(data) )
 
     return (
         <table className="ListContent">

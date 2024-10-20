@@ -59,7 +59,7 @@ const SingleTooltip = ( { active, payload, specifierCollection }: TooltipPropsTy
                 <p>{ `${valueSpecifier[ 'label' ]}: ${withCommas( value )} ` } 
                     <Unit unit={ valueSpecifier.unit }/>
                 </p>
-                <p>{ `Growth/shrink: ${withCommas( Math.round( difference ) )} ` }
+                <p>{ `Change: ${withCommas( Math.round( difference ) )} ` }
                     <Unit unit={ valueSpecifier.unit }/>
                     { ` (${withPlusSign( percentage )}%)` }
                 </p>
@@ -74,27 +74,61 @@ type TimelessTooltipPropsType = {
     active?: boolean
     payload?: any
     specifierCollection: ValueSpecifierCollection
-    items: ObjectType
 } 
 
-const TimelessTooltip = ( { active, payload, specifierCollection, items }: TimelessTooltipPropsType ) => {
+const TimelessTooltip = ( { active, payload, specifierCollection }: TimelessTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         payload = payload[ 0 ].payload;
 
-        const itemSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
-        const valueSpecifier: ValueSpecifier = specifierCollection.getByAxeY()[ 0 ];
+        const municipalitySpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
+        const nameSpecifier: ValueSpecifier = specifierCollection.getByKey( 'name' );
+        const areaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'area' );
+        const populationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'population' );
+        const eventsSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events' );
+        const overAreaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_area' );
+        const overPopulationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_population' );
 
-        const item: string = payload[ itemSpecifier.key ];
-        const value: number = payload[ valueSpecifier.key ];
+        // const valueSpecifier: ValueSpecifier = specifierCollection.getByAxeY()[ 0 ];
+        // const item: string = payload[ itemSpecifier.key ];
+        // const value: number = payload[ valueSpecifier.key ];
+        const name: string = payload[ nameSpecifier.key ];
+        const area: number = payload[ areaSpecifier.key ];
+        const population: number = payload[ populationSpecifier.key ];
+        const events: number = payload[ eventsSpecifier.key ];
+        const overArea: number = payload[ overAreaSpecifier.key ];
+        const overPopulation: number = payload[ overPopulationSpecifier.key ];
 
         return (
             <div className="Tooltip">
-                <p>{ `${itemSpecifier[ 'label' ]}: ${items[ item ]}` }</p>
-                <p>{ `${valueSpecifier[ 'label' ]}: ${withCommas( Math.round( value ) )} ` } 
-                    <Unit unit={ valueSpecifier.unit }/>
-                </p>
+                <strong>
+                    <div>{ municipalitySpecifier[ 'label'] } of { name }</div>
+                </strong>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>{ areaSpecifier[ 'label'] }</td>
+                            <td>{ withCommas( area ) }</td>
+                        </tr>
+                        <tr>
+                            <td>{ populationSpecifier[ 'label'] }</td>
+                            <td>{ withCommas( population ) }</td>
+                        </tr>
+                        <tr>
+                            <td>{ eventsSpecifier[ 'label'] }</td>
+                            <td>{ withCommas( events ) }</td>
+                        </tr>
+                        <tr>
+                            <td>{ overAreaSpecifier[ 'label'] }</td>
+                            <td>{ withCommas( Math.round( overArea * 10 ) / 10 ) }</td>
+                        </tr>
+                        <tr>
+                            <td>{ overPopulationSpecifier[ 'label'] }</td>
+                            <td>{ withCommas( Math.round( overPopulation * 10 ) / 10 ) }</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
       );
     }
@@ -116,17 +150,22 @@ const MultiTooltip = ( { active, payload, specifierCollection }: TooltipPropsTyp
 
         return (
             <div className="Tooltip">
-                <p>{ `${timeLabel( time )}: ${time}` }</p>
-                <>
-                { ySpecifiers.map( ( s, i ) => {
-                    return ( 
-                        <p key={i}>
-                            <span>{s.label}: {Math.round( values[ i ] )} </span>
-                            <Unit unit={ s.unit } />
-                        </p> 
-                    );
-                } ) }
-                </>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>{ timeLabel( time ) }</td>
+                            <td>{ time }</td>
+                        </tr>
+                        { ySpecifiers.map( ( s, i ) => {
+                            return ( 
+                                <tr key={i}>
+                                    <td>{ s.label }</td>
+                                    <td>{ values[ i ] } <Unit unit={ s.unit } /></td>
+                                </tr> 
+                            );
+                        } ) }
+                    </tbody>
+                </table>
             </div>
       );
     }
@@ -173,7 +212,7 @@ const StackTooltip = ( { active, payload, chartHandler, makeItemsRepr }: StackTo
                         { legendRepr.map( ( item, i ) =>
                             <tr key={ i }>
                                 <td>{ item.name }</td>
-                                <td className='value'>{ withCommas( Math.round( item.value ) ) } <Unit unit={ sumSpecifier.unit }/></td> 
+                                <td className='value'>{ withCommas( Math.round( item.value) ) } <Unit unit={ sumSpecifier.unit }/></td> 
                                 <td className='value'>{ `${item.percentage}%` }</td>
                             </tr>
                         ) }

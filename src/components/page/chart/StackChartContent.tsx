@@ -34,8 +34,6 @@ const ChartContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) 
         specifierCollection: dataHandler.specifierCollection
     } ).chartHandler;
 
-    console.log( "rendering: ChartContent...", chartHandler.toJSON() )
-
     const colorArray: string[] = [ 
         layoutSpecifier.colors[ 0 ][ 600 ], 
         layoutSpecifier.colors[ 0 ][ 500 ], 

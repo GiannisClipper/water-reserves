@@ -78,8 +78,25 @@ abstract class ApiRequestWithParams extends ApiRequest {
 
     constructor( searchParams: SearchParamsType ) {
         super();
-        console.log( 'searchParams', searchParams)
-        this.searchParams = searchParams;
+        // console.log( 'searchParams', searchParams)
+
+        const filtered: ObjectType = {};
+        Object.keys( searchParams ).map( ( key: string ) => {
+
+            // keep these params as is
+            if ( [ 'time_range', 'interval_filter', 'year_start' ].includes( key ) ) {
+                filtered[ key ] = searchParams[ key ];
+
+            // keep the leading two parts (following parts used for client process) 
+            } else if (  [ 'time_aggregation' ].includes( key ) ) {
+                if ( searchParams[ key ] ) {
+                    filtered[ key ] = searchParams[ key ].split( ',' ).slice( 0, 2 ).join( ',' );
+                }
+            }
+        } );
+
+        this.searchParams = filtered;
+        // console.log( 'searchParams (filtered)', this.searchParams )
     }
 
     private get urlParams(): string {
@@ -174,8 +191,17 @@ class SavingsApiRequest extends ApiRequestWithParams {
     
     endpoint = 'savings';
 
-    constructor( searchParams: SavingsSearchParamsType ) {
+    constructor( searchParams: SearchParamsType ) {
         super( searchParams );
+        console.log( 'searchParams', searchParams)
+        const filtered: ObjectType = this.searchParams;
+        Object.keys( searchParams ).map( ( key: string ) => {
+            if ( [ 'reservoir_filter', 'reservoir_aggregation' ].includes( key ) ) {
+                filtered[ key ] = searchParams[ key ];
+            }
+        } );
+        this.searchParams = filtered;
+        console.log( 'searchParams (filtered)', this.searchParams )
     }
 }
 
@@ -183,8 +209,17 @@ class ProductionApiRequest extends ApiRequestWithParams {
     
     endpoint = 'production';
 
-    constructor( searchParams: ProductionSearchParamsType ) {
+    constructor( searchParams: SearchParamsType ) {
         super( searchParams );
+        console.log( 'searchParams', searchParams)
+        const filtered: ObjectType = this.searchParams;
+        Object.keys( searchParams ).map( ( key: string ) => {
+            if ( [ 'factory_filter', 'factory_aggregation' ].includes( key ) ) {
+                filtered[ key ] = searchParams[ key ];
+            }
+        } );
+        this.searchParams = filtered;
+        console.log( 'searchParams (filtered)', this.searchParams )
     }
 }
 
@@ -192,8 +227,17 @@ class WeatherApiRequest extends ApiRequestWithParams {
     
     endpoint = 'weather';
 
-    constructor( searchParams: WeatherSearchParamsType ) {
+    constructor( searchParams: SearchParamsType ) {
         super( searchParams );
+        console.log( 'searchParams', searchParams)
+        const filtered: ObjectType = this.searchParams;
+        Object.keys( searchParams ).map( ( key: string ) => {
+            if ( [ 'location_filter', 'location_aggregation' ].includes( key ) ) {
+                filtered[ key ] = searchParams[ key ];
+            }
+        } );
+        this.searchParams = filtered;
+        console.log( 'searchParams (filtered)', this.searchParams )
     }
 }
 
@@ -201,8 +245,17 @@ class InterruptionsApiRequest extends ApiRequestWithParams {
     
     endpoint = 'interruptions';
 
-    constructor( searchParams: InterruptionsSearchParamsType ) {
+    constructor( searchParams: SearchParamsType ) {
         super( searchParams );
+        console.log( 'searchParams', searchParams)
+        const filtered: ObjectType = this.searchParams;
+        Object.keys( searchParams ).map( ( key: string ) => {
+            if ( [ 'municipality_filter', 'municipality_aggregation' ].includes( key ) ) {
+                filtered[ key ] = searchParams[ key ];
+            }
+        } );
+        this.searchParams = filtered;
+        console.log( 'searchParams (filtered)', this.searchParams )
     }
 }
 

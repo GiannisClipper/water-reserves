@@ -23,15 +23,7 @@ type PropsType = {
 
 const ChartContent = ( { chartType, dataHandler, layoutSpecifier }: PropsType ) => {
 
-    console.log( "rendering: TimelessChartContent...", dataHandler )
-
-    if ( chartType === 'line2' ) {
-        dataHandler.specifierCollection._specifiers[1].axeXY=''
-        dataHandler.specifierCollection._specifiers[2].axeXY='Y'
-    } else {
-        dataHandler.specifierCollection._specifiers[1].axeXY='Y'
-        dataHandler.specifierCollection._specifiers[2].axeXY=''
-    }
+    console.log( "rendering: TimelessChartContent..." )//, dataHandler )
 
     const chartHandler: ChartHandler = new ChartHandlerFactory( {
         type: 'single', 
@@ -49,16 +41,8 @@ const ChartContent = ( { chartType, dataHandler, layoutSpecifier }: PropsType ) 
 
     let items: ObjectType = {}
     for ( const item of legendItems ) {
-        items[ item.id ] = item.name_en;
+        items[ item.id ] = item.name_el;
     }
-    // console.log( 'items', items)
-
-    // for ( const row of dataHandler.data ) {
-    //     row.points = items[ row.municipality_id ].population / row.points; 
-    //     console.log( 'row.municipality_id', row.municipality_id, items[ row.municipality_id ].population, row.points )
-    // }
-
-    console.log( "rendering: ChartContent...", items )//, dataHandler.data, dataHandler.legend );
 
     return (
         <div className="ChartContent">
@@ -118,7 +102,6 @@ const BarChartComposition = ( { chartHandler, layoutSpecifier, items }: ChartCom
                     cursor={{ fill: '#eee' }}
                     content={ <TimelessTooltip 
                         specifierCollection={ chartHandler.specifierCollection }
-                        items={ items }
                     /> } 
                 />
 

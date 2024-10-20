@@ -10,6 +10,10 @@ const Unit = ( { unit }: { unit: UnitType } ) => {
         return ( <><sup>o</sup>C</> );
     }
 
+    if ( unit === 'km2' ) {
+        return ( <>km<sup>2</sup></> );
+    }
+
     return unit;
 }
 

@@ -70,7 +70,9 @@ class ParamValues {
     set valueAggregation( val: string | undefined ) {
 
         if ( val && val.includes( ',' ) ) {
-            val = val.split( ',' )[ 1 ];
+            // get from the second part of time_aggregation value to end,
+            // all parts after the second considering for client process
+            val = val.split( ',' ).slice( 1 ).join( ',' );
         }
 
         this._valueAggregation = val ? val : "";

@@ -22,6 +22,7 @@ import BrowserUrl from "@/helpers/url/BrowserUrl";
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
 import type { ObjectType } from "@/types";
+import ParamValues from "@/logic/ParamValues";
 
 type PropsType = {
     endpoint: string
@@ -33,7 +34,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
         .dataHandler;
-
+    
     const layoutSpecifier: ObjectType = new ChartLayoutSpecifierFactory( endpoint, searchParams )
         .layoutSpecifier
         .toJSON();
@@ -71,7 +72,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
-    console.log( "rendering: ChartSection...", dataHandler )//, dataHandler.toJSON() )
+    console.log( "rendering: ChartSection..." )//, dataHandler )//, dataHandler.toJSON() )
 
     return (
         <div className="ChartSection">

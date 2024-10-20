@@ -2,13 +2,17 @@
 
 import { SingleTimelessDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 import { MapContainer, TileLayer, ZoomControl, GeoJSON, Tooltip, Marker, Popup } from 'react-leaflet'
-import { withCommas } from '@/helpers/numbers';
-import 'leaflet/dist/leaflet.css'
-import geojson from '@/geography/dhmoi_okxe_attica.json';
 
+import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
+import { ValueSpecifier } from '@/logic/ValueSpecifier';
+
+import { withCommas } from '@/helpers/numbers';
 import type { ObjectType } from '@/types';
 
+import geojson from '@/geography/dhmoi_okxe_attica.json';
+
 import "@/styles/chart.css";
+import 'leaflet/dist/leaflet.css'
 
 const MyTooltip = props => {
 
@@ -24,6 +28,16 @@ type PropsType = {
 
 const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) => {
 
+    const specifierCollection: ValueSpecifierCollection = dataHandler.specifierCollection;
+
+    const municipalitySpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
+    const nameSpecifier: ValueSpecifier = specifierCollection.getByKey( 'name' );
+    const areaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'area' );
+    const populationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'population' );
+    const eventsSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events' );
+    const overAreaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_area' );
+    const overPopulationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_population' );
+
     const municipalities: ObjectType = {}; 
     if ( dataHandler.legend ) {
         for ( const row of dataHandler.legend[ 'municipalities' ] ) {
@@ -31,26 +45,32 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
         }
     }
 
-    const points: ObjectType = {}; 
+    const events: ObjectType = {}; 
     for ( const row of dataHandler.data ) {
-        points[ row.municipality_id ] = row;
+        events[ row.municipality_id ] = row;
     }
 
     for ( const feature of geojson.features ) {
         const id: string = feature.properties.KWD_YPES;
-        feature[ 'points' ] = 0
+        feature[ 'events' ] = 0
+        feature[ 'name' ] = 0
+        feature[ 'area' ] = 0
         feature[ 'population' ] = 0;
-        feature[ 'perPoint' ] = 0
-        if ( points[ id ] ) {
-            feature[ 'points' ] = points[ id ].points;
-            feature[ 'population' ] = municipalities[ id ].population;
-            feature[ 'perPoint' ] = Math.round( municipalities[ id ].population / points[ id ].points );
+        feature[ 'events_over_population' ] = 0;
+        feature[ 'events_over_area' ] = 0;
+        if ( events[ id ] ) {
+            feature[ 'events' ] = events[ id ][ 'events' ];
+            feature[ 'name' ] = events[ id ][ 'name' ];
+            feature[ 'area' ] = events[ id ][ 'area' ];    
+            feature[ 'population' ] = events[ id ][ 'population' ];
+            feature[ 'events_over_area' ] = events[ id ][ 'events_over_area' ];    
+            feature[ 'events_over_population' ] = events[ id ][ 'events_over_population' ];
         }
     }
  
     const setStyle = feature => {
 
-        const color = feature.points
+        const color = feature.events
             ? 'red'
             : 'lightgreen';
 
@@ -85,19 +105,48 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
                 <ZoomControl 
                     position="topright" 
                 />
-                { geojson.features.map( f => 
+                { geojson.features.map( ( f: ObjectType ) => 
                     <GeoJSON
                         data={ f } 
                         style={setStyle} 
                     >
                         <Tooltip sticky>
-                            <strong><p>Δήμος { f.properties.NAME }</p></strong>
-                            <p>Συμβάντα διακοπής νερού: { withCommas( f.points) }</p>
+                            <div className='Tooltip Map'>
+                            <strong>
+                                <div>{ municipalitySpecifier[ 'label'] } of { f.name }</div>
+                            </strong>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>{ areaSpecifier[ 'label'] }</td>
+                                        <td>{ withCommas( f.area ) }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{ populationSpecifier[ 'label'] }</td>
+                                        <td>{ withCommas( f.population ) }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{ eventsSpecifier[ 'label'] }</td>
+                                        <td>{ withCommas( f.events ) }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{ overAreaSpecifier[ 'label'] }</td>
+                                        <td>{ withCommas( Math.round( f.events_over_area * 10 ) / 10 ) }</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{ overPopulationSpecifier[ 'label'] }</td>
+                                        <td>{ withCommas( Math.round( f.events_over_population * 10 ) / 10 ) }</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            {/* <strong><p>Δήμος { f.properties.NAME }</p></strong>
+                            <p>Συμβάντα διακοπής νερού: { withCommas( f.events) }</p>
                             <p>Σύνολο κατοίκων στο δήμο: { withCommas( f.population ) }</p>
-                            <p>Ένα συμβάν για κάθε { withCommas( f.perPoint ) } κατοίκους.</p>
+                            <p>Ένα συμβάν για κάθε { withCommas( f.perPoint ) } κατοίκους.</p> */}
                         </Tooltip>
                     </GeoJSON>
-                )}
+                ) }
                 {/* <Marker position={position}>
                     <Popup>
                         A  <strong>customizable</strong> popup.

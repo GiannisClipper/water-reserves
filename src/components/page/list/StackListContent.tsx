@@ -22,7 +22,7 @@ const ListContent = ( { dataHandler }: PropsType ) => {
     // update lexicon
     items.forEach( r => lexicon[ r.name_en ] = r.name_en );
 
-    console.log( `rendering: StackListContent...`, headers, data )
+    console.log( `rendering: StackListContent...` )//, headers, data )
 
     return (
         <table className="ListContent">

@@ -91,8 +91,8 @@ class LayoutSpecifierFactory {
             case 'temperature': {
         
                 const title: string = ! timeAggregation
-                    ? 'Daily temperatures in Athens'
-                    : 'Temperatures in Athens (daily)';
+                    ? 'Temperatures in Athens'
+                    : 'Temperatures in Athens (daily average)';
 
                 const unit: UnitType = 'oC';
                 const colors: ObjectType[] = [ CYAN, YELLOW, ORANGE ];
@@ -104,15 +104,23 @@ class LayoutSpecifierFactory {
 
             case 'interruptions': {
         
-                const title: string = 'Water supply interruptions';
-
+                let title: string = 'Water supply interruptions';
                 const unit: UnitType = 'oC';
                 const colors: ObjectType[] = [ RED ];
+
                 let xLabel: string = timeRepr[ timeAggregation ];
                 if ( timeAggregation === 'alltime' ) {
                     xLabel = 'Municipalities';
                 }
-                const yLabel: string = 'Events';
+
+                let yLabel: string = 'Events';
+                if ( valueAggregation === 'sum,over-area' ) {
+                    title += ' (per sq. km)';
+                    yLabel = 'Event per sq. km';
+                } else if ( valueAggregation === 'sum,over-population' ) {
+                    title += ' (per 1000 residents)';
+                    yLabel = 'Event per 1000 residents';
+                }
                 this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xLabel, yLabel } );
                 break;
             }
