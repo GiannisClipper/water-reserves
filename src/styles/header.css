@@ -23,6 +23,21 @@
     m-4 text-sm
   }
 
+  .Footer {
+    @apply flex flex-row flex-wrap justify-center
+    m-4 p-1 
+    text-sky-700
+    /* bg-white bg-opacity-50 */
+  }
+
+  .Footer > * {
+    @apply m-2 text-sm font-semibold
+  }
+
+  .Footer > a {
+    @apply border-b border-sky-700
+  }
+
   .Header .Top,
   .Header .Bottom {
     @apply flex flex-row justify-between
