@@ -80,7 +80,6 @@ class StackDataHandler extends DataHandler {
             specifier.parser( this.data, this.legend );
         }
         // console.log( 'this.data', this.data)
-        console.log( 'this.legend', this.legend, result)
     }
 }
 

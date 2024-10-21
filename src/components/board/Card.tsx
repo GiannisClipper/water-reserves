@@ -8,7 +8,7 @@ import { withCommas } from "@/helpers/numbers";
 
 import type { ObjectType } from "@/types";
 import CardLayoutSpecifierFactory from "@/logic/LayoutSpecifier/CardLayoutSpecifierFactory";
-import { CardLayoutSpecifier } from "@/logic/LayoutSpecifier";
+import { CardLayoutSpecifier, ChartLayoutSpecifier } from "@/logic/LayoutSpecifier";
 
 type PropsType = { 
     option: string
@@ -18,10 +18,6 @@ type PropsType = {
 const Card = ( { option, result }: PropsType ) => {
 
     const layoutSpecifier = new CardLayoutSpecifierFactory( option ).layoutSpecifier;
-    // to get the middle color for the mean temperature
-    if ( option === 'temperature' ) {
-        layoutSpecifier.colors = [ layoutSpecifier.colors[1] ];
-    }
     const cardHandler = new CardHandlerFactory( option, result ).cardHandler;
 
     const evaluation: string = CardLayoutSpecifier.evaluation[ cardHandler.cluster ];
@@ -34,20 +30,20 @@ const Card = ( { option, result }: PropsType ) => {
             <div className="Info">
                 <div>Last update: { cardHandler.date } </div>
                 <div>
-                    Measurement: { withCommas(cardHandler.value) } <Unit unit={ layoutSpecifier.unit }/>
+                    Measurement: { withCommas(cardHandler[ layoutSpecifier.yKeys[ 0 ] ]) } <Unit unit={ layoutSpecifier.unit }/>
                 </div>
             </div>
 
             <CardLineChart 
                 data={ cardHandler.recentEntries }
                 label={ `Recent measurements: ${cardHandler.interval}` }
-                layoutSpecifier={ layoutSpecifier }
+                layoutSpecifier={ layoutSpecifier as ChartLayoutSpecifier }
             />
 
             <CardPieChart 
                 cluster={ cardHandler.cluster } 
                 label={ pieLabel }
-                layoutSpecifier={ layoutSpecifier }
+                layoutSpecifier={ layoutSpecifier as ChartLayoutSpecifier }
             />
         </div>
     );

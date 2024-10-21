@@ -4,26 +4,34 @@ import { PieChart, Pie, Cell } from 'recharts';
 import { calcTicks } from '@/helpers/ticks';
 import { CardTooltip } from '@/components/page/chart/tooltips';
 
-import { LayoutSpecifier } from '@/logic/LayoutSpecifier';
+import { ChartLayoutSpecifier } from '@/logic/LayoutSpecifier';
 
 import type { ObjectType } from "@/types";
 
 type LineChartPropsType = { 
     data: ObjectType[]
     label: string
-    layoutSpecifier: LayoutSpecifier
+    layoutSpecifier: ChartLayoutSpecifier
 };
 
 import "@/styles/chart.css";
 
 const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) => {
 
-    const color = layoutSpecifier.colors[ 0 ]
 
     const WIDTH: number = 400;
     const HEIGHT: number = 240;
+    const xKey: string = layoutSpecifier.xKeys[ 0 ];
+    const yKeys: string[] = layoutSpecifier.yKeys;
+    const yValues: number[] = [];
+    for ( const key of yKeys ) {
+        for ( const row of data ) {
+            yValues.push( row[ key ] )
+        }
+    }
+    const yTicks: number[] = calcTicks( yValues, 2 );
 
-    const yTicks: number[] = calcTicks( data.map( d => d.value ), 2 );
+    const colors = layoutSpecifier.colors;
 
     return (
         <div className='CardLineChart'>
@@ -35,14 +43,13 @@ const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) =
             >
                 <CartesianGrid strokeDasharray="1 1" />
                 <XAxis 
-                    dataKey="date" 
-                    ticks={ data.map( d => d.date ) } 
+                    dataKey={xKey} 
+                    ticks={ data.map( d => d[ xKey ] ) } 
                     interval={ 0 } 
-                    tick={ <XAxisTick ticks={ data.map( d => d.date ) } /> }
+                    tick={ <XAxisTick ticks={ data.map( d => d[ xKey ] ) } /> }
                 />
                 <YAxis
                     domain={ [ yTicks[ 0 ], yTicks[ yTicks.length - 1 ] ] } 
-                    dataKey="value"
                     ticks={ yTicks }
                     interval={ 0 } 
                     tick={ <YAxisTick /> }
@@ -56,14 +63,17 @@ const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) =
                     component={<BottomLabel height={ HEIGHT } label={ label } />}
                 /> 
 
-                <Line 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke={ color[ 500 ] } 
-                    strokeWidth={ 2 } 
-                    dot={ false }
-                    isAnimationActive={ true }
-                />
+                { yKeys.map( ( key, i ) =>
+                    <Line 
+                        key={ i }
+                        type="monotone" 
+                        dataKey={yKeys[ i ]}
+                        stroke={ colors[ i ][ 500 ] } 
+                        strokeWidth={ 2 }
+                        dot={ false }
+                        isAnimationActive={ true }
+                    />
+                ) }
             </LineChart>
         </div>
     );
@@ -72,7 +82,7 @@ const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) =
 type PieChartPropsType = { 
     cluster: number
     label: string
-    layoutSpecifier: LayoutSpecifier
+    layoutSpecifier: ChartLayoutSpecifier
 };
 
 const CardPieChart = ( { cluster, label, layoutSpecifier }: PieChartPropsType ) => {

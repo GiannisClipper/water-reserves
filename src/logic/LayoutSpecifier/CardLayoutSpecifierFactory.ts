@@ -12,12 +12,6 @@ import {
 
 import type { ObjectType, UnitType } from "@/types";
 
-interface LayoutSpecifierType {
-    title?: string
-    unit?: UnitType
-    colors?: ObjectType[]
-}
-
 class LayoutSpecifierFactory {
 
     layoutSpecifier: LayoutSpecifier;
@@ -31,7 +25,9 @@ class LayoutSpecifierFactory {
                 const title: string = 'Water reserves';
                 const unit: UnitType = 'm3';
                 const colors: ObjectType[] = [ SKY ];
-                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors } );
+                const xKeys: string[] = [ 'date' ]; 
+                const yKeys: string[] = [ 'quantity' ]; 
+                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xKeys, yKeys } );
                 break;
             }
 
@@ -40,7 +36,9 @@ class LayoutSpecifierFactory {
                 const title: string = 'Drinking water production';
                 const unit: UnitType = 'm3';
                 const colors: ObjectType[] = [ PINK ];
-                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors } );
+                const xKeys: string[] = [ 'date' ]; 
+                const yKeys: string[] = [ 'quantity' ]; 
+                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xKeys, yKeys } );
                 break;
             }
 
@@ -50,7 +48,9 @@ class LayoutSpecifierFactory {
                 const title: string = 'Precipitation';
                 const unit: UnitType = 'mm';
                 const colors: ObjectType[] = [ TEAL ];
-                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors } );
+                const xKeys: string[] = [ 'date' ]; 
+                const yKeys: string[] = [ 'precipitation_sum' ]; 
+                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xKeys, yKeys } );
                 break;
             }
 
@@ -59,7 +59,9 @@ class LayoutSpecifierFactory {
                 const title: string = 'Mean temperature in Athens';
                 const unit: UnitType = 'oC';
                 const colors: ObjectType[] = [ CYAN, YELLOW, ORANGE ];
-                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors } );
+                const xKeys: string[] = [ 'date' ]; 
+                const yKeys: string[] = [ 'temperature_2m_min', 'temperature_2m_mean', 'temperature_2m_max' ]; 
+                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xKeys, yKeys } );
                 break;
             }
 

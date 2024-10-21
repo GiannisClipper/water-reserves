@@ -5,7 +5,6 @@ abstract class CardHandler {
     _interval: string;
 
     _date: string;
-    abstract _value: number;
     abstract _recentEntries: ObjectType[];
 
     abstract _clusters: ObjectType[];
@@ -32,10 +31,6 @@ abstract class CardHandler {
         return this._date;
     }
 
-    get value(): number {
-        return this._value;
-    }
-
     get recentEntries(): ObjectType[] {
         return this._recentEntries;
     }
@@ -52,7 +47,6 @@ abstract class CardHandler {
         return {
             interval: this.interval,
             date: this.date, 
-            value: this.value,
             recentEntries: this.recentEntries,
             clusters: this.clusters,
             cluster: this.clusters,
@@ -62,11 +56,12 @@ abstract class CardHandler {
 
 class SavingsCardHandler extends CardHandler {
 
-    _value: number;
     _recentEntries: ObjectType[];
 
     _clusters: ObjectType[];
     _cluster: number;
+
+    quantity: number;
 
     constructor( result: any ) {
 
@@ -77,22 +72,23 @@ class SavingsCardHandler extends CardHandler {
         this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
-        this._value = recent_entries[ recent_entries.length - 1 ].quantity;
+        this.quantity = recent_entries[ recent_entries.length - 1 ].quantity;
 
         this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
-            value: entry.quantity, 
+            quantity: entry.quantity, 
         } ) );
     }
 }
 
 class ProductionCardHandler extends CardHandler {
 
-    _value: number;
     _recentEntries: ObjectType[];
 
     _clusters: ObjectType[];
     _cluster: number;
+
+    quantity: number;
 
     constructor( result: any ) {
 
@@ -103,22 +99,23 @@ class ProductionCardHandler extends CardHandler {
         this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
-        this._value = recent_entries[ recent_entries.length - 1 ].quantity;
+        this.quantity = recent_entries[ recent_entries.length - 1 ].quantity;
 
         this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
-            value: entry.quantity, 
+            quantity: entry.quantity, 
         } ) );
     }
 }
 
 class PrecipitationCardHandler extends CardHandler {
 
-    _value: number;
     _recentEntries: ObjectType[];
 
     _clusters: ObjectType[];
     _cluster: number;
+
+    precipitation_sum: number;
 
     constructor( result: any ) {
 
@@ -129,22 +126,25 @@ class PrecipitationCardHandler extends CardHandler {
         this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
-        this._value = recent_entries[ recent_entries.length - 1 ].precipitation_sum;
+        this.precipitation_sum = recent_entries[ recent_entries.length - 1 ].precipitation_sum;
 
         this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
-            value: entry.precipitation_sum, 
+            precipitation_sum: entry.precipitation_sum, 
         } ) );
     }
 }
 
 class TemperatureCardHandler extends CardHandler {
 
-    _value: number;
     _recentEntries: ObjectType[];
 
     _clusters: ObjectType[];
     _cluster: number;
+
+    temperature_2m_min: number;
+    temperature_2m_mean: number;
+    temperature_2m_max: number;
 
     constructor( result: any ) {
 
@@ -155,11 +155,15 @@ class TemperatureCardHandler extends CardHandler {
         this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
-        this._value = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
+        this.temperature_2m_min = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
+        this.temperature_2m_mean = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
+        this.temperature_2m_max = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
 
         this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
-            value: entry.temperature_2m_mean, 
+            temperature_2m_min: entry.temperature_2m_mean, 
+            temperature_2m_mean: entry.temperature_2m_mean, 
+            temperature_2m_max: entry.temperature_2m_mean, 
         } ) );
     }
 }

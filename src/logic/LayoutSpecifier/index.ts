@@ -7,6 +7,8 @@ interface LayoutSpecifierType {
 }
 
 interface ChartLayoutSpecifierType extends LayoutSpecifierType {
+    xKeys: string[]
+    yKeys: string[]
     xLabel?: string
     yLabel?: string
 }
@@ -34,18 +36,24 @@ abstract class LayoutSpecifier {
 
 class ChartLayoutSpecifier extends LayoutSpecifier {
 
+    xKeys: string[]
+    yKeys: string[]
     xLabel?: string
     yLabel?: string
 
-    constructor( { xLabel, yLabel, ...otherProps }: ChartLayoutSpecifierType ) {
+    constructor( { xKeys, yKeys, xLabel, yLabel, ...otherProps }: ChartLayoutSpecifierType ) {
         super( otherProps );
-        this.xLabel = xLabel || 'xLabel'
-        this.yLabel = yLabel || 'yLabel'
+        this.xKeys = xKeys;
+        this.yKeys = yKeys;
+        this.xLabel = xLabel || 'xLabel';
+        this.yLabel = yLabel || 'yLabel';
     }
 
     toJSON(): ObjectType {
         return {
             ...super.toJSON(),
+            xKeys: this.xKeys,
+            yKeys: this.yKeys,
             xLabel: this.xLabel,
             yLabel: this.yLabel,
         }

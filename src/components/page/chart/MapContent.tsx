@@ -15,12 +15,6 @@ import "@/styles/chart.css";
 import 'leaflet/dist/leaflet.css'
 import { useState } from 'react';
 
-const MyTooltip = props => {
-
-    console.log( props );
-    return <Tooltip>sticky Tooltip for Geojson</Tooltip>;
-}
-
 type PropsType = { 
     dataHandler: SingleTimelessDataHandler
     chartType: string | undefined

@@ -19,11 +19,18 @@ const CardTooltip = ( { active, payload, layoutSpecifier }: CardTooltipPropsType
 
     if ( active && payload && payload.length ) {
 
-        const { date, value } = payload[ 0 ].payload;
+        // const { date, value } = payload[ 0 ].payload;
+        const dateKey = layoutSpecifier.xKeys[ 0 ];
+        const date = payload[ 0 ].payload[ dateKey ];
+
         return (
             <div className="Tooltip">
                 <p>{ `Date: ${date}` }</p>
-                <p>{ `Quantity: ${withCommas( value )}` } <Unit unit={ layoutSpecifier.unit }/></p>
+                { layoutSpecifier.yKeys.map( key => {
+                    const valueKey = layoutSpecifier.yKeys[ 0 ];
+                    const value = payload[ 0 ].payload[ valueKey ];
+                    return <p key={key}>{ `Value: ${withCommas( value )}` } <Unit unit={ layoutSpecifier.unit }/></p>;
+                } ) }
             </div>
       );
     }
