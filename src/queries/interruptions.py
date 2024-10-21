@@ -196,7 +196,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             where_clause = ''
 
         self.query = f'''
-            SELECT id, date, municipality_id, 1 AS points
+            SELECT id, date, municipality_id, 1 AS events
             FROM interruptions
             {where_clause}'''
 
@@ -204,7 +204,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
 
         self.query = f'''
             SELECT 
-            {alias}.date AS date, SUM({alias}.points) AS points 
+            {alias}.date AS date, SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -216,21 +216,36 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
         if self.municipality_aggregation:
             self.query = f'''
             SELECT
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}'''
 
         else:
+            # in case of ALLTIME aggregation
+            # complement result with municipality AREAS, POPULATIONS 
+            # and divisions OVER them
+
             self.query = f'''
             SELECT
-            {alias}.municipality_id AS municipality_id, 
-            SUM({alias}.points) AS points 
+            ir.municipality_id AS municipality_id, 
+            ir.events AS events,
+            mu.area AS area,
+            mu.population AS population,
+            ir.events / mu.area AS events_over_area,
+            ir.events / ( .001 * mu.population ) AS events_over_population
             FROM (
-            {set_indentation( 4, self.query )}
-            ) {alias} 
-            GROUP BY 
-            {alias}.municipality_id'''
+                SELECT
+                {alias}.municipality_id AS municipality_id, 
+                SUM({alias}.events) AS events
+                FROM (
+                {set_indentation( 4, self.query )}
+                ) {alias}
+                GROUP BY 
+                {alias}.municipality_id
+            ) ir
+            JOIN municipalities mu
+            ON ir.municipality_id=mu.id'''
 
     def __expand_query_with_date_aggregation( self, alias ):
 
@@ -238,7 +253,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             self.query = f'''
             SELECT 
             {alias}.date AS date,
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -250,7 +265,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             SELECT 
             {alias}.date AS date,
             {alias}.municipality_id AS municipality_id, 
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -265,7 +280,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             self.query = f'''
             SELECT 
             SUBSTR({alias}.date::text,1,7) AS month, 
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -277,7 +292,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             SELECT 
             SUBSTR({alias}.date::text,1,7) AS month, 
             {alias}.municipality_id AS municipality_id, 
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -291,7 +306,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             self.query = f'''
             SELECT
             SUBSTR({alias}.date::text,1,4) AS year, 
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -303,7 +318,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             SELECT
             SUBSTR({alias}.date::text,1,4) AS year, 
             {alias}.municipality_id AS municipality_id, 
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias} 
@@ -323,7 +338,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             self.query = f'''
             SELECT 
             {custom_year} AS custom_year,
-            {alias}.points AS points 
+            {alias}.events AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}'''
@@ -332,7 +347,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             SELECT 
             {custom_year} AS custom_year,
             {alias}.municipality_id AS municipality_id, 
-            {alias}.points AS points 
+            {alias}.events AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}'''
@@ -343,7 +358,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             self.query = f'''
             SELECT 
             {alias}.custom_year AS custom_year, 
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}
@@ -355,7 +370,7 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             SELECT 
             {alias}.custom_year AS custom_year, 
             {alias}.municipality_id AS municipality_id, 
-            SUM({alias}.points) AS points 
+            SUM({alias}.events) AS events 
             FROM (
             {set_indentation( 4, self.query )}
             ) {alias}

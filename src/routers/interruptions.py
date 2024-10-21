@@ -9,6 +9,7 @@ from src.validators.interruptions import validate_time_aggregation, validate_mun
 from src.queries.interruptions import InterruptionsPoolQueryFactory
 from src.queries.municipalities import MunicipalitiesPoolQueryFactory, Municipality
 from src.helpers.text import get_query_headers
+from src.helpers.clustering import kmeans_clustering
 
 import src.docs as docs
 from src.docs.query import timeRangeQuery, intervalFilterQuery, timeΑggregationQuery, yearStartQuery
@@ -21,7 +22,7 @@ class Legend:
 @dataclass
 class InterruptionsResponse:
     headers: list[ str ]
-    data: list[ list ]
+    data: list[ tuple ]
     legend: Legend | None = None
 
 router = APIRouter( prefix="/api/v1/interruptions" )
@@ -49,6 +50,20 @@ async def get_all(
     if municipality_aggregation != None:
         return InterruptionsResponse( headers=headers, data=data )
 
+    # calculate interruptions clustering
+    if time_aggregation and time_aggregation[ 0 ] == 'alltime':
+        # values = list( map( lambda row: .5 * ( row[ -1 ] + row[ -2 ] ), data ) )
+        values = list( map( lambda row: ( row[ -1 ], row[ -2 ] ), data ) )
+        centers, clusters = kmeans_clustering( values, n_clusters=3 )
+        # print( 'centers', centers )
+        # print( 'clusters', clusters )
+        headers += [ 'cluster' ]
+        data = [ tuple( list( x[ 0 ] ) + [ x[ 1 ] ] ) for x in zip( data, clusters ) ]
+        # data = list( map( 
+        #     lambda row, cl: tuple( list( row ) + [ cl ] ), zip( data, clusters ) 
+        # ) )
+
+    # place municipalities data in result legend
     query_handler = MunicipalitiesPoolQueryFactory().handler
     query_handler.maker.select_all()
     await query_handler.run_query()

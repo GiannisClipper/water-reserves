@@ -53,7 +53,7 @@ class StatusAnalysis( ABC ):
         # print( lst, arr )
 
         kmeans = KMeans( n_clusters=5, max_iter=600, random_state=32 )
-        kmeans.fit( arr.reshape( -1, 1 ) )
+        kmeans.fit( arr.reshape( -1, 1 ) ) # np.array([ 1, 2, 3 ]).reshape( -1, 1 ) => np.array([ [1], [2], [3] ])
         # print( kmeans.cluster_centers )
         # print( kmeans.labels_ )
 
