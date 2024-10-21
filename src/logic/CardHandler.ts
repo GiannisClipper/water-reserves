@@ -155,15 +155,15 @@ class TemperatureCardHandler extends CardHandler {
         this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
-        this.temperature_2m_min = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
+        this.temperature_2m_min = recent_entries[ recent_entries.length - 1 ].temperature_2m_min;
         this.temperature_2m_mean = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
-        this.temperature_2m_max = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
+        this.temperature_2m_max = recent_entries[ recent_entries.length - 1 ].temperature_2m_max;
 
         this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
-            temperature_2m_min: entry.temperature_2m_mean, 
+            temperature_2m_min: entry.temperature_2m_min,
             temperature_2m_mean: entry.temperature_2m_mean, 
-            temperature_2m_max: entry.temperature_2m_mean, 
+            temperature_2m_max: entry.temperature_2m_max, 
         } ) );
     }
 }

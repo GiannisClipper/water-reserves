@@ -22,14 +22,14 @@ const CardTooltip = ( { active, payload, layoutSpecifier }: CardTooltipPropsType
         // const { date, value } = payload[ 0 ].payload;
         const dateKey = layoutSpecifier.xKeys[ 0 ];
         const date = payload[ 0 ].payload[ dateKey ];
+        const values: number[] = layoutSpecifier.yKeys.map( key => payload[ 0 ].payload[ key ] )
+            .sort( ( a, b ) => b - a );
 
         return (
             <div className="Tooltip">
                 <p>{ `Date: ${date}` }</p>
-                { layoutSpecifier.yKeys.map( key => {
-                    const valueKey = layoutSpecifier.yKeys[ 0 ];
-                    const value = payload[ 0 ].payload[ valueKey ];
-                    return <p key={key}>{ `Value: ${withCommas( value )}` } <Unit unit={ layoutSpecifier.unit }/></p>;
+                { values.map( ( value, i ) => {
+                    return <p key={ i }>{ `Value: ${withCommas( value )}` } <Unit unit={ layoutSpecifier.unit }/></p>;
                 } ) }
             </div>
       );

@@ -87,7 +87,8 @@ type PieChartPropsType = {
 
 const CardPieChart = ( { cluster, label, layoutSpecifier }: PieChartPropsType ) => {
 
-    const color = layoutSpecifier.colors[ 0 ]
+    const midIndex: number = Math.floor( layoutSpecifier.colors.length / 2 );
+    const color = layoutSpecifier.colors[ midIndex ];
 
     const WIDTH: number = 400;
     const HEIGHT: number = 200;
