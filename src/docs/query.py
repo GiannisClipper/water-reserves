@@ -1,156 +1,172 @@
 from fastapi import Query
 
 timeRangeQuery = Query( 
-    description = "Προσδιορισμός χρονικού εύρους αναζήτησης (με τη μορφή ετών, μηνών ή ημ/νιών)",
+    description = "Time range definition (in the form of years, months or dates)",
     openapi_examples = {
         "ex1": {
-            "summary": "Με τη μορφή ετών",
+            "summary": "In the form of years",
             "value": "2000,2024"
         },
         "ex2": {
-            "summary": "Με τη μορφή μηνών",
+            "summary": "In the form of months",
             "value": "2023-10,2024-09"
         },
         "ex3": {
-            "summary": "Με τη μορφή ημ/νιών",
+            "summary": "In the form of dates",
             "value": "2024-08-16,2024-09-15"
         },
     }
 )
 
 reservoirFilterQuery = Query( 
-    description = "Επιλογή συγκεκριμένων ταμιευτήρων (μέσω του id)",
+    description = "Reservoirs selection (using id)",
     openapi_examples = {
         "ex1": {
-            "summary": "Για έναν ταμιευτήρα",
-            "value": "1"
+            "summary": "Selecting all reservoirs (no id)",
+            "value": ""
         },
         "ex2": {
-            "summary": "Για τρεις ταμιευτήρες ",
+            "summary": "Selecting one reservoir",
+            "value": "1"
+        },
+        "ex3": {
+            "summary": "Selecting many reservoirs",
             "value": "1,3,4"
         },
     }
 )
 
 factoryFilterQuery = Query( 
-    description = "Επιλογή συγκεκριμένων μονάδων επεξεργασίας (μέσω του id)",
+    description = "Water-treatment plants selection (using id)",
     openapi_examples = {
         "ex1": {
-            "summary": "Για μία μονάδα",
-            "value": "1"
+            "summary": "Selecting all plants (no id)",
+            "value": ""
         },
         "ex2": {
-            "summary": "Για τρεις μνονάδες ",
+            "summary": "Selecting one plant",
+            "value": "1"
+        },
+        "ex3": {
+            "summary": "Selecting many plants",
             "value": "1,3,4"
         },
     }
 )
 
 locationFilterQuery = Query( 
-    description = "Επιλογή συγκεκριμένων τοποθεσιών μετρήσεων (μέσω του id)",
+    description = "Measurement locations selection (using id)",
     openapi_examples = {
         "ex1": {
-            "summary": "Για μία τοποθεσία",
-            "value": "4"
+            "summary": "Selecting all locations (no id)",
+            "value": ""
         },
         "ex2": {
-            "summary": "Για τρεις τοποθεσίες ",
+            "summary": "Selecting one location",
+            "value": "4"
+        },
+        "ex3": {
+            "summary": "Selecting many locations",
             "value": "1,5,8"
         },
     }
 )
 
 municipalityFilterQuery = Query( 
-    description = "Επιλογή συγκεκριμένων Δήμων (μέσω του id)",
+    description = "Municipalities selection (using id)",
     openapi_examples = {
         "ex1": {
-            "summary": "Για έναν Δήμο",
+            "summary": "Selecting all municipalities (no id)",
+            "value": ""
+        },
+        "ex2": {
+            "summary": "Selecting one municipality",
             "value": "9191"
         },
         "ex2": {
-            "summary": "Για τρεις Δήμους ",
-            "value": "9190,9193, 9197"
+            "summary": "Selecting many municipalities",
+            "value": "9190,9193,9197"
         },
     }
 )
 
 intervalFilterQuery = Query( 
-    description = "Επιλογή περιορισμένου διαστήματος επεξεργασίας",
+    description = "Selection of a limited processing period",
     openapi_examples = {
         "ex1": {
-            "summary": "Από μέσα Ιουλίου μέχρι τέλος Αυγούστου (ΜΜ-ΗΗ,ΜΜ-ΗΗ)",
-            "value": "07-16,08-30"
+            "summary": "From the mid of July until the end of August (ΜΜ-ΗΗ,ΜΜ-ΗΗ)",
+            "value": "07-16,08-31"
         },
     }
 )
 
 reservoirΑggregationQuery = Query( 
-    description = "Επιλογή συγκεντρωτικής παρουσίασης ως προς τους ταμιευτήρες",
+    description = "Option of reservoir-aggregated data processing",
     openapi_examples = {
         "ex1": {
-            "summary": "Σύνολο ημερήσιων αποθεμάτων",
+            "summary": "Sum of daily reserves",
             "value": "sum"
         },
     }
 )
 
 factoryΑggregationQuery = Query( 
-    description = "Επιλογή συγκεντρωτικής παρουσίασης ως προς τις μονάδες επεξεργασίας",
+    description = "Option of plant-aggregated data processing",
     openapi_examples = {
         "ex1": {
-            "summary": "Σύνολο ημερήσιας παραγωγής νερού",
+            "summary": "Sum of daily water production",
             "value": "sum"
         },
     }
 )
 
 locationΑggregationQuery = Query( 
-    description = "Επιλογή συγκεντρωτικής παρουσίασης ως προς τις τοποθεσίες μετρήσεων",
+    description = "Option of location-aggregated data processing",
     openapi_examples = {
         "ex1": {
-            "summary": "Σύνολο ημερήσιου υετού (μέσες τιμές για τις θερμοκρασίες)",
+            "summary": "Sum of daily precipitations (mean values for the temperatures)",
             "value": "sum"
         },
     }
 )
 
 municipalityΑggregationQuery = Query( 
-    description = "Επιλογή συγκεντρωτικής παρουσίασης ως προς τους Δήμους",
+    description = "Option of municipality-aggregated data processing",
     openapi_examples = {
         "ex1": {
-            "summary": "Σύνολο συμβάντων ημέρας",
+            "summary": "Total daily events",
             "value": "sum"
         },
     }
 )
 
 timeΑggregationQuery = Query( 
-    description = "Επιλογή συγκεντρωτικής παρουσίασης ως προς το χρόνο",
+    description = "Option of time-aggregated data processing",
     openapi_examples = {
         "ex1": {
-            "summary": "Μέση τιμή ανά έτος",
+            "summary": "Yearly mean value",
             "value": "year,avg"
         },
         "ex2": {
-            "summary": "Μέση τιμή ανά μήνα",
+            "summary": "Monthly mean value",
             "value": "month,avg"
         },
         "ex1": {
-            "summary": "Συνολική τιμή ανά έτος",
+            "summary": "Yearly sum value",
             "value": "year,sum"
         },
         "ex2": {
-            "summary": "Συνολική τιμή ανά μήνα",
+            "summary": "Monthly sum value",
             "value": "month,sum"
         }
     }
 )
 
 yearStartQuery = Query( 
-    description = "Επιλογή έναρξης έτους",
+    description = "Option of year starting",
     openapi_examples = {
         "ex1": {
-            "summary": "Υδρολογικό έτος από 1η Οκτωβρίου",
+            "summary": "Hydrologic year starting at 1st of October",
             "value": "10-01"
         },
     }
