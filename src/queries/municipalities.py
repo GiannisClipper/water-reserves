@@ -40,12 +40,12 @@ class MunicipalitiesQueryMaker( QueryMaker ):
 
     def insert_into( self, data: list ) -> None:
 
-        query = '''INSERT INTO {table} ( id, name_el, prefecture, area, population ) VALUES '''
+        query = '''INSERT INTO {table} ( id, name_el, name_en, prefecture, area, population ) VALUES '''
         query = query.replace( '{table}', self.table_name )
 
         for row in data:
-            id, name_el, prefecture, area, population = row
-            row = f"('{id}','{name_el}','{prefecture}',{area},{population}),"
+            id, name_el, name_en, prefecture, area, population = row
+            row = f"('{id}','{name_el}','{name_en}','{prefecture}',{area},{population}),"
             query += row
 
         query = query[ 0:-1 ] + ';' # change last comma with semicolumn

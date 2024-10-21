@@ -59,9 +59,6 @@ async def get_all(
         # print( 'clusters', clusters )
         headers += [ 'cluster' ]
         data = [ tuple( list( x[ 0 ] ) + [ x[ 1 ] ] ) for x in zip( data, clusters ) ]
-        # data = list( map( 
-        #     lambda row, cl: tuple( list( row ) + [ cl ] ), zip( data, clusters ) 
-        # ) )
 
     # place municipalities data in result legend
     query_handler = MunicipalitiesPoolQueryFactory().handler

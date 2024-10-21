@@ -239,7 +239,7 @@ def make_interruptions():
     headers, data = read_municipalities()
     municipalities = {}
     for row in data:
-        id, name_el, prefecture, area, population = row
+        id, name_el, name_en, prefecture, area, population = row
         municipalities[ name_el ] = id
 
     path = get_settings().interruptions_json_path
