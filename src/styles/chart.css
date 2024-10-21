@@ -32,7 +32,7 @@
   }
 
   div:has(.Tooltip.Map) {
-    @apply  shadow-none border-0 bg-transparent
+    @apply shadow-none bg-transparent
     p-0
   }
 

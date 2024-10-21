@@ -27,5 +27,16 @@
     aspect-[2]
     bg-gray-50 text-gray-600 text-xs
   }
-  
+
+  .MapContent {
+    @apply
+    w-full
+    aspect-[2]
+    bg-gray-50 text-gray-600 text-xs
+  }
+
+  div:has(.MapContent) {
+    @apply p-0
+  }
+
 }

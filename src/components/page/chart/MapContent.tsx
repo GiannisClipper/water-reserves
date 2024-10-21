@@ -57,7 +57,7 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
         const id: string = feature.properties.KWD_YPES;
 
         feature[ 'events' ] = 0
-        feature[ 'name' ] = municipalities[ id ] && municipalities[ id ][ 'name_el' ];
+        feature[ 'name' ] = municipalities[ id ] && municipalities[ id ][ 'name_en' ];
         feature[ 'area' ] = 0
         feature[ 'population' ] = 0;
         feature[ 'events_over_population' ] = 0;
@@ -68,7 +68,7 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
             // feature[ 'name' ] = events[ id ][ 'name' ];
             feature[ 'area' ] = events[ id ][ 'area' ];    
             feature[ 'population' ] = events[ id ][ 'population' ];
-            feature[ 'events_over_area' ] = events[ id ][ 'events_over_area' ];    
+            feature[ 'events_over_area' ] = events[ id ][ 'events_over_area' ];
             feature[ 'events_over_population' ] = events[ id ][ 'events_over_population' ];
 
             const cluster: number = events[ id ][ 'cluster' ];
@@ -80,16 +80,16 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
  
     const setStyle = feature => {
 
-        const clusterColors: string[] = [ '#ffee44', '#ff8844', '#ff2244' ];
+        const clusterColors: string[] = [ '#ffcc11', '#ff6699', '#ff0000' ];
 
         const color: string = feature.events
             ? clusterColors[ feature.cluster ]
-            : 'lightgreen';
+            : 'transparent';
 
         return { 
-            weight: .25,
+            weight: .25, // effects on polygon lines
+            opacity: 1, // effects on polygon lines
             color: color,
-            opacity: 0.75
         };
     };
     
@@ -101,7 +101,7 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
 
     return (
         <div 
-            className="ChartContent"
+            className="MapContent"
             onClick={ () => setShowTooltip( ! showTooltip ) }
         >
             <MapContainer 

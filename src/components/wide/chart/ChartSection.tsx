@@ -1,5 +1,10 @@
 "use client"
 
+// import MapContent from "@/components/page/chart/MapContent";
+// to fix Server Error: ReferenceError: window is not defined
+import dynamic from 'next/dynamic'
+const MapContent = dynamic( () => import( '@/components/page/chart/MapContent' ), { ssr: false } )
+
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
@@ -9,6 +14,7 @@ import ChartLayoutSpecifierFactory from "@/logic/LayoutSpecifier/ChartLayoutSpec
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
+import TimelessChartContent from "@/components/page/chart/TimelessChartContent";
 
 type PropsType = {
     endpoint: string
@@ -23,12 +29,18 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,
+        'single,timeless': TimelessChartContent,
         'stack': StackChartContent,
         'multi': MultiChartContent,
     };
-    const ChartContent = chartContents[ dataHandler.type ];
 
-    const chartType = searchParams.chart_type;
+    let ChartContent = chartContents[ dataHandler.type ];
+
+    const chartType: string = searchParams.chart_type || '';
+
+    if ( chartType === 'map' ) {
+        ChartContent = MapContent;
+    }
 
     const layoutSpecifier: ObjectType = new ChartLayoutSpecifierFactory( endpoint, searchParams )
         .layoutSpecifier

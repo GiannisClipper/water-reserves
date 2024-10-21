@@ -80,7 +80,7 @@ class MunicipalityNameValueSpecifier extends SecondaryValueSpecifier {
         }
         for ( let i = 0; i < data.length; i++ ) {
             const id: string = data[ i ][ this.sourceKey ];
-            data[ i ][ this.key ] = municipalities[ id ].name_el;
+            data[ i ][ this.key ] = municipalities[ id ].name_en;
         }
     }
 }
