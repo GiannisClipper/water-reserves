@@ -32,6 +32,7 @@
 
   .Footer > * {
     @apply m-2 text-sm font-semibold
+    /* bg-white bg-opacity-25 */
   }
 
   .Footer > a {

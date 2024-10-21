@@ -13,6 +13,7 @@ import geojson from '@/geography/dhmoi_okxe_attica.json';
 
 import "@/styles/chart.css";
 import 'leaflet/dist/leaflet.css'
+import { useState } from 'react';
 
 const MyTooltip = props => {
 
@@ -37,6 +38,7 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
     const eventsSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events' );
     const overAreaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_area' );
     const overPopulationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_population' );
+    const clusterSpecifier: ValueSpecifier = specifierCollection.getByKey( 'cluster' );
 
     const municipalities: ObjectType = {}; 
     if ( dataHandler.legend ) {
@@ -51,45 +53,60 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
     }
 
     for ( const feature of geojson.features ) {
+
         const id: string = feature.properties.KWD_YPES;
+
         feature[ 'events' ] = 0
-        feature[ 'name' ] = 0
+        feature[ 'name' ] = municipalities[ id ] && municipalities[ id ][ 'name_el' ];
         feature[ 'area' ] = 0
         feature[ 'population' ] = 0;
         feature[ 'events_over_population' ] = 0;
         feature[ 'events_over_area' ] = 0;
+
         if ( events[ id ] ) {
             feature[ 'events' ] = events[ id ][ 'events' ];
-            feature[ 'name' ] = events[ id ][ 'name' ];
+            // feature[ 'name' ] = events[ id ][ 'name' ];
             feature[ 'area' ] = events[ id ][ 'area' ];    
             feature[ 'population' ] = events[ id ][ 'population' ];
             feature[ 'events_over_area' ] = events[ id ][ 'events_over_area' ];    
             feature[ 'events_over_population' ] = events[ id ][ 'events_over_population' ];
+
+            const cluster: number = events[ id ][ 'cluster' ];
+            const clusterName: string = [ 'low', 'mid', 'high' ][ cluster ];
+            feature[ 'cluster' ] = cluster;
+            feature[ 'clusterRepr' ] = `${cluster + 1} (${clusterName})`;
         }
     }
  
     const setStyle = feature => {
 
-        const color = feature.events
-            ? 'red'
+        const clusterColors: string[] = [ '#ffee44', '#ff8844', '#ff2244' ];
+
+        const color: string = feature.events
+            ? clusterColors[ feature.cluster ]
             : 'lightgreen';
 
         return { 
             weight: .25,
             color: color,
-            opacity: 0.65
+            opacity: 0.75
         };
     };
     
+    const [ showTooltip, setShowTooltip ] = useState( false );
+
     const position: [ number, number ] = [ 37.98, 23.73 ];
 
-    console.log( "rendering: MapContent..." )//, dataHandler.data, dataHandler._items, dataHandler );
+    console.log( "rendering: MapContent..." )//, dataHandler.data );
 
     return (
-        <div className="ChartContent">
+        <div 
+            className="ChartContent"
+            onClick={ () => setShowTooltip( ! showTooltip ) }
+        >
             <MapContainer 
                 center={ position } 
-                zoom={ 10 } 
+                zoom={ 12 } 
                 zoomControl={ false }
                 scrollWheelZoom={ false } 
                 style={ { height: '100%' } }
@@ -112,38 +129,45 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
                     >
                         <Tooltip sticky>
                             <div className='Tooltip Map'>
-                            <strong>
+                                { ! showTooltip 
+                                ?
                                 <div>{ municipalitySpecifier[ 'label'] } of { f.name }</div>
-                            </strong>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>{ areaSpecifier[ 'label'] }</td>
-                                        <td>{ withCommas( f.area ) }</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{ populationSpecifier[ 'label'] }</td>
-                                        <td>{ withCommas( f.population ) }</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{ eventsSpecifier[ 'label'] }</td>
-                                        <td>{ withCommas( f.events ) }</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{ overAreaSpecifier[ 'label'] }</td>
-                                        <td>{ withCommas( Math.round( f.events_over_area * 10 ) / 10 ) }</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{ overPopulationSpecifier[ 'label'] }</td>
-                                        <td>{ withCommas( Math.round( f.events_over_population * 10 ) / 10 ) }</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                :
+                                <>
+                                <strong>
+                                    <div>{ municipalitySpecifier[ 'label'] } of { f.name }</div>
+                                </strong>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>{ areaSpecifier[ 'label'] }</td>
+                                            <td>{ withCommas( f.area ) }</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{ populationSpecifier[ 'label'] }</td>
+                                            <td>{ withCommas( f.population ) }</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{ eventsSpecifier[ 'label'] }</td>
+                                            <td>{ withCommas( f.events ) }</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{ overAreaSpecifier[ 'label'] }</td>
+                                            <td>{ withCommas( Math.round( f.events_over_area * 10 ) / 10 ) }</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{ overPopulationSpecifier[ 'label'] }</td>
+                                            <td>{ withCommas( Math.round( f.events_over_population * 10 ) / 10 ) }</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{ clusterSpecifier[ 'label'] }</td>
+                                            <td>{ f.clusterRepr }</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </>
+                            }
                             </div>
-                            {/* <strong><p>Δήμος { f.properties.NAME }</p></strong>
-                            <p>Συμβάντα διακοπής νερού: { withCommas( f.events) }</p>
-                            <p>Σύνολο κατοίκων στο δήμο: { withCommas( f.population ) }</p>
-                            <p>Ένα συμβάν για κάθε { withCommas( f.perPoint ) } κατοίκους.</p> */}
                         </Tooltip>
                     </GeoJSON>
                 ) }

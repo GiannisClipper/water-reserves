@@ -10,6 +10,10 @@
 
 @layer components {
 
+  *, *:focus, *:hover {
+    outline: none;
+  }
+
   body {
     /* @apply bg-[url("/water.jpg")] */
     /* @apply bg-[url("/water-brightness-50.jpg")] */

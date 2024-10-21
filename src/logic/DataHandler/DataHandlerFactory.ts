@@ -39,14 +39,15 @@ import {
 
 import {
     MunicipalityIdValueSpecifier,
-    InterruptionsEventsValueSpecifier, 
-    InterruptionsDifferenceValueSpecifier,
-    InterruptionsGrowthValueSpecifier,
+    EventsValueSpecifier, 
+    EventsDifferenceValueSpecifier,
+    EventsGrowthValueSpecifier,
     MunicipalityNameValueSpecifier,
     MunicipalityAreaValueSpecifier,
     MunicipalityPopulationValueSpecifier,
-    InterruptionsOverAreaValueSpecifier,
-    InterruptionsOverPopulationValueSpecifier, 
+    EventsOverAreaValueSpecifier,
+    EventsOverPopulationValueSpecifier,
+    ClusterValueSpecifier,
 } from "@/logic/ValueSpecifier/interruptions";
 
 import DataHandler from ".";
@@ -173,34 +174,35 @@ class DataHandlerFactory {
                     this.type = 'single';
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new InterruptionsEventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new InterruptionsDifferenceValueSpecifier( {} ),
-                        new InterruptionsGrowthValueSpecifier( {} ),
+                        new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new EventsDifferenceValueSpecifier( {} ),
+                        new EventsGrowthValueSpecifier( {} ),
                     ] );
                 }
                 else {
                     this.type = 'single,timeless';
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new MunicipalityIdValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new InterruptionsEventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new InterruptionsOverAreaValueSpecifier( {} ),
-                        new InterruptionsOverPopulationValueSpecifier( {} ),
+                        new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
                         new MunicipalityNameValueSpecifier( {} ),
-                        new MunicipalityAreaValueSpecifier( {} ),
-                        new MunicipalityPopulationValueSpecifier( {} )
+                        new MunicipalityAreaValueSpecifier( { index: 2 } ),
+                        new MunicipalityPopulationValueSpecifier( { index: 3 } ),
+                        new EventsOverAreaValueSpecifier( { index: 4 } ),
+                        new EventsOverPopulationValueSpecifier( { index: 5 } ),
+                        new ClusterValueSpecifier( { index: 6 } )
                     ] );
 
                     // select parameter for Y-axis considering searchParams
                     const params = new ParamValues( searchParams ).toJSON();
                     const { valueAggregation } = params;
                     if ( valueAggregation  === 'sum,over-area' ) {
-                        this._specifierCollection._specifiers[1].axeXY=''
-                        this._specifierCollection._specifiers[2].axeXY='Y'
-                        this._specifierCollection._specifiers[3].axeXY=''
+                        this._specifierCollection._specifiers[ 1 ].axeXY=''
+                        this._specifierCollection._specifiers[ 5 ].axeXY='Y'
+                        this._specifierCollection._specifiers[ 6 ].axeXY=''
                     } else if ( valueAggregation  === 'sum,over-population' ) {
-                        this._specifierCollection._specifiers[1].axeXY=''
-                        this._specifierCollection._specifiers[2].axeXY=''
-                        this._specifierCollection._specifiers[3].axeXY='Y'
+                        this._specifierCollection._specifiers[ 1 ].axeXY=''
+                        this._specifierCollection._specifiers[ 5 ].axeXY=''
+                        this._specifierCollection._specifiers[ 6 ].axeXY='Y'
                     }
                 }            
                 break;

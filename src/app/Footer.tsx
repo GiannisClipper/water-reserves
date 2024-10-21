@@ -9,7 +9,7 @@ const Footer = () => {
             <a href="https://open-meteo.com">open-meteo.com</a>
             <a href="https://nominatim.openstreetmap.com">nominatim.openstreetmap.com</a>
             <a href="https://www.geoapify.com">geoapify.com</a>
-            <a href="https://www.geodata.gov.gr/organization/okxe">geodata.gov.gr/organization/okxe</a>
+            <a href="https://geodata.gov.gr/organization/okxe">geodata.gov.gr/organization/okxe</a>
             <a href="https://openstreetmap.com">openstreetmap.com</a>
         </div>
     );

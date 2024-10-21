@@ -23,11 +23,17 @@
   }
 
   .Tooltip {
-    @apply p-2 bg-yellow-100 border border-gray-400
+    @apply  border-gray-400 bg-yellow-100 border 
+    p-2
   }
 
   .Tooltip.Map {
-    @apply bg-transparent border-0
+    @apply border-0 bg-transparent
+  }
+
+  div:has(.Tooltip.Map) {
+    @apply  shadow-none border-0 bg-transparent
+    p-0
   }
 
   .Tooltip table {

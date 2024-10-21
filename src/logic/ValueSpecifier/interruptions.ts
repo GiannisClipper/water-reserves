@@ -15,7 +15,7 @@ class MunicipalityIdValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class InterruptionsEventsValueSpecifier extends PrimaryValueSpecifier {
+class EventsValueSpecifier extends PrimaryValueSpecifier {
 
     constructor( props: PrimaryValueSpecifierType ) {
         super( { 
@@ -29,7 +29,7 @@ class InterruptionsEventsValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class InterruptionsDifferenceValueSpecifier extends DifferenceValueSpecifier {
+class EventsDifferenceValueSpecifier extends DifferenceValueSpecifier {
 
     constructor( props: SecondaryValueSpecifierType ) {
         super( { 
@@ -42,7 +42,7 @@ class InterruptionsDifferenceValueSpecifier extends DifferenceValueSpecifier {
     }
 }
 
-class InterruptionsGrowthValueSpecifier extends GrowthValueSpecifier {
+class EventsGrowthValueSpecifier extends GrowthValueSpecifier {
 
     constructor( props: SecondaryValueSpecifierType ) {
         super( { 
@@ -85,148 +85,84 @@ class MunicipalityNameValueSpecifier extends SecondaryValueSpecifier {
     }
 }
 
-class MunicipalityAreaValueSpecifier extends SecondaryValueSpecifier {
-    
-    constructor( props: SecondaryValueSpecifierType ) {
+class MunicipalityAreaValueSpecifier extends PrimaryValueSpecifier {
+
+    constructor( props: PrimaryValueSpecifierType ) {
         super( { 
-            sourceKey: 'municipality_id',
+            dataset: 'interruptions', 
             key: 'area', 
             label: 'Area (sq. km)', 
             unit: 'km2', 
             ...props 
         } );
-        this.parser = this.defaultParser;
-    }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
-
-        // make municipalities dictionary for quick search
-
-        const municipalities: ObjectType = {}; 
-        if ( legend && Object.keys( legend ).length ) {
-            for ( const row of legend.municipalities ) {
-                municipalities[ row.id ] = row;
-            }
-        }
-        for ( let i = 0; i < data.length; i++ ) {
-            const id: string = data[ i ][ this.sourceKey ];
-            data[ i ][ this.key ] = municipalities[ id ].area;
-        }
     }
 }
 
-class MunicipalityPopulationValueSpecifier extends SecondaryValueSpecifier {
-    
-    constructor( props: SecondaryValueSpecifierType ) {
+class MunicipalityPopulationValueSpecifier extends PrimaryValueSpecifier {
+
+    constructor( props: PrimaryValueSpecifierType ) {
         super( { 
-            sourceKey: 'municipality_id',
+            dataset: 'interruptions', 
             key: 'population', 
             label: 'Population (persons)',
             unit: '', 
             ...props 
         } );
-        this.parser = this.defaultParser;
-    }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
-
-        // make municipalities dictionary for quick search
-
-        const municipalities: ObjectType = {}; 
-        if ( legend && Object.keys( legend ).length ) {
-            for ( const row of legend.municipalities ) {
-                municipalities[ row.id ] = row;
-            }
-        }
-        for ( let i = 0; i < data.length; i++ ) {
-            const id: string = data[ i ][ this.sourceKey ];
-            data[ i ][ this.key ] = municipalities[ id ].population;
-        }
     }
 }
 
-class InterruptionsOverAreaValueSpecifier extends SecondaryValueSpecifier {
-    
-    constructor( props: SecondaryValueSpecifierType ) {
+class EventsOverAreaValueSpecifier extends PrimaryValueSpecifier {
+
+    constructor( props: PrimaryValueSpecifierType ) {
         super( { 
-            sourceKey: 'events',
+            dataset: 'interruptions', 
             key: 'events_over_area', 
             label: 'Events per sq. km', 
             unit: '', 
             ...props 
         } );
-        this.parser = this.defaultParser;
-    }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
-
-        // make municipalities dictionary for quick search
-
-        const municipalities: ObjectType = {}; 
-        if ( legend && Object.keys( legend ).length ) {
-            for ( const row of legend.municipalities ) {
-                municipalities[ row.id ] = row;
-            }
-        }
-        for ( let i = 0; i < data.length; i++ ) {
-            if ( data[ i ][ this.sourceKey ] === 0 ) {
-                continue;
-            }
-
-            // calculate interruptions per sq. km
-
-            const events: number = data[ i ][ this.sourceKey ];
-            const area: number = municipalities[ data[ i ].municipality_id ].area;
-            data[ i ][ this.key ] = events / area;
-        }
     }
 }
 
-class InterruptionsOverPopulationValueSpecifier extends SecondaryValueSpecifier {
-    
-    constructor( props: SecondaryValueSpecifierType ) {
+class EventsOverPopulationValueSpecifier extends PrimaryValueSpecifier {
+
+    constructor( props: PrimaryValueSpecifierType ) {
         super( { 
-            sourceKey: 'events',
+            dataset: 'interruptions', 
             key: 'events_over_population', 
             label: 'Events per 1000 residents', 
             unit: '', 
             ...props 
         } );
-        this.parser = this.defaultParser;
+
     }
+}
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
+class ClusterValueSpecifier extends PrimaryValueSpecifier {
 
-        // make municipalities dictionary for quick search
-
-        const municipalities: ObjectType = {}; 
-        if ( legend && Object.keys( legend ).length ) {
-            for ( const row of legend.municipalities ) {
-                municipalities[ row.id ] = row;
-            }
-        }
-        for ( let i = 0; i < data.length; i++ ) {
-            if ( data[ i ][ this.sourceKey ] === 0 ) {
-                continue;
-            }
-
-            // calculate interruptions per 1000 residents
-
-            const events: number = data[ i ][ this.sourceKey ];
-            const population: number = municipalities[ data[ i ].municipality_id ].population;
-            data[ i ][ this.key ] = events / ( .001 * population )
-        }
+    constructor( props: PrimaryValueSpecifierType ) {
+        super( {
+            dataset: 'interruptions', 
+            key: 'cluster', 
+            label: 'Charge evaluation',
+            unit: '', 
+            ...props 
+        } );
     }
 }
 
 export {
     MunicipalityIdValueSpecifier,
-    InterruptionsEventsValueSpecifier, 
-    InterruptionsDifferenceValueSpecifier,
-    InterruptionsGrowthValueSpecifier,
+    EventsValueSpecifier, 
+    EventsDifferenceValueSpecifier,
+    EventsGrowthValueSpecifier,
     MunicipalityNameValueSpecifier,
     MunicipalityAreaValueSpecifier,
     MunicipalityPopulationValueSpecifier,
-    InterruptionsOverAreaValueSpecifier,
-    InterruptionsOverPopulationValueSpecifier,
+    EventsOverAreaValueSpecifier,
+    EventsOverPopulationValueSpecifier,
+    ClusterValueSpecifier,
 }
