@@ -4,25 +4,25 @@ import { PieChart, Pie, Cell } from 'recharts';
 import { calcTicks } from '@/helpers/ticks';
 import { CardTooltip } from '@/components/page/chart/tooltips';
 
-import { ChartLayoutSpecifier } from '@/logic/LayoutSpecifier';
+import { MinimalChartLayoutHandler, EvaluationChartLayoutHandler } from '@/logic/LayoutHandler/ChartLayoutHandler';
 
 import type { ObjectType } from "@/types";
+
+import "@/styles/chart.css";
 
 type LineChartPropsType = { 
     data: ObjectType[]
     label: string
-    layoutSpecifier: ChartLayoutSpecifier
+    layoutHandler: MinimalChartLayoutHandler
 };
 
-import "@/styles/chart.css";
-
-const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) => {
+const CardLineChart = ( { data, label, layoutHandler }: LineChartPropsType ) => {
 
 
     const WIDTH: number = 400;
     const HEIGHT: number = 240;
-    const xKey: string = layoutSpecifier.xKeys[ 0 ];
-    const yKeys: string[] = layoutSpecifier.yKeys;
+    const xKey: string = layoutHandler.xValueHandler.key;
+    const yKeys: string[] = layoutHandler.yValueHandlers.map( handler => handler.key );
     const yValues: number[] = [];
     for ( const key of yKeys ) {
         for ( const row of data ) {
@@ -31,7 +31,7 @@ const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) =
     }
     const yTicks: number[] = calcTicks( yValues, 2 );
 
-    const colors = layoutSpecifier.colors;
+    const colors: ObjectType[] = layoutHandler.yValueHandlers.map( handler => handler.color || {} );
 
     return (
         <div className='CardLineChart'>
@@ -56,7 +56,7 @@ const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) =
                 />
                 <Tooltip 
                     content={ <CardTooltip 
-                        layoutSpecifier={ layoutSpecifier }
+                        layoutHandler={ layoutHandler }
                     /> } 
                 />
                 <Customized
@@ -82,13 +82,10 @@ const CardLineChart = ( { data, label, layoutSpecifier }: LineChartPropsType ) =
 type PieChartPropsType = { 
     cluster: number
     label: string
-    layoutSpecifier: ChartLayoutSpecifier
+    layoutHandler: EvaluationChartLayoutHandler
 };
 
-const CardPieChart = ( { cluster, label, layoutSpecifier }: PieChartPropsType ) => {
-
-    const midIndex: number = Math.floor( layoutSpecifier.colors.length / 2 );
-    const color = layoutSpecifier.colors[ midIndex ];
+const CardPieChart = ( { cluster, label, layoutHandler }: PieChartPropsType ) => {
 
     const WIDTH: number = 400;
     const HEIGHT: number = 200;
@@ -96,11 +93,11 @@ const CardPieChart = ( { cluster, label, layoutSpecifier }: PieChartPropsType ) 
     const RADIAN = Math.PI / 180;
 
     const levels = [
-        { name: 'lower', degrees: 36, color: color[ 200 ] },
-        { name: 'low', degrees: 36, color: color[ 300 ] },
-        { name: 'mid', degrees: 36, color: color[ 400 ] },
-        { name: 'high', degrees: 36, color: color[ 500 ] },
-        { name: 'higher', degrees: 36, color: color[ 600 ] },
+        { name: 'lower', degrees: 36, color: layoutHandler.color[ 200 ] },
+        { name: 'low', degrees: 36, color: layoutHandler.color[ 300 ] },
+        { name: 'mid', degrees: 36, color: layoutHandler.color[ 400 ] },
+        { name: 'high', degrees: 36, color: layoutHandler.color[ 500 ] },
+        { name: 'higher', degrees: 36, color: layoutHandler.color[ 600 ] },
     ];
 
     const level: number = ( cluster + 1) * 36 -18;

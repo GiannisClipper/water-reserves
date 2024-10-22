@@ -3,6 +3,7 @@ import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { ChartHandler } from "@/logic/ChartHandler";
+import { MinimalChartLayoutHandler } from "@/logic/LayoutHandler/ChartLayoutHandler";
 
 import { NestedValueSpecifier, ValueSpecifier } from '@/logic/ValueSpecifier';
 import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
@@ -12,25 +13,28 @@ import type { ObjectType } from '@/types';
 type CardTooltipPropsType = {
     active?: boolean
     payload?: any
-    layoutSpecifier: ObjectType
+    layoutHandler: MinimalChartLayoutHandler
 } 
 
-const CardTooltip = ( { active, payload, layoutSpecifier }: CardTooltipPropsType ) => {
+const CardTooltip = ( { active, payload, layoutHandler }: CardTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         // const { date, value } = payload[ 0 ].payload;
-        const dateKey = layoutSpecifier.xKeys[ 0 ];
+        const dateKey = layoutHandler.xValueHandler.key;
         const date = payload[ 0 ].payload[ dateKey ];
-        const values: number[] = layoutSpecifier.yKeys.map( key => payload[ 0 ].payload[ key ] )
-            .sort( ( a, b ) => b - a );
+        const values: ObjectType[] = layoutHandler.yValueHandlers.map( handler => ( {
+            label: handler.label,
+            value: payload[ 0 ].payload[ handler.key ],
+            unit: handler.unit,
+        } ) ).sort( ( a, b ) => b.value - a.value );
 
         return (
             <div className="Tooltip">
                 <p>{ `Date: ${date}` }</p>
-                { values.map( ( value, i ) => {
-                    return <p key={ i }>{ `Value: ${withCommas( value )}` } <Unit unit={ layoutSpecifier.unit }/></p>;
-                } ) }
+                { values.map( ( v, i ) => 
+                    <p key={ i }>{ `${v.label}: ${withCommas( v.value )}` } <Unit unit={ v.unit }/></p>
+                ) }
             </div>
       );
     }

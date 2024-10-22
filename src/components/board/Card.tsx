@@ -3,12 +3,11 @@
 import { CardLineChart, CardPieChart } from "./Charts";
 import { Unit } from "@/components/Unit";
 
-import { CardHandlerFactory } from "@/logic/CardHandler";
+import CardDataHandlerFactory from "@/logic/DataHandler/CardDataHandler";
 import { withCommas } from "@/helpers/numbers";
 
-import type { ObjectType } from "@/types";
-import CardLayoutSpecifierFactory from "@/logic/LayoutSpecifier/CardLayoutSpecifierFactory";
-import { CardLayoutSpecifier, ChartLayoutSpecifier } from "@/logic/LayoutSpecifier";
+import type { ObjectType, UnitType } from "@/types";
+import CardLayoutHandlerFactory from "@/logic/LayoutHandler/CardLayoutHandler";
 
 type PropsType = { 
     option: string
@@ -17,33 +16,37 @@ type PropsType = {
 
 const Card = ( { option, result }: PropsType ) => {
 
-    const layoutSpecifier = new CardLayoutSpecifierFactory( option ).layoutSpecifier;
-    const cardHandler = new CardHandlerFactory( option, result ).cardHandler;
+    const dataHandler = new CardDataHandlerFactory( option, result ).handler; 
+    const layoutHandler = new CardLayoutHandlerFactory( option ).handler;
 
-    const evaluation: string = CardLayoutSpecifier.evaluation[ cardHandler.cluster ];
-    const pieLabel = `Evaluation: ${cardHandler.cluster+1} (${evaluation})`;
+    const key: string = layoutHandler.lineChartHandler.yValueHandlers[ 0 ].key;
+    const measurement: number = dataHandler.toJSON()[ key ];
+    const unit: UnitType = layoutHandler.lineChartHandler.yValueHandlers[ 0 ].unit;
+
+    const evaluation: string = layoutHandler.pieChartHandler.evaluation[ dataHandler.cluster ];
+    const pieLabel = `Evaluation: ${dataHandler.cluster+1} (${evaluation})`;
 
     return (
         <div className="Card">
-            <div className="Title">{ layoutSpecifier.title }</div>
+            <div className="Title">{ layoutHandler.title }</div>
 
             <div className="Info">
-                <div>Last update: { cardHandler.date } </div>
+                <div>Last update: { dataHandler.date } </div>
                 <div>
-                    Measurement: { withCommas(cardHandler[ layoutSpecifier.yKeys[ 0 ] ]) } <Unit unit={ layoutSpecifier.unit }/>
+                    Measurement: { withCommas( measurement ) } <Unit unit={ unit }/>
                 </div>
             </div>
 
             <CardLineChart 
-                data={ cardHandler.recentEntries }
-                label={ `Recent measurements: ${cardHandler.interval}` }
-                layoutSpecifier={ layoutSpecifier as ChartLayoutSpecifier }
+                data={ dataHandler.recentEntries }
+                label={ `Recent measurements: ${dataHandler.interval}` }
+                layoutHandler={ layoutHandler.lineChartHandler }
             />
 
             <CardPieChart 
-                cluster={ cardHandler.cluster } 
+                cluster={ dataHandler.cluster } 
                 label={ pieLabel }
-                layoutSpecifier={ layoutSpecifier as ChartLayoutSpecifier }
+                layoutHandler={ layoutHandler.pieChartHandler }
             />
         </div>
     );

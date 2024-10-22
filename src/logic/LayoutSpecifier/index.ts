@@ -1,4 +1,5 @@
 import type { ObjectType, UnitType } from "@/types";
+import { ValueHandler } from "../ValueHandler";
 
 interface LayoutSpecifierType {
     title?: string
@@ -7,8 +8,8 @@ interface LayoutSpecifierType {
 }
 
 interface ChartLayoutSpecifierType extends LayoutSpecifierType {
-    xKeys: string[]
-    yKeys: string[]
+    xValueHandler: ValueHandler
+    yValueHandlers: ValueHandler[]
     xLabel?: string
     yLabel?: string
 }
@@ -36,15 +37,15 @@ abstract class LayoutSpecifier {
 
 class ChartLayoutSpecifier extends LayoutSpecifier {
 
-    xKeys: string[]
-    yKeys: string[]
+    xValueHandler: ValueHandler
+    yValueHandlers: ValueHandler[]
     xLabel?: string
     yLabel?: string
 
-    constructor( { xKeys, yKeys, xLabel, yLabel, ...otherProps }: ChartLayoutSpecifierType ) {
+    constructor( { xValueHandler, yValueHandlers, xLabel, yLabel, ...otherProps }: ChartLayoutSpecifierType ) {
         super( otherProps );
-        this.xKeys = xKeys;
-        this.yKeys = yKeys;
+        this.xValueHandler = xValueHandler;
+        this.yValueHandlers = yValueHandlers;
         this.xLabel = xLabel || 'xLabel';
         this.yLabel = yLabel || 'yLabel';
     }
@@ -52,32 +53,12 @@ class ChartLayoutSpecifier extends LayoutSpecifier {
     toJSON(): ObjectType {
         return {
             ...super.toJSON(),
-            xKeys: this.xKeys,
-            yKeys: this.yKeys,
+            xValueHandler: this.xValueHandler,
+            yValueHandlers: this.yValueHandlers,
             xLabel: this.xLabel,
             yLabel: this.yLabel,
         }
     }
 }
 
-type EvaluationType = { 
-    [ key: number ]: string 
-}
-
-class CardLayoutSpecifier extends LayoutSpecifier {
-
-    static evaluation: EvaluationType = { 0: 'lower', 1: 'low', 2: 'mid', 3:'high', 4: 'higher' };
-
-    constructor( props: LayoutSpecifierType ) {
-        super( props );
-    }
-
-    toJSON(): ObjectType {
-        return {
-            ...super.toJSON(),
-            evaluation: CardLayoutSpecifier.evaluation
-        }
-    }
-}
-
-export { LayoutSpecifier, ChartLayoutSpecifier, CardLayoutSpecifier };
+export { LayoutSpecifier, ChartLayoutSpecifier };

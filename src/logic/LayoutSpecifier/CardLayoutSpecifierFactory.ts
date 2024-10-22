@@ -1,20 +1,16 @@
 import { LayoutSpecifier, ChartLayoutSpecifier } from ".";
 
-import { SearchParamsType, SavingsSearchParamsType } from "@/types/searchParams";
-import { ParamValues } from "../ParamValues";
-
-import {
-    ROSE, PINK, FUCHSIA, PURPLE, VIOLET,
-    INDIGO, BLUE, SKY, CYAN, TEAL, EMERALD, 
-    GREEN, LIME, YELLOW, AMBER, ORANGE, RED, 
-    STONE, NEUTRAL, ZINC, GRAY, SLATE
-} from '@/helpers/colors';
-
-import type { ObjectType, UnitType } from "@/types";
+import { DateValueHandler } from "../ValueHandler/status";
+import { SavingsValueHandler } from "../ValueHandler/status";
+import { ProductionValueHandler } from "../ValueHandler/status";
+import { PrecipitationValueHandler } from "../ValueHandler/status";
+import { MinTemperatureValueHandler } from "../ValueHandler/status";
+import { MeanTemperatureValueHandler } from "../ValueHandler/status";
+import { MaxTemperatureValueHandler } from "../ValueHandler/status";
 
 class LayoutSpecifierFactory {
 
-    layoutSpecifier: LayoutSpecifier;
+    lineChartLayoutSpecifier: ChartLayoutSpecifier;
 
     constructor( option: string ) {
     
@@ -22,46 +18,46 @@ class LayoutSpecifierFactory {
 
             case 'savings': {
 
-                const title: string = 'Water reserves';
-                const unit: UnitType = 'm3';
-                const colors: ObjectType[] = [ SKY ];
-                const xKeys: string[] = [ 'date' ]; 
-                const yKeys: string[] = [ 'quantity' ]; 
-                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xKeys, yKeys } );
+                this.lineChartLayoutSpecifier = new ChartLayoutSpecifier( { 
+                    title: 'Water reserves', 
+                    xValueHandler: new DateValueHandler(), 
+                    yValueHandlers: [ new SavingsValueHandler() ],
+                } );
                 break;
             }
 
             case 'production': {
 
-                const title: string = 'Drinking water production';
-                const unit: UnitType = 'm3';
-                const colors: ObjectType[] = [ PINK ];
-                const xKeys: string[] = [ 'date' ]; 
-                const yKeys: string[] = [ 'quantity' ]; 
-                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xKeys, yKeys } );
+                this.lineChartLayoutSpecifier = new ChartLayoutSpecifier( { 
+                    title: 'Drinking water production', 
+                    xValueHandler: new DateValueHandler(), 
+                    yValueHandlers: [ new ProductionValueHandler() ],
+                } );
                 break;
             }
 
             case 'precipitation': {
 
-                
-                const title: string = 'Precipitation';
-                const unit: UnitType = 'mm';
-                const colors: ObjectType[] = [ TEAL ];
-                const xKeys: string[] = [ 'date' ]; 
-                const yKeys: string[] = [ 'precipitation_sum' ]; 
-                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xKeys, yKeys } );
+                this.lineChartLayoutSpecifier = new ChartLayoutSpecifier( { 
+                    title: 'Precipitation', 
+                    xValueHandler: new DateValueHandler(), 
+                    yValueHandlers: [ new PrecipitationValueHandler() ],
+                } );
                 break;
             }
 
             case 'temperature': {
         
-                const title: string = 'Mean temperature in Athens';
-                const unit: UnitType = 'oC';
-                const colors: ObjectType[] = [ CYAN, YELLOW, ORANGE ];
-                const xKeys: string[] = [ 'date' ]; 
-                const yKeys: string[] = [ 'temperature_2m_min', 'temperature_2m_mean', 'temperature_2m_max' ]; 
-                this.layoutSpecifier = new ChartLayoutSpecifier( { title, unit, colors, xKeys, yKeys } );
+
+                this.lineChartLayoutSpecifier = new ChartLayoutSpecifier( { 
+                    title: 'Mean temperature in Athens', 
+                    xValueHandler: new DateValueHandler(), 
+                    yValueHandlers: [ 
+                        new MinTemperatureValueHandler(),
+                        new MeanTemperatureValueHandler(),
+                        new MaxTemperatureValueHandler()
+                    ],
+                } );
                 break;
             }
 

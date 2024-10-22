@@ -4,6 +4,10 @@ type ObjectType = {
 
 type UnitType = 'm3' | 'mm' | '%' | 'oC' | 'km2' | '';
 
+type EvaluationType = { 
+    [ key: number ]: string 
+}
+
 export type { 
-    ObjectType , UnitType
+    ObjectType , UnitType, EvaluationType
 };

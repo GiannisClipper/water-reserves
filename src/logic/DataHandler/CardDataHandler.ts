@@ -1,14 +1,14 @@
 import type { ObjectType } from '@/types';
 
-abstract class CardHandler {    
+abstract class CardDataHandler {    
 
-    _interval: string;
+    interval: string;
 
-    _date: string;
-    abstract _recentEntries: ObjectType[];
+    date: string;
+    abstract recentEntries: ObjectType[];
 
-    abstract _clusters: ObjectType[];
-    abstract _cluster: number;
+    abstract clusters: ObjectType[];
+    abstract cluster: number;
 
     constructor( result: ObjectType, key: string ) {
 
@@ -18,29 +18,9 @@ abstract class CardHandler {
 
         const firstDay = firstEntry.date.substring( 5 ).split( '-' ).reverse().join( '/' );
         const lastDay = lastEntry.date.substring( 5 ).split( '-' ).reverse().join( '/' );
-        this._interval = `${firstDay}-${lastDay}`;
+        this.interval = `${firstDay}-${lastDay}`;
 
-        this._date = lastEntry.date.split( '-' ).reverse().join( '/' );
-    }
-
-    get interval(): string {
-        return this._interval;
-    }
-
-    get date(): string {
-        return this._date;
-    }
-
-    get recentEntries(): ObjectType[] {
-        return this._recentEntries;
-    }
-
-    get clusters(): Object[] {
-        return this._clusters;
-    }
-
-    get cluster(): number {
-        return this._cluster;
+        this.date = lastEntry.date.split( '-' ).reverse().join( '/' );
     }
 
     toJSON(): ObjectType {
@@ -54,12 +34,12 @@ abstract class CardHandler {
     }
 }
 
-class SavingsCardHandler extends CardHandler {
+class SavingsCardDataHandler extends CardDataHandler {
 
-    _recentEntries: ObjectType[];
+    recentEntries: ObjectType[];
 
-    _clusters: ObjectType[];
-    _cluster: number;
+    clusters: ObjectType[];
+    cluster: number;
 
     quantity: number;
 
@@ -68,25 +48,32 @@ class SavingsCardHandler extends CardHandler {
         const key: string = 'savings';
         super( result, key );
 
-        this._clusters = result[ key ].analysis.quantity.kmeans.clusters;
-        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
+        this.clusters = result[ key ].analysis.quantity.kmeans.clusters;
+        this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
         this.quantity = recent_entries[ recent_entries.length - 1 ].quantity;
 
-        this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
+        this.recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
             quantity: entry.quantity, 
         } ) );
     }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            quantity: this.quantity,
+        }
+    }
 }
 
-class ProductionCardHandler extends CardHandler {
+class ProductionCardDataHandler extends CardDataHandler {
 
-    _recentEntries: ObjectType[];
+    recentEntries: ObjectType[];
 
-    _clusters: ObjectType[];
-    _cluster: number;
+    clusters: ObjectType[];
+    cluster: number;
 
     quantity: number;
 
@@ -95,25 +82,32 @@ class ProductionCardHandler extends CardHandler {
         const key: string = 'production';
         super( result, key );
 
-        this._clusters = result[ key ].analysis.quantity.kmeans.clusters;
-        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
+        this.clusters = result[ key ].analysis.quantity.kmeans.clusters;
+        this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
         this.quantity = recent_entries[ recent_entries.length - 1 ].quantity;
 
-        this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
+        this.recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
             quantity: entry.quantity, 
         } ) );
     }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            quantity: this.quantity,
+        }
+    }
 }
 
-class PrecipitationCardHandler extends CardHandler {
+class PrecipitationCardDataHandler extends CardDataHandler {
 
-    _recentEntries: ObjectType[];
+    recentEntries: ObjectType[];
 
-    _clusters: ObjectType[];
-    _cluster: number;
+    clusters: ObjectType[];
+    cluster: number;
 
     precipitation_sum: number;
 
@@ -122,25 +116,32 @@ class PrecipitationCardHandler extends CardHandler {
         const key: string = 'weather';
         super( result, key );
 
-        this._clusters = result[ key ].analysis.precipitation.kmeans.clusters;
-        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
+        this.clusters = result[ key ].analysis.precipitation.kmeans.clusters;
+        this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
         this.precipitation_sum = recent_entries[ recent_entries.length - 1 ].precipitation_sum;
 
-        this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
+        this.recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
             precipitation_sum: entry.precipitation_sum, 
         } ) );
     }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            precipitation_sum: this.precipitation_sum,
+        }
+    }
 }
 
-class TemperatureCardHandler extends CardHandler {
+class TemperatureCardDataHandler extends CardDataHandler {
 
-    _recentEntries: ObjectType[];
+    recentEntries: ObjectType[];
 
-    _clusters: ObjectType[];
-    _cluster: number;
+    clusters: ObjectType[];
+    cluster: number;
 
     temperature_2m_min: number;
     temperature_2m_mean: number;
@@ -151,55 +152,60 @@ class TemperatureCardHandler extends CardHandler {
         const key: string = 'weather';
         super( result, key );
 
-        this._clusters = result[ key ].analysis.temperature_mean.kmeans.clusters;
-        this._cluster = this.clusters[ this.clusters.length -1  ].cluster;
+        this.clusters = result[ key ].analysis.temperature_mean.kmeans.clusters;
+        this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
         this.temperature_2m_min = recent_entries[ recent_entries.length - 1 ].temperature_2m_min;
         this.temperature_2m_mean = recent_entries[ recent_entries.length - 1 ].temperature_2m_mean;
         this.temperature_2m_max = recent_entries[ recent_entries.length - 1 ].temperature_2m_max;
 
-        this._recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
+        this.recentEntries = recent_entries.map( ( entry: ObjectType ) => ( { 
             date: entry.date,
             temperature_2m_min: entry.temperature_2m_min,
             temperature_2m_mean: entry.temperature_2m_mean, 
             temperature_2m_max: entry.temperature_2m_max, 
         } ) );
     }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            temperature_2m_min: this.temperature_2m_min,
+            temperature_2m_mean: this.temperature_2m_mean,
+            temperature_2m_max: this.temperature_2m_max,
+        }
+    }
 }
 
-class CardHandlerFactory {
+class CardDataHandlerFactory {
 
-    private _cardHandler: CardHandler;
+    handler: CardDataHandler;
 
     constructor( option: string, result: ObjectType ) {
 
         switch ( option ) {
 
             case 'savings': {
-                this._cardHandler = new SavingsCardHandler( result );
+                this.handler = new SavingsCardDataHandler( result );
                 break;
             } 
             case 'production': {
-                this._cardHandler = new ProductionCardHandler( result );
+                this.handler = new ProductionCardDataHandler( result );
                 break;
             }
             case 'precipitation': {
-                this._cardHandler = new PrecipitationCardHandler( result );
+                this.handler = new PrecipitationCardDataHandler( result );
                 break;
             }
             case 'temperature': {
-                this._cardHandler = new TemperatureCardHandler( result );
+                this.handler = new TemperatureCardDataHandler( result );
                 break;
             }
             default:
                 throw `Invalid option (${option}) used in CardHandlerFactory`;
         }
     }
-
-    get cardHandler(): CardHandler {
-        return this._cardHandler;
-    }
 }
 
-export { CardHandler, CardHandlerFactory };
+export default CardDataHandlerFactory;
