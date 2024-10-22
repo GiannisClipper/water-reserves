@@ -27,12 +27,17 @@
     p-2
   }
 
+  .MapContent {
+    @apply min-w-full
+  }
+
   .Tooltip.Map {
     @apply border-0 bg-transparent
   }
 
   div:has(.Tooltip.Map) {
-    @apply shadow-none bg-transparent
+    @apply shadow-none 
+    /* bg-transparent */
     p-0
   }
 

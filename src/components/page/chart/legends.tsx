@@ -31,7 +31,7 @@ const ColorLegend = ( { payload, items, colorsArray }: ColorLegendPropsType ) =>
 
 type MultiColorLegendPropsType = {
     payload?: any
-    colorsArray: string[]
+    colorsArray: ObjectType[]
     specifierCollection: ValueSpecifierCollection
 }
 

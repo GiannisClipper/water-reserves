@@ -1,7 +1,7 @@
 "use client"
 
 // import MapContent from "@/components/page/chart/MapContent";
-// to fix Server Error: ReferenceError: window is not defined
+// import dynamic... to fix Server Error: ReferenceError: window is not defined
 import dynamic from 'next/dynamic'
 const MapContent = dynamic( () => import( '@/components/page/chart/MapContent' ), { ssr: false } )
 
@@ -9,7 +9,8 @@ import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
-import ChartLayoutSpecifierFactory from "@/logic/LayoutSpecifier/ChartLayoutSpecifierFactory";
+
+import { ChartLayoutHandlerFactory } from '@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory';
 
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
@@ -27,6 +28,8 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
         .dataHandler;
 
+    const layoutHandler = new ChartLayoutHandlerFactory( dataHandler.type, endpoint, searchParams ).handler;
+
     const chartContents: ObjectType = {
         'single': SingleChartContent,
         'single,timeless': TimelessChartContent,
@@ -42,10 +45,6 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         ChartContent = MapContent;
     }
 
-    const layoutSpecifier: ObjectType = new ChartLayoutSpecifierFactory( endpoint, searchParams )
-        .layoutSpecifier
-        .toJSON();
-
     console.log( "rendering: ChartSection..." )
 
     return (
@@ -56,7 +55,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
                 // Classes or null prototypes are not supported.
                 dataHandler={ dataHandler }
                 chartType={ chartType }
-                layoutSpecifier={ layoutSpecifier }
+                layoutHandler={ layoutHandler }
             />
         </div>
     );

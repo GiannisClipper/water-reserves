@@ -1,0 +1,60 @@
+import { ChartLayoutHandler } from ".";
+import { ParamValues } from "@/logic/ParamValues";
+
+import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
+
+import { 
+    TimeValueHandler, 
+    ProductionValueHandler, ProductionDifferenceValueHandler, ProductionPercentageValueHandler,
+    FactoriesValueHandler, FactoriesSumValueHandler,
+} from "@/logic/ValueHandler/production";
+
+import type { SearchParamsType } from "@/types/searchParams";
+
+class ProductionSingleChartLayoutHandler extends ChartLayoutHandler {
+
+    differenceValueHandler: ValueHandler;
+    percentageValueHandler: ValueHandler;
+
+    constructor( searchParams: SearchParamsType ) {
+
+        const params = new ParamValues( searchParams ).toJSON();
+        const { timeAggregation, valueAggregation } = params;
+
+        super( {
+            xValueHandler: new TimeValueHandler(),
+            yValueHandlers: [ new ProductionValueHandler() ],        
+            title: 'Drinking water production (aggregated)',
+            xLabel: timeRepr[ timeAggregation ],
+            yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
+        } );
+
+        this.differenceValueHandler = new ProductionDifferenceValueHandler();
+        this.percentageValueHandler = new ProductionPercentageValueHandler();
+    }
+}
+
+class ProductionStackChartLayoutHandler extends ChartLayoutHandler {
+
+    constructor( searchParams: SearchParamsType ) {
+
+        const params = new ParamValues( searchParams ).toJSON();
+        const { timeAggregation, valueAggregation } = params;
+
+        super( {
+            xValueHandler: new TimeValueHandler(),
+            yValueHandlers: [ 
+                new FactoriesValueHandler(), 
+                new FactoriesSumValueHandler() 
+            ],
+            title: 'Drinking water production (per plant)',
+            xLabel: timeRepr[ timeAggregation ],
+            yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
+        } );
+    }
+}
+
+export { 
+    ProductionSingleChartLayoutHandler, 
+    ProductionStackChartLayoutHandler,
+};

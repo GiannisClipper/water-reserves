@@ -3,7 +3,7 @@ import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { ChartHandler } from "@/logic/ChartHandler";
-import { MinimalChartLayoutHandler } from "@/logic/LayoutHandler/ChartLayoutHandler";
+import { MinimalChartLayoutHandler } from "@/logic/LayoutHandler/chart";
 
 import { NestedValueSpecifier, ValueSpecifier } from '@/logic/ValueSpecifier';
 import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';

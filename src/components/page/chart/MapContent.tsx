@@ -1,6 +1,7 @@
 "use client"
 
-import { SingleTimelessDataHandler } from '@/logic/DataHandler/SingleDataHandler';
+import { useState } from 'react';
+
 import { MapContainer, TileLayer, ZoomControl, GeoJSON, Tooltip, Marker, Popup } from 'react-leaflet'
 
 import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
@@ -11,17 +12,20 @@ import type { ObjectType } from '@/types';
 
 import geojson from '@/geography/dhmoi_okxe_attica.json';
 
-import "@/styles/chart.css";
+import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+
+import { SingleTimelessDataHandler } from '@/logic/DataHandler/SingleDataHandler';
+
 import 'leaflet/dist/leaflet.css'
-import { useState } from 'react';
+import "@/styles/chart.css";
 
 type PropsType = { 
     dataHandler: SingleTimelessDataHandler
+    layoutHandler: ChartLayoutHandler
     chartType: string | undefined
-    layoutSpecifier: ObjectType
 }
 
-const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) => {
+const MapContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
 
     const specifierCollection: ValueSpecifierCollection = dataHandler.specifierCollection;
 
@@ -46,13 +50,13 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
         events[ row.municipality_id ] = row;
     }
 
-    for ( const feature of geojson.features ) {
+    for ( const feature of geojson.features as ObjectType[] ) {
 
         const id: string = feature.properties.KWD_YPES;
 
-        feature[ 'events' ] = 0
+        feature[ 'events' ] = 0;
         feature[ 'name' ] = municipalities[ id ] && municipalities[ id ][ 'name_en' ];
-        feature[ 'area' ] = 0
+        feature[ 'area' ] = 0;
         feature[ 'population' ] = 0;
         feature[ 'events_over_population' ] = 0;
         feature[ 'events_over_area' ] = 0;
@@ -81,9 +85,12 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
             : 'transparent';
 
         return { 
+            stroke: true,
             weight: .25, // effects on polygon lines
-            opacity: 1, // effects on polygon lines
-            color: color,
+            color: 'black',
+            opacity: 0.65, // effects on polygon lines
+            fillOpacity: 0.30, // effects on polygon lines
+            fillColor: color,
         };
     };
     
@@ -95,7 +102,7 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
 
     return (
         <div 
-            className="MapContent"
+            className="ChartContent MapContent"
             onClick={ () => setShowTooltip( ! showTooltip ) }
         >
             <MapContainer 
@@ -116,10 +123,11 @@ const MapContent = ( { dataHandler, chartType, layoutSpecifier }: PropsType ) =>
                 <ZoomControl 
                     position="topright" 
                 />
-                { geojson.features.map( ( f: ObjectType ) => 
+                { geojson.features.map( ( f: any, i: number ) => 
                     <GeoJSON
+                        key={ i }
                         data={ f } 
-                        style={setStyle} 
+                        style={ setStyle } 
                     >
                         <Tooltip sticky>
                             <div className='Tooltip Map'>

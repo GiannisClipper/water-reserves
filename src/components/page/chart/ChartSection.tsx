@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 // import MapContent from "@/components/page/chart/MapContent";
-// to fix Server Error: ReferenceError: window is not defined
+// import dynamic... to fix Server Error: ReferenceError: window is not defined
 import dynamic from 'next/dynamic'
 const MapContent = dynamic( () => import( './MapContent' ), { ssr: false } )
 
@@ -16,13 +16,14 @@ import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 
 import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
-import ChartLayoutSpecifierFactory from "@/logic/LayoutSpecifier/ChartLayoutSpecifierFactory";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
+
+import { ChartLayoutHandlerFactory } from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
 import type { ObjectType } from "@/types";
-import ParamValues from "@/logic/ParamValues";
+
 
 type PropsType = {
     endpoint: string
@@ -35,9 +36,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
         .dataHandler;
     
-    const layoutSpecifier: ObjectType = new ChartLayoutSpecifierFactory( endpoint, searchParams )
-        .layoutSpecifier
-        .toJSON();
+    const layoutHandler = new ChartLayoutHandlerFactory( dataHandler.type, endpoint, searchParams ).handler;
 
     const chartLabels: ObjectType = {
         'single': ChartLabel1,
@@ -82,7 +81,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
             <ChartContent 
                 dataHandler={ dataHandler }
-                layoutSpecifier={ layoutSpecifier }
+                layoutHandler={ layoutHandler }
                 chartType={ chartType }
             />
         </div>

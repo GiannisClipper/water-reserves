@@ -1,5 +1,10 @@
-import { DateValueHandler, MaxTemperatureValueHandler, MeanTemperatureValueHandler, MinTemperatureValueHandler, PrecipitationValueHandler, ProductionValueHandler, SavingsValueHandler } from "../ValueHandler/status";
-import { EvaluationChartLayoutHandler, MinimalChartLayoutHandler } from "./ChartLayoutHandler";
+import { 
+    DateValueHandler, 
+    PrecipitationValueHandler, ProductionValueHandler, SavingsValueHandler,
+    MaxTemperatureValueHandler, MeanTemperatureValueHandler, MinTemperatureValueHandler, 
+} from "../ValueHandler/status";
+
+import { EvaluationChartLayoutHandler, MinimalChartLayoutHandler } from "./chart";
 
 import {
     ROSE, PINK, FUCHSIA, PURPLE, VIOLET,
