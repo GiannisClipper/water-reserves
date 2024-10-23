@@ -1,4 +1,4 @@
-import { ChartLayoutHandler } from ".";
+import { ChartLayoutHandler, SingleChartLayoutHandler } from ".";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -11,10 +11,7 @@ import {
 
 import type { SearchParamsType } from "@/types/searchParams";
 
-class SavingsSingleChartLayoutHandler extends ChartLayoutHandler {
-
-    differenceValueHandler: ValueHandler;
-    percentageValueHandler: ValueHandler;
+class SavingsSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType ) {
 
@@ -27,10 +24,9 @@ class SavingsSingleChartLayoutHandler extends ChartLayoutHandler {
             title: 'Water reserves (aggregated)',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
+            yDifferenceValueHandlers: [ new SavingsDifferenceValueHandler() ],        
+            yPercentageValueHandlers: [ new SavingsPercentageValueHandler() ],        
         } );
-
-        this.differenceValueHandler = new SavingsDifferenceValueHandler();
-        this.percentageValueHandler = new SavingsPercentageValueHandler();
     }
 }
 

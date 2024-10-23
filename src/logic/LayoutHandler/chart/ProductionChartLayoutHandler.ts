@@ -1,4 +1,4 @@
-import { ChartLayoutHandler } from ".";
+import { ChartLayoutHandler, SingleChartLayoutHandler } from ".";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -11,10 +11,7 @@ import {
 
 import type { SearchParamsType } from "@/types/searchParams";
 
-class ProductionSingleChartLayoutHandler extends ChartLayoutHandler {
-
-    differenceValueHandler: ValueHandler;
-    percentageValueHandler: ValueHandler;
+class ProductionSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType ) {
 
@@ -23,14 +20,15 @@ class ProductionSingleChartLayoutHandler extends ChartLayoutHandler {
 
         super( {
             xValueHandler: new TimeValueHandler(),
-            yValueHandlers: [ new ProductionValueHandler() ],        
+            yValueHandlers: [ new ProductionValueHandler() ],   
+     
             title: 'Drinking water production (aggregated)',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
-        } );
 
-        this.differenceValueHandler = new ProductionDifferenceValueHandler();
-        this.percentageValueHandler = new ProductionPercentageValueHandler();
+            yDifferenceValueHandlers: [ new ProductionDifferenceValueHandler() ],
+            yPercentageValueHandlers: [ new ProductionPercentageValueHandler() ],
+        } );
     }
 }
 

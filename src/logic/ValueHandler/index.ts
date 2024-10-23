@@ -22,10 +22,10 @@ class ValueHandler {
         this.color = color || {};
     }
 
-    read = ( data: ObjectType ) => {
+    readFrom = ( data: ObjectType ): any => {
         let result: any = data;
         for ( const key of this.key.split( '.' ) ) {
-            result = result[ 'key' ];
+            result = result[ key ];
         }
         return result;
     }
@@ -40,18 +40,18 @@ class ValueHandler {
     }
 }
 
-class ValueHandlerCollection {
+// class ValueHandlerCollection {
 
-    specifiers: ValueHandler[]
+//     specifiers: ValueHandler[]
 
-    constructor( specifiers: ValueHandler[] ) {
-        this.specifiers = specifiers;
-    }
+//     constructor( specifiers: ValueHandler[] ) {
+//         this.specifiers = specifiers;
+//     }
 
-    getByKey( key: string ): ValueHandler {
-        return this.specifiers.filter( s => s[ 'key' ] === key )[ 0 ];
-    }
-}
+//     getByKey( key: string ): ValueHandler {
+//         return this.specifiers.filter( s => s[ 'key' ] === key )[ 0 ];
+//     }
+// }
 
 const timeRepr: ObjectType = {
     '': 'Time density (date)',
@@ -68,6 +68,7 @@ const valueRepr: ObjectType = {
 };
 
 export { 
-    ValueHandler, ValueHandlerCollection,
+    ValueHandler, 
+    // ValueHandlerCollection,
     timeRepr, valueRepr,
 };

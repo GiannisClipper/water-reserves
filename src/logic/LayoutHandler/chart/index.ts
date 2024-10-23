@@ -36,7 +36,11 @@ class ChartLayoutHandler extends MinimalChartLayoutHandler {
     xLabel?: string
     yLabel?: string
 
-    constructor( { xValueHandler, yValueHandlers, title, xLabel, yLabel }: ChartLayoutHandlerType ) {
+    constructor( { 
+        xValueHandler, yValueHandlers, 
+        title, xLabel, yLabel 
+    }: ChartLayoutHandlerType ) {
+
         super( { xValueHandler, yValueHandlers } );
         this.title = title || '(title)';
         this.xLabel = xLabel || '(xLabel)';
@@ -49,6 +53,36 @@ class ChartLayoutHandler extends MinimalChartLayoutHandler {
             title: this.title,
             xLabel: this.xLabel,
             yLabel: this.yLabel,
+        }
+    }
+}
+
+interface SingleChartLayoutHandlerType extends ChartLayoutHandlerType {
+    yDifferenceValueHandlers: ValueHandler[]
+    yPercentageValueHandlers: ValueHandler[]
+}
+
+class SingleChartLayoutHandler extends ChartLayoutHandler {
+
+    yDifferenceValueHandlers: ValueHandler[]
+    yPercentageValueHandlers: ValueHandler[]
+
+    constructor( { 
+        xValueHandler, yValueHandlers, 
+        title, xLabel, yLabel,  
+        yDifferenceValueHandlers, yPercentageValueHandlers
+    }: SingleChartLayoutHandlerType ) {
+
+        super( { xValueHandler, yValueHandlers, title, xLabel, yLabel } );
+        this.yDifferenceValueHandlers = yDifferenceValueHandlers;
+        this.yPercentageValueHandlers = yPercentageValueHandlers;
+    }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            yDifferenceValueHandlers: this.yDifferenceValueHandlers,
+            yPercentageValueHandlers: this.yPercentageValueHandlers,
         }
     }
 }
@@ -79,5 +113,6 @@ class EvaluationChartLayoutHandler {
 export { 
     MinimalChartLayoutHandler, 
     ChartLayoutHandler,
+    SingleChartLayoutHandler,
     EvaluationChartLayoutHandler 
 };

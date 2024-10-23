@@ -1,4 +1,4 @@
-import { ChartLayoutHandler } from ".";
+import { ChartLayoutHandler, SingleChartLayoutHandler } from ".";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -11,10 +11,7 @@ import {
 
 import type { SearchParamsType } from "@/types/searchParams";
 
-class PrecipitationSingleChartLayoutHandler extends ChartLayoutHandler {
-
-    differenceValueHandler: ValueHandler;
-    percentageValueHandler: ValueHandler;
+class PrecipitationSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType ) {
 
@@ -28,10 +25,10 @@ class PrecipitationSingleChartLayoutHandler extends ChartLayoutHandler {
             title: 'Precipitation measurements (aggregated)',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (mm)',
-        } );
 
-        this.differenceValueHandler = new PrecipitationDifferenceValueHandler();
-        this.percentageValueHandler = new PrecipitationPercentageValueHandler();
+            yDifferenceValueHandlers: [ new PrecipitationDifferenceValueHandler() ],
+            yPercentageValueHandlers: [ new PrecipitationPercentageValueHandler() ],
+        } );
     }
 }
 

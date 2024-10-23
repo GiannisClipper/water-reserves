@@ -3,7 +3,7 @@ import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { ChartHandler } from "@/logic/ChartHandler";
-import { MinimalChartLayoutHandler } from "@/logic/LayoutHandler/chart";
+import { MinimalChartLayoutHandler, SingleChartLayoutHandler } from "@/logic/LayoutHandler/chart";
 
 import { NestedValueSpecifier, ValueSpecifier } from '@/logic/ValueSpecifier';
 import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
@@ -45,34 +45,29 @@ const CardTooltip = ( { active, payload, layoutHandler }: CardTooltipPropsType )
 type TooltipPropsType = {
     active?: boolean
     payload?: any
-    specifierCollection: ValueSpecifierCollection
+    layoutHandler: SingleChartLayoutHandler
 } 
 
-const SingleTooltip = ( { active, payload, specifierCollection }: TooltipPropsType ) => {
+const SingleTooltip = ( { active, payload, layoutHandler }: TooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         payload = payload[ 0 ].payload;
 
-        const timeSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
-        const valueSpecifier: ValueSpecifier = specifierCollection.getByAxeY()[ 0 ];
-        const diffSpecifier: ValueSpecifier = specifierCollection.getByKey( `${valueSpecifier.key}_difference` );
-        const pcSpecifier: ValueSpecifier = specifierCollection.getByKey( `${valueSpecifier.key}_percentage` );
-
-        const time: string = payload[ timeSpecifier.key ];
-        const value: number = payload[ valueSpecifier.key ];
-        const difference: number = payload[ diffSpecifier.key ];
-        const percentage: number = payload[ pcSpecifier.key ];
+        const time = layoutHandler.xValueHandler;
+        const value = layoutHandler.yValueHandlers[ 0 ];
+        const difference = layoutHandler.yDifferenceValueHandlers[ 0 ];
+        const percentage = layoutHandler.yPercentageValueHandlers[ 0 ];
 
         return (
             <div className="Tooltip">
-                <p>{ `${timeLabel( time )}: ${time}` }</p>
-                <p>{ `${valueSpecifier[ 'label' ]}: ${withCommas( value )} ` } 
-                    <Unit unit={ valueSpecifier.unit }/>
+                <p>{ `${timeLabel( time.readFrom( payload ) )}: ${time.readFrom( payload )}` }</p>
+                <p>{ `${value.label}: ${withCommas( value.readFrom( payload ) )} ` } 
+                    <Unit unit={ value.unit }/>
                 </p>
-                <p>{ `Change: ${withCommas( Math.round( difference ) )} ` }
-                    <Unit unit={ valueSpecifier.unit }/>
-                    { ` (${withPlusSign( percentage )}%)` }
+                <p>{ `Change: ${withCommas( Math.round( difference.readFrom( payload ) ) )} ` }
+                    <Unit unit={ difference.unit }/>
+                    { ` (${withPlusSign( percentage.readFrom( payload ) )}%)` }
                 </p>
             </div>
       );

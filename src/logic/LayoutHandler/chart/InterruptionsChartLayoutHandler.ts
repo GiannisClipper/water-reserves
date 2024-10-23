@@ -1,4 +1,4 @@
-import { ChartLayoutHandler } from ".";
+import { ChartLayoutHandler, SingleChartLayoutHandler } from ".";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -31,10 +31,7 @@ class InterruptionsSingleChartLayoutHandlerFactory {
     }
 }
 
-class InterruptionsSingleTemporalChartLayoutHandler extends ChartLayoutHandler {
-
-    differenceValueHandler: ValueHandler;
-    percentageValueHandler: ValueHandler;
+class InterruptionsSingleTemporalChartLayoutHandler extends SingleChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType ) {
 
@@ -42,15 +39,16 @@ class InterruptionsSingleTemporalChartLayoutHandler extends ChartLayoutHandler {
         const { timeAggregation, valueAggregation } = params;
 
         super( {
+            xValueHandler: new TimeValueHandler(),
+            yValueHandlers: [ new EventsValueHandler() ],
+
             title: 'Water supply interruptions',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Events',
-            xValueHandler: new TimeValueHandler(),
-            yValueHandlers: [ new EventsValueHandler() ],
-        } );
 
-        this.differenceValueHandler = new EventsDifferenceValueHandler();
-        this.percentageValueHandler = new EventsPercentageValueHandler();
+            yDifferenceValueHandlers: [ new EventsDifferenceValueHandler() ],
+            yPercentageValueHandlers: [ new EventsPercentageValueHandler() ],
+        } );
     }
 }
 

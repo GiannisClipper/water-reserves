@@ -12,15 +12,14 @@ import { SingleTooltip } from '@/components/page/chart/tooltips';
 
 import { SingleDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
-import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { SingleChartLayoutHandler } from '@/logic/LayoutHandler/chart';
 
 import "@/styles/chart.css";
 
 type PropsType = { 
     dataHandler: SingleDataHandler
     chartType: string | undefined
-    layoutHandler: ChartLayoutHandler
-
+    layoutHandler: SingleChartLayoutHandler
 }
 
 const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
@@ -64,7 +63,7 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
 
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
-    layoutHandler: ChartLayoutHandler
+    layoutHandler: SingleChartLayoutHandler
 }
 
 const LineChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
@@ -101,7 +100,7 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
 
                 <Tooltip 
                     content={ <SingleTooltip 
-                        specifierCollection={ chartHandler.specifierCollection }
+                        layoutHandler={ layoutHandler }
                     /> } 
                 />
 
