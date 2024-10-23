@@ -3,7 +3,11 @@ import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { ChartHandler } from "@/logic/ChartHandler";
-import { MinimalChartLayoutHandler, SingleChartLayoutHandler } from "@/logic/LayoutHandler/chart";
+import { 
+    MinimalChartLayoutHandler, 
+    SingleChartLayoutHandler, 
+    MultiChartLayoutHandler 
+} from "@/logic/LayoutHandler/chart";
 
 import { NestedValueSpecifier, ValueSpecifier } from '@/logic/ValueSpecifier';
 import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
@@ -42,13 +46,13 @@ const CardTooltip = ( { active, payload, layoutHandler }: CardTooltipPropsType )
     return null;
 };
 
-type TooltipPropsType = {
+type SingleTooltipPropsType = {
     active?: boolean
     payload?: any
     layoutHandler: SingleChartLayoutHandler
 } 
 
-const SingleTooltip = ( { active, payload, layoutHandler }: TooltipPropsType ) => {
+const SingleTooltip = ( { active, payload, layoutHandler }: SingleTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -142,31 +146,39 @@ const TimelessTooltip = ( { active, payload, specifierCollection }: TimelessTool
     return null;
 };
 
-const MultiTooltip = ( { active, payload, specifierCollection }: TooltipPropsType ) => {
+type MultiTooltipPropsType = {
+    active?: boolean
+    payload?: any
+    layoutHandler: MultiChartLayoutHandler
+} 
+
+const MultiTooltip = ( { active, payload, layoutHandler }: MultiTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         payload = payload[ 0 ].payload;
 
-        const timeSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
-        const ySpecifiers: ValueSpecifier[] = specifierCollection.getByAxeY();
+        const time = layoutHandler.xValueHandler;
 
-        const time = payload[ timeSpecifier.key ];
-        const values = ySpecifiers.map( s => payload[ s.key ] );
+        const values: ObjectType[] = layoutHandler.yValueHandlers.map( h => ( {
+            label: h.label,
+            value: h.readFrom( payload ),
+            unit: h.unit,
+        } ) ).sort( ( a, b ) => b.value - a.value );
 
         return (
             <div className="Tooltip">
                 <table>
                     <tbody>
                         <tr>
-                            <td>{ timeLabel( time ) }</td>
-                            <td>{ time }</td>
+                            <td>{ timeLabel( time.readFrom( payload ) ) }</td>
+                            <td>{ time.readFrom( payload ) }</td>
                         </tr>
-                        { ySpecifiers.map( ( s, i ) => {
+                        { values.map( ( v, i ) => {
                             return ( 
                                 <tr key={i}>
-                                    <td>{ s.label }</td>
-                                    <td>{ values[ i ] } <Unit unit={ s.unit } /></td>
+                                    <td>{ v.label }</td>
+                                    <td>{ v.value } <Unit unit={ v.unit } /></td>
                                 </tr> 
                             );
                         } ) }

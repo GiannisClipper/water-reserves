@@ -10,19 +10,17 @@ import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { MultiTooltip } from '@/components/page/chart/tooltips';
 import { MultiColorLegend } from "@/components/page/chart/legends";
-import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { MultiChartLayoutHandler } from '@/logic/LayoutHandler/chart';
 
 import MultiDataHandler from '@/logic/DataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
-
-import type { ObjectType } from '@/types';
 
 import "@/styles/chart.css";
 
 type PropsType = { 
     dataHandler: MultiDataHandler
     chartType: string | undefined
-    layoutHandler: ChartLayoutHandler
+    layoutHandler: MultiChartLayoutHandler
 }
 
 const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
@@ -66,7 +64,7 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
 
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
-    layoutHandler: ChartLayoutHandler
+    layoutHandler: MultiChartLayoutHandler
 }
 
 const LineChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
@@ -103,7 +101,7 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
 
                 <Tooltip 
                     content={ <MultiTooltip 
-                        specifierCollection={ chartHandler.specifierCollection }
+                        layoutHandler={ layoutHandler }
                     /> } 
                 />
 
@@ -170,7 +168,7 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
 
                 <Tooltip 
                     content={ <MultiTooltip 
-                        specifierCollection={ chartHandler.specifierCollection }
+                        layoutHandler={ layoutHandler }
                     /> } 
                 />
 
@@ -241,7 +239,7 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ <MultiTooltip 
-                        specifierCollection={ chartHandler.specifierCollection }
+                        layoutHandler={ layoutHandler }
                     /> } 
                 />
 

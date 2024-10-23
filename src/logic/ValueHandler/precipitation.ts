@@ -24,7 +24,7 @@ class PrecipitationDifferenceValueHandler extends ValueHandler {
 
 class PrecipitationPercentageValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'precipitation_percentage', label: 'Change', unit: '%', color: TEAL } );
+        super( { key: 'precipitation_percentage', label: 'Precipitation change', unit: '%', color: TEAL } );
     }
 }
 

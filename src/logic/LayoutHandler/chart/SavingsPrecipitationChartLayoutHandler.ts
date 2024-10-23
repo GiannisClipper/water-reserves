@@ -4,7 +4,7 @@ import { ParamValues } from "@/logic/ParamValues";
 import { timeRepr, valueRepr } from "@/logic/ValueHandler";
 
 import { TimeValueHandler, SavingsPercentageValueHandler } from "@/logic/ValueHandler/savings";
-import { ProductionPercentageValueHandler } from "@/logic/ValueHandler/production";
+import { PrecipitationPercentageValueHandler } from "@/logic/ValueHandler/precipitation";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -19,7 +19,7 @@ class SavingsPrecipitationMultiChartLayoutHandler extends ChartLayoutHandler {
             xValueHandler: new TimeValueHandler(),
             yValueHandlers: [ 
                 new SavingsPercentageValueHandler(), 
-                new ProductionPercentageValueHandler()
+                new PrecipitationPercentageValueHandler()
             ],        
             title: 'Water reserves & precipitation',
             xLabel: timeRepr[ timeAggregation ],

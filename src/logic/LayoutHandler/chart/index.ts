@@ -57,12 +57,12 @@ class ChartLayoutHandler extends MinimalChartLayoutHandler {
     }
 }
 
-interface SingleChartLayoutHandlerType extends ChartLayoutHandlerType {
+interface MultiChartLayoutHandlerType extends ChartLayoutHandlerType {
     yDifferenceValueHandlers: ValueHandler[]
     yPercentageValueHandlers: ValueHandler[]
 }
 
-class SingleChartLayoutHandler extends ChartLayoutHandler {
+class MultiChartLayoutHandler extends ChartLayoutHandler {
 
     yDifferenceValueHandlers: ValueHandler[]
     yPercentageValueHandlers: ValueHandler[]
@@ -71,7 +71,7 @@ class SingleChartLayoutHandler extends ChartLayoutHandler {
         xValueHandler, yValueHandlers, 
         title, xLabel, yLabel,  
         yDifferenceValueHandlers, yPercentageValueHandlers
-    }: SingleChartLayoutHandlerType ) {
+    }: MultiChartLayoutHandlerType ) {
 
         super( { xValueHandler, yValueHandlers, title, xLabel, yLabel } );
         this.yDifferenceValueHandlers = yDifferenceValueHandlers;
@@ -86,6 +86,10 @@ class SingleChartLayoutHandler extends ChartLayoutHandler {
         }
     }
 }
+
+interface SingleChartLayoutHandlerType extends MultiChartLayoutHandlerType {}
+
+class SingleChartLayoutHandler extends MultiChartLayoutHandler {}
 
 interface EvaluationChartLayoutHandlerType {
     evaluation: EvaluationType
@@ -113,6 +117,7 @@ class EvaluationChartLayoutHandler {
 export { 
     MinimalChartLayoutHandler, 
     ChartLayoutHandler,
+    MultiChartLayoutHandler,
     SingleChartLayoutHandler,
     EvaluationChartLayoutHandler 
 };

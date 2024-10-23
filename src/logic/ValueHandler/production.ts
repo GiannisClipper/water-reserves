@@ -24,7 +24,7 @@ class ProductionDifferenceValueHandler extends ValueHandler {
 
 class ProductionPercentageValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'production_percentage', label: 'Change', unit: '%', color: PINK } );
+        super( { key: 'production_percentage', label: 'Production change', unit: '%', color: PINK } );
     }
 }
 
