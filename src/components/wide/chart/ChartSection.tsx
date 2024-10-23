@@ -32,7 +32,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,
-        'single,timeless': TimelessChartContent,
+        'single,spatial': TimelessChartContent,
         'stack': StackChartContent,
         'multi': MultiChartContent,
     };

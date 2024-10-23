@@ -8,6 +8,7 @@ import {
     SingleChartLayoutHandler, 
     MultiChartLayoutHandler 
 } from "@/logic/LayoutHandler/chart";
+import { SpatialInterruptionsSingleChartLayoutHandler } from "@/logic/LayoutHandler/chart/InterruptionsChartLayoutHandler";
 
 import { NestedValueSpecifier, ValueSpecifier } from '@/logic/ValueSpecifier';
 import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
@@ -73,72 +74,6 @@ const SingleTooltip = ( { active, payload, layoutHandler }: SingleTooltipPropsTy
                     <Unit unit={ difference.unit }/>
                     { ` (${withPlusSign( percentage.readFrom( payload ) )}%)` }
                 </p>
-            </div>
-      );
-    }
-  
-    return null;
-};
-
-type TimelessTooltipPropsType = {
-    active?: boolean
-    payload?: any
-    specifierCollection: ValueSpecifierCollection
-} 
-
-const TimelessTooltip = ( { active, payload, specifierCollection }: TimelessTooltipPropsType ) => {
-
-    if ( active && payload && payload.length ) {
-
-        payload = payload[ 0 ].payload;
-
-        const municipalitySpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
-        const nameSpecifier: ValueSpecifier = specifierCollection.getByKey( 'name' );
-        const areaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'area' );
-        const populationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'population' );
-        const eventsSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events' );
-        const overAreaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_area' );
-        const overPopulationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_population' );
-
-        // const valueSpecifier: ValueSpecifier = specifierCollection.getByAxeY()[ 0 ];
-        // const item: string = payload[ itemSpecifier.key ];
-        // const value: number = payload[ valueSpecifier.key ];
-        const name: string = payload[ nameSpecifier.key ];
-        const area: number = payload[ areaSpecifier.key ];
-        const population: number = payload[ populationSpecifier.key ];
-        const events: number = payload[ eventsSpecifier.key ];
-        const overArea: number = payload[ overAreaSpecifier.key ];
-        const overPopulation: number = payload[ overPopulationSpecifier.key ];
-
-        return (
-            <div className="Tooltip">
-                <strong>
-                    <div>{ municipalitySpecifier[ 'label'] } of { name }</div>
-                </strong>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>{ areaSpecifier[ 'label'] }</td>
-                            <td>{ withCommas( area ) }</td>
-                        </tr>
-                        <tr>
-                            <td>{ populationSpecifier[ 'label'] }</td>
-                            <td>{ withCommas( population ) }</td>
-                        </tr>
-                        <tr>
-                            <td>{ eventsSpecifier[ 'label'] }</td>
-                            <td>{ withCommas( events ) }</td>
-                        </tr>
-                        <tr>
-                            <td>{ overAreaSpecifier[ 'label'] }</td>
-                            <td>{ withCommas( Math.round( overArea * 10 ) / 10 ) }</td>
-                        </tr>
-                        <tr>
-                            <td>{ overPopulationSpecifier[ 'label'] }</td>
-                            <td>{ withCommas( Math.round( overPopulation * 10 ) / 10 ) }</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
       );
     }
@@ -244,4 +179,63 @@ const StackTooltip = ( { active, payload, chartHandler, makeItemsRepr }: StackTo
     return null;
 };
 
-export { CardTooltip, SingleTooltip, TimelessTooltip, MultiTooltip, StackTooltip };
+type SpatialInterruptionsTooltipPropsType = {
+    active?: boolean
+    payload?: any
+    layoutHandler: SpatialInterruptionsSingleChartLayoutHandler
+} 
+
+const SpatialInterruptionsTooltip = ( { active, payload, layoutHandler }: SpatialInterruptionsTooltipPropsType ) => {
+
+    if ( active && payload && payload.length ) {
+
+        payload = payload[ 0 ].payload;
+
+        const name = layoutHandler.nameValueHandler;
+        const area = layoutHandler.areaValueHandler;
+        const population = layoutHandler.populationValueHandler;
+        const events = layoutHandler.eventsValueHandler;
+        const overArea = layoutHandler.eventsOverAreaValueHandler;
+        const overPopulation = layoutHandler.eventsOverPopulationValueHandler;
+
+        return (
+            <div className="Tooltip">
+                <strong>
+                    <div>{ name.label } of { name.readFrom( payload ) }</div>
+                </strong>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>{ area.label }</td>
+                            <td>{ withCommas( area.readFrom( payload ) ) } <Unit unit={ area.unit }/></td>
+                        </tr>
+                        <tr>
+                            <td>{ population.label }</td>
+                            <td>{ withCommas( population.readFrom( payload ) ) } persons</td>
+                        </tr>
+                        <tr>
+                            <td>{ events.label }</td>
+                            <td>{ withCommas( events.readFrom( payload ) ) }</td>
+                        </tr>
+                        <tr>
+                            <td>{ overArea.label }</td>
+                            <td>{ withCommas( Math.round( overArea.readFrom( payload ) * 10 ) / 10 ) }</td>
+                        </tr>
+                        <tr>
+                            <td>{ overPopulation.label }</td>
+                            <td>{ withCommas( Math.round( overPopulation.readFrom( payload ) * 10 ) / 10 ) }</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+      );
+    }
+  
+    return null;
+};
+
+
+export { 
+    CardTooltip, SingleTooltip, MultiTooltip, StackTooltip,
+    SpatialInterruptionsTooltip
+};

@@ -150,7 +150,7 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
 
                 <Tooltip 
                     content={ <SingleTooltip 
-                        specifierCollection={ chartHandler.specifierCollection }
+                        layoutHandler={ layoutHandler }
                     /> } 
                 />
 
@@ -203,7 +203,7 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ <SingleTooltip 
-                        specifierCollection={ chartHandler.specifierCollection }
+                        layoutHandler={ layoutHandler }
                     /> } 
                 />
 

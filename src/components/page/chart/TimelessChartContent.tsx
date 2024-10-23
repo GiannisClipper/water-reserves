@@ -6,7 +6,7 @@ import { ResponsiveContainer } from 'recharts';
 
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
 import { XAxisTimelessTick, YAxisTick } from '@/components/page/chart/ticks';
-import { TimelessTooltip } from '@/components/page/chart/tooltips';
+import { SpatialInterruptionsTooltip } from '@/components/page/chart/tooltips';
 
 import { SingleTimelessDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
@@ -15,6 +15,7 @@ import type { ObjectType } from '@/types';
 
 import "@/styles/chart.css";
 import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { SpatialInterruptionsSingleChartLayoutHandler } from '@/logic/LayoutHandler/chart/InterruptionsChartLayoutHandler';
 
 type PropsType = { 
     chartType: string | undefined
@@ -58,7 +59,7 @@ const ChartContent = ( { chartType, dataHandler, layoutHandler }: PropsType ) =>
 
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
-    layoutHandler: ChartLayoutHandler
+    layoutHandler: SpatialInterruptionsSingleChartLayoutHandler
     items: ObjectType
 }
 
@@ -101,8 +102,8 @@ const BarChartComposition = ( { chartHandler, layoutHandler, items }: ChartCompo
                 <Tooltip 
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
-                    content={ <TimelessTooltip 
-                        specifierCollection={ chartHandler.specifierCollection }
+                    content={ <SpatialInterruptionsTooltip 
+                        layoutHandler={ layoutHandler }
                     /> } 
                 />
 

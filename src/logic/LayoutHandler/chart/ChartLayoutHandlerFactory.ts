@@ -25,7 +25,7 @@ class ChartLayoutHandlerFactory {
                 break;
             }
 
-            case 'single,timeless': {
+            case 'single,spatial': {
                 this.handler = new SingleChartLayoutHandlerFactory( option, searchParams ).handler;
                 break;
             }

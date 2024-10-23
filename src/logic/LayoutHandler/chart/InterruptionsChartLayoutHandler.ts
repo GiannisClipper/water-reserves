@@ -6,8 +6,11 @@ import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
 import { 
     TimeValueHandler, 
     EventsValueHandler, EventsDifferenceValueHandler, EventsPercentageValueHandler,
-    MunicipalitiesValueHandler,
-    EventsOverAreaValueHandler, EventsOverPopulationValueHandler 
+    MunicipalityIdValueHandler,
+    EventsOverAreaValueHandler, EventsOverPopulationValueHandler, 
+    MunicipalityNameValueHandler,
+    MunicipalityAreaValueHandler,
+    MunicipalityPopulationValueHandler
 
 } from "@/logic/ValueHandler/interruptions";
 
@@ -22,16 +25,16 @@ class InterruptionsSingleChartLayoutHandlerFactory {
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation } = params;
 
-        if ( timeAggregation !== 'alltime ') {
-            this.handler = new InterruptionsSingleTemporalChartLayoutHandler( searchParams );
+        if ( timeAggregation !== 'alltime' ) {
+            this.handler = new TemporalInterruptionsSingleChartLayoutHandler( searchParams );
 
         } else {
-            this.handler = new InterruptionsSingleSpatialChartLayoutHandler( searchParams );
+            this.handler = new SpatialInterruptionsSingleChartLayoutHandler( searchParams );
         }
     }
 }
 
-class InterruptionsSingleTemporalChartLayoutHandler extends SingleChartLayoutHandler {
+class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType ) {
 
@@ -52,7 +55,14 @@ class InterruptionsSingleTemporalChartLayoutHandler extends SingleChartLayoutHan
     }
 }
 
-class InterruptionsSingleSpatialChartLayoutHandler extends ChartLayoutHandler {
+class SpatialInterruptionsSingleChartLayoutHandler extends ChartLayoutHandler {
+
+    nameValueHandler: ValueHandler
+    areaValueHandler: ValueHandler;
+    populationValueHandler: ValueHandler;
+    eventsValueHandler: ValueHandler;
+    eventsOverAreaValueHandler: ValueHandler;
+    eventsOverPopulationValueHandler: ValueHandler;
 
     constructor( searchParams: SearchParamsType ) {
 
@@ -78,14 +88,21 @@ class InterruptionsSingleSpatialChartLayoutHandler extends ChartLayoutHandler {
             title: title,
             xLabel: 'Municipalities',
             yLabel: yLabel,
-            xValueHandler: new MunicipalitiesValueHandler(),
+            xValueHandler: new MunicipalityIdValueHandler(),
             yValueHandlers: [ new yValueHandlerClass() ],
         } );
+
+        this.nameValueHandler = new MunicipalityNameValueHandler();
+        this.areaValueHandler = new MunicipalityAreaValueHandler();
+        this.populationValueHandler = new MunicipalityPopulationValueHandler();
+        this.eventsValueHandler = new EventsValueHandler();
+        this.eventsOverAreaValueHandler = new EventsOverAreaValueHandler();
+        this.eventsOverPopulationValueHandler = new EventsOverPopulationValueHandler();
     }
 }
 
 export { 
     InterruptionsSingleChartLayoutHandlerFactory,
-    InterruptionsSingleTemporalChartLayoutHandler,
-    InterruptionsSingleSpatialChartLayoutHandler, 
+    TemporalInterruptionsSingleChartLayoutHandler,
+    SpatialInterruptionsSingleChartLayoutHandler, 
 };

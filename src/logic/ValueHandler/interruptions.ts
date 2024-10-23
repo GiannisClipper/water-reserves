@@ -30,9 +30,27 @@ class EventsPercentageValueHandler extends ValueHandler {
 
 // for spatial chart
 
-class MunicipalitiesValueHandler extends ValueHandler {
+class MunicipalityIdValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'municipality_id', label: 'Municipalities', unit: '' } );
+        super( { key: 'municipality_id', label: 'Municipality id', unit: '' } );
+    }
+}
+
+class MunicipalityNameValueHandler extends ValueHandler {
+    constructor() {
+        super( { key: 'name', label: 'Municipality', unit: '' } );
+    }
+}
+
+class MunicipalityAreaValueHandler extends ValueHandler {
+    constructor() {
+        super( { key: 'area', label: 'Area', unit: 'km2' } );
+    }
+}
+
+class MunicipalityPopulationValueHandler extends ValueHandler {
+    constructor() {
+        super( { key: 'population', label: 'Population', unit: '' } );
     }
 }
 
@@ -51,5 +69,6 @@ class EventsOverPopulationValueHandler extends ValueHandler {
 export { 
     TimeValueHandler, 
     EventsValueHandler, EventsDifferenceValueHandler, EventsPercentageValueHandler,
-    MunicipalitiesValueHandler, EventsOverAreaValueHandler, EventsOverPopulationValueHandler,
+    MunicipalityIdValueHandler, MunicipalityNameValueHandler, MunicipalityAreaValueHandler, MunicipalityPopulationValueHandler,
+    EventsOverAreaValueHandler, EventsOverPopulationValueHandler,
 };

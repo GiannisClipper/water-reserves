@@ -180,7 +180,7 @@ class DataHandlerFactory {
                     ] );
                 }
                 else {
-                    this.type = 'single,timeless';
+                    this.type = 'single,spatial';
                     this._specifierCollection = new ValueSpecifierCollection( [
                         new MunicipalityIdValueSpecifier( { index: 0, axeXY: 'X' } ),
                         new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
@@ -243,7 +243,7 @@ class DataHandlerFactory {
                 break;
             }
 
-            case 'single,timeless': {
+            case 'single,spatial': {
                 this._dataHandler = new SingleTimelessDataHandler( result, this._specifierCollection );
                 break;
             }

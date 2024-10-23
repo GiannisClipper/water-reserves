@@ -40,7 +40,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartLabels: ObjectType = {
         'single': ChartLabel1,
-        'single,timeless': ChartLabel2,
+        'single,spatial': ChartLabel2,
         'stack': ChartLabel1,
         'multi': ChartLabel1,
     };
@@ -49,7 +49,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,
-        'single,timeless': TimelessChartContent,
+        'single,spatial': TimelessChartContent,
         'stack': StackChartContent,
         'multi': MultiChartContent,
     };

@@ -8,7 +8,7 @@ class SingleDataHandler extends MultiDataHandler {
 
 class SingleTimelessDataHandler extends MultiDataHandler {    
 
-    type: string = 'single,timeless';
+    type: string = 'single,spatial';
 }
 
 export { SingleDataHandler, SingleTimelessDataHandler };
