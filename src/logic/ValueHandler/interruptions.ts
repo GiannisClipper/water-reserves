@@ -56,13 +56,13 @@ class MunicipalityPopulationValueHandler extends ValueHandler {
 
 class EventsOverAreaValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'events_over_area', label: 'Events over area', unit: '', color: RED } );
+        super( { key: 'events_over_area', label: 'Events per sq. km', unit: '', color: RED } );
     }
 }
 
 class EventsOverPopulationValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'events_over_population', label: 'Events over population', unit: '', color: RED } );
+        super( { key: 'events_over_population', label: 'Events per 1000 persons', unit: '', color: RED } );
     }
 }
 

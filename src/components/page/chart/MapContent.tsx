@@ -142,22 +142,21 @@ const MapContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td>{ areaSpecifier[ 'label'] }</td>
-                                            <td>{ withCommas( f.area ) }</td>
-                                        </tr>
-                                        <tr>
-                                            <td>{ populationSpecifier[ 'label'] }</td>
-                                            <td>{ withCommas( f.population ) }</td>
-                                        </tr>
-                                        <tr>
                                             <td>{ eventsSpecifier[ 'label'] }</td>
                                             <td>{ withCommas( f.events ) }</td>
+                                        </tr>
+                                        <tr>
+                                            <td>{ areaSpecifier[ 'label'] }</td>
+                                            <td>{ withCommas( f.area ) }</td>
                                         </tr>
                                         <tr>
                                             <td>{ overAreaSpecifier[ 'label'] }</td>
                                             <td>{ withCommas( Math.round( f.events_over_area * 10 ) / 10 ) }</td>
                                         </tr>
                                         <tr>
+                                            <td>{ populationSpecifier[ 'label'] }</td>
+                                            <td>{ withCommas( f.population ) }</td>
+                                        </tr>                                        <tr>
                                             <td>{ overPopulationSpecifier[ 'label'] }</td>
                                             <td>{ withCommas( Math.round( f.events_over_population * 10 ) / 10 ) }</td>
                                         </tr>

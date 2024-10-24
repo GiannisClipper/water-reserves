@@ -10,7 +10,6 @@ const MapContent = dynamic( () => import( './MapContent' ), { ssr: false } )
 import ChartLabel1 from "./ChartLabel";
 import ChartLabel2 from "./ChartLabel2";
 
-import TimelessChartContent from "@/components/page/chart/TimelessChartContent";
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
@@ -49,7 +48,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,
-        'single,spatial': TimelessChartContent,
+        'single,spatial': SingleChartContent,
         'stack': StackChartContent,
         'multi': MultiChartContent,
     };

@@ -182,9 +182,9 @@ class DataHandlerFactory {
                 else {
                     this.type = 'single,spatial';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new MunicipalityIdValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new MunicipalityIdValueSpecifier( { index: 0 } ),// axeXY: 'X' } ),
                         new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new MunicipalityNameValueSpecifier( {} ),
+                        new MunicipalityNameValueSpecifier( { axeXY: 'X' } ),
                         new MunicipalityAreaValueSpecifier( { index: 2 } ),
                         new MunicipalityPopulationValueSpecifier( { index: 3 } ),
                         new EventsOverAreaValueSpecifier( { index: 4 } ),

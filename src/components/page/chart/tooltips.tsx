@@ -205,21 +205,21 @@ const SpatialInterruptionsTooltip = ( { active, payload, layoutHandler }: Spatia
                 </strong>
                 <table>
                     <tbody>
+                    <tr>
+                        <td>{ events.label }</td>
+                            <td>{ withCommas( events.readFrom( payload ) ) }</td>
+                        </tr>
                         <tr>
                             <td>{ area.label }</td>
                             <td>{ withCommas( area.readFrom( payload ) ) } <Unit unit={ area.unit }/></td>
                         </tr>
                         <tr>
-                            <td>{ population.label }</td>
-                            <td>{ withCommas( population.readFrom( payload ) ) } persons</td>
-                        </tr>
-                        <tr>
-                            <td>{ events.label }</td>
-                            <td>{ withCommas( events.readFrom( payload ) ) }</td>
-                        </tr>
-                        <tr>
                             <td>{ overArea.label }</td>
                             <td>{ withCommas( Math.round( overArea.readFrom( payload ) * 10 ) / 10 ) }</td>
+                        </tr>
+                        <tr>
+                            <td>{ population.label }</td>
+                            <td>{ withCommas( population.readFrom( payload ) ) }</td>
                         </tr>
                         <tr>
                             <td>{ overPopulation.label }</td>

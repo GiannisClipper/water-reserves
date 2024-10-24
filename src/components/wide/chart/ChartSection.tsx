@@ -15,7 +15,6 @@ import { ChartLayoutHandlerFactory } from '@/logic/LayoutHandler/chart/ChartLayo
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
-import TimelessChartContent from "@/components/page/chart/TimelessChartContent";
 
 type PropsType = {
     endpoint: string
@@ -32,7 +31,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,
-        'single,spatial': TimelessChartContent,
+        'single,spatial': SingleChartContent,
         'stack': StackChartContent,
         'multi': MultiChartContent,
     };

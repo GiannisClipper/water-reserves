@@ -30,14 +30,13 @@ const XAxisTick = props => {
     );
 }
 
-const XAxisTimelessTick = props => {
+const XAxisSpatialTick = props => {
 
-    let { x, y, payload, data, items } = props;
+    let { x, y, payload } = props;
 
     // set the tick
 
-    let tick: string = payload.value;
-    tick = items[ tick ].slice( 0, 15 )
+    const tick: string = payload.value.slice( 0, 15 );
 
     // set positioning params
     const dx = 5;
@@ -71,5 +70,5 @@ const YAxisTick = props => {
   );
 }
 
-export { XAxisTick, XAxisTimelessTick, YAxisTick };
+export { XAxisTick, XAxisSpatialTick, YAxisTick };
 

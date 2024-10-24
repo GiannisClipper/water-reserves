@@ -7,8 +7,8 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, Customized  } from 'recharts';
 import { ResponsiveContainer } from 'recharts';
 
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
-import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
-import { SingleTooltip } from '@/components/page/chart/tooltips';
+import { XAxisTick, XAxisSpatialTick, YAxisTick } from '@/components/page/chart/ticks';
+import { SingleTooltip, SpatialInterruptionsTooltip } from '@/components/page/chart/tooltips';
 
 import { SingleDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
@@ -24,7 +24,7 @@ type PropsType = {
 
 const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
 
-    console.log( "rendering: ChartContent..." )//, dataHandler.data )
+    console.log( "rendering: ChartContent...", dataHandler.type )
 
     const chartHandler: ChartHandler = new ChartHandlerFactory( {
         type: 'single', 
@@ -36,7 +36,17 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
     return (
         <div className="ChartContent">
 
-            { chartType === 'bar'
+            { dataHandler.type === 'single,spatial'
+            ?
+            <BarChartComposition 
+                chartHandler={ chartHandler }
+                layoutHandler={ layoutHandler }
+                CustomXAxisTick={ XAxisSpatialTick }
+                CustomTooltip={ SpatialInterruptionsTooltip }
+            />
+
+            :            
+            chartType === 'bar'
             ?
             <BarChartComposition
                 chartHandler={ chartHandler }
@@ -64,9 +74,16 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
     layoutHandler: SingleChartLayoutHandler
+    CustomXAxisTick?: any
+    CustomTooltip?: any
 }
 
-const LineChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { 
+    chartHandler, 
+    layoutHandler, 
+    CustomXAxisTick=XAxisTick,
+    CustomTooltip=SingleTooltip
+}: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -86,7 +103,7 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                     dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.data } /> }
+                    tick={ <CustomXAxisTick data={ chartHandler.data } /> }
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -99,7 +116,7 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                 />
 
                 <Tooltip 
-                    content={ <SingleTooltip 
+                    content={ <CustomTooltip 
                         layoutHandler={ layoutHandler }
                     /> } 
                 />
@@ -116,7 +133,12 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
     );
 }
 
-const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( {     
+    chartHandler, 
+    layoutHandler, 
+    CustomXAxisTick=XAxisTick,
+    CustomTooltip=SingleTooltip
+}: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -136,7 +158,7 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                     dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.data } /> }
+                    tick={ <CustomXAxisTick data={ chartHandler.data } /> }
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -149,7 +171,7 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                 />
 
                 <Tooltip 
-                    content={ <SingleTooltip 
+                    content={ <CustomTooltip 
                         layoutHandler={ layoutHandler }
                     /> } 
                 />
@@ -166,8 +188,15 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
     );
 }
 
-const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( {     
+    chartHandler, 
+    layoutHandler, 
+    CustomXAxisTick=XAxisTick,
+    CustomTooltip=SingleTooltip
+}: ChartCompositionPropsType ) => {
 
+    console.log( 'CustomXAxisTick', CustomXAxisTick )
+    console.log( 'CustomTooltip', CustomTooltip )
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -187,7 +216,7 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
                     dataKey={ chartHandler.xValueKey }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.data } /> }
+                    tick={ <CustomXAxisTick data={ chartHandler.data } /> }
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -202,7 +231,7 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
                 <Tooltip 
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
-                    content={ <SingleTooltip 
+                    content={ <CustomTooltip 
                         layoutHandler={ layoutHandler }
                     /> } 
                 />
