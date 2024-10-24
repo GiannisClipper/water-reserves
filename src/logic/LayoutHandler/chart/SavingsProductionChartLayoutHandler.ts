@@ -3,8 +3,8 @@ import { ParamValues } from "@/logic/ParamValues";
 
 import { timeRepr, valueRepr } from "@/logic/ValueHandler";
 
-import { TimeValueHandler, SavingsPercentageValueHandler } from "@/logic/ValueHandler/savings";
-import { ProductionPercentageValueHandler } from "@/logic/ValueHandler/production";
+import { TimeValueHandler, SavingsChangeValueHandler } from "@/logic/ValueHandler/savings";
+import { ProductionChangeValueHandler } from "@/logic/ValueHandler/production";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -18,12 +18,12 @@ class SavingsProductionMultiChartLayoutHandler extends ChartLayoutHandler {
         super( {
             xValueHandler: new TimeValueHandler(),
             yValueHandlers: [ 
-                new SavingsPercentageValueHandler(), 
-                new ProductionPercentageValueHandler()
+                new SavingsChangeValueHandler(), 
+                new ProductionChangeValueHandler()
             ],        
             title: 'Water reserves & drinking water production',
             xLabel: timeRepr[ timeAggregation ],
-            yLabel: valueRepr[ valueAggregation ] + ' (change %)',
+            yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
         } );
     }
 }

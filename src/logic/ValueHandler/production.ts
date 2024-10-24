@@ -22,7 +22,7 @@ class ProductionDifferenceValueHandler extends ValueHandler {
     }
 }
 
-class ProductionPercentageValueHandler extends ValueHandler {
+class ProductionChangeValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'production_percentage', label: 'Production change', unit: '%', color: PINK } );
     }
@@ -36,6 +36,12 @@ class FactoriesValueHandler extends ValueHandler {
     }
 }
 
+class FactoriesPercentageValueHandler extends ValueHandler {
+    constructor() {
+        super( { key: 'factories.{id}.percentage', label: 'Percentage', unit: '%' } );
+    }
+}
+
 class FactoriesSumValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'sum', label: 'Production', unit: 'm3', color: PINK } );
@@ -44,6 +50,6 @@ class FactoriesSumValueHandler extends ValueHandler {
 
 export { 
     TimeValueHandler, 
-    ProductionValueHandler, ProductionDifferenceValueHandler, ProductionPercentageValueHandler,
-    FactoriesValueHandler, FactoriesSumValueHandler,
+    ProductionValueHandler, ProductionDifferenceValueHandler, ProductionChangeValueHandler,
+    FactoriesValueHandler, FactoriesPercentageValueHandler, FactoriesSumValueHandler,
 };

@@ -12,13 +12,13 @@ import { StackTooltip } from '@/components/page/chart/tooltips';
 import { LineLegend, ColorLegend } from "@/components/page/chart/legends";
 
 import { StackDataHandler } from '@/logic/DataHandler/StackDataHandler';
-import { ChartHandler, ChartHandlerFactory, StackChartHandler } from "@/logic/ChartHandler";
-import { makeItemsRepr, makeItemsOrderedRepr } from '@/logic/tooltipRepr';
+import { ChartHandler, ChartHandlerFactory } from "@/logic/ChartHandler";
 
-import type { ObjectType } from '@/types';
+import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { ValueHandler } from '@/logic/ValueHandler';
 
 import "@/styles/chart.css";
-import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { ObjectType } from '@/types';
 
 type PropsType = { 
     dataHandler: StackDataHandler
@@ -89,7 +89,7 @@ const LineChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
     const key = Object.keys( chartHandler.legend )[ 0 ];
     const legendItems: [] = chartHandler.legend[ key ];
 
-    console.log( 'Rerender LineChart...' );
+    console.log( 'Rerender LineChart...', layoutHandler.yValueHandlers, chartHandler.data );
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -106,7 +106,7 @@ const LineChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -124,19 +124,19 @@ const LineChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
                 <Tooltip 
                     content={ 
                         <StackTooltip 
-                            chartHandler={ chartHandler }
-                            makeItemsRepr={ makeItemsOrderedRepr }
+                            layoutHandler={ layoutHandler }
+                            sortFunc={ ( result: ObjectType[] ) => result.sort( ( a, b ) => b.value - a.value ) }
                         /> 
                     } 
                 />
 
-                { legendItems.map( ( l: ObjectType, i: number ) =>
+                { layoutHandler.yValueHandlers.slice( 0, -1 ).map( ( handler: ValueHandler, i: number ) =>
                     <Line 
                         key={ i }
                         id={ `${i+1}`}
                         type={ chartHandler.lineType } 
-                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( l.id ) }
-                        stroke={ layoutHandler.yValueHandlers[ 0 ].color[ 600 ] } 
+                        dataKey={ handler.key }
+                        stroke={ handler.color[ 600 ] } 
                         strokeWidth={ 2 } 
                         strokeDasharray={ lineDashes[ i ] }
                         dot={ false }
@@ -147,8 +147,8 @@ const LineChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
                 <Line 
                     id="0" 
                     type={ chartHandler.lineType } 
-                    dataKey={ chartHandler.specifierCollection.getNotNestedByAxeY()[ 0 ].key }
-                    stroke={ layoutHandler.yValueHandlers[ 1 ].color[ 600 ] } 
+                    dataKey={ layoutHandler.yValueHandlers[ layoutHandler.yValueHandlers.length - 1 ].key }
+                    stroke={ layoutHandler.yValueHandlers[ layoutHandler.yValueHandlers.length - 1 ].color[ 600 ] } 
                     strokeWidth={ 2 }
                     dot={ false }
                     legendType="plainline"
@@ -190,7 +190,7 @@ const AreaChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -208,20 +208,20 @@ const AreaChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
                 <Tooltip 
                     content={ 
                         <StackTooltip 
-                            chartHandler={ chartHandler }
-                            makeItemsRepr={ makeItemsRepr }
+                            layoutHandler={ layoutHandler }
+                            sortFunc={ ( result: ObjectType[] ) => result.reverse() }
                         /> 
                     } 
                 />
 
-                { legendItems.map( ( l: ObjectType, i: number ) =>
+                { layoutHandler.yValueHandlers.slice( 0, -1 ).map( ( handler: ValueHandler, i: number ) =>
                     <Area 
                         key={ i } 
                         type={ chartHandler.lineType } 
-                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( l.id ) }
                         stackId="a"
-                        stroke={ layoutHandler.yValueHandlers[ 0 ].color[ 600 - 100 * i ] } 
-                        fill={ layoutHandler.yValueHandlers[ 0 ].color[ 600 - 100 * i ] } 
+                        dataKey={ handler.key }
+                        stroke={ handler.color[ 600 - 100 * i ] } 
+                        fill={ handler.color[ 600 - 100 * i ] } 
                         fillOpacity={ .65 } 
                     />
                 ) }
@@ -261,7 +261,7 @@ const BarChartComposition = ( { chartHandler, colorArray, layoutHandler }: Chart
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -281,19 +281,19 @@ const BarChartComposition = ( { chartHandler, colorArray, layoutHandler }: Chart
                     cursor={{ fill: '#eee' }}
                     content={ 
                         <StackTooltip 
-                            chartHandler={ chartHandler }
-                            makeItemsRepr={ makeItemsRepr }
+                            layoutHandler={ layoutHandler }
+                            sortFunc={ ( result: ObjectType[] ) => result.reverse() }
                         /> 
                     } 
                 />
 
-                { legendItems.map( ( l: ObjectType, i: number ) =>
+                { layoutHandler.yValueHandlers.slice( 0, -1 ).map( ( handler: ValueHandler, i: number ) =>
                     <Bar 
                         key={ i } 
                         type={ chartHandler.lineType } 
-                        dataKey={ ( chartHandler as StackChartHandler ).composeNestedValueKey( l.id ) }
                         stackId="a"
-                        fill={ layoutHandler.yValueHandlers[ 0 ].color[ 600 - 100 * i ] } 
+                        dataKey={ handler.key }
+                        fill={ handler.color[ 600 - 100 * i ] } 
                         fillOpacity={ .65 }
                     />
                 ) }

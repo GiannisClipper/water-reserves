@@ -1,12 +1,14 @@
-import { ChartLayoutHandler, SingleChartLayoutHandler } from ".";
+import DataHandler from "@/logic/DataHandler";
+import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from ".";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
 
 import { 
     TimeValueHandler, 
-    ProductionValueHandler, ProductionDifferenceValueHandler, ProductionPercentageValueHandler,
+    ProductionValueHandler, ProductionDifferenceValueHandler, ProductionChangeValueHandler,
     FactoriesValueHandler, FactoriesSumValueHandler,
+    FactoriesPercentageValueHandler,
 } from "@/logic/ValueHandler/production";
 
 import type { SearchParamsType } from "@/types/searchParams";
@@ -27,27 +29,42 @@ class ProductionSingleChartLayoutHandler extends SingleChartLayoutHandler {
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
 
             yDifferenceValueHandlers: [ new ProductionDifferenceValueHandler() ],
-            yPercentageValueHandlers: [ new ProductionPercentageValueHandler() ],
+            yChangeValueHandlers: [ new ProductionChangeValueHandler() ],
         } );
     }
 }
 
-class ProductionStackChartLayoutHandler extends ChartLayoutHandler {
+class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType ) {
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
 
+        const yValueHandlers: ValueHandler[] = [];        
+        const yPercentageValueHandlers: ValueHandler[] = [];        
+        if ( dataHandler.legend ) {
+            for ( const factory of dataHandler.legend.factories ) {
+
+                const yValueHandler = new FactoriesValueHandler();
+                yValueHandler.key = yValueHandler.key.replace( '{id}', factory.id );
+                yValueHandler.label = factory.name_en;
+                yValueHandlers.push( yValueHandler );
+
+                const yPercentageValueHandler = new FactoriesPercentageValueHandler();
+                yPercentageValueHandler.key = yPercentageValueHandler.key.replace( '{id}', factory.id );
+                yPercentageValueHandlers.push( yPercentageValueHandler );
+            }
+            yValueHandlers.push( new FactoriesSumValueHandler() );
+        }
+
         super( {
             xValueHandler: new TimeValueHandler(),
-            yValueHandlers: [ 
-                new FactoriesValueHandler(), 
-                new FactoriesSumValueHandler() 
-            ],
+            yValueHandlers,
             title: 'Drinking water production (per plant)',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
+            yPercentageValueHandlers,        
         } );
     }
 }

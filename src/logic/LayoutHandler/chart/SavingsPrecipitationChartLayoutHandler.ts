@@ -3,8 +3,8 @@ import { ParamValues } from "@/logic/ParamValues";
 
 import { timeRepr, valueRepr } from "@/logic/ValueHandler";
 
-import { TimeValueHandler, SavingsPercentageValueHandler } from "@/logic/ValueHandler/savings";
-import { PrecipitationPercentageValueHandler } from "@/logic/ValueHandler/precipitation";
+import { TimeValueHandler, SavingsChangeValueHandler } from "@/logic/ValueHandler/savings";
+import { PrecipitationChangeValueHandler } from "@/logic/ValueHandler/precipitation";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -18,12 +18,12 @@ class SavingsPrecipitationMultiChartLayoutHandler extends ChartLayoutHandler {
         super( {
             xValueHandler: new TimeValueHandler(),
             yValueHandlers: [ 
-                new SavingsPercentageValueHandler(), 
-                new PrecipitationPercentageValueHandler()
+                new SavingsChangeValueHandler(), 
+                new PrecipitationChangeValueHandler()
             ],        
             title: 'Water reserves & precipitation',
             xLabel: timeRepr[ timeAggregation ],
-            yLabel: valueRepr[ valueAggregation ] + ' (change %)',
+            yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
         } );
     }
 }

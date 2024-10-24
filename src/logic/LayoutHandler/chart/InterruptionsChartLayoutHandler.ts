@@ -5,7 +5,7 @@ import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
 
 import { 
     TimeValueHandler, 
-    EventsValueHandler, EventsDifferenceValueHandler, EventsPercentageValueHandler,
+    EventsValueHandler, EventsDifferenceValueHandler, EventsChangeValueHandler,
     MunicipalityIdValueHandler,
     EventsOverAreaValueHandler, EventsOverPopulationValueHandler, 
     MunicipalityNameValueHandler,
@@ -50,7 +50,7 @@ class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHan
             yLabel: 'Events',
 
             yDifferenceValueHandlers: [ new EventsDifferenceValueHandler() ],
-            yPercentageValueHandlers: [ new EventsPercentageValueHandler() ],
+            yChangeValueHandlers: [ new EventsChangeValueHandler() ],
         } );
     }
 }

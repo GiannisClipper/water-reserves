@@ -100,7 +100,7 @@ const LineChartComposition = ( {
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <CustomXAxisTick data={ chartHandler.data } /> }
@@ -122,7 +122,7 @@ const LineChartComposition = ( {
                 />
 
                 <Line
-                    dataKey={ chartHandler.yValueKey }
+                    dataKey={ layoutHandler.yValueHandlers[ 0 ].key }
                     type={ chartHandler.lineType } 
                     stroke={ layoutHandler.yValueHandlers[ 0 ].color[ 500 ] } 
                     strokeWidth={ 2 } 
@@ -155,7 +155,7 @@ const AreaChartComposition = ( {
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <CustomXAxisTick data={ chartHandler.data } /> }
@@ -177,7 +177,7 @@ const AreaChartComposition = ( {
                 />
 
                 <Area 
-                    dataKey={ chartHandler.yValueKey }
+                    dataKey={ layoutHandler.yValueHandlers[ 0 ].key }
                     type={ chartHandler.lineType } 
                     stroke={ layoutHandler.yValueHandlers[ 0 ].color[ 400 ] } 
                     fill={ layoutHandler.yValueHandlers[ 0 ].color[ 300 ] } 
@@ -213,7 +213,7 @@ const BarChartComposition = ( {
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <CustomXAxisTick data={ chartHandler.data } /> }
@@ -237,7 +237,7 @@ const BarChartComposition = ( {
                 />
 
                 <Bar 
-                    dataKey={ chartHandler.yValueKey }
+                    dataKey={ layoutHandler.yValueHandlers[ 0 ].key }
                     stroke={ layoutHandler.yValueHandlers[ 0 ].color[ 400 ] } 
                     fill={ layoutHandler.yValueHandlers[ 0 ].color[ 300 ] } 
                     fillOpacity={ .65 } 

@@ -6,7 +6,9 @@ import { ChartHandler } from "@/logic/ChartHandler";
 import { 
     MinimalChartLayoutHandler, 
     SingleChartLayoutHandler, 
-    MultiChartLayoutHandler 
+    MultiChartLayoutHandler, 
+    ChartLayoutHandler,
+    StackChartLayoutHandler
 } from "@/logic/LayoutHandler/chart";
 import { SpatialInterruptionsSingleChartLayoutHandler } from "@/logic/LayoutHandler/chart/InterruptionsChartLayoutHandler";
 
@@ -62,7 +64,7 @@ const SingleTooltip = ( { active, payload, layoutHandler }: SingleTooltipPropsTy
         const time = layoutHandler.xValueHandler;
         const value = layoutHandler.yValueHandlers[ 0 ];
         const difference = layoutHandler.yDifferenceValueHandlers[ 0 ];
-        const percentage = layoutHandler.yPercentageValueHandlers[ 0 ];
+        const growth = layoutHandler.yChangeValueHandlers[ 0 ];
 
         return (
             <div className="Tooltip">
@@ -72,7 +74,7 @@ const SingleTooltip = ( { active, payload, layoutHandler }: SingleTooltipPropsTy
                 </p>
                 <p>{ `Change: ${withCommas( Math.round( difference.readFrom( payload ) ) )} ` }
                     <Unit unit={ difference.unit }/>
-                    { ` (${withPlusSign( percentage.readFrom( payload ) )}%)` }
+                    { ` (${withPlusSign( growth.readFrom( payload ) )}%)` }
                 </p>
             </div>
       );
@@ -129,44 +131,51 @@ const MultiTooltip = ( { active, payload, layoutHandler }: MultiTooltipPropsType
 type StackTooltipPropsType = {
     active?: boolean
     payload?: any
-    chartHandler: ChartHandler
-    makeItemsRepr: CallableFunction
+    layoutHandler: StackChartLayoutHandler
+    sortFunc?: CallableFunction
 } 
 
-const StackTooltip = ( { active, payload, chartHandler, makeItemsRepr }: StackTooltipPropsType ) => {
+const StackTooltip = ( { active, payload, layoutHandler, sortFunc }: StackTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
         payload = payload[ 0 ].payload;
 
-        const specifierCollection: ValueSpecifierCollection = chartHandler.specifierCollection;
-        const timeSpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
-        const sumSpecifier: ValueSpecifier = specifierCollection.getByKey( 'sum' );
-        const nSpecifier: NestedValueSpecifier = specifierCollection.getNestedByAxeY()[ 0 ];
+        const time = layoutHandler.xValueHandler;
+        const total = layoutHandler.yValueHandlers[ layoutHandler.yValueHandlers.length -1 ];
 
-        const time = payload[ timeSpecifier.key ];
-        const total = payload[ sumSpecifier.key ];
+        const result: ObjectType[] = [];
+        for ( const handler of layoutHandler.yValueHandlers.slice( 0, -1 ) ) {
+            result.push( {
+                label: handler.label,
+                value: handler.readFrom( payload ),
+                unit: handler.unit,
+            } );
+        }
+        for ( let i = 0; i < layoutHandler.yPercentageValueHandlers.length; i++ ) {
+            result[ i ].percentage = layoutHandler.yPercentageValueHandlers[ i ].readFrom( payload )
+        }
 
-        const key = Object.keys( chartHandler.legend )[ 0 ];
-        const legend: [] = chartHandler.legend[ key ];
-
-        const legendRepr: ObjectType[] = makeItemsRepr( legend, payload, nSpecifier );
+        if ( sortFunc ) {
+            sortFunc( result )
+        }
+        // result.sort( ( a, b ) => b.value - a.value );
 
         return (
             <div className="Tooltip">
-                <p>{ `${timeLabel( time )}: ${time}` }</p>
+                <p>{ `${timeLabel( time.readFrom( payload ) )}: ${time.readFrom( payload )}` }</p>
 
                 <table>
                     <tbody>
                         <tr className='total'>
                             <td>Total</td> 
-                            <td className='value'>{ withCommas( Math.round( total ) ) } <Unit unit={ sumSpecifier.unit }/></td>
+                            <td className='value'>{ withCommas( Math.round( total.readFrom( payload ) ) ) } <Unit unit={ total.unit }/></td>
                         </tr>
-                        { legendRepr.map( ( item, i ) =>
+                        { result.map( ( row, i ) =>
                             <tr key={ i }>
-                                <td>{ item.name }</td>
-                                <td className='value'>{ withCommas( Math.round( item.value) ) } <Unit unit={ sumSpecifier.unit }/></td> 
-                                <td className='value'>{ `${item.percentage}%` }</td>
+                                <td>{ row.label }</td>
+                                <td className='value'>{ withCommas( Math.round( row.value ) ) } <Unit unit={ row.unit }/></td> 
+                                <td className='value'>{ `${row.percentage} %` }</td>
                             </tr>
                         ) }
                     </tbody>
@@ -175,7 +184,6 @@ const StackTooltip = ( { active, payload, chartHandler, makeItemsRepr }: StackTo
             </div>
       );
     }
-  
     return null;
 };
 
@@ -236,6 +244,7 @@ const SpatialInterruptionsTooltip = ( { active, payload, layoutHandler }: Spatia
 
 
 export { 
-    CardTooltip, SingleTooltip, MultiTooltip, StackTooltip,
+    CardTooltip, SingleTooltip, MultiTooltip, 
+    StackTooltip,
     SpatialInterruptionsTooltip
 };

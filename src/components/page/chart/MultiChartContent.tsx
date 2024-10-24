@@ -16,6 +16,7 @@ import MultiDataHandler from '@/logic/DataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
 
 import "@/styles/chart.css";
+import { handleClientScriptLoad } from 'next/script';
 
 type PropsType = { 
     dataHandler: MultiDataHandler
@@ -84,7 +85,7 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks } 
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> }
@@ -106,13 +107,13 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                 />
 
                 <>
-                { chartHandler.yValueKeys.map( ( key, i ) => {
+                { layoutHandler.yValueHandlers.map( ( handler, i ) => {
                     return (
                         <Line
                             key={ i }
-                            dataKey={ key }
+                            dataKey={ handler.key }
                             type={ chartHandler.lineType } 
-                            stroke={ layoutHandler.yValueHandlers[ i ].color[ 500 ] } 
+                            stroke={ handler.color[ 500 ] } 
                             strokeWidth={ 2 } 
                             dot={ false }
                         />
@@ -151,7 +152,7 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -173,14 +174,14 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                 />
 
                 <>
-                { chartHandler.yValueKeys.map( ( key, i ) => {
+                { layoutHandler.yValueHandlers.map( ( handler, i ) => {
                     return (
                         <Area 
                             key={ i }
-                            dataKey={ key }
+                            dataKey={ handler.key }
                             type={ chartHandler.lineType } 
-                            stroke={ layoutHandler.yValueHandlers[ i ].color[ 400 ] } 
-                            fill={ layoutHandler.yValueHandlers[ i ].color[ 300 ] } 
+                            stroke={ handler.color[ 400 ] } 
+                            fill={ handler.color[ 300 ] } 
                             fillOpacity={ .65 } 
                         />
                     );
@@ -220,7 +221,7 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
                 />
 
                 <XAxis 
-                    dataKey={ chartHandler.xValueKey }
+                    dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ chartHandler.xTicks }
                     interval={ 0 } 
                     tick={ <XAxisTick data={ chartHandler.data } /> } 
@@ -244,13 +245,13 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
                 />
 
                 <>
-                { chartHandler.yValueKeys.map( ( key, i ) => {
+                { layoutHandler.yValueHandlers.map( ( handler, i ) => {
                     return (
                         <Bar 
                             key={ i }
-                            dataKey={ key }
-                            stroke={ layoutHandler.yValueHandlers[ i ].color[ 400 ] } 
-                            fill={ layoutHandler.yValueHandlers[ i ].color[ 300 ] } 
+                            dataKey={ handler.key }
+                            stroke={ handler.color[ 400 ] } 
+                            fill={ handler.color[ 300 ] } 
                             fillOpacity={ .65 } 
                         />
                     );

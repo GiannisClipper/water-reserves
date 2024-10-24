@@ -42,17 +42,17 @@ class TemperatureMaxDifferenceValueHandler extends ValueHandler {
     }
 }
 
-class TemperatureMinPercentageValueHandler extends ValueHandler {
+class TemperatureMinChangeValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'temperature_min_percentage', label: 'Change', unit: '%' } );
     }
 }
-class TemperatureMeanPercentageValueHandler extends ValueHandler {
+class TemperatureMeanChangeValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'temperature_mean_percentage', label: 'Change', unit: '%' } );
     }
 }
-class TemperatureMaxPercentageValueHandler extends ValueHandler {
+class TemperatureMaxChangeValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'temperature_max_percentage', label: 'Change', unit: '%' } );
     }
@@ -60,7 +60,7 @@ class TemperatureMaxPercentageValueHandler extends ValueHandler {
 
 export { 
     TimeValueHandler, 
-    TemperatureMinValueHandler, TemperatureMinDifferenceValueHandler, TemperatureMinPercentageValueHandler,
-    TemperatureMeanValueHandler, TemperatureMeanDifferenceValueHandler, TemperatureMeanPercentageValueHandler,
-    TemperatureMaxValueHandler, TemperatureMaxDifferenceValueHandler, TemperatureMaxPercentageValueHandler,
+    TemperatureMinValueHandler, TemperatureMinDifferenceValueHandler, TemperatureMinChangeValueHandler,
+    TemperatureMeanValueHandler, TemperatureMeanDifferenceValueHandler, TemperatureMeanChangeValueHandler,
+    TemperatureMaxValueHandler, TemperatureMaxDifferenceValueHandler, TemperatureMaxChangeValueHandler,
 };

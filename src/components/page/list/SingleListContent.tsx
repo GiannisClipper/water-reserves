@@ -35,7 +35,7 @@ const ListContent = ( { dataHandler }: PropsType ) => {
                         <td> { row.time } </td>
                         <td className='number'> { withCommas( row.value ) } <CubicMeters /></td>
                         <td className='number'> { withCommas( row.difference ) } <CubicMeters /></td>
-                        <td className='number'> { withPlusSign( row.percentage.toFixed( 2 ) ) } </td>
+                        <td className='number'> { withPlusSign( row.chnage.toFixed( 2 ) ) } </td>
                     </tr>
                 ) }
                 </tbody>

@@ -27,7 +27,7 @@ class SavingsDifferenceValueHandler extends ValueHandler {
     }
 }
 
-class SavingsPercentageValueHandler extends ValueHandler {
+class SavingsChangeValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'savings_percentage', label: 'Savings change', unit: '%', color: SKY } );
     }
@@ -41,6 +41,12 @@ class ReservoirsValueHandler extends ValueHandler {
     }
 }
 
+class ReservoirsPercentageValueHandler extends ValueHandler {
+    constructor() {
+        super( { key: 'reservoirs.{id}.percentage', label: 'Percentage', unit: '%' } );
+    }
+}
+
 class ReservoirsSumValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'sum', label: 'Reserves', unit: 'm3', color: SKY } );
@@ -49,6 +55,6 @@ class ReservoirsSumValueHandler extends ValueHandler {
 
 export { 
     TimeValueHandler, 
-    SavingsValueHandler, SavingsDifferenceValueHandler, SavingsPercentageValueHandler,
-    ReservoirsValueHandler, ReservoirsSumValueHandler
+    SavingsValueHandler, SavingsDifferenceValueHandler, SavingsChangeValueHandler,
+    ReservoirsValueHandler, ReservoirsPercentageValueHandler, ReservoirsSumValueHandler
 };

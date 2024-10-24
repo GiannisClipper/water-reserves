@@ -59,30 +59,30 @@ class ChartLayoutHandler extends MinimalChartLayoutHandler {
 
 interface MultiChartLayoutHandlerType extends ChartLayoutHandlerType {
     yDifferenceValueHandlers: ValueHandler[]
-    yPercentageValueHandlers: ValueHandler[]
+    yChangeValueHandlers: ValueHandler[]
 }
 
 class MultiChartLayoutHandler extends ChartLayoutHandler {
 
     yDifferenceValueHandlers: ValueHandler[]
-    yPercentageValueHandlers: ValueHandler[]
+    yChangeValueHandlers: ValueHandler[]
 
     constructor( { 
         xValueHandler, yValueHandlers, 
         title, xLabel, yLabel,  
-        yDifferenceValueHandlers, yPercentageValueHandlers
+        yDifferenceValueHandlers, yChangeValueHandlers
     }: MultiChartLayoutHandlerType ) {
 
         super( { xValueHandler, yValueHandlers, title, xLabel, yLabel } );
         this.yDifferenceValueHandlers = yDifferenceValueHandlers;
-        this.yPercentageValueHandlers = yPercentageValueHandlers;
+        this.yChangeValueHandlers = yChangeValueHandlers;
     }
 
     toJSON(): ObjectType {
         return {
             ...super.toJSON(),
             yDifferenceValueHandlers: this.yDifferenceValueHandlers,
-            yPercentageValueHandlers: this.yPercentageValueHandlers,
+            yChangeValueHandlers: this.yChangeValueHandlers,
         }
     }
 }
@@ -90,6 +90,32 @@ class MultiChartLayoutHandler extends ChartLayoutHandler {
 interface SingleChartLayoutHandlerType extends MultiChartLayoutHandlerType {}
 
 class SingleChartLayoutHandler extends MultiChartLayoutHandler {}
+
+interface StackChartLayoutHandlerType extends ChartLayoutHandlerType {
+    yPercentageValueHandlers: ValueHandler[]
+}
+
+class StackChartLayoutHandler extends ChartLayoutHandler {
+
+    yPercentageValueHandlers: ValueHandler[]
+
+    constructor( { 
+        xValueHandler, yValueHandlers, 
+        title, xLabel, yLabel,  
+        yPercentageValueHandlers
+    }: StackChartLayoutHandlerType ) {
+
+        super( { xValueHandler, yValueHandlers, title, xLabel, yLabel } );
+        this.yPercentageValueHandlers = yPercentageValueHandlers;
+    }
+
+    toJSON(): ObjectType {
+        return {
+            ...super.toJSON(),
+            yPercentageValueHandlers: this.yPercentageValueHandlers,
+        }
+    }
+}
 
 interface EvaluationChartLayoutHandlerType {
     evaluation: EvaluationType
@@ -119,5 +145,6 @@ export {
     ChartLayoutHandler,
     MultiChartLayoutHandler,
     SingleChartLayoutHandler,
+    StackChartLayoutHandler,
     EvaluationChartLayoutHandler 
 };

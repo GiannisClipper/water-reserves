@@ -47,7 +47,7 @@ const ListContent = ( { dataHandler }: PropsType ) => {
                         { items.map( ( r: ObjectType ) =>
                             <Fragment key={ r.id }>
                                 <td className='number'>{ withCommas( row.values[ r.id ].value ) }</td>
-                                <td className='number'>{ row.values[ r.id ].percentage }%</td>
+                                <td className='number'>{ row.values[ r.id ].chnage }%</td>
                             </Fragment>
                         ) }
                     </tr>

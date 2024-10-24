@@ -22,7 +22,7 @@ class PrecipitationDifferenceValueHandler extends ValueHandler {
     }
 }
 
-class PrecipitationPercentageValueHandler extends ValueHandler {
+class PrecipitationChangeValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'precipitation_percentage', label: 'Precipitation change', unit: '%', color: TEAL } );
     }
@@ -32,7 +32,13 @@ class PrecipitationPercentageValueHandler extends ValueHandler {
 
 class LocationsValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'precipitation.{id}.location', label: 'Precipitation', unit: 'mm', color: TEAL } );
+        super( { key: 'locations.{id}.precipitation', label: 'Precipitation', unit: 'mm', color: TEAL } );
+    }
+}
+
+class LocationsPercentageValueHandler extends ValueHandler {
+    constructor() {
+        super( { key: 'locations.{id}.percentage', label: 'Percentage', unit: '%' } );
     }
 }
 
@@ -44,6 +50,6 @@ class LocationsSumValueHandler extends ValueHandler {
 
 export { 
     TimeValueHandler, 
-    PrecipitationValueHandler, PrecipitationDifferenceValueHandler, PrecipitationPercentageValueHandler,
-    LocationsValueHandler, LocationsSumValueHandler,
+    PrecipitationValueHandler, PrecipitationDifferenceValueHandler, PrecipitationChangeValueHandler,
+    LocationsValueHandler, LocationsPercentageValueHandler, LocationsSumValueHandler,
 };

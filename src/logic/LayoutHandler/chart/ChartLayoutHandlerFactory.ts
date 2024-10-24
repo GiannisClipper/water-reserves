@@ -10,15 +10,17 @@ import { SavingsStackChartLayoutHandler } from "./SavingsChartLayoutHandler";
 import { ProductionStackChartLayoutHandler } from "./ProductionChartLayoutHandler";
 import { PrecipitationStackChartLayoutHandler } from "./PrecipitationChartLayoutHandler";
 
+import DataHandler from "@/logic/DataHandler";
+
 import type { SearchParamsType } from "@/types/searchParams";
 
 class ChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( type: string, option: string, searchParams: SearchParamsType ) {
+    constructor( option: string, searchParams: SearchParamsType, dataHandler: DataHandler ) {
     
-        switch ( type ) {
+        switch ( dataHandler.type ) {
 
             case 'single': {
                 this.handler = new SingleChartLayoutHandlerFactory( option, searchParams ).handler;
@@ -36,12 +38,12 @@ class ChartLayoutHandlerFactory {
             }
 
             case 'stack': {
-                this.handler = new StackChartLayoutHandlerFactory( option, searchParams ).handler;
+                this.handler = new StackChartLayoutHandlerFactory( option, searchParams, dataHandler ).handler;
                 break;
             }
 
             default:
-                throw `Invalid type (${type}) used in ChartLayoutHandlerFactory`;
+                throw `Invalid type (${dataHandler.type}) used in ChartLayoutHandlerFactory`;
         }
     }
 }
@@ -113,22 +115,22 @@ class StackChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( option: string, searchParams: SearchParamsType ) {
+    constructor( option: string, searchParams: SearchParamsType, dataHandler: DataHandler ) {
     
         switch ( option ) {
 
             case 'savings': {
-                this.handler = new SavingsStackChartLayoutHandler( searchParams );
+                this.handler = new SavingsStackChartLayoutHandler( searchParams, dataHandler );
                 break;
             }
 
             case 'production': {
-                this.handler = new ProductionStackChartLayoutHandler( searchParams );
+                this.handler = new ProductionStackChartLayoutHandler( searchParams, dataHandler );
                 break;
             }
 
             case 'precipitation': {
-                this.handler = new PrecipitationStackChartLayoutHandler( searchParams );
+                this.handler = new PrecipitationStackChartLayoutHandler( searchParams, dataHandler );
                 break;
             }
 

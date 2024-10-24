@@ -22,7 +22,7 @@ class EventsDifferenceValueHandler extends ValueHandler {
     }
 }
 
-class EventsPercentageValueHandler extends ValueHandler {
+class EventsChangeValueHandler extends ValueHandler {
     constructor() {
         super( { key: 'events_percentage', label: 'Change', unit: '%' } );
     }
@@ -68,7 +68,7 @@ class EventsOverPopulationValueHandler extends ValueHandler {
 
 export { 
     TimeValueHandler, 
-    EventsValueHandler, EventsDifferenceValueHandler, EventsPercentageValueHandler,
+    EventsValueHandler, EventsDifferenceValueHandler, EventsChangeValueHandler,
     MunicipalityIdValueHandler, MunicipalityNameValueHandler, MunicipalityAreaValueHandler, MunicipalityPopulationValueHandler,
     EventsOverAreaValueHandler, EventsOverPopulationValueHandler,
 };

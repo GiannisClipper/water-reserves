@@ -35,7 +35,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
         .dataHandler;
     
-    const layoutHandler = new ChartLayoutHandlerFactory( dataHandler.type, endpoint, searchParams ).handler;
+    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataHandler ).handler;
 
     const chartLabels: ObjectType = {
         'single': ChartLabel1,
