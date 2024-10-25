@@ -1,4 +1,5 @@
-import { ChartLayoutHandler } from ".";
+import DataHandler from "@/logic/DataHandler";
+import { ChartLayoutHandler } from "..";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { timeRepr } from "@/logic/ValueHandler";
@@ -31,6 +32,26 @@ class TemperatureMultiChartLayoutHandler extends ChartLayoutHandler {
     }
 }
 
+class TemperatureChartLayoutHandlerFactory {
+
+    handler: ChartLayoutHandler;
+
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    
+        switch ( dataHandler.type ) {
+
+            case 'multi': {
+                this.handler = new TemperatureMultiChartLayoutHandler( searchParams );
+                break;
+            }
+
+            default:
+                throw `Invalid type (${dataHandler.type}) used in TemperatureChartLayoutHandlerFactory`;
+        }
+    }
+}
+
 export { 
+    TemperatureChartLayoutHandlerFactory,
     TemperatureMultiChartLayoutHandler, 
 };

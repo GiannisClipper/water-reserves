@@ -1,5 +1,5 @@
 import DataHandler from "@/logic/DataHandler";
-import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from ".";
+import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "..";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -41,6 +41,8 @@ class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
 
+        // integrate legend values with data
+
         const yValueHandlers: ValueHandler[] = [];        
         const yPercentageValueHandlers: ValueHandler[] = [];        
         if ( dataHandler.legend ) {
@@ -69,7 +71,33 @@ class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
     }
 }
 
+class ProductionChartLayoutHandlerFactory {
+
+    handler: ChartLayoutHandler;
+
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    
+        switch ( dataHandler.type ) {
+
+            case 'single': {
+                this.handler = new ProductionSingleChartLayoutHandler( searchParams );
+                break;
+            }
+
+            case 'stack': {
+                this.handler = new ProductionStackChartLayoutHandler( searchParams, dataHandler );
+                break;
+            }
+
+            default:
+                throw `Invalid type (${dataHandler.type}) used in ProductionChartLayoutHandlerFactory`;
+        }
+    }
+}
+
+
 export { 
+    ProductionChartLayoutHandlerFactory,
     ProductionSingleChartLayoutHandler, 
     ProductionStackChartLayoutHandler,
 };

@@ -10,7 +10,7 @@ import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
 
-import { ChartLayoutHandlerFactory } from '@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory';
+import ChartLayoutHandlerFactory from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
 
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";

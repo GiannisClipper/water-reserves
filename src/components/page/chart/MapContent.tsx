@@ -14,13 +14,13 @@ import geojson from '@/geography/dhmoi_okxe_attica.json';
 
 import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
 
-import { SingleTimelessDataHandler } from '@/logic/DataHandler/SingleDataHandler';
+import { SingleSpatialDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 
 import 'leaflet/dist/leaflet.css'
 import "@/styles/chart.css";
 
 type PropsType = { 
-    dataHandler: SingleTimelessDataHandler
+    dataHandler: SingleSpatialDataHandler
     layoutHandler: ChartLayoutHandler
     chartType: string | undefined
 }

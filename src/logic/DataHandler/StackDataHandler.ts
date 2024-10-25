@@ -131,4 +131,7 @@ class LocationsStackDataHandler extends StackDataHandler {
     }
 }
 
-export { StackDataHandler, ReservoirsStackDataHandler, FactoriesStackDataHandler, LocationsStackDataHandler };
+export {
+    StackDataHandler, 
+    ReservoirsStackDataHandler, FactoriesStackDataHandler, LocationsStackDataHandler 
+};

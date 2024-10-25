@@ -9,7 +9,7 @@ import { ResponsiveContainer } from 'recharts';
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { MultiTooltip } from '@/components/page/chart/tooltips';
-import { MultiColorLegend, StandardLegend } from "@/components/page/chart/legends";
+import { StandardLegend } from "@/components/page/chart/legends";
 import { MultiChartLayoutHandler } from '@/logic/LayoutHandler/chart';
 
 import MultiDataHandler from '@/logic/DataHandler';

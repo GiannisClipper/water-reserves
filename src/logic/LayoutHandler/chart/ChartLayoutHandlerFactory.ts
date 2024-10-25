@@ -1,14 +1,11 @@
 import { ChartLayoutHandler } from ".";
-import { SavingsSingleChartLayoutHandler } from "./SavingsChartLayoutHandler";
-import { ProductionSingleChartLayoutHandler } from "./ProductionChartLayoutHandler";
-import { PrecipitationSingleChartLayoutHandler } from "./PrecipitationChartLayoutHandler";
-import { TemperatureMultiChartLayoutHandler } from "./TemperatureChartLayoutHandler";
-import { InterruptionsSingleChartLayoutHandlerFactory } from './InterruptionsChartLayoutHandler';
-import { SavingsProductionMultiChartLayoutHandler } from "./SavingsProductionChartLayoutHandler";
-import { SavingsPrecipitationMultiChartLayoutHandler } from "./SavingsPrecipitationChartLayoutHandler";
-import { SavingsStackChartLayoutHandler } from "./SavingsChartLayoutHandler";
-import { ProductionStackChartLayoutHandler } from "./ProductionChartLayoutHandler";
-import { PrecipitationStackChartLayoutHandler } from "./PrecipitationChartLayoutHandler";
+import { SavingsChartLayoutHandlerFactory } from "./savings";
+import { ProductionChartLayoutHandlerFactory } from "./production";
+import { PrecipitationChartLayoutHandlerFactory } from "./precipitation";
+import { TemperatureChartLayoutHandlerFactory } from "./temperature";
+import { SavingsProductionChartLayoutHandlerFactory } from "./savings-production";
+import { SavingsPrecipitationChartLayoutHandlerFactory } from "./savings-precipitation";
+import { InterruptionsChartLayoutHandlerFactory } from "./interruptions";
 
 import DataHandler from "@/logic/DataHandler";
 
@@ -20,117 +17,40 @@ class ChartLayoutHandlerFactory {
 
     constructor( option: string, searchParams: SearchParamsType, dataHandler: DataHandler ) {
     
-        switch ( dataHandler.type ) {
-
-            case 'single': {
-                this.handler = new SingleChartLayoutHandlerFactory( option, searchParams ).handler;
-                break;
-            }
-
-            case 'single,spatial': {
-                this.handler = new SingleChartLayoutHandlerFactory( option, searchParams ).handler;
-                break;
-            }
-
-            case 'multi': {
-                this.handler = new MultiChartLayoutHandlerFactory( option, searchParams ).handler;
-                break;
-            }
-
-            case 'stack': {
-                this.handler = new StackChartLayoutHandlerFactory( option, searchParams, dataHandler ).handler;
-                break;
-            }
-
-            default:
-                throw `Invalid type (${dataHandler.type}) used in ChartLayoutHandlerFactory`;
-        }
-    }
-}
-
-class SingleChartLayoutHandlerFactory {
-
-    handler: ChartLayoutHandler;
-
-    constructor( option: string, searchParams: SearchParamsType ) {
-    
         switch ( option ) {
 
             case 'savings': {
-                this.handler = new SavingsSingleChartLayoutHandler( searchParams );
+                this.handler = new SavingsChartLayoutHandlerFactory( searchParams, dataHandler ).handler;
                 break;
             }
 
             case 'production': {
-                this.handler = new ProductionSingleChartLayoutHandler( searchParams );
+                this.handler = new ProductionChartLayoutHandlerFactory( searchParams, dataHandler ).handler;
                 break;
             }
 
             case 'precipitation': {
-                this.handler = new PrecipitationSingleChartLayoutHandler( searchParams );
+                this.handler = new PrecipitationChartLayoutHandlerFactory( searchParams, dataHandler ).handler;
                 break;
             }
-
-            case 'interruptions': {
-                this.handler = new InterruptionsSingleChartLayoutHandlerFactory( searchParams ).handler;
-                break;
-            }
-
-            default:
-                throw `Invalid option (${option}) used in SingleChartLayoutHandlerFactory`;
-        }
-    }
-}
-
-class MultiChartLayoutHandlerFactory {
-
-    handler: ChartLayoutHandler;
-
-    constructor( option: string, searchParams: SearchParamsType ) {
-    
-        switch ( option ) {
 
             case 'temperature': {
-                this.handler = new TemperatureMultiChartLayoutHandler( searchParams );
+                this.handler = new TemperatureChartLayoutHandlerFactory( searchParams, dataHandler ).handler;
                 break;
             }
 
             case 'savings-production': {
-                this.handler = new SavingsProductionMultiChartLayoutHandler( searchParams );
+                this.handler = new SavingsProductionChartLayoutHandlerFactory( searchParams, dataHandler ).handler;
                 break;
             }
 
             case 'savings-precipitation': {
-                this.handler = new SavingsPrecipitationMultiChartLayoutHandler( searchParams );
+                this.handler = new SavingsPrecipitationChartLayoutHandlerFactory( searchParams, dataHandler ).handler;
                 break;
             }
 
-            default:
-                throw `Invalid option (${option}) used in MultiChartLayoutHandlerFactory`;
-        }
-    }
-}
-
-class StackChartLayoutHandlerFactory {
-
-    handler: ChartLayoutHandler;
-
-    constructor( option: string, searchParams: SearchParamsType, dataHandler: DataHandler ) {
-    
-        switch ( option ) {
-
-            case 'savings': {
-                this.handler = new SavingsStackChartLayoutHandler( searchParams, dataHandler );
-                break;
-            }
-
-            case 'production': {
-                this.handler = new ProductionStackChartLayoutHandler( searchParams, dataHandler );
-                break;
-            }
-
-            case 'precipitation': {
-                this.handler = new PrecipitationStackChartLayoutHandler( searchParams, dataHandler );
+            case 'interruptions': {
+                this.handler = new InterruptionsChartLayoutHandlerFactory( searchParams, dataHandler ).handler;
                 break;
             }
 
@@ -140,8 +60,4 @@ class StackChartLayoutHandlerFactory {
     }
 }
 
-export { 
-    ChartLayoutHandlerFactory,
-    SingleChartLayoutHandlerFactory, 
-    MultiChartLayoutHandlerFactory, 
-};
+export default ChartLayoutHandlerFactory;

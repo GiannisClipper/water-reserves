@@ -6,10 +6,10 @@ class SingleDataHandler extends MultiDataHandler {
     type: string = 'single';
 }
 
-class SingleTimelessDataHandler extends MultiDataHandler {    
+class SingleSpatialDataHandler extends MultiDataHandler {    
 
     type: string = 'single,spatial';
 }
 
-export { SingleDataHandler, SingleTimelessDataHandler };
+export { SingleDataHandler, SingleSpatialDataHandler };
 

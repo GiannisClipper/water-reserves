@@ -1,4 +1,5 @@
-import { ChartLayoutHandler, SingleChartLayoutHandler } from ".";
+import DataHandler from "@/logic/DataHandler";
+import { ChartLayoutHandler, SingleChartLayoutHandler } from "..";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -15,24 +16,6 @@ import {
 } from "@/logic/ValueHandler/interruptions";
 
 import type { SearchParamsType } from "@/types/searchParams";
-
-class InterruptionsSingleChartLayoutHandlerFactory {
-
-    handler: ChartLayoutHandler;
-
-    constructor( searchParams: SearchParamsType ) {
-    
-        const params = new ParamValues( searchParams ).toJSON();
-        const { timeAggregation } = params;
-
-        if ( timeAggregation !== 'alltime' ) {
-            this.handler = new TemporalInterruptionsSingleChartLayoutHandler( searchParams );
-
-        } else {
-            this.handler = new SpatialInterruptionsSingleChartLayoutHandler( searchParams );
-        }
-    }
-}
 
 class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
@@ -101,8 +84,26 @@ class SpatialInterruptionsSingleChartLayoutHandler extends ChartLayoutHandler {
     }
 }
 
+class InterruptionsChartLayoutHandlerFactory {
+
+    handler: ChartLayoutHandler;
+
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    
+        const params = new ParamValues( searchParams ).toJSON();
+        const { timeAggregation } = params;
+
+        if ( timeAggregation !== 'alltime' ) {
+            this.handler = new TemporalInterruptionsSingleChartLayoutHandler( searchParams );
+
+        } else {
+            this.handler = new SpatialInterruptionsSingleChartLayoutHandler( searchParams );
+        }
+    }
+}
+
 export { 
-    InterruptionsSingleChartLayoutHandlerFactory,
+    InterruptionsChartLayoutHandlerFactory,
     TemporalInterruptionsSingleChartLayoutHandler,
     SpatialInterruptionsSingleChartLayoutHandler, 
 };

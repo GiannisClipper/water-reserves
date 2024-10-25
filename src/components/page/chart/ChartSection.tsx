@@ -17,7 +17,7 @@ import MultiChartContent from "@/components/page/chart/MultiChartContent";
 import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
-import { ChartLayoutHandlerFactory } from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
+import ChartLayoutHandlerFactory from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";

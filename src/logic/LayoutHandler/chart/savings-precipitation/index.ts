@@ -1,4 +1,4 @@
-import { ChartLayoutHandler } from ".";
+import { ChartLayoutHandler } from "..";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -7,6 +7,7 @@ import { TimeValueHandler, SavingsChangeValueHandler } from "@/logic/ValueHandle
 import { PrecipitationChangeValueHandler } from "@/logic/ValueHandler/precipitation";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import DataHandler from "@/logic/DataHandler";
 
 class SavingsPrecipitationMultiChartLayoutHandler extends ChartLayoutHandler {
 
@@ -28,6 +29,26 @@ class SavingsPrecipitationMultiChartLayoutHandler extends ChartLayoutHandler {
     }
 }
 
+class SavingsPrecipitationChartLayoutHandlerFactory {
+
+    handler: ChartLayoutHandler;
+
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    
+        switch ( dataHandler.type ) {
+
+            case 'multi': {
+                this.handler = new SavingsPrecipitationMultiChartLayoutHandler( searchParams );
+                break;
+            }
+
+            default:
+                throw `Invalid type (${dataHandler.type}) used in SavingsPrecipitationChartLayoutHandlerFactory`;
+        }
+    }
+}
+
 export { 
+    SavingsPrecipitationChartLayoutHandlerFactory,
     SavingsPrecipitationMultiChartLayoutHandler, 
 };

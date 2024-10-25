@@ -51,7 +51,7 @@ import {
 } from "@/logic/ValueSpecifier/interruptions";
 
 import DataHandler from ".";
-import { SingleDataHandler, SingleTimelessDataHandler} from "./SingleDataHandler";
+import { SingleDataHandler, SingleSpatialDataHandler} from "./SingleDataHandler";
 import MultiDataHandler from "./MultiDataHandler";
 import {
     ReservoirsStackDataHandler, FactoriesStackDataHandler, LocationsStackDataHandler
@@ -244,7 +244,7 @@ class DataHandlerFactory {
             }
 
             case 'single,spatial': {
-                this._dataHandler = new SingleTimelessDataHandler( result, this._specifierCollection );
+                this._dataHandler = new SingleSpatialDataHandler( result, this._specifierCollection );
                 break;
             }
 

@@ -1,5 +1,5 @@
 import DataHandler from "@/logic/DataHandler";
-import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from ".";
+import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "..";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -41,8 +41,11 @@ class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
 
+        // integrate legend values with data
+
         const yValueHandlers: ValueHandler[] = [];        
-        const yPercentageValueHandlers: ValueHandler[] = [];        
+        const yPercentageValueHandlers: ValueHandler[] = [];
+
         if ( dataHandler.legend ) {
             for ( const location of dataHandler.legend.locations ) {
 
@@ -69,7 +72,32 @@ class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
     }
 }
 
+class PrecipitationChartLayoutHandlerFactory {
+
+    handler: ChartLayoutHandler;
+
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    
+        switch ( dataHandler.type ) {
+
+            case 'single': {
+                this.handler = new PrecipitationSingleChartLayoutHandler( searchParams );
+                break;
+            }
+
+            case 'stack': {
+                this.handler = new PrecipitationStackChartLayoutHandler( searchParams, dataHandler );
+                break;
+            }
+
+            default:
+                throw `Invalid type (${dataHandler.type}) used in PrecipitationChartLayoutHandlerFactory`;
+        }
+    }
+}
+
 export { 
+    PrecipitationChartLayoutHandlerFactory,
     PrecipitationSingleChartLayoutHandler,
     PrecipitationStackChartLayoutHandler,
 };
