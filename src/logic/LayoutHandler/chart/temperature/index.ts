@@ -1,4 +1,4 @@
-import DataHandler from "@/logic/DataHandler";
+import DataParser from "@/logic/DataParser";
 import { ChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
@@ -16,7 +16,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 
 class TemperatureMultiChartLayoutHandler extends ChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -31,7 +31,7 @@ class TemperatureMultiChartLayoutHandler extends ChartLayoutHandler {
             title: 'Temperatures in Athens',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Celcius degrees',
-            data: dataHandler.data,
+            data: dataParser.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator,
         } );
@@ -42,17 +42,17 @@ class TemperatureChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
     
-        switch ( dataHandler.type ) {
+        switch ( dataParser.type ) {
 
             case 'multi': {
-                this.handler = new TemperatureMultiChartLayoutHandler( searchParams, dataHandler );
+                this.handler = new TemperatureMultiChartLayoutHandler( searchParams, dataParser );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataHandler.type}) used in TemperatureChartLayoutHandlerFactory`;
+                throw `Invalid type (${dataParser.type}) used in TemperatureChartLayoutHandlerFactory`;
         }
     }
 }

@@ -1,25 +1,25 @@
-import DataHandler from '.';
+import DataParser from '.';
 
 import ValueParserCollection from "@/logic/ValueParser/ValueParserCollection";
 import { PrimaryValueParser, SecondaryValueParser } from '@/logic/ValueParser';
 
 import type { ObjectType } from "@/types";
 
-class MultiDataHandler extends DataHandler {    
+class MultiDataParser extends DataParser {    
 
     type: string = 'multi';
 
-    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
-        super( responseResult, specifierCollection );
+    constructor( responseResult: any, parserCollection: ValueParserCollection ) {
+        super( responseResult, parserCollection );
 
         let result: ObjectType = responseResult || {};
         
         // get the join key (no dataset assigned) and the datasets 
         // all values will be placed in one flat object, the join key identifies the objects
     
-        const joinParser: PrimaryValueParser = this.specifierCollection.getByDataset()[ 0 ];
+        const joinParser: PrimaryValueParser = this.parserCollection.getByDataset()[ 0 ];
         const joinKey: string = joinParser[ 'key' ];
-        const datasets = this.specifierCollection.getDatasets();
+        const datasets = this.parserCollection.getDatasets();
         
         // get the primary values, these comming directly from http response 
 
@@ -29,7 +29,7 @@ class MultiDataHandler extends DataHandler {
             // get the primary value specifiers for each dataset
             const specifiers: PrimaryValueParser[] = [
                 joinParser,
-                ...specifierCollection.getByDataset( dataset )
+                ...parserCollection.getByDataset( dataset )
             ]
             
             // put in a list of objects the array results for each dataset
@@ -59,7 +59,7 @@ class MultiDataHandler extends DataHandler {
     
         // get the secondary values, these resulting from primary values calculation
         
-        const specifiers: SecondaryValueParser[] = specifierCollection.getSecondaryParsers();
+        const specifiers: SecondaryValueParser[] = parserCollection.getSecondaryParsers();
         for ( const specifier of specifiers ) {
             specifier.parser( this.data, this.legend );
         }
@@ -68,4 +68,4 @@ class MultiDataHandler extends DataHandler {
     }
 }
 
-export default MultiDataHandler;
+export default MultiDataParser;

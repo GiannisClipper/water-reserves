@@ -8,7 +8,7 @@ const MapContent = dynamic( () => import( '@/components/page/chart/MapContent' )
 import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
-import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
+import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 
 import ChartLayoutHandlerFactory from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
 
@@ -24,10 +24,10 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
-        .dataHandler;
+    const dataParser = new DataParserFactory( { endpoint, searchParams, result } )
+        .dataParser;
 
-    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataHandler ).handler;
+    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataParser ).handler;
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,
@@ -36,7 +36,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         'multi': MultiChartContent,
     };
 
-    let ChartContent = chartContents[ dataHandler.type ];
+    let ChartContent = chartContents[ dataParser.type ];
 
     const chartType: string = searchParams.chart_type || '';
 
@@ -52,7 +52,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
                 // toJSON() is used for serialization, considering the Error: 
                 // Only plain objects, and a few built-ins, can be passed to Client Components from Server Components. 
                 // Classes or null prototypes are not supported.
-                dataHandler={ dataHandler }
+                dataParser={ dataParser }
                 chartType={ chartType }
                 layoutHandler={ layoutHandler }
             />

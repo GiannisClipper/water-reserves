@@ -14,39 +14,39 @@ import geojson from '@/geography/dhmoi_okxe_attica.json';
 
 import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 
-import { SingleSpatialDataHandler } from '@/logic/DataHandler/SingleDataHandler';
+import { SingleSpatialDataParser } from '@/logic/DataParser/SingleDataParser';
 
 import 'leaflet/dist/leaflet.css'
 import "@/styles/chart.css";
 
 type PropsType = { 
-    dataHandler: SingleSpatialDataHandler
+    dataParser: SingleSpatialDataParser
     layoutHandler: ChartLayoutHandler
     chartType: string | undefined
 }
 
-const MapContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
+const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
 
-    const specifierCollection: ValueParserCollection = dataHandler.specifierCollection;
+    const parserCollection: ValueParserCollection = dataParser.parserCollection;
 
-    const municipalityParser: ValueParser = specifierCollection.getByAxeX()[ 0 ];
-    const nameParser: ValueParser = specifierCollection.getByKey( 'name' );
-    const areaParser: ValueParser = specifierCollection.getByKey( 'area' );
-    const populationParser: ValueParser = specifierCollection.getByKey( 'population' );
-    const eventsParser: ValueParser = specifierCollection.getByKey( 'events' );
-    const overAreaParser: ValueParser = specifierCollection.getByKey( 'events_over_area' );
-    const overPopulationParser: ValueParser = specifierCollection.getByKey( 'events_over_population' );
-    const clusterParser: ValueParser = specifierCollection.getByKey( 'cluster' );
+    const municipalityParser: ValueParser = parserCollection.getByAxeX()[ 0 ];
+    const nameParser: ValueParser = parserCollection.getByKey( 'name' );
+    const areaParser: ValueParser = parserCollection.getByKey( 'area' );
+    const populationParser: ValueParser = parserCollection.getByKey( 'population' );
+    const eventsParser: ValueParser = parserCollection.getByKey( 'events' );
+    const overAreaParser: ValueParser = parserCollection.getByKey( 'events_over_area' );
+    const overPopulationParser: ValueParser = parserCollection.getByKey( 'events_over_population' );
+    const clusterParser: ValueParser = parserCollection.getByKey( 'cluster' );
 
     const municipalities: ObjectType = {}; 
-    if ( dataHandler.legend ) {
-        for ( const row of dataHandler.legend[ 'municipalities' ] ) {
+    if ( dataParser.legend ) {
+        for ( const row of dataParser.legend[ 'municipalities' ] ) {
             municipalities[ row.id ] = row;
         }
     }
 
     const events: ObjectType = {}; 
-    for ( const row of dataHandler.data ) {
+    for ( const row of dataParser.data ) {
         events[ row.municipality_id ] = row;
     }
 
@@ -98,7 +98,7 @@ const MapContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
 
     const position: [ number, number ] = [ 37.98, 23.73 ];
 
-    console.log( "rendering: MapContent..." )//, dataHandler.data );
+    console.log( "rendering: MapContent..." )//, dataParser.data );
 
     return (
         <div 

@@ -1,6 +1,6 @@
 import type { ObjectType } from '@/types';
 
-abstract class CardDataHandler {    
+abstract class CardDataParser {    
 
     interval: string;
 
@@ -34,7 +34,7 @@ abstract class CardDataHandler {
     }
 }
 
-class SavingsCardDataHandler extends CardDataHandler {
+class SavingsCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
@@ -68,7 +68,7 @@ class SavingsCardDataHandler extends CardDataHandler {
     }
 }
 
-class ProductionCardDataHandler extends CardDataHandler {
+class ProductionCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
@@ -102,7 +102,7 @@ class ProductionCardDataHandler extends CardDataHandler {
     }
 }
 
-class PrecipitationCardDataHandler extends CardDataHandler {
+class PrecipitationCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
@@ -136,7 +136,7 @@ class PrecipitationCardDataHandler extends CardDataHandler {
     }
 }
 
-class TemperatureCardDataHandler extends CardDataHandler {
+class TemperatureCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
@@ -178,28 +178,28 @@ class TemperatureCardDataHandler extends CardDataHandler {
     }
 }
 
-class CardDataHandlerFactory {
+class CardDataParserFactory {
 
-    handler: CardDataHandler;
+    parser: CardDataParser;
 
     constructor( option: string, result: ObjectType ) {
 
         switch ( option ) {
 
             case 'savings': {
-                this.handler = new SavingsCardDataHandler( result );
+                this.parser = new SavingsCardDataParser( result );
                 break;
             } 
             case 'production': {
-                this.handler = new ProductionCardDataHandler( result );
+                this.parser = new ProductionCardDataParser( result );
                 break;
             }
             case 'precipitation': {
-                this.handler = new PrecipitationCardDataHandler( result );
+                this.parser = new PrecipitationCardDataParser( result );
                 break;
             }
             case 'temperature': {
-                this.handler = new TemperatureCardDataHandler( result );
+                this.parser = new TemperatureCardDataParser( result );
                 break;
             }
             default:
@@ -208,5 +208,5 @@ class CardDataHandlerFactory {
     }
 }
 
-export default CardDataHandlerFactory;
-export { CardDataHandler };
+export default CardDataParserFactory;
+export { CardDataParser };

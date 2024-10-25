@@ -11,25 +11,25 @@ import { XAxisTick, XAxisSpatialTick, YAxisTick } from '@/components/page/chart/
 import { SingleTooltip, SpatialInterruptionsTooltip } from '@/components/page/chart/tooltips';
 import { StandardLegend } from '@/components/page/chart/legends';
 
-import { SingleDataHandler } from '@/logic/DataHandler/SingleDataHandler';
+import { SingleDataParser } from '@/logic/DataParser/SingleDataParser';
 import { SingleChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 
 import "@/styles/chart.css";
 
 type PropsType = { 
-    dataHandler: SingleDataHandler
+    dataParser: SingleDataParser
     chartType: string | undefined
     layoutHandler: SingleChartLayoutHandler
 }
 
-const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
+const ChartContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
 
-    console.log( "rendering: ChartContent...", dataHandler.type )
+    console.log( "rendering: ChartContent...", dataParser.type )
 
     return (
         <div className="ChartContent">
 
-            { dataHandler.type === 'single,spatial'
+            { dataParser.type === 'single,spatial'
             ?
             <BarChartComposition 
                 layoutHandler={ layoutHandler }

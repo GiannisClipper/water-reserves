@@ -2,16 +2,16 @@ import ValueParserCollection from "@/logic/ValueParser/ValueParserCollection";
 
 import type { ObjectType } from '@/types';
 
-abstract class DataHandler {    
+abstract class DataParser {    
 
     abstract type: string;
 
     private _headers: string[] = [];
     private _data: ObjectType[] = [];
     private _legend: ObjectType = {};
-    private _specifierCollection: ValueParserCollection
+    private _parserCollection: ValueParserCollection
 
-    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
+    constructor( responseResult: any, parserCollection: ValueParserCollection ) {
 
         let result: ObjectType = responseResult || {};
 
@@ -26,7 +26,7 @@ abstract class DataHandler {
             }
         }
 
-        this._specifierCollection = specifierCollection;
+        this._parserCollection = parserCollection;
     }        
 
     get headers(): string[] {
@@ -45,8 +45,8 @@ abstract class DataHandler {
         return this._legend;
     }
 
-    get specifierCollection(): ValueParserCollection {
-        return this._specifierCollection;
+    get parserCollection(): ValueParserCollection {
+        return this._parserCollection;
     }
 
     // toJSON() is used for serialization, considering the Error: 
@@ -58,9 +58,9 @@ abstract class DataHandler {
             headers: this._headers,
             data: this._data,
             legend: this._legend,
-            valueParsers: this.specifierCollection.specifiers.map( s => s.toJSON() )
+            valueParsers: this.parserCollection.specifiers.map( s => s.toJSON() )
         }
     }
 }
 
-export default DataHandler;
+export default DataParser;

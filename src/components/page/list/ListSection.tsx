@@ -3,7 +3,7 @@ import SingleListContent from "@/components/page/list/SingleListContent";
 import StackListContent from "@/components/page/list/StackListContent";
 import MultiListContent from "@/components/page/list/MultiListContent";
 
-import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
+import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
@@ -17,7 +17,7 @@ type PropsType = {
 
 const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } ).dataHandler;
+    const dataParser = new DataParserFactory( { endpoint, searchParams, result } ).dataParser;
 
     // await new Promise( resolve => setTimeout( resolve, 1000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
@@ -27,7 +27,7 @@ const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         'stack': StackListContent,
         'multi': MultiListContent,
     };
-    const ListContent = listContents[ dataHandler.type ];
+    const ListContent = listContents[ dataParser.type ];
 
     console.log( "rendering: ListSection..." )
 
@@ -36,7 +36,7 @@ const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
             <ListLabel />
 
             {/* <ListContent
-                dataHandler={ dataHandler }
+                dataParser={ dataParser }
             /> */}
         </div>
     );

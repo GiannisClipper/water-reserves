@@ -50,12 +50,12 @@ import {
     ClusterValueParser,
 } from "@/logic/ValueParser/interruptions";
 
-import DataHandler from ".";
-import { SingleDataHandler, SingleSpatialDataHandler} from "./SingleDataHandler";
-import MultiDataHandler from "./MultiDataHandler";
+import DataParser from ".";
+import { SingleDataParser, SingleSpatialDataParser} from "./SingleDataParser";
+import MultiDataParser from "./MultiDataParser";
 import {
-    ReservoirsStackDataHandler, FactoriesStackDataHandler, LocationsStackDataHandler
-} from "./StackDataHandler";
+    ReservoirsStackDataParser, FactoriesStackDataParser, LocationsStackDataParser
+} from "./StackDataParser";
 
 import type { ObjectType } from "@/types";
 
@@ -65,12 +65,12 @@ type PropsType = {
     result: any
 }
 
-class DataHandlerFactory {
+class DataParserFactory {
 
-    private _dataHandler: DataHandler;
+    private _dataParser: DataParser;
     private type: string = '';
 
-    private _specifierCollection: ValueParserCollection;
+    private _parserCollection: ValueParserCollection;
 
     constructor( { endpoint, searchParams, result }: PropsType ) {
 
@@ -79,7 +79,7 @@ class DataHandlerFactory {
             case 'savings': {
                 if ( searchParams.reservoir_aggregation ) {
                     this.type = 'single';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new SavingsDifferenceValueParser( {} ),
@@ -88,7 +88,7 @@ class DataHandlerFactory {
 
                 } else {
                     this.type = 'stack';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new ReservoirIdValueParser( { index: 1 } ),
                         new SavingsValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
@@ -103,7 +103,7 @@ class DataHandlerFactory {
             case 'production': {
                 if ( searchParams.factory_aggregation ) {
                     this.type = 'single';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new ProductionValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new ProductionDifferenceValueParser( {} ),
@@ -111,7 +111,7 @@ class DataHandlerFactory {
                     ] );
                 } else {
                     this.type = 'stack';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new FactoryIdValueParser( { index: 1 } ),
                         new ProductionValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
@@ -126,7 +126,7 @@ class DataHandlerFactory {
             case 'precipitation': {
                 if ( searchParams.location_aggregation ) {
                     this.type = 'single';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new PrecipitationValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new PrecipitationDifferenceValueParser( {} ),
@@ -134,7 +134,7 @@ class DataHandlerFactory {
                     ] );
                 } else {
                     this.type = 'stack';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new LocationIdValueParser( { index: 1 } ),
                         new PrecipitationValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
@@ -149,7 +149,7 @@ class DataHandlerFactory {
             case 'temperature': {
                 if ( searchParams.time_aggregation ) {
                     this.type = 'multi';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new TemperatureMinValueParser( { index: 3, parser: ( v: number ): number => Math.round( v ) } ),
                         new TemperatureMeanValueParser( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
@@ -158,7 +158,7 @@ class DataHandlerFactory {
     
                 } else {
                     this.type = 'multi';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 1 } ),
                         new TemperatureMinValueParser( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
                         new TemperatureMeanValueParser( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
@@ -171,7 +171,7 @@ class DataHandlerFactory {
             case 'interruptions': {
                 if ( searchParams.municipality_aggregation ) {
                     this.type = 'single';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new EventsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new EventsDifferenceValueParser( {} ),
@@ -180,7 +180,7 @@ class DataHandlerFactory {
                 }
                 else {
                     this.type = 'single,spatial';
-                    this._specifierCollection = new ValueParserCollection( [
+                    this._parserCollection = new ValueParserCollection( [
                         new MunicipalityIdValueParser( { index: 0 } ),
                         new EventsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new MunicipalityNameValueParser( {} ),
@@ -196,7 +196,7 @@ class DataHandlerFactory {
 
             case 'savings-production': {
                 this.type = 'multi';
-                this._specifierCollection = new ValueParserCollection( [
+                this._parserCollection = new ValueParserCollection( [
                     new TimeValueParser( { index: 0 } ),
                     new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                     new SavingsGrowthValueParser( {} ),
@@ -208,7 +208,7 @@ class DataHandlerFactory {
 
             case 'savings-precipitation': {
                 this.type = 'multi';
-                this._specifierCollection = new ValueParserCollection( [
+                this._parserCollection = new ValueParserCollection( [
                     new TimeValueParser( { index: 0 } ),
                     new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                     new SavingsGrowthValueParser( {} ),
@@ -219,44 +219,44 @@ class DataHandlerFactory {
             }
 
             default:
-                throw `Invalid endpoint (${endpoint}) used in DataHandlerFactory()`;
+                throw `Invalid endpoint (${endpoint}) used in DataParserFactory()`;
         }
     
         switch ( this.type ) {
     
             case 'single': {
-                this._dataHandler = new SingleDataHandler( result, this._specifierCollection );
+                this._dataParser = new SingleDataParser( result, this._parserCollection );
                 break;
             }
 
             case 'single,spatial': {
-                this._dataHandler = new SingleSpatialDataHandler( result, this._specifierCollection );
+                this._dataParser = new SingleSpatialDataParser( result, this._parserCollection );
                 break;
             }
 
             case 'stack': {
-                const DataHandlerClass: ObjectType = {
-                    'savings': ReservoirsStackDataHandler,
-                    'production': FactoriesStackDataHandler,
-                    'precipitation': LocationsStackDataHandler,
+                const DataParserClass: ObjectType = {
+                    'savings': ReservoirsStackDataParser,
+                    'production': FactoriesStackDataParser,
+                    'precipitation': LocationsStackDataParser,
                 }
-                this._dataHandler = new DataHandlerClass[ endpoint ]( result, this._specifierCollection );
+                this._dataParser = new DataParserClass[ endpoint ]( result, this._parserCollection );
                 break;
             }
 
             case 'multi': {
-                this._dataHandler = new MultiDataHandler( result, this._specifierCollection );
+                this._dataParser = new MultiDataParser( result, this._parserCollection );
                 break;
             }
 
             default:
-                throw `Invalid type (${this.type}) used in DataHandlerFactory()`;
+                throw `Invalid type (${this.type}) used in DataParserFactory()`;
         }
     }
 
-    get dataHandler(): DataHandler {
-        return this._dataHandler;
+    get dataParser(): DataParser {
+        return this._dataParser;
     }
 }
 
-export default DataHandlerFactory;
+export default DataParserFactory;

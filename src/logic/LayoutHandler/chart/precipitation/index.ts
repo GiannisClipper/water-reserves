@@ -1,4 +1,4 @@
-import DataHandler from "@/logic/DataHandler";
+import DataParser from "@/logic/DataParser";
 import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
@@ -18,7 +18,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 
 class PrecipitationSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -33,7 +33,7 @@ class PrecipitationSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
             yDifferenceValueHandlers: [ new PrecipitationDifferenceValueHandler() ],
             yChangeValueHandlers: [ new PrecipitationChangeValueHandler() ],
-            data: dataHandler.data,
+            data: dataParser.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator
         } );
@@ -42,7 +42,7 @@ class PrecipitationSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
 class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -52,8 +52,8 @@ class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
         const yValueHandlers: ValueHandler[] = [];        
         const yPercentageValueHandlers: ValueHandler[] = [];
 
-        if ( dataHandler.legend ) {
-            for ( const location of dataHandler.legend.locations ) {
+        if ( dataParser.legend ) {
+            for ( const location of dataParser.legend.locations ) {
 
                 const yValueHandler = new LocationsValueHandler();
                 yValueHandler.key = yValueHandler.key.replace( '{id}', location.id );
@@ -74,7 +74,7 @@ class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
-            data: dataHandler.data,
+            data: dataParser.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator
         } );
@@ -85,22 +85,22 @@ class PrecipitationChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
     
-        switch ( dataHandler.type ) {
+        switch ( dataParser.type ) {
 
             case 'single': {
-                this.handler = new PrecipitationSingleChartLayoutHandler( searchParams, dataHandler );
+                this.handler = new PrecipitationSingleChartLayoutHandler( searchParams, dataParser );
                 break;
             }
 
             case 'stack': {
-                this.handler = new PrecipitationStackChartLayoutHandler( searchParams, dataHandler );
+                this.handler = new PrecipitationStackChartLayoutHandler( searchParams, dataParser );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataHandler.type}) used in PrecipitationChartLayoutHandlerFactory`;
+                throw `Invalid type (${dataParser.type}) used in PrecipitationChartLayoutHandlerFactory`;
         }
     }
 }

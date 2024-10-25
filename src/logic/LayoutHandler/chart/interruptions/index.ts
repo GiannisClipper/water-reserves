@@ -1,4 +1,4 @@
-import DataHandler from "@/logic/DataHandler";
+import DataParser from "@/logic/DataParser";
 import { ChartLayoutHandler, SingleChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
@@ -22,7 +22,7 @@ import { YTicksCalculator } from "../_abstract/yTicks";
 
 class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -37,7 +37,7 @@ class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHan
 
             yDifferenceValueHandlers: [ new EventsDifferenceValueHandler() ],
             yChangeValueHandlers: [ new EventsChangeValueHandler() ],
-            data: dataHandler.data,
+            data: dataParser.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator,
         } );
@@ -53,7 +53,7 @@ class SpatialInterruptionsSingleChartLayoutHandler extends ChartLayoutHandler {
     eventsOverAreaValueHandler: ValueHandler;
     eventsOverPopulationValueHandler: ValueHandler;
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -79,7 +79,7 @@ class SpatialInterruptionsSingleChartLayoutHandler extends ChartLayoutHandler {
             yLabel: yLabel,
             xValueHandler: new MunicipalityIdValueHandler(),
             yValueHandlers: [ new yValueHandlerClass() ],
-            data: dataHandler.data,
+            data: dataParser.data,
             XTicksCalculator,
             YTicksCalculator
         } );
@@ -97,16 +97,16 @@ class InterruptionsChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
     
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation } = params;
 
         if ( timeAggregation !== 'alltime' ) {
-            this.handler = new TemporalInterruptionsSingleChartLayoutHandler( searchParams, dataHandler );
+            this.handler = new TemporalInterruptionsSingleChartLayoutHandler( searchParams, dataParser );
 
         } else {
-            this.handler = new SpatialInterruptionsSingleChartLayoutHandler( searchParams, dataHandler );
+            this.handler = new SpatialInterruptionsSingleChartLayoutHandler( searchParams, dataParser );
         }
     }
 }

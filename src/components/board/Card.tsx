@@ -3,7 +3,7 @@
 import { CardLineChart, CardPieChart } from "./Charts";
 import { Unit } from "@/components/Unit";
 
-import CardDataHandlerFactory from "@/logic/DataHandler/CardDataHandler";
+import CardDataParserFactory from "@/logic/DataParser/CardDataParser";
 import { withCommas } from "@/helpers/numbers";
 
 import type { ObjectType, UnitType } from "@/types";
@@ -16,35 +16,35 @@ type PropsType = {
 
 const Card = ( { option, result }: PropsType ) => {
 
-    const dataHandler = new CardDataHandlerFactory( option, result ).handler; 
-    const layoutHandler = new CardLayoutHandlerFactory( option, dataHandler ).handler;
+    const dataParser = new CardDataParserFactory( option, result ).handler; 
+    const layoutHandler = new CardLayoutHandlerFactory( option, dataParser ).handler;
 
     const key: string = layoutHandler.lineChartHandler.yValueHandlers[ 0 ].key;
-    const measurement: number = dataHandler.toJSON()[ key ];
+    const measurement: number = dataParser.toJSON()[ key ];
     const unit: UnitType = layoutHandler.lineChartHandler.yValueHandlers[ 0 ].unit;
 
-    const evaluation: string = layoutHandler.pieChartHandler.evaluation[ dataHandler.cluster ];
-    const pieLabel = `Evaluation: ${dataHandler.cluster+1} (${evaluation})`;
+    const evaluation: string = layoutHandler.pieChartHandler.evaluation[ dataParser.cluster ];
+    const pieLabel = `Evaluation: ${dataParser.cluster+1} (${evaluation})`;
 
     return (
         <div className="Card">
             <div className="Title">{ layoutHandler.title }</div>
 
             <div className="Info">
-                <div>Last update: { dataHandler.date } </div>
+                <div>Last update: { dataParser.date } </div>
                 <div>
                     Measurement: { withCommas( measurement ) } <Unit unit={ unit }/>
                 </div>
             </div>
 
             <CardLineChart 
-                data={ dataHandler.recentEntries }
-                label={ `Recent measurements: ${dataHandler.interval}` }
+                data={ dataParser.recentEntries }
+                label={ `Recent measurements: ${dataParser.interval}` }
                 layoutHandler={ layoutHandler.lineChartHandler }
             />
 
             <CardPieChart 
-                cluster={ dataHandler.cluster } 
+                cluster={ dataParser.cluster } 
                 label={ pieLabel }
                 layoutHandler={ layoutHandler.pieChartHandler }
             />

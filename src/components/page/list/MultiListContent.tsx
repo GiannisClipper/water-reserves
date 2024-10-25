@@ -1,17 +1,17 @@
-import DataHandler from '@/logic/DataHandler';
+import DataParser from '@/logic/DataParser';
 import { translate } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
 import { Fragment } from "react";
 
 type PropsType = { 
-    dataHandler: DataHandler
+    dataParser: DataParser
 }
 
-const ListContent = ( { dataHandler }: PropsType ) => {
+const ListContent = ( { dataParser }: PropsType ) => {
 
-    const headers: string[] = dataHandler.headers;
-    const data: ObjectType[] = dataHandler.data;
+    const headers: string[] = dataParser.headers;
+    const data: ObjectType[] = dataParser.data;
 
     console.log( `rendering: ListContent...` )//, JSON.stringify(headers), JSON.stringify(data) )
 

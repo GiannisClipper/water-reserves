@@ -1,18 +1,18 @@
 import { CubicMeters } from "@/components/Symbols";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
-import { FlatDataHandler } from '@/logic/DataHandler';
+import { FlatDataParser } from '@/logic/DataParser';
 import { translate } from "@/logic/lexicon";
 
 import type { ObjectType } from "@/types";
 
 type PropsType = { 
-    dataHandler: FlatDataHandler
+    dataParser: FlatDataParser
 }
 
-const ListContent = ( { dataHandler }: PropsType ) => {
+const ListContent = ( { dataParser }: PropsType ) => {
 
-    const headers: string[] = dataHandler.headers;
-    const data: ObjectType[] = dataHandler.data;
+    const headers: string[] = dataParser.headers;
+    const data: ObjectType[] = dataParser.data;
 
     console.log( `rendering: ListContent...` )
 

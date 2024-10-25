@@ -7,14 +7,14 @@ import { TimeValueHandler, SavingsChangeValueHandler } from "@/logic/ValueHandle
 import { PrecipitationChangeValueHandler } from "@/logic/ValueHandler/precipitation";
 
 import type { SearchParamsType } from "@/types/searchParams";
-import DataHandler from "@/logic/DataHandler";
+import DataParser from "@/logic/DataParser";
 
 import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
 class SavingsPrecipitationMultiChartLayoutHandler extends ChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -28,7 +28,7 @@ class SavingsPrecipitationMultiChartLayoutHandler extends ChartLayoutHandler {
             title: 'Water reserves & precipitation',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
-            data: dataHandler.data,
+            data: dataParser.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator: YTicksCalculator
         } );
@@ -39,17 +39,17 @@ class SavingsPrecipitationChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
+    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
     
-        switch ( dataHandler.type ) {
+        switch ( dataParser.type ) {
 
             case 'multi': {
-                this.handler = new SavingsPrecipitationMultiChartLayoutHandler( searchParams, dataHandler );
+                this.handler = new SavingsPrecipitationMultiChartLayoutHandler( searchParams, dataParser );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataHandler.type}) used in SavingsPrecipitationChartLayoutHandlerFactory`;
+                throw `Invalid type (${dataParser.type}) used in SavingsPrecipitationChartLayoutHandlerFactory`;
         }
     }
 }

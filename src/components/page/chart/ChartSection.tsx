@@ -14,7 +14,7 @@ import SingleChartContent from "@/components/page/chart/SingleChartContent";
 import StackChartContent from "@/components/page/chart/StackChartContent";
 import MultiChartContent from "@/components/page/chart/MultiChartContent";
 
-import DataHandlerFactory from "@/logic/DataHandler/DataHandlerFactory";
+import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 
 import ChartLayoutHandlerFactory from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
@@ -32,10 +32,10 @@ type PropsType = {
 
 const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
 
-    const dataHandler = new DataHandlerFactory( { endpoint, searchParams, result } )
-        .dataHandler;
+    const dataParser = new DataParserFactory( { endpoint, searchParams, result } )
+        .dataParser;
     
-    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataHandler ).handler;
+    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataParser ).handler;
 
     const chartLabels: ObjectType = {
         'single': ChartLabel1,
@@ -44,7 +44,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         'multi': ChartLabel1,
     };
 
-    const ChartLabel = chartLabels[ dataHandler.type ];
+    const ChartLabel = chartLabels[ dataParser.type ];
 
     const chartContents: ObjectType = {
         'single': SingleChartContent,
@@ -53,7 +53,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         'multi': MultiChartContent,
     };
 
-    let ChartContent = chartContents[ dataHandler.type ];
+    let ChartContent = chartContents[ dataParser.type ];
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
@@ -70,7 +70,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
-    console.log( "rendering: ChartSection...", result )//, dataHandler )//, dataHandler.toJSON() )
+    console.log( "rendering: ChartSection...", result )//, dataParser )//, dataParser.toJSON() )
 
     return (
         <div className="ChartSection">
@@ -79,7 +79,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
             />
 
             <ChartContent 
-                dataHandler={ dataHandler }
+                dataParser={ dataParser }
                 layoutHandler={ layoutHandler }
                 chartType={ chartType }
             />

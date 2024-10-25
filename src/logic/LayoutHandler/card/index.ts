@@ -1,4 +1,4 @@
-import DataHandler from "@/logic/DataHandler";
+import DataParser from "@/logic/DataParser";
 import { 
     DateValueHandler, 
     PrecipitationValueHandler, ProductionValueHandler, SavingsValueHandler,
@@ -18,7 +18,7 @@ import type { EvaluationType, ObjectType } from "@/types";
 
 import { XTicksCalculator } from "@/logic/LayoutHandler/chart/_abstract/xTicks";
 import { MinimalYTicksCalculator } from "@/logic/LayoutHandler/chart/_abstract/yTicks";
-import { CardDataHandler } from "@/logic/DataHandler/CardDataHandler";
+import { CardDataParser } from "@/logic/DataParser/CardDataParser";
 
 const evaluation: EvaluationType = { 0: 'lower', 1: 'low', 2: 'mid', 3:'high', 4: 'higher' };
 
@@ -43,14 +43,14 @@ class CardLayoutHandler {
 
 class SavingsCardLayoutHandler extends CardLayoutHandler {
 
-    constructor( dataHandler: CardDataHandler ) {
+    constructor( dataParser: CardDataParser ) {
         super( { 
             title: 'Water reserves',
 
             lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new SavingsValueHandler() ],
-                data: dataHandler.recentEntries,
+                data: dataParser.recentEntries,
                 XTicksCalculator,
                 YTicksCalculator: MinimalYTicksCalculator,
             } ),
@@ -65,14 +65,14 @@ class SavingsCardLayoutHandler extends CardLayoutHandler {
 
 class ProductionCardLayoutHandler extends CardLayoutHandler {
 
-    constructor( dataHandler: CardDataHandler ) {
+    constructor( dataParser: CardDataParser ) {
         super( { 
             title: 'Drinking water production',
 
             lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new ProductionValueHandler() ],
-                data: dataHandler.recentEntries,
+                data: dataParser.recentEntries,
                 XTicksCalculator,
                 YTicksCalculator: MinimalYTicksCalculator,
             } ),
@@ -87,14 +87,14 @@ class ProductionCardLayoutHandler extends CardLayoutHandler {
 
 class PrecipitationCardLayoutHandler extends CardLayoutHandler {
 
-    constructor( dataHandler: CardDataHandler ) {
+    constructor( dataParser: CardDataParser ) {
         super( { 
             title: 'Precipitation measurements',
 
             lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new PrecipitationValueHandler() ],
-                data: dataHandler.recentEntries,
+                data: dataParser.recentEntries,
                 XTicksCalculator,
                 YTicksCalculator: MinimalYTicksCalculator,
             } ),
@@ -109,7 +109,7 @@ class PrecipitationCardLayoutHandler extends CardLayoutHandler {
 
 class TemperatureCardLayoutHandler extends CardLayoutHandler {
 
-    constructor( dataHandler: CardDataHandler ) {
+    constructor( dataParser: CardDataParser ) {
         super( { 
             title: 'Temperatures in Athens',
 
@@ -120,7 +120,7 @@ class TemperatureCardLayoutHandler extends CardLayoutHandler {
                     new MeanTemperatureValueHandler(),
                     new MaxTemperatureValueHandler(),
                 ],
-                data: dataHandler.recentEntries,
+                data: dataParser.recentEntries,
                 XTicksCalculator,
                 YTicksCalculator: MinimalYTicksCalculator,
             } ),
@@ -137,17 +137,17 @@ class CardLayoutHandlerFactory {
 
     handler: CardLayoutHandler;
 
-    constructor( option: string, dataHandler: CardDataHandler ) {
+    constructor( option: string, dataParser: CardDataParser ) {
     
         switch ( option ) {
 
             case 'savings': {
-                this.handler = new SavingsCardLayoutHandler( dataHandler );
+                this.handler = new SavingsCardLayoutHandler( dataParser );
                 break;
             }
 
             case 'production': {
-                this.handler = new ProductionCardLayoutHandler( dataHandler );
+                this.handler = new ProductionCardLayoutHandler( dataParser );
                 break;
             }
 

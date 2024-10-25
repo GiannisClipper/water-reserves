@@ -1,4 +1,4 @@
-import DataHandler from '.';
+import DataParser from '.';
 
 import ValueParserCollection from "@/logic/ValueParser/ValueParserCollection";
 import { PrimaryValueParser, SecondaryValueParser, NestedValueParser } from '@/logic/ValueParser';
@@ -6,28 +6,28 @@ import { PrimaryValueParser, SecondaryValueParser, NestedValueParser } from '@/l
 import type { ObjectType } from '@/types';
 import ObjectList from '@/helpers/objects/ObjectList';
 
-class StackDataHandler extends DataHandler {    
+class StackDataParser extends DataParser {    
 
     type: string = 'stack';
 
-    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
-        super( responseResult, specifierCollection );
+    constructor( responseResult: any, parserCollection: ValueParserCollection ) {
+        super( responseResult, parserCollection );
 
         let result: Object = responseResult || {};
         //console.log( 'result', result )
 
         // get the join key (no dataset assigned) and the dataset (one dataset in this handler)
     
-        const joinParser: PrimaryValueParser = this.specifierCollection.getByDataset()[ 0 ];
+        const joinParser: PrimaryValueParser = this.parserCollection.getByDataset()[ 0 ];
         const joinKey: string = joinParser[ 'key' ];
-        const dataset: string = this.specifierCollection.getDatasets()[ 0 ];
+        const dataset: string = this.parserCollection.getDatasets()[ 0 ];
 
         // get the primary values, these comming directly from http response 
 
         // get the primary value specifiers
         const specifiers: PrimaryValueParser[] = [
             joinParser,
-            ...specifierCollection.getPrimaryParsers()
+            ...parserCollection.getPrimaryParsers()
         ]
     
         // put in a list of objects the array results for each dataset
@@ -45,7 +45,7 @@ class StackDataHandler extends DataHandler {
 
         // process the nested values
 
-        const nParser: NestedValueParser = specifierCollection.getNestedParsers()[ 0 ];
+        const nParser: NestedValueParser = parserCollection.getNestedParsers()[ 0 ];
         // example of nParser =>:
         // key: 'reservoirs', 
         // label: 'Ταμιευτήρες', 
@@ -74,7 +74,7 @@ class StackDataHandler extends DataHandler {
 
         // get the secondary values, these resulting from primary values calculation
 
-        const specifiers2: SecondaryValueParser[] = specifierCollection.getSecondaryParsers();
+        const specifiers2: SecondaryValueParser[] = parserCollection.getSecondaryParsers();
 
         for ( const specifier of specifiers2 ) {
             specifier.parser( this.data, this.legend );
@@ -83,10 +83,10 @@ class StackDataHandler extends DataHandler {
     }
 }
 
-class ReservoirsStackDataHandler extends StackDataHandler {
+class ReservoirsStackDataParser extends StackDataParser {
 
-    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
-        super( responseResult, specifierCollection );
+    constructor( responseResult: any, parserCollection: ValueParserCollection ) {
+        super( responseResult, parserCollection );
 
         if ( this.data.length ) {
             const nestedObj = this.data[ 0 ][ 'reservoirs' ];
@@ -99,10 +99,10 @@ class ReservoirsStackDataHandler extends StackDataHandler {
     }
 }
 
-class FactoriesStackDataHandler extends StackDataHandler {
+class FactoriesStackDataParser extends StackDataParser {
 
-    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
-        super( responseResult, specifierCollection );
+    constructor( responseResult: any, parserCollection: ValueParserCollection ) {
+        super( responseResult, parserCollection );
 
         if ( this.data.length ) {
             const nestedObj = this.data[ 0 ][ 'factories' ];
@@ -115,10 +115,10 @@ class FactoriesStackDataHandler extends StackDataHandler {
     }
 }
 
-class LocationsStackDataHandler extends StackDataHandler {
+class LocationsStackDataParser extends StackDataParser {
 
-    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
-        super( responseResult, specifierCollection );
+    constructor( responseResult: any, parserCollection: ValueParserCollection ) {
+        super( responseResult, parserCollection );
 
         if ( this.data.length ) {
             const nestedObj = this.data[ 0 ][ 'locations' ];
@@ -132,6 +132,6 @@ class LocationsStackDataHandler extends StackDataHandler {
 }
 
 export {
-    StackDataHandler, 
-    ReservoirsStackDataHandler, FactoriesStackDataHandler, LocationsStackDataHandler 
+    StackDataParser, 
+    ReservoirsStackDataParser, FactoriesStackDataParser, LocationsStackDataParser 
 };
