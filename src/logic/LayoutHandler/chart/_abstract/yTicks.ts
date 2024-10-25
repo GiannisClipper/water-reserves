@@ -6,7 +6,7 @@ class YTicksCalculator implements YTicksCalculatorType {
 
     yTicks: number[];
 
-    constructor( yValues: number[] ) {
+    constructor( yValues: number[], tickCount=10 ) {
 
         const minYValue: number = Math.min( ...yValues ) * 0.90;
         const maxYValue: number = Math.max( ...yValues ) * 1.05;
@@ -25,7 +25,7 @@ class YTicksCalculator implements YTicksCalculatorType {
         // for example: 8
     
         let baseUnit: number = Math.pow( 10, log );
-        let times = Math.ceil( Math.ceil( difference / baseUnit ) / 10 );
+        let times = Math.ceil( Math.ceil( difference / baseUnit ) / tickCount ); // by default: /10
         times = Math.ceil( times / 2.5 ) * 2.5 // possible values: 2.5, 5, 7.5, 10
         // console.log( 'baseUnit, times', baseUnit, times ) 
         // for example: 100000000 2.5
@@ -43,4 +43,10 @@ class YTicksCalculator implements YTicksCalculatorType {
     }   
 }
 
-export { YTicksCalculator };
+class MinimalYTicksCalculator extends YTicksCalculator {
+    constructor( yValues: number[] ) {
+        super( yValues, 2 ); // tickCount == 2
+    }
+}
+
+export { YTicksCalculator, MinimalYTicksCalculator };

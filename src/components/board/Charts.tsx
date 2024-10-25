@@ -1,10 +1,9 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Customized } from 'recharts';
 import { PieChart, Pie, Cell } from 'recharts';
 
-import { calcTicks } from '@/helpers/ticks';
 import { CardTooltip } from '@/components/page/chart/tooltips';
 
-import { MinimalChartLayoutHandler, EvaluationChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
+import { ChartLayoutHandler, EvaluationChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 
 import type { ObjectType } from "@/types";
 
@@ -13,7 +12,7 @@ import "@/styles/chart.css";
 type LineChartPropsType = { 
     data: ObjectType[]
     label: string
-    layoutHandler: MinimalChartLayoutHandler
+    layoutHandler: ChartLayoutHandler
 };
 
 const CardLineChart = ( { data, label, layoutHandler }: LineChartPropsType ) => {
@@ -21,17 +20,6 @@ const CardLineChart = ( { data, label, layoutHandler }: LineChartPropsType ) => 
 
     const WIDTH: number = 400;
     const HEIGHT: number = 240;
-    const xKey: string = layoutHandler.xValueHandler.key;
-    const yKeys: string[] = layoutHandler.yValueHandlers.map( handler => handler.key );
-    const yValues: number[] = [];
-    for ( const key of yKeys ) {
-        for ( const row of data ) {
-            yValues.push( row[ key ] )
-        }
-    }
-    const yTicks: number[] = calcTicks( yValues, 2 );
-
-    const colors: ObjectType[] = layoutHandler.yValueHandlers.map( handler => handler.color || {} );
 
     return (
         <div className='CardLineChart'>
@@ -43,14 +31,14 @@ const CardLineChart = ( { data, label, layoutHandler }: LineChartPropsType ) => 
             >
                 <CartesianGrid strokeDasharray="1 1" />
                 <XAxis 
-                    dataKey={xKey} 
-                    ticks={ data.map( d => d[ xKey ] ) } 
+                    dataKey={ layoutHandler.xValueHandler.key }
+                    ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick ticks={ data.map( d => d[ xKey ] ) } /> }
+                    tick={ <XAxisTick ticks={ layoutHandler.xTicks } /> }
                 />
                 <YAxis
-                    domain={ [ yTicks[ 0 ], yTicks[ yTicks.length - 1 ] ] } 
-                    ticks={ yTicks }
+                    domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
+                    ticks={ layoutHandler.yTicks }
                     interval={ 0 } 
                     tick={ <YAxisTick /> }
                 />
@@ -63,12 +51,12 @@ const CardLineChart = ( { data, label, layoutHandler }: LineChartPropsType ) => 
                     component={<BottomLabel height={ HEIGHT } label={ label } />}
                 /> 
 
-                { yKeys.map( ( key, i ) =>
+                { layoutHandler.yValueHandlers.map( ( handler, i ) =>
                     <Line 
                         key={ i }
                         type="monotone" 
-                        dataKey={yKeys[ i ]}
-                        stroke={ colors[ i ][ 500 ] } 
+                        dataKey={ handler.key }
+                        stroke={ handler.color[ 500 ] } 
                         strokeWidth={ 2 }
                         dot={ false }
                         isAnimationActive={ true }

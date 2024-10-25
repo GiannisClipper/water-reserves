@@ -209,3 +209,4 @@ class CardDataHandlerFactory {
 }
 
 export default CardDataHandlerFactory;
+export { CardDataHandler };

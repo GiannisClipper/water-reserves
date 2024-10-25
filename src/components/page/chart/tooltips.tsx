@@ -3,23 +3,18 @@ import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { 
-    MinimalChartLayoutHandler, 
     SingleChartLayoutHandler, 
     MultiChartLayoutHandler, 
-    ChartLayoutHandler,
     StackChartLayoutHandler
 } from "@/logic/LayoutHandler/chart/_abstract";
 import { SpatialInterruptionsSingleChartLayoutHandler } from "@/logic/LayoutHandler/chart/InterruptionsChartLayoutHandler";
-
-import { NestedValueSpecifier, ValueSpecifier } from '@/logic/ValueSpecifier';
-import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
 
 import type { ObjectType } from '@/types';
 
 type CardTooltipPropsType = {
     active?: boolean
     payload?: any
-    layoutHandler: MinimalChartLayoutHandler
+    layoutHandler: ChartLayoutHandler
 } 
 
 const CardTooltip = ( { active, payload, layoutHandler }: CardTooltipPropsType ) => {

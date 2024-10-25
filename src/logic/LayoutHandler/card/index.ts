@@ -1,35 +1,40 @@
+import DataHandler from "@/logic/DataHandler";
 import { 
     DateValueHandler, 
     PrecipitationValueHandler, ProductionValueHandler, SavingsValueHandler,
     MaxTemperatureValueHandler, MeanTemperatureValueHandler, MinTemperatureValueHandler, 
-} from "../ValueHandler/status";
+} from "../../ValueHandler/status";
 
-import { EvaluationChartLayoutHandler, MinimalChartLayoutHandler } from "./chart/_abstract";
+import { ChartLayoutHandler, EvaluationChartLayoutHandler } from "../chart/_abstract";
 
 import {
     ROSE, PINK, FUCHSIA, PURPLE, VIOLET,
     INDIGO, BLUE, SKY, CYAN, TEAL, EMERALD, 
-    GREEN, LIME, YELLOW, AMBER, ORANGE, RED, 
+    GREEN, LIME, YELLOW, AMBER, ORANGE, RED,
     STONE, NEUTRAL, ZINC, GRAY, SLATE
 } from '@/helpers/colors';
 
-import type { EvaluationType } from "@/types";
+import type { EvaluationType, ObjectType } from "@/types";
+
+import { XTicksCalculator } from "@/logic/LayoutHandler/chart/_abstract/xTicks";
+import { MinimalYTicksCalculator } from "@/logic/LayoutHandler/chart/_abstract/yTicks";
+import { CardDataHandler } from "@/logic/DataHandler/CardDataHandler";
 
 const evaluation: EvaluationType = { 0: 'lower', 1: 'low', 2: 'mid', 3:'high', 4: 'higher' };
 
-interface CardLayoutHandlerTpe {
+interface CardLayoutHandlerType {
     title: string;
-    lineChartHandler: MinimalChartLayoutHandler;
+    lineChartHandler: ChartLayoutHandler;
     pieChartHandler: EvaluationChartLayoutHandler;
 }
 
 class CardLayoutHandler {
 
     title: string;
-    lineChartHandler: MinimalChartLayoutHandler;
+    lineChartHandler: ChartLayoutHandler;
     pieChartHandler: EvaluationChartLayoutHandler;
 
-    constructor( { title, lineChartHandler, pieChartHandler }: CardLayoutHandlerTpe ) {
+    constructor( { title, lineChartHandler, pieChartHandler }: CardLayoutHandlerType ) {
         this.title = title;
         this.lineChartHandler = lineChartHandler;
         this.pieChartHandler = pieChartHandler;
@@ -38,13 +43,16 @@ class CardLayoutHandler {
 
 class SavingsCardLayoutHandler extends CardLayoutHandler {
 
-    constructor() {
+    constructor( dataHandler: CardDataHandler ) {
         super( { 
             title: 'Water reserves',
 
-            lineChartHandler: new MinimalChartLayoutHandler( { 
+            lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new SavingsValueHandler() ],
+                data: dataHandler.recentEntries,
+                XTicksCalculator,
+                YTicksCalculator: MinimalYTicksCalculator,
             } ),
 
             pieChartHandler: new EvaluationChartLayoutHandler( {
@@ -57,13 +65,16 @@ class SavingsCardLayoutHandler extends CardLayoutHandler {
 
 class ProductionCardLayoutHandler extends CardLayoutHandler {
 
-    constructor() {
+    constructor( dataHandler: CardDataHandler ) {
         super( { 
             title: 'Drinking water production',
 
-            lineChartHandler: new MinimalChartLayoutHandler( { 
+            lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new ProductionValueHandler() ],
+                data: dataHandler.recentEntries,
+                XTicksCalculator,
+                YTicksCalculator: MinimalYTicksCalculator,
             } ),
 
             pieChartHandler: new EvaluationChartLayoutHandler( {
@@ -76,13 +87,16 @@ class ProductionCardLayoutHandler extends CardLayoutHandler {
 
 class PrecipitationCardLayoutHandler extends CardLayoutHandler {
 
-    constructor() {
+    constructor( dataHandler: CardDataHandler ) {
         super( { 
             title: 'Precipitation measurements',
 
-            lineChartHandler: new MinimalChartLayoutHandler( { 
+            lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new PrecipitationValueHandler() ],
+                data: dataHandler.recentEntries,
+                XTicksCalculator,
+                YTicksCalculator: MinimalYTicksCalculator,
             } ),
 
             pieChartHandler: new EvaluationChartLayoutHandler( {
@@ -95,17 +109,20 @@ class PrecipitationCardLayoutHandler extends CardLayoutHandler {
 
 class TemperatureCardLayoutHandler extends CardLayoutHandler {
 
-    constructor() {
+    constructor( dataHandler: CardDataHandler ) {
         super( { 
             title: 'Temperatures in Athens',
 
-            lineChartHandler: new MinimalChartLayoutHandler( { 
+            lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ 
                     new MinTemperatureValueHandler(),
                     new MeanTemperatureValueHandler(),
                     new MaxTemperatureValueHandler(),
                 ],
+                data: dataHandler.recentEntries,
+                XTicksCalculator,
+                YTicksCalculator: MinimalYTicksCalculator,
             } ),
 
             pieChartHandler: new EvaluationChartLayoutHandler( {
@@ -120,27 +137,27 @@ class CardLayoutHandlerFactory {
 
     handler: CardLayoutHandler;
 
-    constructor( option: string ) {
+    constructor( option: string, dataHandler: CardDataHandler ) {
     
         switch ( option ) {
 
             case 'savings': {
-                this.handler = new SavingsCardLayoutHandler();
+                this.handler = new SavingsCardLayoutHandler( dataHandler );
                 break;
             }
 
             case 'production': {
-                this.handler = new ProductionCardLayoutHandler();
+                this.handler = new ProductionCardLayoutHandler( dataHandler );
                 break;
             }
 
             case 'precipitation': {
-                this.handler = new PrecipitationCardLayoutHandler();
+                this.handler = new PrecipitationCardLayoutHandler( dataHandler );
                 break;
             }
 
             case 'temperature': {
-                this.handler = new TemperatureCardLayoutHandler();
+                this.handler = new TemperatureCardLayoutHandler( dataHandler );
                 break;
             }
 

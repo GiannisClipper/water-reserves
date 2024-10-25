@@ -7,7 +7,7 @@ import CardDataHandlerFactory from "@/logic/DataHandler/CardDataHandler";
 import { withCommas } from "@/helpers/numbers";
 
 import type { ObjectType, UnitType } from "@/types";
-import CardLayoutHandlerFactory from "@/logic/LayoutHandler/CardLayoutHandler";
+import CardLayoutHandlerFactory from "@/logic/LayoutHandler/card";
 
 type PropsType = { 
     option: string
@@ -17,7 +17,7 @@ type PropsType = {
 const Card = ( { option, result }: PropsType ) => {
 
     const dataHandler = new CardDataHandlerFactory( option, result ).handler; 
-    const layoutHandler = new CardLayoutHandlerFactory( option ).handler;
+    const layoutHandler = new CardLayoutHandlerFactory( option, dataHandler ).handler;
 
     const key: string = layoutHandler.lineChartHandler.yValueHandlers[ 0 ].key;
     const measurement: number = dataHandler.toJSON()[ key ];

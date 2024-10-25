@@ -33,19 +33,19 @@ class PrecipitationValueHandler extends ValueHandler {
 
 class MinTemperatureValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'temperature_2m_min', label: 'Min temperature', unit: 'oC', color: CYAN } );
+        super( { key: 'temperature_2m_min', label: 'Min temp.', unit: 'oC', color: CYAN } );
     }
 }
 
 class MeanTemperatureValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'temperature_2m_mean', label: 'Mean temperature', unit: 'oC', color: YELLOW } );
+        super( { key: 'temperature_2m_mean', label: 'Mean temp.', unit: 'oC', color: YELLOW } );
     }
 }
 
 class MaxTemperatureValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'temperature_2m_max', label: 'Max temperature', unit: 'oC', color: ORANGE } );
+        super( { key: 'temperature_2m_max', label: 'Max temp.', unit: 'oC', color: ORANGE } );
     }
 }
 
