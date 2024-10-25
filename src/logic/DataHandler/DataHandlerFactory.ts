@@ -54,7 +54,7 @@ import DataHandler from ".";
 import { SingleDataHandler, SingleTimelessDataHandler} from "./SingleDataHandler";
 import MultiDataHandler from "./MultiDataHandler";
 import {
-    StackDataHandler, ReservoirsStackDataHandler, FactoriesStackDataHandler
+    ReservoirsStackDataHandler, FactoriesStackDataHandler, LocationsStackDataHandler
 } from "./StackDataHandler";
 import { Class } from "leaflet";
 import { ObjectType } from "@/types";
@@ -252,7 +252,7 @@ class DataHandlerFactory {
                 const DataHandlerClass: ObjectType = {
                     'savings': ReservoirsStackDataHandler,
                     'production': FactoriesStackDataHandler,
-                    'precipitation': StackDataHandler,
+                    'precipitation': LocationsStackDataHandler,
                 }
                 this._dataHandler = new DataHandlerClass[ endpoint ]( result, this._specifierCollection );
                 break;

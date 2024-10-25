@@ -115,4 +115,20 @@ class FactoriesStackDataHandler extends StackDataHandler {
     }
 }
 
-export { StackDataHandler, ReservoirsStackDataHandler, FactoriesStackDataHandler };
+class LocationsStackDataHandler extends StackDataHandler {
+
+    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+        super( responseResult, specifierCollection );
+
+        if ( this.data.length ) {
+            const nestedObj = this.data[ 0 ][ 'locations' ];
+            const ids: string[] = Object.keys( nestedObj ).map( id => `${id}` );
+            if ( this.legend ) {
+                const filtered: ObjectType[] = this.legend[ 'locations' ].filter( r => ids.includes( `${r.id}` ) )
+                this.legend [ 'locations' ] = new ObjectList( filtered ).sortBy( 'id', 'asc' );
+            }
+        }
+    }
+}
+
+export { StackDataHandler, ReservoirsStackDataHandler, FactoriesStackDataHandler, LocationsStackDataHandler };

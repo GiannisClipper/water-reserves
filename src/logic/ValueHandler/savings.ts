@@ -49,7 +49,7 @@ class ReservoirsPercentageValueHandler extends ValueHandler {
 
 class ReservoirsSumValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'sum', label: 'Reserves', unit: 'm3', color: SKY } );
+        super( { key: 'sum', label: 'Total', unit: 'm3', color: SKY } );
     }
 }
 

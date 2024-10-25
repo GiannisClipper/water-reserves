@@ -44,7 +44,7 @@ class FactoriesPercentageValueHandler extends ValueHandler {
 
 class FactoriesSumValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'sum', label: 'Production', unit: 'm3', color: PINK } );
+        super( { key: 'sum', label: 'Total', unit: 'm3', color: PINK } );
     }
 }
 

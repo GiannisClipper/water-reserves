@@ -9,14 +9,13 @@ import { ResponsiveContainer } from 'recharts';
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { MultiTooltip } from '@/components/page/chart/tooltips';
-import { MultiColorLegend } from "@/components/page/chart/legends";
+import { MultiColorLegend, StandardLegend } from "@/components/page/chart/legends";
 import { MultiChartLayoutHandler } from '@/logic/LayoutHandler/chart';
 
 import MultiDataHandler from '@/logic/DataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
 
 import "@/styles/chart.css";
-import { handleClientScriptLoad } from 'next/script';
 
 type PropsType = { 
     dataHandler: MultiDataHandler
@@ -125,9 +124,9 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                     align="right" 
                     verticalAlign='top' 
                     height={ 24 }
-                    content={ <MultiColorLegend 
-                        colorsArray={ layoutHandler.yValueHandlers.map( handler => handler.color ) }
-                        specifierCollection={ chartHandler.specifierCollection }
+                    content={ <StandardLegend 
+                        labels={ layoutHandler.yValueHandlers.map( h => h.label ) }
+                        colors={ layoutHandler.yValueHandlers.map( h => h.color[ 500 ] ) }
                     /> }
                 />
             </LineChart>
@@ -192,9 +191,9 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                     align="right" 
                     verticalAlign='top' 
                     height={ 24 }
-                    content={ <MultiColorLegend 
-                        colorsArray={ layoutHandler.yValueHandlers.map( handler => handler.color ) }
-                        specifierCollection={ chartHandler.specifierCollection }
+                    content={ <StandardLegend 
+                        labels={ layoutHandler.yValueHandlers.map( h => h.label ) }
+                        colors={ layoutHandler.yValueHandlers.map( h => h.color[ 500 ] ) }
                     /> }
                 />
 
@@ -262,9 +261,9 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
                     align="right" 
                     verticalAlign='top' 
                     height={ 24 }
-                    content={ <MultiColorLegend 
-                        colorsArray={ layoutHandler.yValueHandlers.map( handler => handler.color ) }
-                        specifierCollection={ chartHandler.specifierCollection }
+                    content={ <StandardLegend 
+                        labels={ layoutHandler.yValueHandlers.map( h => h.label ) }
+                        colors={ layoutHandler.yValueHandlers.map( h => h.color[ 500 ] ) }
                     /> }
                 />
 

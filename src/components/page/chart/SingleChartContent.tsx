@@ -1,6 +1,6 @@
 "use client"
 
-import { LineChart, Line } from 'recharts';
+import { LineChart, Line, Legend } from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar } from 'recharts';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Customized  } from 'recharts';
@@ -9,6 +9,7 @@ import { ResponsiveContainer } from 'recharts';
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
 import { XAxisTick, XAxisSpatialTick, YAxisTick } from '@/components/page/chart/ticks';
 import { SingleTooltip, SpatialInterruptionsTooltip } from '@/components/page/chart/tooltips';
+import { StandardLegend } from '@/components/page/chart/legends';
 
 import { SingleDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 import { ChartHandler, ChartHandlerFactory } from '@/logic/ChartHandler';
@@ -128,6 +129,17 @@ const LineChartComposition = ( {
                     strokeWidth={ 2 } 
                     dot={ false }
                 />
+
+                <Legend 
+                    align="right" 
+                    verticalAlign='top'
+                    height={ 24 }
+                    content={ <StandardLegend 
+                        labels={ [ layoutHandler.yValueHandlers[ 0 ].label ] }
+                        colors={ [ layoutHandler.yValueHandlers[ 0 ].color[ 500 ] ] }
+                    /> }
+                />
+
             </LineChart>
         </ResponsiveContainer>
     );
@@ -183,6 +195,17 @@ const AreaChartComposition = ( {
                     fill={ layoutHandler.yValueHandlers[ 0 ].color[ 300 ] } 
                     fillOpacity={ .65 } 
                 />
+
+                <Legend 
+                    align="right" 
+                    verticalAlign='top'
+                    height={ 24 }
+                    content={ <StandardLegend 
+                        labels={ [ layoutHandler.yValueHandlers[ 0 ].label ] }
+                        colors={ [ layoutHandler.yValueHandlers[ 0 ].color[ 500 ] ] }
+                    /> }
+                />
+
             </AreaChart>
         </ResponsiveContainer>
     );
@@ -242,6 +265,17 @@ const BarChartComposition = ( {
                     fill={ layoutHandler.yValueHandlers[ 0 ].color[ 300 ] } 
                     fillOpacity={ .65 } 
                 />
+
+                <Legend 
+                    align="right" 
+                    verticalAlign='top'
+                    height={ 24 }
+                    content={ <StandardLegend 
+                        labels={ [ layoutHandler.yValueHandlers[ 0 ].label ] }
+                        colors={ [ layoutHandler.yValueHandlers[ 0 ].color[ 500 ] ] }
+                    /> }
+                />
+
             </BarChart>
         </ResponsiveContainer>
     );

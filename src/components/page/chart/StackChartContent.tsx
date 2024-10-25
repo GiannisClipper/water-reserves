@@ -9,12 +9,12 @@ import { ResponsiveContainer } from 'recharts';
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { StackTooltip } from '@/components/page/chart/tooltips';
-import { LineLegend, ColorLegend } from "@/components/page/chart/legends";
+import { StandardLegend } from "@/components/page/chart/legends";
 
 import { StackDataHandler } from '@/logic/DataHandler/StackDataHandler';
 import { ChartHandler, ChartHandlerFactory } from "@/logic/ChartHandler";
 
-import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { ChartLayoutHandler, StackChartLayoutHandler } from '@/logic/LayoutHandler/chart';
 import { ValueHandler } from '@/logic/ValueHandler';
 
 import "@/styles/chart.css";
@@ -35,13 +35,6 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
         specifierCollection: dataHandler.specifierCollection
     } ).chartHandler;
 
-    const colorArray: string[] = [ 
-        layoutHandler.yValueHandlers[ 0 ].color[ 600 ], 
-        layoutHandler.yValueHandlers[ 0 ].color[ 500 ], 
-        layoutHandler.yValueHandlers[ 0 ].color[ 400 ], 
-        layoutHandler.yValueHandlers[ 0 ].color[ 300 ], 
-    ];
-
     console.log( "rendering: ChartContent..." ) 
 
     return (
@@ -52,7 +45,6 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
             <BarChartComposition
                 chartHandler={ chartHandler }
                 layoutHandler={ layoutHandler }
-                colorArray={ colorArray }
             />
 
             :
@@ -61,14 +53,12 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
             <AreaChartComposition
                 chartHandler={ chartHandler }
                 layoutHandler={ layoutHandler }
-                colorArray={ colorArray }
             />
 
             :
             <LineChartComposition
                 chartHandler={ chartHandler }
                 layoutHandler={ layoutHandler }
-                colorArray={ colorArray }
             />
             }
                 
@@ -78,16 +68,18 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
 
 type ChartCompositionPropsType = { 
     chartHandler: ChartHandler
-    colorArray: string[]
-    layoutHandler: ChartLayoutHandler
+    layoutHandler: StackChartLayoutHandler
 }
 
-const LineChartComposition = ( { chartHandler, colorArray, layoutHandler }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
 
-    const lineDashes: string[] = [ "1 1", "2 2", "4 4", "8 8" ];
-
-    const key = Object.keys( chartHandler.legend )[ 0 ];
-    const legendItems: [] = chartHandler.legend[ key ];
+    // lineDashes looks like: [ "1 1", "2 2", "3 3", "4 4" ]
+    const lineDashes: string[] = []; 
+    for ( let i = 0; i < layoutHandler.yValueHandlers.slice( 0, -1 ).length; i++ ) {
+        lineDashes.push( `${i+1} ${i+1}` );
+    }
+    // continuous line for the total (last element) 
+    lineDashes.push( '' );
 
     console.log( 'Rerender LineChart...', layoutHandler.yValueHandlers, chartHandler.data );
 
@@ -158,10 +150,10 @@ const LineChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
                     align="right" 
                     verticalAlign='top'
                     height={ 24 }
-                    content={ <LineLegend 
-                        items={ legendItems }
-                        colorsArray={ colorArray }
-                        strokeDasharray={ lineDashes }
+                    content={ <StandardLegend 
+                        labels={ layoutHandler.yValueHandlers.map( h => h.label ) }
+                        colors={ layoutHandler.yValueHandlers.map( h => h.color[ 600 ] ) }
+                        dashes={ lineDashes }
                     /> }
                 />
             </LineChart>
@@ -169,7 +161,7 @@ const LineChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
     );
 }
 
-const AreaChartComposition = ( { chartHandler, colorArray, layoutHandler }: ChartCompositionPropsType ) => {
+const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
 
     const key = Object.keys( chartHandler.legend )[ 0 ];
     const legendItems: [] = chartHandler.legend[ key ];
@@ -215,6 +207,7 @@ const AreaChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
                 />
 
                 { layoutHandler.yValueHandlers.slice( 0, -1 ).map( ( handler: ValueHandler, i: number ) =>
+                    // slice( 0, -1 ) to exclude the total
                     <Area 
                         key={ i } 
                         type={ chartHandler.lineType } 
@@ -230,9 +223,10 @@ const AreaChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
                     align="right" 
                     verticalAlign='top' 
                     height={ 24 }
-                    content={ <ColorLegend 
-                        items={ legendItems }
-                        colorsArray={ colorArray }
+                    content={ <StandardLegend 
+                        // slice( 0, -1 ) to exclude the total
+                        labels={ layoutHandler.yValueHandlers.slice( 0, -1 ).map( h => h.label ) }
+                        colors={ layoutHandler.yValueHandlers.slice( 0, -1 ).map( ( h, i ) => h.color[ 600 - 100 * i ] ) }
                     /> }
                 />
             </AreaChart>
@@ -240,7 +234,7 @@ const AreaChartComposition = ( { chartHandler, colorArray, layoutHandler }: Char
     );
 }
 
-const BarChartComposition = ( { chartHandler, colorArray, layoutHandler }: ChartCompositionPropsType ) => {
+const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
 
     const key = Object.keys( chartHandler.legend )[ 0 ];
     const legendItems: [] = chartHandler.legend[ key ];
@@ -288,6 +282,7 @@ const BarChartComposition = ( { chartHandler, colorArray, layoutHandler }: Chart
                 />
 
                 { layoutHandler.yValueHandlers.slice( 0, -1 ).map( ( handler: ValueHandler, i: number ) =>
+                // slice( 0, -1 ) to exclude the total
                     <Bar 
                         key={ i } 
                         type={ chartHandler.lineType } 
@@ -302,9 +297,10 @@ const BarChartComposition = ( { chartHandler, colorArray, layoutHandler }: Chart
                     align="right" 
                     verticalAlign='top' 
                     height={ 24 }
-                    content={ <ColorLegend 
-                        items={ legendItems }
-                        colorsArray={ colorArray }
+                    content={ <StandardLegend 
+                        // slice( 0, -1 ) to exclude the total
+                        labels={ layoutHandler.yValueHandlers.slice( 0, -1 ).map( h => h.label ) }
+                        colors={ layoutHandler.yValueHandlers.slice( 0, -1 ).map( ( h, i ) => h.color[ 600 - 100 * i ] ) }
                     /> }
                 />
             </BarChart>

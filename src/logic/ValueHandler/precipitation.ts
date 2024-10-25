@@ -44,7 +44,7 @@ class LocationsPercentageValueHandler extends ValueHandler {
 
 class LocationsSumValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'sum', label: 'Precipitation', unit: 'mm', color: TEAL } );
+        super( { key: 'sum', label: 'Total', unit: 'mm', color: TEAL } );
     }
 }
 
