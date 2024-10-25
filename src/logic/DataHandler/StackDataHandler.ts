@@ -1,7 +1,7 @@
 import DataHandler from '.';
 
-import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierCollection";
-import { PrimaryValueSpecifier, SecondaryValueSpecifier, NestedValueSpecifier } from '@/logic/ValueSpecifier';
+import ValueParserCollection from "@/logic/ValueParser/ValueParserCollection";
+import { PrimaryValueParser, SecondaryValueParser, NestedValueParser } from '@/logic/ValueParser';
 
 import type { ObjectType } from '@/types';
 import ObjectList from '@/helpers/objects/ObjectList';
@@ -10,7 +10,7 @@ class StackDataHandler extends DataHandler {
 
     type: string = 'stack';
 
-    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
         super( responseResult, specifierCollection );
 
         let result: Object = responseResult || {};
@@ -18,16 +18,16 @@ class StackDataHandler extends DataHandler {
 
         // get the join key (no dataset assigned) and the dataset (one dataset in this handler)
     
-        const joinSpecifier: PrimaryValueSpecifier = this.specifierCollection.getByDataset()[ 0 ];
-        const joinKey: string = joinSpecifier[ 'key' ];
+        const joinParser: PrimaryValueParser = this.specifierCollection.getByDataset()[ 0 ];
+        const joinKey: string = joinParser[ 'key' ];
         const dataset: string = this.specifierCollection.getDatasets()[ 0 ];
 
         // get the primary values, these comming directly from http response 
 
         // get the primary value specifiers
-        const specifiers: PrimaryValueSpecifier[] = [
-            joinSpecifier,
-            ...specifierCollection.getPrimarySpecifiers()
+        const specifiers: PrimaryValueParser[] = [
+            joinParser,
+            ...specifierCollection.getPrimaryParsers()
         ]
     
         // put in a list of objects the array results for each dataset
@@ -45,8 +45,8 @@ class StackDataHandler extends DataHandler {
 
         // process the nested values
 
-        const nSpecifier: NestedValueSpecifier = specifierCollection.getNestedSpecifiers()[ 0 ];
-        // example of nSpecifier =>:
+        const nParser: NestedValueParser = specifierCollection.getNestedParsers()[ 0 ];
+        // example of nParser =>:
         // key: 'reservoirs', 
         // label: 'Ταμιευτήρες', 
         // nestedKey: 'reservoir_id',
@@ -54,11 +54,11 @@ class StackDataHandler extends DataHandler {
 
         const nestObj: ObjectType = {};    
         arr.forEach( ( row: ObjectType ) => { 
-            const key: string = nSpecifier.key;
+            const key: string = nParser.key;
             nestObj[ row[ joinKey ] ] = { [ joinKey ]: row[ joinKey ], [ key ]: {} };
         } );
         arr.forEach( ( row: ObjectType ) => {
-            const { key, nestedKey, nestedInnerKey } = nSpecifier;
+            const { key, nestedKey, nestedInnerKey } = nParser;
 
             const nestedKeyValue: string = row[ nestedKey ];
             const nestedInnerKeyValue: any = row[ nestedInnerKey ];
@@ -74,7 +74,7 @@ class StackDataHandler extends DataHandler {
 
         // get the secondary values, these resulting from primary values calculation
 
-        const specifiers2: SecondaryValueSpecifier[] = specifierCollection.getSecondarySpecifiers();
+        const specifiers2: SecondaryValueParser[] = specifierCollection.getSecondaryParsers();
 
         for ( const specifier of specifiers2 ) {
             specifier.parser( this.data, this.legend );
@@ -85,7 +85,7 @@ class StackDataHandler extends DataHandler {
 
 class ReservoirsStackDataHandler extends StackDataHandler {
 
-    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
         super( responseResult, specifierCollection );
 
         if ( this.data.length ) {
@@ -101,7 +101,7 @@ class ReservoirsStackDataHandler extends StackDataHandler {
 
 class FactoriesStackDataHandler extends StackDataHandler {
 
-    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
         super( responseResult, specifierCollection );
 
         if ( this.data.length ) {
@@ -117,7 +117,7 @@ class FactoriesStackDataHandler extends StackDataHandler {
 
 class LocationsStackDataHandler extends StackDataHandler {
 
-    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
         super( responseResult, specifierCollection );
 
         if ( this.data.length ) {

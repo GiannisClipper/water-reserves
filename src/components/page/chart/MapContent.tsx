@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 import { MapContainer, TileLayer, ZoomControl, GeoJSON, Tooltip, Marker, Popup } from 'react-leaflet'
 
-import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
-import { ValueSpecifier } from '@/logic/ValueSpecifier';
+import ValueParserCollection from '@/logic/ValueParser/ValueParserCollection';
+import { ValueParser } from '@/logic/ValueParser';
 
 import { withCommas } from '@/helpers/numbers';
 import type { ObjectType } from '@/types';
@@ -27,16 +27,16 @@ type PropsType = {
 
 const MapContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
 
-    const specifierCollection: ValueSpecifierCollection = dataHandler.specifierCollection;
+    const specifierCollection: ValueParserCollection = dataHandler.specifierCollection;
 
-    const municipalitySpecifier: ValueSpecifier = specifierCollection.getByAxeX()[ 0 ];
-    const nameSpecifier: ValueSpecifier = specifierCollection.getByKey( 'name' );
-    const areaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'area' );
-    const populationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'population' );
-    const eventsSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events' );
-    const overAreaSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_area' );
-    const overPopulationSpecifier: ValueSpecifier = specifierCollection.getByKey( 'events_over_population' );
-    const clusterSpecifier: ValueSpecifier = specifierCollection.getByKey( 'cluster' );
+    const municipalityParser: ValueParser = specifierCollection.getByAxeX()[ 0 ];
+    const nameParser: ValueParser = specifierCollection.getByKey( 'name' );
+    const areaParser: ValueParser = specifierCollection.getByKey( 'area' );
+    const populationParser: ValueParser = specifierCollection.getByKey( 'population' );
+    const eventsParser: ValueParser = specifierCollection.getByKey( 'events' );
+    const overAreaParser: ValueParser = specifierCollection.getByKey( 'events_over_area' );
+    const overPopulationParser: ValueParser = specifierCollection.getByKey( 'events_over_population' );
+    const clusterParser: ValueParser = specifierCollection.getByKey( 'cluster' );
 
     const municipalities: ObjectType = {}; 
     if ( dataHandler.legend ) {
@@ -133,35 +133,35 @@ const MapContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
                             <div className='Tooltip Map'>
                                 { ! showTooltip 
                                 ?
-                                <div>{ municipalitySpecifier[ 'label'] } of { f.name }</div>
+                                <div>{ municipalityParser[ 'label'] } of { f.name }</div>
                                 :
                                 <>
                                 <strong>
-                                    <div>{ municipalitySpecifier[ 'label'] } of { f.name }</div>
+                                    <div>{ municipalityParser[ 'label'] } of { f.name }</div>
                                 </strong>
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td>{ eventsSpecifier[ 'label'] }</td>
+                                            <td>{ eventsParser[ 'label'] }</td>
                                             <td>{ withCommas( f.events ) }</td>
                                         </tr>
                                         <tr>
-                                            <td>{ areaSpecifier[ 'label'] }</td>
+                                            <td>{ areaParser[ 'label'] }</td>
                                             <td>{ withCommas( f.area ) }</td>
                                         </tr>
                                         <tr>
-                                            <td>{ overAreaSpecifier[ 'label'] }</td>
+                                            <td>{ overAreaParser[ 'label'] }</td>
                                             <td>{ withCommas( Math.round( f.events_over_area * 10 ) / 10 ) }</td>
                                         </tr>
                                         <tr>
-                                            <td>{ populationSpecifier[ 'label'] }</td>
+                                            <td>{ populationParser[ 'label'] }</td>
                                             <td>{ withCommas( f.population ) }</td>
                                         </tr>                                        <tr>
-                                            <td>{ overPopulationSpecifier[ 'label'] }</td>
+                                            <td>{ overPopulationParser[ 'label'] }</td>
                                             <td>{ withCommas( Math.round( f.events_over_population * 10 ) / 10 ) }</td>
                                         </tr>
                                         <tr>
-                                            <td>{ clusterSpecifier[ 'label'] }</td>
+                                            <td>{ clusterParser[ 'label'] }</td>
                                             <td>{ f.clusterRepr }</td>
                                         </tr>
                                     </tbody>

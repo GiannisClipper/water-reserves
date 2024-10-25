@@ -1,54 +1,54 @@
-import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierCollection";
-import { TimeValueSpecifier } from "@/logic/ValueSpecifier";
+import ValueParserCollection from "@/logic/ValueParser/ValueParserCollection";
+import { TimeValueParser } from "@/logic/ValueParser";
 
 import {
-    SavingsValueSpecifier, 
-    ReservoirIdValueSpecifier,
-    SavingsDifferenceValueSpecifier, 
-    SavingsGrowthValueSpecifier, 
-    ReservoirsValueSpecifier, 
-    ReservoirsSumValueSpecifier,
-    ReservoirsPercentageValueSpecifier, 
-} from "@/logic/ValueSpecifier/savings";
+    SavingsValueParser, 
+    ReservoirIdValueParser,
+    SavingsDifferenceValueParser, 
+    SavingsGrowthValueParser, 
+    ReservoirsValueParser, 
+    ReservoirsSumValueParser,
+    ReservoirsPercentageValueParser, 
+} from "@/logic/ValueParser/savings";
 
 import {
-    ProductionValueSpecifier, 
-    FactoryIdValueSpecifier,
-    ProductionDifferenceValueSpecifier, 
-    ProductionGrowthValueSpecifier, 
-    FactoriesValueSpecifier, 
-    FactoriesSumValueSpecifier,
-    FactoriesPercentageValueSpecifier, 
-} from "@/logic/ValueSpecifier/production";
+    ProductionValueParser, 
+    FactoryIdValueParser,
+    ProductionDifferenceValueParser, 
+    ProductionGrowthValueParser, 
+    FactoriesValueParser, 
+    FactoriesSumValueParser,
+    FactoriesPercentageValueParser, 
+} from "@/logic/ValueParser/production";
 
 import {
-    PrecipitationValueSpecifier, 
-    LocationIdValueSpecifier,
-    PrecipitationDifferenceValueSpecifier, 
-    PrecipitationGrowthValueSpecifier,
-    LocationsValueSpecifier, 
-    LocationsSumValueSpecifier,
-    LocationsPercentageValueSpecifier, 
-} from "@/logic/ValueSpecifier/precipitation";
+    PrecipitationValueParser, 
+    LocationIdValueParser,
+    PrecipitationDifferenceValueParser, 
+    PrecipitationGrowthValueParser,
+    LocationsValueParser, 
+    LocationsSumValueParser,
+    LocationsPercentageValueParser, 
+} from "@/logic/ValueParser/precipitation";
 
 import {
-    TemperatureMinValueSpecifier, 
-    TemperatureMeanValueSpecifier, 
-    TemperatureMaxValueSpecifier, 
-} from "@/logic/ValueSpecifier/temperature";
+    TemperatureMinValueParser, 
+    TemperatureMeanValueParser, 
+    TemperatureMaxValueParser, 
+} from "@/logic/ValueParser/temperature";
 
 import {
-    MunicipalityIdValueSpecifier,
-    EventsValueSpecifier, 
-    EventsDifferenceValueSpecifier,
-    EventsGrowthValueSpecifier,
-    MunicipalityNameValueSpecifier,
-    MunicipalityAreaValueSpecifier,
-    MunicipalityPopulationValueSpecifier,
-    EventsOverAreaValueSpecifier,
-    EventsOverPopulationValueSpecifier,
-    ClusterValueSpecifier,
-} from "@/logic/ValueSpecifier/interruptions";
+    MunicipalityIdValueParser,
+    EventsValueParser, 
+    EventsDifferenceValueParser,
+    EventsGrowthValueParser,
+    MunicipalityNameValueParser,
+    MunicipalityAreaValueParser,
+    MunicipalityPopulationValueParser,
+    EventsOverAreaValueParser,
+    EventsOverPopulationValueParser,
+    ClusterValueParser,
+} from "@/logic/ValueParser/interruptions";
 
 import DataHandler from ".";
 import { SingleDataHandler, SingleSpatialDataHandler} from "./SingleDataHandler";
@@ -70,7 +70,7 @@ class DataHandlerFactory {
     private _dataHandler: DataHandler;
     private type: string = '';
 
-    private _specifierCollection: ValueSpecifierCollection;
+    private _specifierCollection: ValueParserCollection;
 
     constructor( { endpoint, searchParams, result }: PropsType ) {
 
@@ -79,22 +79,22 @@ class DataHandlerFactory {
             case 'savings': {
                 if ( searchParams.reservoir_aggregation ) {
                     this.type = 'single';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0 } ),
-                        new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                        new SavingsDifferenceValueSpecifier( {} ),
-                        new SavingsGrowthValueSpecifier( {} ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 0 } ),
+                        new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new SavingsDifferenceValueParser( {} ),
+                        new SavingsGrowthValueParser( {} ),
                     ] );
 
                 } else {
                     this.type = 'stack';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0 } ),
-                        new ReservoirIdValueSpecifier( { index: 1 } ),
-                        new SavingsValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
-                        new ReservoirsValueSpecifier( {} ),
-                        new ReservoirsSumValueSpecifier( {} ),
-                        new ReservoirsPercentageValueSpecifier( {} )
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 0 } ),
+                        new ReservoirIdValueParser( { index: 1 } ),
+                        new SavingsValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
+                        new ReservoirsValueParser( {} ),
+                        new ReservoirsSumValueParser( {} ),
+                        new ReservoirsPercentageValueParser( {} )
                     ] );
                 }
                 break;
@@ -103,21 +103,21 @@ class DataHandlerFactory {
             case 'production': {
                 if ( searchParams.factory_aggregation ) {
                     this.type = 'single';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0 } ),
-                        new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                        new ProductionDifferenceValueSpecifier( {} ),
-                        new ProductionGrowthValueSpecifier( {} ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 0 } ),
+                        new ProductionValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new ProductionDifferenceValueParser( {} ),
+                        new ProductionGrowthValueParser( {} ),
                     ] );
                 } else {
                     this.type = 'stack';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0 } ),
-                        new FactoryIdValueSpecifier( { index: 1 } ),
-                        new ProductionValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
-                        new FactoriesValueSpecifier( {} ),
-                        new FactoriesSumValueSpecifier( {} ),
-                        new FactoriesPercentageValueSpecifier( {} ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 0 } ),
+                        new FactoryIdValueParser( { index: 1 } ),
+                        new ProductionValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
+                        new FactoriesValueParser( {} ),
+                        new FactoriesSumValueParser( {} ),
+                        new FactoriesPercentageValueParser( {} ),
                     ] );
                 }
                 break;
@@ -126,21 +126,21 @@ class DataHandlerFactory {
             case 'precipitation': {
                 if ( searchParams.location_aggregation ) {
                     this.type = 'single';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0 } ),
-                        new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                        new PrecipitationDifferenceValueSpecifier( {} ),
-                        new PrecipitationGrowthValueSpecifier( {} ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 0 } ),
+                        new PrecipitationValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new PrecipitationDifferenceValueParser( {} ),
+                        new PrecipitationGrowthValueParser( {} ),
                     ] );
                 } else {
                     this.type = 'stack';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0 } ),
-                        new LocationIdValueSpecifier( { index: 1 } ),
-                        new PrecipitationValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
-                        new LocationsValueSpecifier( {} ),
-                        new LocationsSumValueSpecifier( {} ),
-                        new LocationsPercentageValueSpecifier( {} ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 0 } ),
+                        new LocationIdValueParser( { index: 1 } ),
+                        new PrecipitationValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
+                        new LocationsValueParser( {} ),
+                        new LocationsSumValueParser( {} ),
+                        new LocationsPercentageValueParser( {} ),
                     ] );
                 }
                 break;
@@ -149,20 +149,20 @@ class DataHandlerFactory {
             case 'temperature': {
                 if ( searchParams.time_aggregation ) {
                     this.type = 'multi';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0 } ),
-                        new TemperatureMinValueSpecifier( { index: 3, parser: ( v: number ): number => Math.round( v ) } ),
-                        new TemperatureMeanValueSpecifier( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
-                        new TemperatureMaxValueSpecifier( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 0 } ),
+                        new TemperatureMinValueParser( { index: 3, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMeanValueParser( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMaxValueParser( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
                     ] );
     
                 } else {
                     this.type = 'multi';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 1 } ),
-                        new TemperatureMinValueSpecifier( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
-                        new TemperatureMeanValueSpecifier( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
-                        new TemperatureMaxValueSpecifier( { index: 6, parser: ( v: number ): number => Math.round( v ) } ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 1 } ),
+                        new TemperatureMinValueParser( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMeanValueParser( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMaxValueParser( { index: 6, parser: ( v: number ): number => Math.round( v ) } ),
                     ] );
                 }
                 break;
@@ -171,24 +171,24 @@ class DataHandlerFactory {
             case 'interruptions': {
                 if ( searchParams.municipality_aggregation ) {
                     this.type = 'single';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0 } ),
-                        new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                        new EventsDifferenceValueSpecifier( {} ),
-                        new EventsGrowthValueSpecifier( {} ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new TimeValueParser( { index: 0 } ),
+                        new EventsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new EventsDifferenceValueParser( {} ),
+                        new EventsGrowthValueParser( {} ),
                     ] );
                 }
                 else {
                     this.type = 'single,spatial';
-                    this._specifierCollection = new ValueSpecifierCollection( [
-                        new MunicipalityIdValueSpecifier( { index: 0 } ),
-                        new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                        new MunicipalityNameValueSpecifier( {} ),
-                        new MunicipalityAreaValueSpecifier( { index: 2 } ),
-                        new MunicipalityPopulationValueSpecifier( { index: 3 } ),
-                        new EventsOverAreaValueSpecifier( { index: 4 } ),
-                        new EventsOverPopulationValueSpecifier( { index: 5 } ),
-                        new ClusterValueSpecifier( { index: 6 } ),
+                    this._specifierCollection = new ValueParserCollection( [
+                        new MunicipalityIdValueParser( { index: 0 } ),
+                        new EventsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new MunicipalityNameValueParser( {} ),
+                        new MunicipalityAreaValueParser( { index: 2 } ),
+                        new MunicipalityPopulationValueParser( { index: 3 } ),
+                        new EventsOverAreaValueParser( { index: 4 } ),
+                        new EventsOverPopulationValueParser( { index: 5 } ),
+                        new ClusterValueParser( { index: 6 } ),
                     ] );
                 }            
                 break;
@@ -196,24 +196,24 @@ class DataHandlerFactory {
 
             case 'savings-production': {
                 this.type = 'multi';
-                this._specifierCollection = new ValueSpecifierCollection( [
-                    new TimeValueSpecifier( { index: 0 } ),
-                    new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                    new SavingsGrowthValueSpecifier( {} ),
-                    new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
-                    new ProductionGrowthValueSpecifier( {} ), 
+                this._specifierCollection = new ValueParserCollection( [
+                    new TimeValueParser( { index: 0 } ),
+                    new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                    new SavingsGrowthValueParser( {} ),
+                    new ProductionValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
+                    new ProductionGrowthValueParser( {} ), 
                 ] );
                 break;
             }
 
             case 'savings-precipitation': {
                 this.type = 'multi';
-                this._specifierCollection = new ValueSpecifierCollection( [
-                    new TimeValueSpecifier( { index: 0 } ),
-                    new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                    new SavingsGrowthValueSpecifier( {} ),
-                    new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
-                    new PrecipitationGrowthValueSpecifier( {} ), 
+                this._specifierCollection = new ValueParserCollection( [
+                    new TimeValueParser( { index: 0 } ),
+                    new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                    new SavingsGrowthValueParser( {} ),
+                    new PrecipitationValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
+                    new PrecipitationGrowthValueParser( {} ), 
                 ] );
                 break;
             }

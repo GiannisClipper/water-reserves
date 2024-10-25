@@ -1,31 +1,31 @@
 import { ObjectType } from "@/types"
 import type { UnitType } from '@/types';
 
-interface ValueSpecifierType {
+interface ValueParserType {
     key?: string
     parser?: CallableFunction
 }
 
-interface PrimaryValueSpecifierType extends ValueSpecifierType {
+interface PrimaryValueParserType extends ValueParserType {
     dataset?: string
     index: number
 }
 
-interface SecondaryValueSpecifierType extends ValueSpecifierType {
+interface SecondaryValueParserType extends ValueParserType {
     sourceKey?: string
 }
 
-interface NestedValueSpecifierType extends ValueSpecifierType {
+interface NestedValueParserType extends ValueParserType {
     nestedKey?: string
     nestedInnerKey?: string
 }
 
-abstract class ValueSpecifier {
+abstract class ValueParser {
 
     key: string;
     parser: CallableFunction;
 
-    constructor( { key, parser }: ValueSpecifierType ) {
+    constructor( { key, parser }: ValueParserType ) {
         this.key = key || 'value'
         this.parser = parser || this.defaultParser
     }
@@ -41,12 +41,12 @@ abstract class ValueSpecifier {
 
 // promary values: get directly from the http response
 
-abstract class PrimaryValueSpecifier extends ValueSpecifier {
+abstract class PrimaryValueParser extends ValueParser {
 
     dataset: string | null;
     index: number;
 
-    constructor( { dataset, index, ...otherProps }: PrimaryValueSpecifierType ) {
+    constructor( { dataset, index, ...otherProps }: PrimaryValueParserType ) {
         super( otherProps );
         this.dataset = dataset || null;
         this.index = index;
@@ -55,11 +55,11 @@ abstract class PrimaryValueSpecifier extends ValueSpecifier {
 
 // secondary values: calculated from primary values
 
-abstract class SecondaryValueSpecifier extends ValueSpecifier {
+abstract class SecondaryValueParser extends ValueParser {
 
     sourceKey: string;
 
-    constructor( { sourceKey, ...otherProps }: SecondaryValueSpecifierType ) {
+    constructor( { sourceKey, ...otherProps }: SecondaryValueParserType ) {
         super( otherProps );
         this.sourceKey = sourceKey || 'value';
     }
@@ -68,21 +68,21 @@ abstract class SecondaryValueSpecifier extends ValueSpecifier {
 // nested values: sub values of the same entity, eg. reservoirs, factories, locations
 // helpful for the stack charts
 
-abstract class NestedValueSpecifier extends ValueSpecifier {
+abstract class NestedValueParser extends ValueParser {
 
     nestedKey: string;
     nestedInnerKey: string;
 
-    constructor( { nestedKey, nestedInnerKey, ...otherProps }: NestedValueSpecifierType ) {
+    constructor( { nestedKey, nestedInnerKey, ...otherProps }: NestedValueParserType ) {
         super( otherProps );
         this.nestedKey = nestedKey || 'key';
         this.nestedInnerKey = nestedInnerKey || 'value';
     }
 }
 
-abstract class DifferenceValueSpecifier extends SecondaryValueSpecifier {
+abstract class DifferenceValueParser extends SecondaryValueParser {
     
-    constructor( props: SecondaryValueSpecifierType ) {
+    constructor( props: SecondaryValueParserType ) {
         super( props );
         this.parser = props.parser || this.defaultParser;
     }
@@ -99,9 +99,9 @@ abstract class DifferenceValueSpecifier extends SecondaryValueSpecifier {
     }
 }
 
-abstract class GrowthValueSpecifier extends SecondaryValueSpecifier {
+abstract class GrowthValueParser extends SecondaryValueParser {
     
-    constructor( props: SecondaryValueSpecifierType ) {
+    constructor( props: SecondaryValueParserType ) {
         super( props );
         this.parser = props.parser || this.defaultParser;
     }
@@ -120,9 +120,9 @@ abstract class GrowthValueSpecifier extends SecondaryValueSpecifier {
     }
 }
 
-abstract class RatioValueSpecifier extends SecondaryValueSpecifier {
+abstract class RatioValueParser extends SecondaryValueParser {
     
-    constructor( props: SecondaryValueSpecifierType ) {
+    constructor( props: SecondaryValueParserType ) {
         super( props );
         this.parser = props.parser || this.defaultParser;
     }
@@ -136,9 +136,9 @@ abstract class RatioValueSpecifier extends SecondaryValueSpecifier {
     }
 }
 
-abstract class NestedSumValueSpecifier extends SecondaryValueSpecifier {
+abstract class NestedSumValueParser extends SecondaryValueParser {
     
-    constructor( props: SecondaryValueSpecifierType ) {
+    constructor( props: SecondaryValueParserType ) {
         super( props );
         this.parser = props.parser || this.defaultParser;
     }
@@ -169,9 +169,9 @@ abstract class NestedSumValueSpecifier extends SecondaryValueSpecifier {
     }
 }
 
-abstract class NestedPercentageValueSpecifier extends SecondaryValueSpecifier {
+abstract class NestedPercentageValueParser extends SecondaryValueParser {
     
-    constructor( props: SecondaryValueSpecifierType ) {
+    constructor( props: SecondaryValueParserType ) {
         super( props );
         this.parser = props.parser || this.defaultParser;
     }
@@ -207,9 +207,9 @@ abstract class NestedPercentageValueSpecifier extends SecondaryValueSpecifier {
     }
 }
 
-class TimeValueSpecifier extends PrimaryValueSpecifier {
+class TimeValueParser extends PrimaryValueParser {
 
-    constructor( props: PrimaryValueSpecifierType ) {
+    constructor( props: PrimaryValueParserType ) {
         super( { 
             key: 'time', 
             ...props 
@@ -218,12 +218,12 @@ class TimeValueSpecifier extends PrimaryValueSpecifier {
 }
 
 export type { 
-    ValueSpecifierType, PrimaryValueSpecifierType, SecondaryValueSpecifierType, 
-    NestedValueSpecifierType };
+    ValueParserType, PrimaryValueParserType, SecondaryValueParserType, 
+    NestedValueParserType };
 
 export {
-    ValueSpecifier, PrimaryValueSpecifier, SecondaryValueSpecifier,
-    DifferenceValueSpecifier, GrowthValueSpecifier, RatioValueSpecifier,
-    NestedValueSpecifier, NestedSumValueSpecifier, NestedPercentageValueSpecifier,
-    TimeValueSpecifier
+    ValueParser, PrimaryValueParser, SecondaryValueParser,
+    DifferenceValueParser, GrowthValueParser, RatioValueParser,
+    NestedValueParser, NestedSumValueParser, NestedPercentageValueParser,
+    TimeValueParser
 }

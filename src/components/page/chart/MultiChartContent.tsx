@@ -21,7 +21,7 @@ type PropsType = {
 
 const ChartContent = ( { chartType, layoutHandler }: PropsType ) => {
 
-    console.log( "rendering: ChartContent..." )// , layoutSpecifier );
+    console.log( "rendering: ChartContent..." )// , layoutParser );
 
     return (
         <div className="ChartContent">

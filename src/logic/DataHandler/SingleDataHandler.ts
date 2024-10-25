@@ -1,5 +1,5 @@
 import MultiDataHandler from '@/logic/DataHandler/MultiDataHandler';
-import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
+import ValueParserCollection from '@/logic/ValueParser/ValueParserCollection';
 
 class SingleDataHandler extends MultiDataHandler {    
 

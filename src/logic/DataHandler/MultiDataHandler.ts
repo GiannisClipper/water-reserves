@@ -1,7 +1,7 @@
 import DataHandler from '.';
 
-import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierCollection";
-import { PrimaryValueSpecifier, SecondaryValueSpecifier } from '@/logic/ValueSpecifier';
+import ValueParserCollection from "@/logic/ValueParser/ValueParserCollection";
+import { PrimaryValueParser, SecondaryValueParser } from '@/logic/ValueParser';
 
 import type { ObjectType } from "@/types";
 
@@ -9,7 +9,7 @@ class MultiDataHandler extends DataHandler {
 
     type: string = 'multi';
 
-    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
         super( responseResult, specifierCollection );
 
         let result: ObjectType = responseResult || {};
@@ -17,8 +17,8 @@ class MultiDataHandler extends DataHandler {
         // get the join key (no dataset assigned) and the datasets 
         // all values will be placed in one flat object, the join key identifies the objects
     
-        const joinSpecifier: PrimaryValueSpecifier = this.specifierCollection.getByDataset()[ 0 ];
-        const joinKey: string = joinSpecifier[ 'key' ];
+        const joinParser: PrimaryValueParser = this.specifierCollection.getByDataset()[ 0 ];
+        const joinKey: string = joinParser[ 'key' ];
         const datasets = this.specifierCollection.getDatasets();
         
         // get the primary values, these comming directly from http response 
@@ -27,8 +27,8 @@ class MultiDataHandler extends DataHandler {
         for ( const dataset of datasets ) {
 
             // get the primary value specifiers for each dataset
-            const specifiers: PrimaryValueSpecifier[] = [
-                joinSpecifier,
+            const specifiers: PrimaryValueParser[] = [
+                joinParser,
                 ...specifierCollection.getByDataset( dataset )
             ]
             
@@ -59,7 +59,7 @@ class MultiDataHandler extends DataHandler {
     
         // get the secondary values, these resulting from primary values calculation
         
-        const specifiers: SecondaryValueSpecifier[] = specifierCollection.getSecondarySpecifiers();
+        const specifiers: SecondaryValueParser[] = specifierCollection.getSecondaryParsers();
         for ( const specifier of specifiers ) {
             specifier.parser( this.data, this.legend );
         }

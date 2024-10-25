@@ -1,4 +1,4 @@
-import ValueSpecifierCollection from "@/logic/ValueSpecifier/ValueSpecifierCollection";
+import ValueParserCollection from "@/logic/ValueParser/ValueParserCollection";
 
 import type { ObjectType } from '@/types';
 
@@ -9,9 +9,9 @@ abstract class DataHandler {
     private _headers: string[] = [];
     private _data: ObjectType[] = [];
     private _legend: ObjectType = {};
-    private _specifierCollection: ValueSpecifierCollection
+    private _specifierCollection: ValueParserCollection
 
-    constructor( responseResult: any, specifierCollection: ValueSpecifierCollection ) {
+    constructor( responseResult: any, specifierCollection: ValueParserCollection ) {
 
         let result: ObjectType = responseResult || {};
 
@@ -45,7 +45,7 @@ abstract class DataHandler {
         return this._legend;
     }
 
-    get specifierCollection(): ValueSpecifierCollection {
+    get specifierCollection(): ValueParserCollection {
         return this._specifierCollection;
     }
 
@@ -58,7 +58,7 @@ abstract class DataHandler {
             headers: this._headers,
             data: this._data,
             legend: this._legend,
-            valueSpecifiers: this.specifierCollection.specifiers.map( s => s.toJSON() )
+            valueParsers: this.specifierCollection.specifiers.map( s => s.toJSON() )
         }
     }
 }

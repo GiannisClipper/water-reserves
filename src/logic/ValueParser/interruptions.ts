@@ -1,11 +1,11 @@
-import { PrimaryValueSpecifier, SecondaryValueSpecifier, DifferenceValueSpecifier, GrowthValueSpecifier } from "@/logic/ValueSpecifier";
+import { PrimaryValueParser, SecondaryValueParser, DifferenceValueParser, GrowthValueParser } from "@/logic/ValueParser";
 
-import type { PrimaryValueSpecifierType, SecondaryValueSpecifierType } from "@/logic/ValueSpecifier";
+import type { PrimaryValueParserType, SecondaryValueParserType } from "@/logic/ValueParser";
 import type { ObjectType } from "@/types";
 
-class MunicipalityIdValueSpecifier extends PrimaryValueSpecifier {
+class MunicipalityIdValueParser extends PrimaryValueParser {
 
-    constructor( props: PrimaryValueSpecifierType ) {
+    constructor( props: PrimaryValueParserType ) {
         super( { 
             // dataset: 'interruptions', # no dataset to operate as join key
             key: 'municipality_id', 
@@ -14,9 +14,9 @@ class MunicipalityIdValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class EventsValueSpecifier extends PrimaryValueSpecifier {
+class EventsValueParser extends PrimaryValueParser {
 
-    constructor( props: PrimaryValueSpecifierType ) {
+    constructor( props: PrimaryValueParserType ) {
         super( { 
             dataset: 'interruptions', 
             key: 'events', 
@@ -26,9 +26,9 @@ class EventsValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class EventsDifferenceValueSpecifier extends DifferenceValueSpecifier {
+class EventsDifferenceValueParser extends DifferenceValueParser {
 
-    constructor( props: SecondaryValueSpecifierType ) {
+    constructor( props: SecondaryValueParserType ) {
         super( { 
             sourceKey: 'events',
             key: 'events_difference', 
@@ -37,9 +37,9 @@ class EventsDifferenceValueSpecifier extends DifferenceValueSpecifier {
     }
 }
 
-class EventsGrowthValueSpecifier extends GrowthValueSpecifier {
+class EventsGrowthValueParser extends GrowthValueParser {
 
-    constructor( props: SecondaryValueSpecifierType ) {
+    constructor( props: SecondaryValueParserType ) {
         super( { 
             sourceKey: 'events',
             key: 'events_percentage', 
@@ -48,9 +48,9 @@ class EventsGrowthValueSpecifier extends GrowthValueSpecifier {
     }
 }
 
-class MunicipalityNameValueSpecifier extends SecondaryValueSpecifier {
+class MunicipalityNameValueParser extends SecondaryValueParser {
     
-    constructor( props: SecondaryValueSpecifierType ) {
+    constructor( props: SecondaryValueParserType ) {
         super( { 
             sourceKey: 'municipality_id',
             key: 'name', 
@@ -76,9 +76,9 @@ class MunicipalityNameValueSpecifier extends SecondaryValueSpecifier {
     }
 }
 
-class MunicipalityAreaValueSpecifier extends PrimaryValueSpecifier {
+class MunicipalityAreaValueParser extends PrimaryValueParser {
 
-    constructor( props: PrimaryValueSpecifierType ) {
+    constructor( props: PrimaryValueParserType ) {
         super( { 
             dataset: 'interruptions', 
             key: 'area', 
@@ -88,9 +88,9 @@ class MunicipalityAreaValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class MunicipalityPopulationValueSpecifier extends PrimaryValueSpecifier {
+class MunicipalityPopulationValueParser extends PrimaryValueParser {
 
-    constructor( props: PrimaryValueSpecifierType ) {
+    constructor( props: PrimaryValueParserType ) {
         super( { 
             dataset: 'interruptions', 
             key: 'population', 
@@ -100,9 +100,9 @@ class MunicipalityPopulationValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class EventsOverAreaValueSpecifier extends PrimaryValueSpecifier {
+class EventsOverAreaValueParser extends PrimaryValueParser {
 
-    constructor( props: PrimaryValueSpecifierType ) {
+    constructor( props: PrimaryValueParserType ) {
         super( { 
             dataset: 'interruptions', 
             key: 'events_over_area', 
@@ -112,9 +112,9 @@ class EventsOverAreaValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class EventsOverPopulationValueSpecifier extends PrimaryValueSpecifier {
+class EventsOverPopulationValueParser extends PrimaryValueParser {
 
-    constructor( props: PrimaryValueSpecifierType ) {
+    constructor( props: PrimaryValueParserType ) {
         super( { 
             dataset: 'interruptions', 
             key: 'events_over_population', 
@@ -124,9 +124,9 @@ class EventsOverPopulationValueSpecifier extends PrimaryValueSpecifier {
     }
 }
 
-class ClusterValueSpecifier extends PrimaryValueSpecifier {
+class ClusterValueParser extends PrimaryValueParser {
 
-    constructor( props: PrimaryValueSpecifierType ) {
+    constructor( props: PrimaryValueParserType ) {
         super( {
             dataset: 'interruptions', 
             key: 'cluster', 
@@ -136,14 +136,14 @@ class ClusterValueSpecifier extends PrimaryValueSpecifier {
 }
 
 export {
-    MunicipalityIdValueSpecifier,
-    EventsValueSpecifier, 
-    EventsDifferenceValueSpecifier,
-    EventsGrowthValueSpecifier,
-    MunicipalityNameValueSpecifier,
-    MunicipalityAreaValueSpecifier,
-    MunicipalityPopulationValueSpecifier,
-    EventsOverAreaValueSpecifier,
-    EventsOverPopulationValueSpecifier,
-    ClusterValueSpecifier,
+    MunicipalityIdValueParser,
+    EventsValueParser, 
+    EventsDifferenceValueParser,
+    EventsGrowthValueParser,
+    MunicipalityNameValueParser,
+    MunicipalityAreaValueParser,
+    MunicipalityPopulationValueParser,
+    EventsOverAreaValueParser,
+    EventsOverPopulationValueParser,
+    ClusterValueParser,
 }

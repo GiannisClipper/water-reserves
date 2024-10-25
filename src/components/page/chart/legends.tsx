@@ -1,5 +1,5 @@
-import { ValueSpecifier } from '@/logic/ValueSpecifier';
-import ValueSpecifierCollection from '@/logic/ValueSpecifier/ValueSpecifierCollection';
+import { ValueParser } from '@/logic/ValueParser';
+import ValueParserCollection from '@/logic/ValueParser/ValueParserCollection';
 import type { ObjectType } from '@/types';
 
 type StandardLegendPropsType = {
