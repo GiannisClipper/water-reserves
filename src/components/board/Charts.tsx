@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell } from 'recharts';
 import { calcTicks } from '@/helpers/ticks';
 import { CardTooltip } from '@/components/page/chart/tooltips';
 
-import { MinimalChartLayoutHandler, EvaluationChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { MinimalChartLayoutHandler, EvaluationChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 
 import type { ObjectType } from "@/types";
 

@@ -1,4 +1,4 @@
-import { ChartLayoutHandler } from ".";
+import { ChartLayoutHandler } from "./_abstract";
 import { SavingsChartLayoutHandlerFactory } from "./savings";
 import { ProductionChartLayoutHandlerFactory } from "./production";
 import { PrecipitationChartLayoutHandlerFactory } from "./precipitation";

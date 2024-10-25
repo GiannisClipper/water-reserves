@@ -1,4 +1,4 @@
-import { ChartLayoutHandler } from "..";
+import { ChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -8,6 +8,9 @@ import { ProductionChangeValueHandler } from "@/logic/ValueHandler/production";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import DataHandler from "@/logic/DataHandler";
+
+import { TemporalXTicksCalculator } from "../_abstract/xTicks";
+import { YTicksCalculator } from "../_abstract/yTicks";
 
 class SavingsProductionMultiChartLayoutHandler extends ChartLayoutHandler {
 
@@ -26,6 +29,8 @@ class SavingsProductionMultiChartLayoutHandler extends ChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
             data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator,
+            YTicksCalculator,
         } );
     }
 }

@@ -1,5 +1,5 @@
 import DataHandler from "@/logic/DataHandler";
-import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "..";
+import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -10,6 +10,9 @@ import {
     ReservoirsValueHandler, ReservoirsSumValueHandler,
     ReservoirsPercentageValueHandler,
 } from "@/logic/ValueHandler/savings";
+
+import { TemporalXTicksCalculator } from "../_abstract/xTicks";
+import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -28,7 +31,9 @@ class SavingsSingleChartLayoutHandler extends SingleChartLayoutHandler {
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yDifferenceValueHandlers: [ new SavingsDifferenceValueHandler() ],        
             yChangeValueHandlers: [ new SavingsChangeValueHandler() ],    
-            data: dataHandler.data,    
+            data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator, 
+            YTicksCalculator,
         } );
     }
 }
@@ -67,6 +72,8 @@ class SavingsStackChartLayoutHandler extends StackChartLayoutHandler {
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
             data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator, 
+            YTicksCalculator,
         } );
     }
 }

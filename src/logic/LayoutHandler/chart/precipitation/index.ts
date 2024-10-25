@@ -1,5 +1,5 @@
 import DataHandler from "@/logic/DataHandler";
-import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "..";
+import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -10,6 +10,9 @@ import {
     LocationsValueHandler, LocationsSumValueHandler,
     LocationsPercentageValueHandler,
 } from "@/logic/ValueHandler/precipitation";
+
+import { TemporalXTicksCalculator } from "../_abstract/xTicks";
+import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -31,6 +34,8 @@ class PrecipitationSingleChartLayoutHandler extends SingleChartLayoutHandler {
             yDifferenceValueHandlers: [ new PrecipitationDifferenceValueHandler() ],
             yChangeValueHandlers: [ new PrecipitationChangeValueHandler() ],
             data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator,
+            YTicksCalculator
         } );
     }
 }
@@ -70,6 +75,8 @@ class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
             data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator,
+            YTicksCalculator
         } );
     }
 }

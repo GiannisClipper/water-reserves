@@ -1,8 +1,8 @@
 import DataHandler from "@/logic/DataHandler";
-import { ChartLayoutHandler, SingleChartLayoutHandler } from "..";
+import { ChartLayoutHandler, SingleChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
-import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
+import { ValueHandler, timeRepr } from "@/logic/ValueHandler";
 
 import { 
     TimeValueHandler, 
@@ -16,7 +16,9 @@ import {
 } from "@/logic/ValueHandler/interruptions";
 
 import type { SearchParamsType } from "@/types/searchParams";
-import { ObjectType } from "@/types";
+
+import { XTicksCalculator, TemporalXTicksCalculator } from "../_abstract/xTicks";
+import { YTicksCalculator } from "../_abstract/yTicks";
 
 class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
@@ -36,6 +38,8 @@ class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHan
             yDifferenceValueHandlers: [ new EventsDifferenceValueHandler() ],
             yChangeValueHandlers: [ new EventsChangeValueHandler() ],
             data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator,
+            YTicksCalculator,
         } );
     }
 }
@@ -76,6 +80,8 @@ class SpatialInterruptionsSingleChartLayoutHandler extends ChartLayoutHandler {
             xValueHandler: new MunicipalityIdValueHandler(),
             yValueHandlers: [ new yValueHandlerClass() ],
             data: dataHandler.data,
+            XTicksCalculator,
+            YTicksCalculator
         } );
 
         this.nameValueHandler = new MunicipalityNameValueHandler();

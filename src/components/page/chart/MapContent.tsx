@@ -12,7 +12,7 @@ import type { ObjectType } from '@/types';
 
 import geojson from '@/geography/dhmoi_okxe_attica.json';
 
-import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 
 import { SingleSpatialDataHandler } from '@/logic/DataHandler/SingleDataHandler';
 

@@ -1,5 +1,5 @@
 import { EvaluationType, ObjectType, UnitType } from "@/types";
-import { ValueHandler } from "../../ValueHandler";
+import { ValueHandler } from "../../../ValueHandler";
 import { LineType } from "@/types";
 
 interface MinimalChartLayoutHandlerType {
@@ -29,8 +29,10 @@ interface ChartLayoutHandlerType extends MinimalChartLayoutHandlerType {
     title?: string
     xLabel?: string
     yLabel?: string
-    lineType?: LineType
     data: ObjectType[]
+    XTicksCalculator: any
+    YTicksCalculator: any
+    lineType?: LineType
 }
 
 class ChartLayoutHandler extends MinimalChartLayoutHandler {
@@ -42,13 +44,16 @@ class ChartLayoutHandler extends MinimalChartLayoutHandler {
     data: ObjectType[] = [];
     xTicks: string[];
     yTicks: number[]; 
-    yValues: number[];
+    // yValues: number[];
 
     _lineType: LineType | undefined;
 
-    constructor( { 
+    constructor( {
         xValueHandler, yValueHandlers, 
-        title, xLabel, yLabel, data, lineType
+        title, xLabel, yLabel, data, 
+        lineType,
+        XTicksCalculator,
+        YTicksCalculator,
     }: ChartLayoutHandlerType ) {
 
         super( { xValueHandler, yValueHandlers } );
@@ -58,15 +63,16 @@ class ChartLayoutHandler extends MinimalChartLayoutHandler {
         this.data = data;
         this._lineType = lineType;
 
-        this.yValues = [];
+        const xValues = this.data.map( ( row: ObjectType ) => row[ this.xValueHandler.key ] );
+        this.xTicks = new XTicksCalculator( xValues ).xTicks;
+
+        const yValues: number[] = [];
         for ( const row of data ) {
             for ( const handler of this.yValueHandlers ) {
-                this.yValues.push( handler.readFrom( row ) );
-
+                yValues.push( handler.readFrom( row ) );
             }
         }
-        this.xTicks = this.calculateXTicks();
-        this.yTicks = this.calculateYTicks();
+        this.yTicks = new YTicksCalculator( yValues ).yTicks;
     }
 
     get minYTick(): number {
@@ -97,75 +103,75 @@ class ChartLayoutHandler extends MinimalChartLayoutHandler {
             data: this.data,
             xTicks: this.xTicks,
             yTicks: this.yTicks,
-            yValues: this.yValues,
+            // yValues: this.yValues,
         
         }
     }
 
-    protected calculateXTicks = (): string[] => {
+    // protected calculateXTicks = (): string[] => {
 
-        let values = this.data.map( ( row: ObjectType ) => row[ this.xValueHandler.key ] );
+    //     let values = this.data.map( ( row: ObjectType ) => row[ this.xValueHandler.key ] );
     
-        if ( values.length === 0 ) {
-            return values;
-        }
+    //     if ( values.length === 0 ) {
+    //         return values;
+    //     }
     
-        switch ( values[ 0 ].length ) {
+    //     switch ( values[ 0 ].length ) {
     
-            case 10:
-                // reduce days to months
-                if ( values.length > 62 ) {
-                    values = values.filter( ( v: string ) => v.substring( 8, 10 ) === '01' );
+    //         case 10:
+    //             // reduce days to months
+    //             if ( values.length > 62 ) {
+    //                 values = values.filter( ( v: string ) => v.substring( 8, 10 ) === '01' );
     
-                    // reduce furthermore to years
-                    if ( values.length > 24 ) {
-                            values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
-                    }
-                }
+    //                 // reduce furthermore to years
+    //                 if ( values.length > 24 ) {
+    //                         values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
+    //                 }
+    //             }
     
-            case 7:
-                // reduce months to years
-                if ( values.length > 24 ) {
-                    values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
-                }
-        }
-        return values;
-    }
+    //         case 7:
+    //             // reduce months to years
+    //             if ( values.length > 24 ) {
+    //                 values = values.filter( ( v: string ) => v.substring( 5, 7 ) === '01' );
+    //             }
+    //     }
+    //     return values;
+    // }
 
-    protected calculateYTicks = (): number[] => {
+    // protected calculateYTicks = (): number[] => {
 
-        const minYValue: number = Math.min( ...this.yValues ) * 0.90;
-        const maxYValue: number = Math.max( ...this.yValues ) * 1.05;
-        const difference: number = ( maxYValue - minYValue );
-        // console.log( 'minYValue, maxYValue, difference', minYValue, maxYValue, difference )
-        // for example: 0 1278834027 1278834027
+    //     const minYValue: number = Math.min( ...this.yValues ) * 0.90;
+    //     const maxYValue: number = Math.max( ...this.yValues ) * 1.05;
+    //     const difference: number = ( maxYValue - minYValue );
+    //     // console.log( 'minYValue, maxYValue, difference', minYValue, maxYValue, difference )
+    //     // for example: 0 1278834027 1278834027
     
-        let log: number = Math.log10( difference );
-        const logDecimals: number = log - Math.trunc( log );
-        // console.log( 'log, logDecimals', log, logDecimals ) 
-        // for example: 9.10681418338768 0.10681418338768012
+    //     let log: number = Math.log10( difference );
+    //     const logDecimals: number = log - Math.trunc( log );
+    //     // console.log( 'log, logDecimals', log, logDecimals ) 
+    //     // for example: 9.10681418338768 0.10681418338768012
     
-        log = Math.trunc( log ) - ( logDecimals * 100000 < 69897 ? 1 : 0 );
-        // log = log >= 1 ? log : 1;
-        // console.log( 'log', log ) 
-        // for example: 8
+    //     log = Math.trunc( log ) - ( logDecimals * 100000 < 69897 ? 1 : 0 );
+    //     // log = log >= 1 ? log : 1;
+    //     // console.log( 'log', log ) 
+    //     // for example: 8
     
-        let baseUnit: number = Math.pow( 10, log );
-        let times = Math.ceil( Math.ceil( difference / baseUnit ) / 10 );
-        times = Math.ceil( times / 2.5 ) * 2.5 // possible values: 2.5, 5, 7.5, 10
-        // console.log( 'baseUnit, times', baseUnit, times ) 
-        // for example: 100000000 2.5
+    //     let baseUnit: number = Math.pow( 10, log );
+    //     let times = Math.ceil( Math.ceil( difference / baseUnit ) / 10 );
+    //     times = Math.ceil( times / 2.5 ) * 2.5 // possible values: 2.5, 5, 7.5, 10
+    //     // console.log( 'baseUnit, times', baseUnit, times ) 
+    //     // for example: 100000000 2.5
     
-        baseUnit *= times;
+    //     baseUnit *= times;
     
-        let value = Math.floor( minYValue / baseUnit ) * baseUnit;
-        const result = [ value ];
-        while ( value <= maxYValue ) {
-            value += baseUnit;
-            result.push( value );
-        }
-        return result;    
-    }
+    //     let value = Math.floor( minYValue / baseUnit ) * baseUnit;
+    //     const result = [ value ];
+    //     while ( value <= maxYValue ) {
+    //         value += baseUnit;
+    //         result.push( value );
+    //     }
+    //     return result;    
+    // }
 }
 
 interface MultiChartLayoutHandlerType extends ChartLayoutHandlerType {
@@ -181,10 +187,15 @@ class MultiChartLayoutHandler extends ChartLayoutHandler {
     constructor( { 
         xValueHandler, yValueHandlers, 
         title, xLabel, yLabel, data,
-        yDifferenceValueHandlers, yChangeValueHandlers
+        XTicksCalculator, YTicksCalculator,
+        yDifferenceValueHandlers, yChangeValueHandlers,
     }: MultiChartLayoutHandlerType ) {
 
-        super( { xValueHandler, yValueHandlers, title, xLabel, yLabel, data } );
+        super( {
+            xValueHandler, yValueHandlers, 
+            title, xLabel, yLabel, data,
+            XTicksCalculator, YTicksCalculator,
+        } )
         this.yDifferenceValueHandlers = yDifferenceValueHandlers;
         this.yChangeValueHandlers = yChangeValueHandlers;
     }
@@ -213,10 +224,15 @@ class StackChartLayoutHandler extends ChartLayoutHandler {
     constructor( { 
         xValueHandler, yValueHandlers, 
         title, xLabel, yLabel, data,
-        yPercentageValueHandlers
+        XTicksCalculator, YTicksCalculator,
+        yPercentageValueHandlers,
     }: StackChartLayoutHandlerType ) {
 
-        super( { xValueHandler, yValueHandlers, title, xLabel, yLabel, data } );
+        super( { 
+            xValueHandler, yValueHandlers, 
+            title, xLabel, yLabel, data, 
+            XTicksCalculator, YTicksCalculator,
+        } );
         this.yPercentageValueHandlers = yPercentageValueHandlers;
     }
 

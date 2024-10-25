@@ -12,7 +12,7 @@ import { SingleTooltip, SpatialInterruptionsTooltip } from '@/components/page/ch
 import { StandardLegend } from '@/components/page/chart/legends';
 
 import { SingleDataHandler } from '@/logic/DataHandler/SingleDataHandler';
-import { SingleChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { SingleChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 
 import "@/styles/chart.css";
 

@@ -1,5 +1,5 @@
 import DataHandler from "@/logic/DataHandler";
-import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "..";
+import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -10,6 +10,9 @@ import {
     FactoriesValueHandler, FactoriesSumValueHandler,
     FactoriesPercentageValueHandler,
 } from "@/logic/ValueHandler/production";
+
+import { TemporalXTicksCalculator } from "../_abstract/xTicks";
+import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -31,6 +34,8 @@ class ProductionSingleChartLayoutHandler extends SingleChartLayoutHandler {
             yDifferenceValueHandlers: [ new ProductionDifferenceValueHandler() ],
             yChangeValueHandlers: [ new ProductionChangeValueHandler() ],
             data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator,
+            YTicksCalculator
         } );
     }
 }
@@ -69,6 +74,8 @@ class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
             data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator,
+            YTicksCalculator
         } );
     }
 }

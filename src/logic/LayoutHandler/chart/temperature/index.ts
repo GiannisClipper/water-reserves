@@ -1,5 +1,5 @@
 import DataHandler from "@/logic/DataHandler";
-import { ChartLayoutHandler } from "..";
+import { ChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { timeRepr } from "@/logic/ValueHandler";
@@ -8,6 +8,9 @@ import {
     TimeValueHandler, 
     TemperatureMinValueHandler, TemperatureMeanValueHandler, TemperatureMaxValueHandler 
 } from "@/logic/ValueHandler/temperature";
+
+import { TemporalXTicksCalculator } from "../_abstract/xTicks";
+import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -29,6 +32,8 @@ class TemperatureMultiChartLayoutHandler extends ChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Celcius degrees',
             data: dataHandler.data,
+            XTicksCalculator: TemporalXTicksCalculator,
+            YTicksCalculator,
         } );
     }
 }

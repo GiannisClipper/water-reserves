@@ -4,7 +4,7 @@ import {
     MaxTemperatureValueHandler, MeanTemperatureValueHandler, MinTemperatureValueHandler, 
 } from "../ValueHandler/status";
 
-import { EvaluationChartLayoutHandler, MinimalChartLayoutHandler } from "./chart";
+import { EvaluationChartLayoutHandler, MinimalChartLayoutHandler } from "./chart/_abstract";
 
 import {
     ROSE, PINK, FUCHSIA, PURPLE, VIOLET,

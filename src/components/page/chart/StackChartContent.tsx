@@ -11,7 +11,7 @@ import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { StackTooltip } from '@/components/page/chart/tooltips';
 import { StandardLegend } from "@/components/page/chart/legends";
 
-import { StackChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { StackChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 import { ValueHandler } from '@/logic/ValueHandler';
 
 import "@/styles/chart.css";

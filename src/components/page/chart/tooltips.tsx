@@ -8,7 +8,7 @@ import {
     MultiChartLayoutHandler, 
     ChartLayoutHandler,
     StackChartLayoutHandler
-} from "@/logic/LayoutHandler/chart";
+} from "@/logic/LayoutHandler/chart/_abstract";
 import { SpatialInterruptionsSingleChartLayoutHandler } from "@/logic/LayoutHandler/chart/InterruptionsChartLayoutHandler";
 
 import { NestedValueSpecifier, ValueSpecifier } from '@/logic/ValueSpecifier';

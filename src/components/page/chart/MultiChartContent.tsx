@@ -10,7 +10,7 @@ import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { MultiTooltip } from '@/components/page/chart/tooltips';
 import { StandardLegend } from "@/components/page/chart/legends";
-import { MultiChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { MultiChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 
 import "@/styles/chart.css";
 
