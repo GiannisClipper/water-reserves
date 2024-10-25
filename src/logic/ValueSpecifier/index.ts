@@ -1,14 +1,9 @@
 import { ObjectType } from "@/types"
 import type { UnitType } from '@/types';
 
-type XYType = 'X' | 'Y' | '';
-
 interface ValueSpecifierType {
     key?: string
     parser?: CallableFunction
-    label?: string
-    unit?: UnitType
-    axeXY?: XYType
 }
 
 interface PrimaryValueSpecifierType extends ValueSpecifierType {
@@ -29,16 +24,10 @@ abstract class ValueSpecifier {
 
     key: string;
     parser: CallableFunction;
-    label: string;
-    unit: UnitType;
-    axeXY: XYType;
 
-    constructor( { key, parser, label, unit, axeXY }: ValueSpecifierType ) {
+    constructor( { key, parser }: ValueSpecifierType ) {
         this.key = key || 'value'
         this.parser = parser || this.defaultParser
-        this.label = label || '';
-        this.unit = unit || '';
-        this.axeXY = axeXY || '';
     }
 
     defaultParser = ( ( data: ObjectType[], legend: ObjectType | undefined ) => {} )
@@ -46,9 +35,6 @@ abstract class ValueSpecifier {
     toJSON(): ObjectType {
         return {
             key: this.key,
-            label: this.label,
-            unit: this.unit,
-            axeXY: this.axeXY,
         }
     }
 }
@@ -226,7 +212,6 @@ class TimeValueSpecifier extends PrimaryValueSpecifier {
     constructor( props: PrimaryValueSpecifierType ) {
         super( { 
             key: 'time', 
-            label: 'Time', 
             ...props 
         } );
     }
@@ -234,7 +219,7 @@ class TimeValueSpecifier extends PrimaryValueSpecifier {
 
 export type { 
     ValueSpecifierType, PrimaryValueSpecifierType, SecondaryValueSpecifierType, 
-    NestedValueSpecifierType, XYType };
+    NestedValueSpecifierType };
 
 export {
     ValueSpecifier, PrimaryValueSpecifier, SecondaryValueSpecifier,

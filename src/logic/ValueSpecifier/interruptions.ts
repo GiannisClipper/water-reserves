@@ -9,7 +9,6 @@ class MunicipalityIdValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             // dataset: 'interruptions', # no dataset to operate as join key
             key: 'municipality_id', 
-            label: 'Municipality', 
             ...props 
         } );
     }
@@ -21,8 +20,6 @@ class EventsValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'interruptions', 
             key: 'events', 
-            label: 'Events', 
-            unit: '', 
             ...props 
         } );
 
@@ -35,8 +32,6 @@ class EventsDifferenceValueSpecifier extends DifferenceValueSpecifier {
         super( { 
             sourceKey: 'events',
             key: 'events_difference', 
-            label: 'Difference', 
-            unit: '', 
             ...props 
         } );
     }
@@ -48,8 +43,6 @@ class EventsGrowthValueSpecifier extends GrowthValueSpecifier {
         super( { 
             sourceKey: 'events',
             key: 'events_percentage', 
-            label: 'Change', 
-            unit: '%', 
             ...props 
         } );
     }
@@ -61,8 +54,6 @@ class MunicipalityNameValueSpecifier extends SecondaryValueSpecifier {
         super( { 
             sourceKey: 'municipality_id',
             key: 'name', 
-            label: 'Municipality', 
-            unit: '', 
             ...props 
         } );
         this.parser = this.defaultParser;
@@ -91,8 +82,6 @@ class MunicipalityAreaValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'interruptions', 
             key: 'area', 
-            label: 'Area (sq. km)', 
-            unit: 'km2', 
             ...props 
         } );
 
@@ -105,8 +94,6 @@ class MunicipalityPopulationValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'interruptions', 
             key: 'population', 
-            label: 'Population (persons)',
-            unit: '', 
             ...props 
         } );
 
@@ -119,8 +106,6 @@ class EventsOverAreaValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'interruptions', 
             key: 'events_over_area', 
-            label: 'Events per sq. km', 
-            unit: '', 
             ...props 
         } );
 
@@ -133,8 +118,6 @@ class EventsOverPopulationValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'interruptions', 
             key: 'events_over_population', 
-            label: 'Events per 1000 residents', 
-            unit: '', 
             ...props 
         } );
 
@@ -147,8 +130,6 @@ class ClusterValueSpecifier extends PrimaryValueSpecifier {
         super( {
             dataset: 'interruptions', 
             key: 'cluster', 
-            label: 'Charge evaluation',
-            unit: '', 
             ...props 
         } );
     }

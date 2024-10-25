@@ -56,9 +56,8 @@ import MultiDataHandler from "./MultiDataHandler";
 import {
     ReservoirsStackDataHandler, FactoriesStackDataHandler, LocationsStackDataHandler
 } from "./StackDataHandler";
-import { Class } from "leaflet";
-import { ObjectType } from "@/types";
-import ParamValues from "../ParamValues";
+
+import type { ObjectType } from "@/types";
 
 type PropsType = {
     endpoint: string
@@ -81,8 +80,8 @@ class DataHandlerFactory {
                 if ( searchParams.reservoir_aggregation ) {
                     this.type = 'single';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new TimeValueSpecifier( { index: 0 } ),
+                        new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new SavingsDifferenceValueSpecifier( {} ),
                         new SavingsGrowthValueSpecifier( {} ),
                     ] );
@@ -90,11 +89,11 @@ class DataHandlerFactory {
                 } else {
                     this.type = 'stack';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new TimeValueSpecifier( { index: 0 } ),
                         new ReservoirIdValueSpecifier( { index: 1 } ),
                         new SavingsValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
-                        new ReservoirsValueSpecifier( { axeXY: 'Y' } ),
-                        new ReservoirsSumValueSpecifier( { axeXY: 'Y' } ),
+                        new ReservoirsValueSpecifier( {} ),
+                        new ReservoirsSumValueSpecifier( {} ),
                         new ReservoirsPercentageValueSpecifier( {} )
                     ] );
                 }
@@ -105,20 +104,20 @@ class DataHandlerFactory {
                 if ( searchParams.factory_aggregation ) {
                     this.type = 'single';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new TimeValueSpecifier( { index: 0 } ),
+                        new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new ProductionDifferenceValueSpecifier( {} ),
                         new ProductionGrowthValueSpecifier( {} ),
                     ] );
                 } else {
                     this.type = 'stack';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new TimeValueSpecifier( { index: 0 } ),
                         new FactoryIdValueSpecifier( { index: 1 } ),
                         new ProductionValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
-                        new FactoriesValueSpecifier( { axeXY: 'Y' } ),
-                        new FactoriesSumValueSpecifier( { axeXY: 'Y' } ),
-                        new FactoriesPercentageValueSpecifier( {} )
+                        new FactoriesValueSpecifier( {} ),
+                        new FactoriesSumValueSpecifier( {} ),
+                        new FactoriesPercentageValueSpecifier( {} ),
                     ] );
                 }
                 break;
@@ -128,20 +127,20 @@ class DataHandlerFactory {
                 if ( searchParams.location_aggregation ) {
                     this.type = 'single';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new TimeValueSpecifier( { index: 0 } ),
+                        new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new PrecipitationDifferenceValueSpecifier( {} ),
                         new PrecipitationGrowthValueSpecifier( {} ),
                     ] );
                 } else {
                     this.type = 'stack';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                        new TimeValueSpecifier( { index: 0 } ),
                         new LocationIdValueSpecifier( { index: 1 } ),
                         new PrecipitationValueSpecifier( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
-                        new LocationsValueSpecifier( { axeXY: 'Y' } ),
-                        new LocationsSumValueSpecifier( { axeXY: 'Y' } ),
-                        new LocationsPercentageValueSpecifier( {} )
+                        new LocationsValueSpecifier( {} ),
+                        new LocationsSumValueSpecifier( {} ),
+                        new LocationsPercentageValueSpecifier( {} ),
                     ] );
                 }
                 break;
@@ -151,19 +150,19 @@ class DataHandlerFactory {
                 if ( searchParams.time_aggregation ) {
                     this.type = 'multi';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new TemperatureMinValueSpecifier( { index: 3, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new TemperatureMeanValueSpecifier( { index: 4, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new TemperatureMaxValueSpecifier( { index: 5, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new TimeValueSpecifier( { index: 0 } ),
+                        new TemperatureMinValueSpecifier( { index: 3, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMeanValueSpecifier( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMaxValueSpecifier( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
                     ] );
     
                 } else {
                     this.type = 'multi';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 1, axeXY: 'X' } ),
-                        new TemperatureMinValueSpecifier( { index: 4, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new TemperatureMeanValueSpecifier( { index: 5, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new TemperatureMaxValueSpecifier( { index: 6, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new TimeValueSpecifier( { index: 1 } ),
+                        new TemperatureMinValueSpecifier( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMeanValueSpecifier( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMaxValueSpecifier( { index: 6, parser: ( v: number ): number => Math.round( v ) } ),
                     ] );
                 }
                 break;
@@ -173,8 +172,8 @@ class DataHandlerFactory {
                 if ( searchParams.municipality_aggregation ) {
                     this.type = 'single';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
-                        new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
+                        new TimeValueSpecifier( { index: 0 } ),
+                        new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
                         new EventsDifferenceValueSpecifier( {} ),
                         new EventsGrowthValueSpecifier( {} ),
                     ] );
@@ -182,28 +181,15 @@ class DataHandlerFactory {
                 else {
                     this.type = 'single,spatial';
                     this._specifierCollection = new ValueSpecifierCollection( [
-                        new MunicipalityIdValueSpecifier( { index: 0 } ),// axeXY: 'X' } ),
-                        new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ), axeXY: 'Y' } ),
-                        new MunicipalityNameValueSpecifier( { axeXY: 'X' } ),
+                        new MunicipalityIdValueSpecifier( { index: 0 } ),
+                        new EventsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new MunicipalityNameValueSpecifier( {} ),
                         new MunicipalityAreaValueSpecifier( { index: 2 } ),
                         new MunicipalityPopulationValueSpecifier( { index: 3 } ),
                         new EventsOverAreaValueSpecifier( { index: 4 } ),
                         new EventsOverPopulationValueSpecifier( { index: 5 } ),
-                        new ClusterValueSpecifier( { index: 6 } )
+                        new ClusterValueSpecifier( { index: 6 } ),
                     ] );
-
-                    // select parameter for Y-axis considering searchParams
-                    const params = new ParamValues( searchParams ).toJSON();
-                    const { valueAggregation } = params;
-                    if ( valueAggregation  === 'sum,over-area' ) {
-                        this._specifierCollection._specifiers[ 1 ].axeXY=''
-                        this._specifierCollection._specifiers[ 5 ].axeXY='Y'
-                        this._specifierCollection._specifiers[ 6 ].axeXY=''
-                    } else if ( valueAggregation  === 'sum,over-population' ) {
-                        this._specifierCollection._specifiers[ 1 ].axeXY=''
-                        this._specifierCollection._specifiers[ 5 ].axeXY=''
-                        this._specifierCollection._specifiers[ 6 ].axeXY='Y'
-                    }
                 }            
                 break;
             }
@@ -211,11 +197,11 @@ class DataHandlerFactory {
             case 'savings-production': {
                 this.type = 'multi';
                 this._specifierCollection = new ValueSpecifierCollection( [
-                    new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                    new TimeValueSpecifier( { index: 0 } ),
                     new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                    new SavingsGrowthValueSpecifier( { axeXY: 'Y', label: 'Reserves' } ),
+                    new SavingsGrowthValueSpecifier( {} ),
                     new ProductionValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
-                    new ProductionGrowthValueSpecifier( { axeXY: 'Y', label: 'Production' } ), 
+                    new ProductionGrowthValueSpecifier( {} ), 
                 ] );
                 break;
             }
@@ -223,11 +209,11 @@ class DataHandlerFactory {
             case 'savings-precipitation': {
                 this.type = 'multi';
                 this._specifierCollection = new ValueSpecifierCollection( [
-                    new TimeValueSpecifier( { index: 0, axeXY: 'X' } ),
+                    new TimeValueSpecifier( { index: 0 } ),
                     new SavingsValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
-                    new SavingsGrowthValueSpecifier( { axeXY: 'Y', label: 'Reserves' } ),
+                    new SavingsGrowthValueSpecifier( {} ),
                     new PrecipitationValueSpecifier( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
-                    new PrecipitationGrowthValueSpecifier( { axeXY: 'Y', label: 'Precipitation' } ), 
+                    new PrecipitationGrowthValueSpecifier( {} ), 
                 ] );
                 break;
             }

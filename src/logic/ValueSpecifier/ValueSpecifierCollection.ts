@@ -39,22 +39,6 @@ class ValueSpecifierCollection {
         ) ) as string[];
     }  
 
-    getByAxeX(): ValueSpecifier[] {
-        return this._specifiers.filter( s => s[ 'axeXY' ] === 'X' );
-    }
-
-    getByAxeY(): ValueSpecifier[] {
-        return this._specifiers.filter( s => s[ 'axeXY' ] === 'Y' );
-    }
-
-    getNestedByAxeY(): NestedValueSpecifier[] {
-        return this.getNestedSpecifiers().filter( s => s[ 'axeXY' ] === 'Y' );
-    }
-
-    getNotNestedByAxeY(): ValueSpecifier[] {
-        return this.getNotNestedSpecifiers().filter( s => s[ 'axeXY' ] === 'Y' );
-    }
-
     getByKey( key: string ): ValueSpecifier {
         return this._specifiers.filter( s => s[ 'key' ] === key )[ 0 ];
     }

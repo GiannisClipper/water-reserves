@@ -10,8 +10,6 @@ class ProductionValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'production', 
             key: 'production', 
-            label: 'Water production', 
-            unit: 'm3', 
             ...props 
         } );
     }
@@ -23,8 +21,6 @@ class ProductionDifferenceValueSpecifier extends DifferenceValueSpecifier {
         super( { 
             sourceKey: 'production', 
             key: 'production_difference', 
-            label: 'Difference', 
-            unit: 'm3', 
             ...props 
         } );
     }
@@ -35,8 +31,6 @@ class ProductionGrowthValueSpecifier extends GrowthValueSpecifier {
         super( { 
             sourceKey: 'production', 
             key: 'production_percentage', 
-            label: 'Change', 
-            unit: '%', 
             ...props 
         } );
     }
@@ -48,7 +42,6 @@ class ProductionRatioValueSpecifier extends RatioValueSpecifier {
         super( { 
             sourceKey: 'production', 
             key: 'production_ratio', 
-            label: 'Ratio (0..1)', 
             ...props 
         } );
     }
@@ -60,7 +53,6 @@ class FactoryIdValueSpecifier extends PrimaryValueSpecifier {
         super( { 
             dataset: 'production',
             key: 'factory_id', 
-            label: 'Plant', 
             ...props 
         } );
     }
@@ -73,7 +65,6 @@ class FactoriesValueSpecifier extends NestedValueSpecifier {
             nestedKey: 'factory_id',
             nestedInnerKey: 'production',
             key: 'factories', 
-            label: 'Plants', 
             ...props 
         } );
     }
@@ -87,8 +78,6 @@ class FactoriesSumValueSpecifier extends NestedSumValueSpecifier {
             // the {2nd} is just to make the structure more clear
             sourceKey: 'factories.{factory_id}.production',
             key: 'sum', 
-            label: 'Plants in total', 
-            unit: 'm3', 
             ...props 
         } );
     }
@@ -102,8 +91,6 @@ class FactoriesPercentageValueSpecifier extends NestedPercentageValueSpecifier {
             // the {2nd} is just to make the structure more clear
             sourceKey: 'factories.{factory_id}.production',
             key: 'percentage', 
-            label: 'Percentage', 
-            unit: '%', 
             ...props 
         } );
     }
