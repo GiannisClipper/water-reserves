@@ -1,5 +1,5 @@
 import DataParser from "@/logic/DataParser";
-import { ChartLayoutHandler } from "../_abstract";
+import { ChartLayoutHandler, StackChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { timeRepr } from "@/logic/ValueHandler";
@@ -14,7 +14,7 @@ import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
-class TemperatureMultiChartLayoutHandler extends ChartLayoutHandler {
+class TemperatureChartLayoutHandler extends ChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
@@ -46,8 +46,8 @@ class TemperatureChartLayoutHandlerFactory {
     
         switch ( dataParser.type ) {
 
-            case 'multi': {
-                this.handler = new TemperatureMultiChartLayoutHandler( searchParams, dataParser );
+            case 'standard': {
+                this.handler = new TemperatureChartLayoutHandler( searchParams, dataParser );
                 break;
             }
 
@@ -59,5 +59,5 @@ class TemperatureChartLayoutHandlerFactory {
 
 export { 
     TemperatureChartLayoutHandlerFactory,
-    TemperatureMultiChartLayoutHandler, 
+    TemperatureChartLayoutHandler, 
 };

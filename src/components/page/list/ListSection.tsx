@@ -1,7 +1,6 @@
 import ListLabel from "@/components/page/list/ListLabel";
 import SingleListContent from "@/components/page/list/SingleListContent";
 import StackListContent from "@/components/page/list/StackListContent";
-import MultiListContent from "@/components/page/list/MultiListContent";
 
 import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 
@@ -23,9 +22,8 @@ const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     // const result: number = Math.floor( Math.random() * 10 );
 
     const listContents: ObjectType = {
-        'single': SingleListContent,
+        'standard': SingleListContent,
         'stack': StackListContent,
-        'multi': MultiListContent,
     };
     const ListContent = listContents[ dataParser.type ];
 

@@ -92,12 +92,12 @@ class ChartLayoutHandler {
     }
 }
 
-interface MultiChartLayoutHandlerType extends ChartLayoutHandlerType {
+interface StandardChartLayoutHandlerType extends ChartLayoutHandlerType {
     yDifferenceValueHandlers: ValueHandler[]
     yChangeValueHandlers: ValueHandler[]
 }
 
-class MultiChartLayoutHandler extends ChartLayoutHandler {
+class StandardChartLayoutHandler extends ChartLayoutHandler {
 
     yDifferenceValueHandlers: ValueHandler[]
     yChangeValueHandlers: ValueHandler[]
@@ -107,7 +107,7 @@ class MultiChartLayoutHandler extends ChartLayoutHandler {
         title, xLabel, yLabel, data,
         XTicksCalculator, YTicksCalculator,
         yDifferenceValueHandlers, yChangeValueHandlers,
-    }: MultiChartLayoutHandlerType ) {
+    }: StandardChartLayoutHandlerType ) {
 
         super( {
             xValueHandler, yValueHandlers, 
@@ -126,10 +126,6 @@ class MultiChartLayoutHandler extends ChartLayoutHandler {
         }
     }
 }
-
-interface SingleChartLayoutHandlerType extends MultiChartLayoutHandlerType {}
-
-class SingleChartLayoutHandler extends MultiChartLayoutHandler {}
 
 interface StackChartLayoutHandlerType extends ChartLayoutHandlerType {
     yPercentageValueHandlers: ValueHandler[]
@@ -187,8 +183,7 @@ class EvaluationChartLayoutHandler {
 
 export { 
     ChartLayoutHandler,
-    MultiChartLayoutHandler,
-    SingleChartLayoutHandler,
+    StandardChartLayoutHandler,
     StackChartLayoutHandler,
     EvaluationChartLayoutHandler 
 };

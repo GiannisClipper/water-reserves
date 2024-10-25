@@ -8,51 +8,25 @@ import { ResponsiveContainer } from 'recharts';
 
 import { TopTitle, XAxisLabel, YAxisLabel } from '@/components/page/chart/labels';
 import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
-import { MultiTooltip } from '@/components/page/chart/tooltips';
+import { MultiStandardTooltip } from '@/components/page/chart/tooltips';
 import { StandardLegend } from "@/components/page/chart/legends";
-import { MultiChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
+import { StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 
 import "@/styles/chart.css";
 
-type PropsType = { 
-    chartType: string | undefined
-    layoutHandler: MultiChartLayoutHandler
+type StandardChartPropsType = { 
+    layoutHandler: StandardChartLayoutHandler
+    CustomXAxisTick?: any
+    CustomYAxisTick?: any
+    CustomTooltip?: any
 }
 
-const ChartContent = ( { chartType, layoutHandler }: PropsType ) => {
-
-    console.log( "rendering: ChartContent..." )// , layoutParser );
-
-    return (
-        <div className="ChartContent">
-
-            { chartType === 'bar'
-            ?
-            <BarChartComposition
-                layoutHandler={ layoutHandler }
-            />
-
-            :
-            chartType === 'area'
-            ?
-            <AreaChartComposition
-                layoutHandler={ layoutHandler }
-            />
-
-            :
-            <LineChartComposition
-                layoutHandler={ layoutHandler }
-            />
-            }
-        </div>
-    );
-}
-
-type ChartCompositionPropsType = { 
-    layoutHandler: MultiChartLayoutHandler
-}
-
-const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
+const StandardLineChart = ( { 
+    layoutHandler,
+    CustomXAxisTick=XAxisTick,
+    CustomYAxisTick=YAxisTick,
+    CustomTooltip=MultiStandardTooltip
+}: StandardChartPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -72,7 +46,7 @@ const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> }
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -80,12 +54,12 @@ const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks }
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
                 <Tooltip 
-                    content={ <MultiTooltip 
+                    content={ <CustomTooltip 
                         layoutHandler={ layoutHandler }
                     /> } 
                 />
@@ -119,7 +93,12 @@ const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
     );
 }
 
-const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
+const StandardAreaChart = ( { 
+    layoutHandler,
+    CustomXAxisTick=XAxisTick,
+    CustomYAxisTick=YAxisTick,
+    CustomTooltip=MultiStandardTooltip,
+}: StandardChartPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -139,7 +118,7 @@ const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks }
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ layoutHandler.data } /> } 
+                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -147,12 +126,12 @@ const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks }
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
                 <Tooltip 
-                    content={ <MultiTooltip 
+                    content={ <CustomTooltip 
                         layoutHandler={ layoutHandler }
                     /> } 
                 />
@@ -187,7 +166,12 @@ const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
     );
 }
 
-const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
+const StandardBarChart = ( { 
+    layoutHandler,
+    CustomXAxisTick=XAxisTick,
+    CustomYAxisTick=YAxisTick,
+    CustomTooltip=MultiStandardTooltip,
+}: StandardChartPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -208,7 +192,7 @@ const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => 
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks }
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ layoutHandler.data } /> } 
+                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -216,14 +200,14 @@ const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => 
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks }
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
                 <Tooltip 
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
-                    content={ <MultiTooltip 
+                    content={ <CustomTooltip 
                         layoutHandler={ layoutHandler }
                     /> } 
                 />
@@ -257,4 +241,8 @@ const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => 
     );
 }
 
-export default ChartContent;
+export {
+    StandardLineChart,
+    StandardAreaChart,
+    StandardBarChart,
+};

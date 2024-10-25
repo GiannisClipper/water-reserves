@@ -2,11 +2,7 @@ import { Unit } from "@/components/Unit";
 
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
-import { 
-    SingleChartLayoutHandler, 
-    MultiChartLayoutHandler, 
-    StackChartLayoutHandler
-} from "@/logic/LayoutHandler/chart/_abstract";
+import { StandardChartLayoutHandler, StackChartLayoutHandler } from "@/logic/LayoutHandler/chart/_abstract";
 import { SpatialInterruptionsSingleChartLayoutHandler } from "@/logic/LayoutHandler/chart/InterruptionsChartLayoutHandler";
 
 import type { ObjectType } from '@/types';
@@ -14,7 +10,7 @@ import type { ObjectType } from '@/types';
 type CardTooltipPropsType = {
     active?: boolean
     payload?: any
-    layoutHandler: ChartLayoutHandler
+    layoutHandler: StandardChartLayoutHandler
 } 
 
 const CardTooltip = ( { active, payload, layoutHandler }: CardTooltipPropsType ) => {
@@ -43,13 +39,13 @@ const CardTooltip = ( { active, payload, layoutHandler }: CardTooltipPropsType )
     return null;
 };
 
-type SingleTooltipPropsType = {
+type SingleStandardTooltipPropsType = {
     active?: boolean
     payload?: any
-    layoutHandler: SingleChartLayoutHandler
+    layoutHandler: StandardChartLayoutHandler
 } 
 
-const SingleTooltip = ( { active, payload, layoutHandler }: SingleTooltipPropsType ) => {
+const SingleStandardTooltip = ( { active, payload, layoutHandler }: SingleStandardTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -77,13 +73,13 @@ const SingleTooltip = ( { active, payload, layoutHandler }: SingleTooltipPropsTy
     return null;
 };
 
-type MultiTooltipPropsType = {
+type MultiStandardTooltipPropsType = {
     active?: boolean
     payload?: any
-    layoutHandler: MultiChartLayoutHandler
+    layoutHandler: StandardChartLayoutHandler
 } 
 
-const MultiTooltip = ( { active, payload, layoutHandler }: MultiTooltipPropsType ) => {
+const MultiStandardTooltip = ( { active, payload, layoutHandler }: MultiStandardTooltipPropsType ) => {
 
     if ( active && payload && payload.length ) {
 
@@ -238,7 +234,9 @@ const SpatialInterruptionsTooltip = ( { active, payload, layoutHandler }: Spatia
 
 
 export { 
-    CardTooltip, SingleTooltip, MultiTooltip, 
+    CardTooltip, 
+    SingleStandardTooltip, 
+    MultiStandardTooltip, 
     StackTooltip,
     SpatialInterruptionsTooltip
 };

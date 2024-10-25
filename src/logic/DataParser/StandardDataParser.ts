@@ -5,9 +5,9 @@ import { PrimaryValueParser, SecondaryValueParser } from '@/logic/ValueParser';
 
 import type { ObjectType } from "@/types";
 
-class MultiDataParser extends DataParser {    
+class StandardDataParser extends DataParser {    
 
-    type: string = 'multi';
+    type: string = 'standard';
 
     constructor( responseResult: any, parserCollection: ValueParserCollection ) {
         super( responseResult, parserCollection );
@@ -68,4 +68,10 @@ class MultiDataParser extends DataParser {
     }
 }
 
-export default MultiDataParser;
+class SpatialStandardDataParser extends StandardDataParser {    
+
+    type: string = 'standard,spatial';
+}
+
+export default StandardDataParser;
+export { StandardDataParser, SpatialStandardDataParser }

@@ -7,22 +7,25 @@ import { useState, useEffect } from "react";
 import dynamic from 'next/dynamic'
 const MapContent = dynamic( () => import( './MapContent' ), { ssr: false } )
 
-import ChartLabel1 from "./ChartLabel";
-import ChartLabel2 from "./ChartLabel2";
-
-import SingleChartContent from "@/components/page/chart/SingleChartContent";
-import StackChartContent from "@/components/page/chart/StackChartContent";
-import MultiChartContent from "@/components/page/chart/MultiChartContent";
 
 import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
-
 import ChartLayoutHandlerFactory from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
+
+import ChartLabel1 from "./ChartLabel";
+import ChartLabel2 from "./ChartLabel2";
+
+import { SavingsChartContent } from "./content/SavingsChartContent";
+import { ProductionChartContent } from "./content/ProductionChartContent";
+import { PrecipitationChartContent } from "./content/PrecipitationChartContent";
+import { TemperatureChartContent } from "./content/TemperatureChartContent";
+import { InterruptionsChartContent } from "./content/InterruptionsChartContent";
+import { SavingsProductionChartContent } from "./content/SavingsProductionChartContent";
+import { SavingsPrecipitationChartContent } from "./content/SavingsPrecipitationChartContent";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
 import type { ObjectType } from "@/types";
-
 
 type PropsType = {
     endpoint: string
@@ -38,22 +41,24 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataParser ).handler;
 
     const chartLabels: ObjectType = {
-        'single': ChartLabel1,
-        'single,spatial': ChartLabel2,
+        'standard': ChartLabel1,
+        'standard,spatial': ChartLabel2,
         'stack': ChartLabel1,
-        'multi': ChartLabel1,
     };
 
     const ChartLabel = chartLabels[ dataParser.type ];
 
     const chartContents: ObjectType = {
-        'single': SingleChartContent,
-        'single,spatial': SingleChartContent,
-        'stack': StackChartContent,
-        'multi': MultiChartContent,
+        'savings': SavingsChartContent,
+        'production': ProductionChartContent,
+        'precipitation': PrecipitationChartContent,
+        'temperature': TemperatureChartContent,
+        'interruptions': InterruptionsChartContent,
+        'savings-production': SavingsProductionChartContent,
+        'savings-precipitation': SavingsPrecipitationChartContent,
     };
 
-    let ChartContent = chartContents[ dataParser.type ];
+    let ChartContent = chartContents[ endpoint ];
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
@@ -70,7 +75,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
-    console.log( "rendering: ChartSection...", result )//, dataParser )//, dataParser.toJSON() )
+    console.log( "rendering: ChartSection..." )//, ChartContent )
 
     return (
         <div className="ChartSection">

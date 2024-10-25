@@ -51,8 +51,8 @@ import {
 } from "@/logic/ValueParser/interruptions";
 
 import DataParser from ".";
-import { SingleDataParser, SingleSpatialDataParser} from "./SingleDataParser";
-import MultiDataParser from "./MultiDataParser";
+import { StandardDataParser, SpatialStandardDataParser} from "./StandardDataParser";
+
 import {
     ReservoirsStackDataParser, FactoriesStackDataParser, LocationsStackDataParser
 } from "./StackDataParser";
@@ -78,7 +78,7 @@ class DataParserFactory {
 
             case 'savings': {
                 if ( searchParams.reservoir_aggregation ) {
-                    this.type = 'single';
+                    this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
@@ -102,7 +102,7 @@ class DataParserFactory {
 
             case 'production': {
                 if ( searchParams.factory_aggregation ) {
-                    this.type = 'single';
+                    this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new ProductionValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
@@ -125,7 +125,7 @@ class DataParserFactory {
 
             case 'precipitation': {
                 if ( searchParams.location_aggregation ) {
-                    this.type = 'single';
+                    this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new PrecipitationValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
@@ -148,7 +148,7 @@ class DataParserFactory {
 
             case 'temperature': {
                 if ( searchParams.time_aggregation ) {
-                    this.type = 'multi';
+                    this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new TemperatureMinValueParser( { index: 3, parser: ( v: number ): number => Math.round( v ) } ),
@@ -157,7 +157,7 @@ class DataParserFactory {
                     ] );
     
                 } else {
-                    this.type = 'multi';
+                    this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 1 } ),
                         new TemperatureMinValueParser( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
@@ -170,7 +170,7 @@ class DataParserFactory {
 
             case 'interruptions': {
                 if ( searchParams.municipality_aggregation ) {
-                    this.type = 'single';
+                    this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new EventsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
@@ -179,7 +179,7 @@ class DataParserFactory {
                     ] );
                 }
                 else {
-                    this.type = 'single,spatial';
+                    this.type = 'standard,spatial';
                     this._parserCollection = new ValueParserCollection( [
                         new MunicipalityIdValueParser( { index: 0 } ),
                         new EventsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
@@ -195,7 +195,7 @@ class DataParserFactory {
             }
 
             case 'savings-production': {
-                this.type = 'multi';
+                this.type = 'standard';
                 this._parserCollection = new ValueParserCollection( [
                     new TimeValueParser( { index: 0 } ),
                     new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
@@ -207,7 +207,7 @@ class DataParserFactory {
             }
 
             case 'savings-precipitation': {
-                this.type = 'multi';
+                this.type = 'standard';
                 this._parserCollection = new ValueParserCollection( [
                     new TimeValueParser( { index: 0 } ),
                     new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
@@ -224,13 +224,13 @@ class DataParserFactory {
     
         switch ( this.type ) {
     
-            case 'single': {
-                this._dataParser = new SingleDataParser( result, this._parserCollection );
+            case 'standard': {
+                this._dataParser = new StandardDataParser( result, this._parserCollection );
                 break;
             }
 
-            case 'single,spatial': {
-                this._dataParser = new SingleSpatialDataParser( result, this._parserCollection );
+            case 'standard,spatial': {
+                this._dataParser = new SpatialStandardDataParser( result, this._parserCollection );
                 break;
             }
 
@@ -241,11 +241,6 @@ class DataParserFactory {
                     'precipitation': LocationsStackDataParser,
                 }
                 this._dataParser = new DataParserClass[ endpoint ]( result, this._parserCollection );
-                break;
-            }
-
-            case 'multi': {
-                this._dataParser = new MultiDataParser( result, this._parserCollection );
                 break;
             }
 

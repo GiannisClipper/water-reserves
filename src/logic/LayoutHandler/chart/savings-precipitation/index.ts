@@ -43,7 +43,7 @@ class SavingsPrecipitationChartLayoutHandlerFactory {
     
         switch ( dataParser.type ) {
 
-            case 'multi': {
+            case 'standard': {
                 this.handler = new SavingsPrecipitationMultiChartLayoutHandler( searchParams, dataParser );
                 break;
             }

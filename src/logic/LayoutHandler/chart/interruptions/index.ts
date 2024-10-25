@@ -1,5 +1,5 @@
 import DataParser from "@/logic/DataParser";
-import { ChartLayoutHandler, SingleChartLayoutHandler } from "../_abstract";
+import { ChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr } from "@/logic/ValueHandler";
@@ -20,7 +20,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 import { XTicksCalculator, TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
-class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHandler {
+class TemporalInterruptionsStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
@@ -44,7 +44,7 @@ class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHan
     }
 }
 
-class SpatialInterruptionsSingleChartLayoutHandler extends ChartLayoutHandler {
+class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler {
 
     nameValueHandler: ValueHandler
     areaValueHandler: ValueHandler;
@@ -103,16 +103,16 @@ class InterruptionsChartLayoutHandlerFactory {
         const { timeAggregation } = params;
 
         if ( timeAggregation !== 'alltime' ) {
-            this.handler = new TemporalInterruptionsSingleChartLayoutHandler( searchParams, dataParser );
+            this.handler = new TemporalInterruptionsStandardChartLayoutHandler( searchParams, dataParser );
 
         } else {
-            this.handler = new SpatialInterruptionsSingleChartLayoutHandler( searchParams, dataParser );
+            this.handler = new SpatialInterruptionsStandardChartLayoutHandler( searchParams, dataParser );
         }
     }
 }
 
 export { 
     InterruptionsChartLayoutHandlerFactory,
-    TemporalInterruptionsSingleChartLayoutHandler,
-    SpatialInterruptionsSingleChartLayoutHandler, 
+    TemporalInterruptionsStandardChartLayoutHandler,
+    SpatialInterruptionsStandardChartLayoutHandler, 
 };

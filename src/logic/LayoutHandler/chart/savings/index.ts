@@ -1,5 +1,5 @@
 import DataParser from "@/logic/DataParser";
-import { ChartLayoutHandler, SingleChartLayoutHandler, StackChartLayoutHandler } from "../_abstract";
+import { ChartLayoutHandler, StackChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
@@ -16,7 +16,7 @@ import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
-class SavingsSingleChartLayoutHandler extends SingleChartLayoutHandler {
+class SavingsStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
@@ -86,8 +86,8 @@ class SavingsChartLayoutHandlerFactory {
     
         switch ( dataParser.type ) {
 
-            case 'single': {
-                this.handler = new SavingsSingleChartLayoutHandler( searchParams, dataParser );
+            case 'standard': {
+                this.handler = new SavingsStandardChartLayoutHandler( searchParams, dataParser );
                 break;
             }
 
@@ -104,6 +104,6 @@ class SavingsChartLayoutHandlerFactory {
 
 export { 
     SavingsChartLayoutHandlerFactory,
-    SavingsSingleChartLayoutHandler, 
+    SavingsStandardChartLayoutHandler, 
     SavingsStackChartLayoutHandler
 };

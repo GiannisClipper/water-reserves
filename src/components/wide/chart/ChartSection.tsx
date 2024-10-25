@@ -5,12 +5,16 @@
 import dynamic from 'next/dynamic'
 const MapContent = dynamic( () => import( '@/components/page/chart/MapContent' ), { ssr: false } )
 
-import SingleChartContent from "@/components/page/chart/SingleChartContent";
-import StackChartContent from "@/components/page/chart/StackChartContent";
-import MultiChartContent from "@/components/page/chart/MultiChartContent";
-import DataParserFactory from "@/logic/DataParser/DataParserFactory";
-
+import DataParserFactory from '@/logic/DataParser/DataParserFactory';
 import ChartLayoutHandlerFactory from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
+
+import { SavingsChartContent } from "@/components/page/chart/content/SavingsChartContent";
+import { ProductionChartContent } from "@/components/page/chart/content/ProductionChartContent";
+import { PrecipitationChartContent } from "@/components/page/chart/content/PrecipitationChartContent";
+import { TemperatureChartContent } from "@/components/page/chart/content/TemperatureChartContent";
+import { InterruptionsChartContent } from "@/components/page/chart/content/InterruptionsChartContent";
+import { SavingsProductionChartContent } from "@/components/page/chart/content/SavingsProductionChartContent";
+import { SavingsPrecipitationChartContent } from '@/components/page/chart/content/SavingsPrecipitationChartContent';
 
 import type { ObjectType } from "@/types";
 import type { SearchParamsType } from "@/types/searchParams";
@@ -30,13 +34,16 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataParser ).handler;
 
     const chartContents: ObjectType = {
-        'single': SingleChartContent,
-        'single,spatial': SingleChartContent,
-        'stack': StackChartContent,
-        'multi': MultiChartContent,
+        'savings': SavingsChartContent,
+        'production': ProductionChartContent,
+        'precipitation': PrecipitationChartContent,
+        'temperature': TemperatureChartContent,
+        'interruptions': InterruptionsChartContent,
+        'savings-production': SavingsProductionChartContent,
+        'savings-precipitation': SavingsPrecipitationChartContent,
     };
 
-    let ChartContent = chartContents[ dataParser.type ];
+    let ChartContent = chartContents[ endpoint ];
 
     const chartType: string = searchParams.chart_type || '';
 

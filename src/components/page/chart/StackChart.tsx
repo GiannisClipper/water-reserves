@@ -14,49 +14,23 @@ import { StandardLegend } from "@/components/page/chart/legends";
 import { StackChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 import { ValueHandler } from '@/logic/ValueHandler';
 
-import "@/styles/chart.css";
 import { ObjectType } from '@/types';
 
-type PropsType = { 
-    chartType: string | undefined
+import "@/styles/chart.css";
+
+type StackChartPropsType = { 
     layoutHandler: StackChartLayoutHandler
+    CustomXAxisTick?: any
+    CustomYAxisTick?: any
+    CustomTooltip?: any
 }
 
-const ChartContent = ( { chartType, layoutHandler }: PropsType ) => {
-
-    console.log( "rendering: ChartContent..." ) 
-
-    return (
-        <div className="ChartContent">
-
-            { chartType === 'bar'
-            ?
-            <BarChartComposition
-                layoutHandler={ layoutHandler }
-            />
-
-            :
-            chartType === 'area'
-            ?
-            <AreaChartComposition
-                layoutHandler={ layoutHandler }
-            />
-
-            :
-            <LineChartComposition
-                layoutHandler={ layoutHandler }
-            />
-            }
-                
-        </div>
-    );
-}
-
-type ChartCompositionPropsType = { 
-    layoutHandler: StackChartLayoutHandler
-}
-
-const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
+const StackLineChart = ( { 
+    layoutHandler,
+    CustomXAxisTick=XAxisTick,
+    CustomYAxisTick=YAxisTick,
+    CustomTooltip=StackTooltip,
+}: StackChartPropsType ) => {
 
     // lineDashes looks like: [ "1 1", "2 2", "3 3", "4 4" ]
     const lineDashes: string[] = []; 
@@ -86,7 +60,7 @@ const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ layoutHandler.data } /> } 
+                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -94,13 +68,13 @@ const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
                 <Tooltip 
                     content={ 
-                        <StackTooltip 
+                        <CustomTooltip 
                             layoutHandler={ layoutHandler }
                             sortFunc={ ( result: ObjectType[] ) => result.sort( ( a, b ) => b.value - a.value ) }
                         /> 
@@ -146,7 +120,12 @@ const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
     );
 }
 
-const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
+const StackAreaChart = ( { 
+    layoutHandler,
+    CustomXAxisTick=XAxisTick,
+    CustomYAxisTick=YAxisTick,
+    CustomTooltip=StackTooltip,
+}: StackChartPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -167,7 +146,7 @@ const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ layoutHandler.data } /> } 
+                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -175,13 +154,13 @@ const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
                 <Tooltip 
                     content={ 
-                        <StackTooltip 
+                        <CustomTooltip 
                             layoutHandler={ layoutHandler }
                             sortFunc={ ( result: ObjectType[] ) => result.reverse() }
                         /> 
@@ -216,7 +195,12 @@ const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) =>
     );
 }
 
-const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
+const StackBarChart = ( { 
+    layoutHandler,
+    CustomXAxisTick=XAxisTick,
+    CustomYAxisTick=YAxisTick,
+    CustomTooltip=StackTooltip,
+}: StackChartPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
@@ -237,7 +221,7 @@ const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => 
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ layoutHandler.data } /> } 
+                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -245,7 +229,7 @@ const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => 
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
@@ -253,7 +237,7 @@ const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => 
                     // cursor={{ fill: '#0369a1' }}
                     cursor={{ fill: '#eee' }}
                     content={ 
-                        <StackTooltip 
+                        <CustomTooltip 
                             layoutHandler={ layoutHandler }
                             sortFunc={ ( result: ObjectType[] ) => result.reverse() }
                         /> 
@@ -287,4 +271,8 @@ const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => 
     );
 }
 
-export default ChartContent;
+export {
+    StackLineChart,
+    StackAreaChart,
+    StackBarChart,
+};
