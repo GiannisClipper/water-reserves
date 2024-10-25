@@ -2,6 +2,8 @@ type ObjectType = {
     [ key: string ]: any
 }
 
+type LineType = 'linear' | 'monotone';
+
 type UnitType = 'm3' | 'mm' | '%' | 'oC' | 'km2' | '';
 
 type EvaluationType = { 
@@ -9,5 +11,5 @@ type EvaluationType = {
 }
 
 export type { 
-    ObjectType , UnitType, EvaluationType
+    ObjectType, LineType , UnitType, EvaluationType
 };

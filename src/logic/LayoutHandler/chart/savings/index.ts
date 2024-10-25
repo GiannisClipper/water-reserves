@@ -15,7 +15,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 
 class SavingsSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType ) {
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -27,7 +27,8 @@ class SavingsSingleChartLayoutHandler extends SingleChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yDifferenceValueHandlers: [ new SavingsDifferenceValueHandler() ],        
-            yChangeValueHandlers: [ new SavingsChangeValueHandler() ],        
+            yChangeValueHandlers: [ new SavingsChangeValueHandler() ],    
+            data: dataHandler.data,    
         } );
     }
 }
@@ -64,7 +65,8 @@ class SavingsStackChartLayoutHandler extends StackChartLayoutHandler {
             title: 'Water reserves (per reservoir)',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
-            yPercentageValueHandlers,        
+            yPercentageValueHandlers,
+            data: dataHandler.data,
         } );
     }
 }
@@ -78,7 +80,7 @@ class SavingsChartLayoutHandlerFactory {
         switch ( dataHandler.type ) {
 
             case 'single': {
-                this.handler = new SavingsSingleChartLayoutHandler( searchParams );
+                this.handler = new SavingsSingleChartLayoutHandler( searchParams, dataHandler );
                 break;
             }
 

@@ -16,10 +16,11 @@ import {
 } from "@/logic/ValueHandler/interruptions";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import { ObjectType } from "@/types";
 
 class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType ) {
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -34,6 +35,7 @@ class TemporalInterruptionsSingleChartLayoutHandler extends SingleChartLayoutHan
 
             yDifferenceValueHandlers: [ new EventsDifferenceValueHandler() ],
             yChangeValueHandlers: [ new EventsChangeValueHandler() ],
+            data: dataHandler.data,
         } );
     }
 }
@@ -47,7 +49,7 @@ class SpatialInterruptionsSingleChartLayoutHandler extends ChartLayoutHandler {
     eventsOverAreaValueHandler: ValueHandler;
     eventsOverPopulationValueHandler: ValueHandler;
 
-    constructor( searchParams: SearchParamsType ) {
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -73,6 +75,7 @@ class SpatialInterruptionsSingleChartLayoutHandler extends ChartLayoutHandler {
             yLabel: yLabel,
             xValueHandler: new MunicipalityIdValueHandler(),
             yValueHandlers: [ new yValueHandlerClass() ],
+            data: dataHandler.data,
         } );
 
         this.nameValueHandler = new MunicipalityNameValueHandler();
@@ -94,10 +97,10 @@ class InterruptionsChartLayoutHandlerFactory {
         const { timeAggregation } = params;
 
         if ( timeAggregation !== 'alltime' ) {
-            this.handler = new TemporalInterruptionsSingleChartLayoutHandler( searchParams );
+            this.handler = new TemporalInterruptionsSingleChartLayoutHandler( searchParams, dataHandler );
 
         } else {
-            this.handler = new SpatialInterruptionsSingleChartLayoutHandler( searchParams );
+            this.handler = new SpatialInterruptionsSingleChartLayoutHandler( searchParams, dataHandler );
         }
     }
 }

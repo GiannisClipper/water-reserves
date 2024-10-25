@@ -11,7 +11,7 @@ import DataHandler from "@/logic/DataHandler";
 
 class SavingsProductionMultiChartLayoutHandler extends ChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType ) {
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -25,6 +25,7 @@ class SavingsProductionMultiChartLayoutHandler extends ChartLayoutHandler {
             title: 'Water reserves & drinking water production',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
+            data: dataHandler.data,
         } );
     }
 }
@@ -38,7 +39,7 @@ class SavingsProductionChartLayoutHandlerFactory {
         switch ( dataHandler.type ) {
 
             case 'multi': {
-                this.handler = new SavingsProductionMultiChartLayoutHandler( searchParams );
+                this.handler = new SavingsProductionMultiChartLayoutHandler( searchParams, dataHandler );
                 break;
             }
 

@@ -13,7 +13,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 
 class TemperatureMultiChartLayoutHandler extends ChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType ) {
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -28,6 +28,7 @@ class TemperatureMultiChartLayoutHandler extends ChartLayoutHandler {
             title: 'Temperatures in Athens',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Celcius degrees',
+            data: dataHandler.data,
         } );
     }
 }
@@ -41,7 +42,7 @@ class TemperatureChartLayoutHandlerFactory {
         switch ( dataHandler.type ) {
 
             case 'multi': {
-                this.handler = new TemperatureMultiChartLayoutHandler( searchParams );
+                this.handler = new TemperatureMultiChartLayoutHandler( searchParams, dataHandler );
                 break;
             }
 

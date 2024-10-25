@@ -11,29 +11,18 @@ import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { StackTooltip } from '@/components/page/chart/tooltips';
 import { StandardLegend } from "@/components/page/chart/legends";
 
-import { StackDataHandler } from '@/logic/DataHandler/StackDataHandler';
-import { ChartHandler, ChartHandlerFactory } from "@/logic/ChartHandler";
-
-import { ChartLayoutHandler, StackChartLayoutHandler } from '@/logic/LayoutHandler/chart';
+import { StackChartLayoutHandler } from '@/logic/LayoutHandler/chart';
 import { ValueHandler } from '@/logic/ValueHandler';
 
 import "@/styles/chart.css";
 import { ObjectType } from '@/types';
 
 type PropsType = { 
-    dataHandler: StackDataHandler
     chartType: string | undefined
-    layoutHandler: ChartLayoutHandler
+    layoutHandler: StackChartLayoutHandler
 }
 
-const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) => {
-
-    const chartHandler: ChartHandler = new ChartHandlerFactory( {
-        type: 'stack', 
-        data : dataHandler.data, 
-        legend: dataHandler.legend || {}, 
-        specifierCollection: dataHandler.specifierCollection
-    } ).chartHandler;
+const ChartContent = ( { chartType, layoutHandler }: PropsType ) => {
 
     console.log( "rendering: ChartContent..." ) 
 
@@ -43,7 +32,6 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
             { chartType === 'bar'
             ?
             <BarChartComposition
-                chartHandler={ chartHandler }
                 layoutHandler={ layoutHandler }
             />
 
@@ -51,13 +39,11 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
             chartType === 'area'
             ?
             <AreaChartComposition
-                chartHandler={ chartHandler }
                 layoutHandler={ layoutHandler }
             />
 
             :
             <LineChartComposition
-                chartHandler={ chartHandler }
                 layoutHandler={ layoutHandler }
             />
             }
@@ -67,11 +53,10 @@ const ChartContent = ( { dataHandler, chartType, layoutHandler }: PropsType ) =>
 }
 
 type ChartCompositionPropsType = { 
-    chartHandler: ChartHandler
     layoutHandler: StackChartLayoutHandler
 }
 
-const LineChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
+const LineChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
 
     // lineDashes looks like: [ "1 1", "2 2", "3 3", "4 4" ]
     const lineDashes: string[] = []; 
@@ -81,12 +66,12 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
     // continuous line for the total (last element) 
     lineDashes.push( '' );
 
-    console.log( 'Rerender LineChart...', layoutHandler.yValueHandlers, chartHandler.data );
+    console.log( 'Rerender LineChart...', layoutHandler );
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart
-                data={ chartHandler.data }
+                data={ layoutHandler.data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -99,17 +84,17 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
 
                 <XAxis 
                     dataKey={ layoutHandler.xValueHandler.key }
-                    ticks={ chartHandler.xTicks } 
+                    ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.data } /> } 
+                    tick={ <XAxisTick data={ layoutHandler.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ chartHandler.minYTick, chartHandler.maxYTick ] } 
-                    ticks={ chartHandler.yTicks } 
+                    domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
+                    ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ chartHandler.data } /> }
+                    tick={ <YAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
@@ -126,7 +111,7 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                     <Line 
                         key={ i }
                         id={ `${i+1}`}
-                        type={ chartHandler.lineType } 
+                        type={ layoutHandler.lineType } 
                         dataKey={ handler.key }
                         stroke={ handler.color[ 600 ] } 
                         strokeWidth={ 2 } 
@@ -138,7 +123,7 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
 
                 <Line 
                     id="0" 
-                    type={ chartHandler.lineType } 
+                    type={ layoutHandler.lineType } 
                     dataKey={ layoutHandler.yValueHandlers[ layoutHandler.yValueHandlers.length - 1 ].key }
                     stroke={ layoutHandler.yValueHandlers[ layoutHandler.yValueHandlers.length - 1 ].color[ 600 ] } 
                     strokeWidth={ 2 }
@@ -161,15 +146,12 @@ const LineChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
     );
 }
 
-const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
-
-    const key = Object.keys( chartHandler.legend )[ 0 ];
-    const legendItems: [] = chartHandler.legend[ key ];
+const AreaChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-                data={ chartHandler.data }
+                data={ layoutHandler.data }
                 // stackOffset="expand"
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
@@ -183,17 +165,17 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
 
                 <XAxis 
                     dataKey={ layoutHandler.xValueHandler.key }
-                    ticks={ chartHandler.xTicks } 
+                    ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.data } /> } 
+                    tick={ <XAxisTick data={ layoutHandler.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ chartHandler.minYTick, chartHandler.maxYTick ] } 
-                    ticks={ chartHandler.yTicks } 
+                    domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
+                    ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ chartHandler.data } /> }
+                    tick={ <YAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
@@ -210,7 +192,7 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
                     // slice( 0, -1 ) to exclude the total
                     <Area 
                         key={ i } 
-                        type={ chartHandler.lineType } 
+                        type={ layoutHandler.lineType } 
                         stackId="a"
                         dataKey={ handler.key }
                         stroke={ handler.color[ 600 - 100 * i ] } 
@@ -234,15 +216,12 @@ const AreaChartComposition = ( { chartHandler, layoutHandler }: ChartComposition
     );
 }
 
-const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionPropsType ) => {
-
-    const key = Object.keys( chartHandler.legend )[ 0 ];
-    const legendItems: [] = chartHandler.legend[ key ];
+const BarChartComposition = ( { layoutHandler }: ChartCompositionPropsType ) => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
-                data={ chartHandler.data }
+                data={ layoutHandler.data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -256,17 +235,17 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
 
                 <XAxis 
                     dataKey={ layoutHandler.xValueHandler.key }
-                    ticks={ chartHandler.xTicks } 
+                    ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <XAxisTick data={ chartHandler.data } /> } 
+                    tick={ <XAxisTick data={ layoutHandler.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
                 <YAxis 
-                    domain={ [ chartHandler.minYTick, chartHandler.maxYTick ] } 
-                    ticks={ chartHandler.yTicks } 
+                    domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
+                    ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <YAxisTick data={ chartHandler.data } /> }
+                    tick={ <YAxisTick data={ layoutHandler.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
@@ -285,7 +264,7 @@ const BarChartComposition = ( { chartHandler, layoutHandler }: ChartCompositionP
                 // slice( 0, -1 ) to exclude the total
                     <Bar 
                         key={ i } 
-                        type={ chartHandler.lineType } 
+                        type={ layoutHandler.lineType } 
                         stackId="a"
                         dataKey={ handler.key }
                         fill={ handler.color[ 600 - 100 * i ] } 

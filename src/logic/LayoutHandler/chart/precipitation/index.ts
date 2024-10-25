@@ -15,7 +15,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 
 class PrecipitationSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType ) {
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -30,6 +30,7 @@ class PrecipitationSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
             yDifferenceValueHandlers: [ new PrecipitationDifferenceValueHandler() ],
             yChangeValueHandlers: [ new PrecipitationChangeValueHandler() ],
+            data: dataHandler.data,
         } );
     }
 }
@@ -67,7 +68,8 @@ class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
             title: 'Precipitation measurements (per location)',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
-            yPercentageValueHandlers,        
+            yPercentageValueHandlers,
+            data: dataHandler.data,
         } );
     }
 }
@@ -81,7 +83,7 @@ class PrecipitationChartLayoutHandlerFactory {
         switch ( dataHandler.type ) {
 
             case 'single': {
-                this.handler = new PrecipitationSingleChartLayoutHandler( searchParams );
+                this.handler = new PrecipitationSingleChartLayoutHandler( searchParams, dataHandler );
                 break;
             }
 

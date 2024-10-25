@@ -15,7 +15,7 @@ import type { SearchParamsType } from "@/types/searchParams";
 
 class ProductionSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType ) {
+    constructor( searchParams: SearchParamsType, dataHandler: DataHandler ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -30,6 +30,7 @@ class ProductionSingleChartLayoutHandler extends SingleChartLayoutHandler {
 
             yDifferenceValueHandlers: [ new ProductionDifferenceValueHandler() ],
             yChangeValueHandlers: [ new ProductionChangeValueHandler() ],
+            data: dataHandler.data,
         } );
     }
 }
@@ -66,7 +67,8 @@ class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
             title: 'Drinking water production (per plant)',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
-            yPercentageValueHandlers,        
+            yPercentageValueHandlers,
+            data: dataHandler.data,
         } );
     }
 }
@@ -80,7 +82,7 @@ class ProductionChartLayoutHandlerFactory {
         switch ( dataHandler.type ) {
 
             case 'single': {
-                this.handler = new ProductionSingleChartLayoutHandler( searchParams );
+                this.handler = new ProductionSingleChartLayoutHandler( searchParams, dataHandler );
                 break;
             }
 
