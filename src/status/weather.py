@@ -8,7 +8,6 @@ from src.queries.locations import LocationsPoolQueryFactory, Location
 @dataclass
 class WeatherStatus( AbstractTableStatus ):
 
-    historic_avg: dict[ str, float ] = field( default_factory=lambda: {} )
     locations: list[ Location ] | None = None
 
     async def update( self ) -> None:
@@ -61,39 +60,5 @@ class WeatherStatus( AbstractTableStatus ):
         analysis = StatusAnalysis( interval=interval )
         partial_data = map( lambda row: [ row[ 0 ], row[ 1 ] ], data )
         analysis.calc_kmeans( partial_data )
-        self.analysis[ 'precipitation' ] = analysis
-
-        # temperature_2m_mean, Athens mean
-
-        weather_handler.maker.select_where(
-            interval_filter=interval,
-            location_filter='1',
-            location_aggregation='sum',
-            time_aggregation=( 'year', 'avg' ),
-            year_start=year_start
-        )
-        await weather_handler.run_query()
-        data = weather_handler.data
-
-        analysis = StatusAnalysis( interval=interval )
-        partial_data = map( lambda row: [ row[ 0 ], row[ 3 ] ], data )
-        analysis.calc_kmeans( partial_data )
-        self.analysis[ 'temperature_mean' ] = analysis
-
-        # Get the historic average temperature, Athens
-
-        interval = ( self.last_date[ 5: ], self.last_date[ 5: ] )
-        weather_handler.maker.select_where(
-            interval_filter=interval,
-            location_filter='1',
-            location_aggregation='sum',
-            time_aggregation=( 'year', 'avg' ),
-        )
-        await weather_handler.run_query()
-
-        # headers = weather_handler.maker.get_headers()
-        data = weather_handler.data
-        self.historic_avg[ 'temperature_min' ] = sum( map( lambda row: row[ 2 ] ,data ) ) / len( data )
-        self.historic_avg[ 'temperature_mean' ] = sum( map( lambda row: row[ 3 ] ,data ) ) / len( data )
-        self.historic_avg[ 'temperature_max' ] = sum( map( lambda row: row[ 4 ] ,data ) ) / len( data )
+        self.analysis[ 'precipitation_sum' ] = analysis
 

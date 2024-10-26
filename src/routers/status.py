@@ -7,6 +7,7 @@ import src.docs as docs
 from src.status.savings import SavingsStatus
 from src.status.production import ProductionStatus
 from src.status.weather import WeatherStatus
+from src.status.temperature import AthensTemperatureStatus
 from src.status.interruptions import InterruptionsStatus
 from src.status.geolocation import GeolocationStatus
 
@@ -14,6 +15,7 @@ class StatusResponse( BaseModel ):
     savings: SavingsStatus
     production: ProductionStatus
     weather: WeatherStatus
+    athens_temperature: AthensTemperatureStatus
     interruptions: InterruptionsStatus
     geolocation: GeolocationStatus
 

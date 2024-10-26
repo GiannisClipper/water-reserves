@@ -41,7 +41,7 @@ async def lifespan( app: FastAPI ):
 
     print( 'Loading status...' )
     settings = get_settings()
-    settings.status = Status( None, None, None, None, None )
+    settings.status = Status( None, None, None, None, None, None )
     await settings.status.update()
 
     print()
