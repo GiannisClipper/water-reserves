@@ -46,7 +46,7 @@
 
   .Card > .Info table th,
   .Card > .Info table td {
-    @apply border-2 border-gray-400 px-2 py-1
+    @apply border border-gray-400 px-2 py-1
   }
 
   .Card > .Info table .numeric {

@@ -11,6 +11,16 @@ import {
     INTERRUPTIONS,
     SAVINGS_PRODUCTION, 
     SAVINGS_PRECIPITATION,
+
+    STATUS_DESCR,
+    SAVINGS_DESCR,
+    PRODUCTION_DESCR,
+    PRECIPITATION_DESCR,
+    TEMPERATURE_DESCR,
+    INTERRUPTIONS_DESCR,
+    SAVINGS_PRODUCTION_DESCR,
+    SAVINGS_PRECIPITATION_DESCR
+
 } from "./settings";
 
 import "@/styles/options.css";
@@ -21,79 +31,90 @@ type ChildrenProps = {
 
 export default function Options() {
     return (
-        <div className="Options"> 
+        <div className="Content"> 
+            <div className="Options"> 
 
-            <Link className="Option" href="/status">
+            <Link className="Option Status" href="/status">
                 <Left className='icon'>
                     <GaugeIcon />
                 </Left>
                 <Right className='text'>
-                    { STATUS }
+                    <p>{ STATUS }</p>
+                    <p>{ STATUS_DESCR }</p>
                 </Right>
             </Link>
 
-            <Link className="Option" href="/savings">
+            <Link className="Option Savings" href="/savings">
                 <Left className='icon'>
                     <WaterIcon />
                 </Left>
                 <Right className='text'>
-                    { SAVINGS }
+                    <p>{ SAVINGS }</p>
+                    <p>{ SAVINGS_DESCR }</p>
                 </Right>
             </Link>
 
-            <Link className="Option" href="/production">
+            <Link className="Option Production" href="/production">
                 <Left className='icon'>
                    <FaucetIcon />
                 </Left>
                 <Right className='text'>
-                    { PRODUCTION }
+                    <p>{ PRODUCTION }</p>
+                    <p>{ PRODUCTION_DESCR }</p>
                 </Right>
             </Link>
 
-            <Link className="Option" href="/precipitation">
+            <Link className="Option Precipitation" href="/precipitation">
                 <Left className='icon'>
                     <RainIcon />
                 </Left>
                 <Right className='text'>
-                    { PRECIPITATION }
+                    <p>{ PRECIPITATION }</p>
+                    <p>{ PRECIPITATION_DESCR }</p>
                 </Right>
             </Link>
 
-            <Link className="Option" href="/temperature">
+            <Link className="Option Temperature" href="/temperature">
                 <Left className='icon'>
                     <TemperatureIcon />
                 </Left>
                 <Right className='text'>
-                    { TEMPERATURE }
+                    <p>{ TEMPERATURE }</p>
+                    <p>{ TEMPERATURE_DESCR }</p>
                 </Right>
             </Link>
 
-            <Link className="Option" href="/interruptions">
+            <Link className="Option Interruptions" href="/interruptions">
                 <Left className='icon'>
                     <ToolIcon />
                 </Left>
                 <Right className='text'>
-                    { INTERRUPTIONS }
+                    <p>{ INTERRUPTIONS }</p>
+                    <p>{ INTERRUPTIONS_DESCR }</p>
                 </Right>
             </Link>
 
-            <Link className="Option" href="/savings-production">
+            <Link className="Option SavingsProduction" href="/savings-production">
+                <Left className='icon'>
+                    <ComposeIcon />
+                </Left>
+                    <Right className='text'>
+                    <p>{ SAVINGS_PRODUCTION }</p>
+                    <p>{ SAVINGS_PRODUCTION_DESCR }</p>
+                </Right>
+            </Link>
+
+            <Link className="Option SavingsPrecipitation" href="/savings-precipitation">
                 <Left className='icon'>
                     <ComposeIcon />
                 </Left>
                 <Right className='text'>
-                    { SAVINGS_PRODUCTION }
+                    <p>{ SAVINGS_PRECIPITATION }</p>
+                    <p>{ SAVINGS_PRECIPITATION_DESCR }</p>
                 </Right>
             </Link>
 
-            <Link className="Option" href="/savings-precipitation">
-                <Left className='icon'>
-                    <ComposeIcon />
-                </Left>
-                <Right className='text'>
-                    { SAVINGS_PRECIPITATION }
-                </Right>
-            </Link>
+            </div>
         </div>
     );
 }

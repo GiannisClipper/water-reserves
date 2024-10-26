@@ -87,7 +87,7 @@ const FieldToInterval = ( props: any ) => {
 const reprItemsAggregation = ( key: string ): string => {
 
     const values: { [key: string]: string } = { 
-        '': 'Separately',
+        '': 'Individualy',
         'sum': 'Aggregated',
     };
 
