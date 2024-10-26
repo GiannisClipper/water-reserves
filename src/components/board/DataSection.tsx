@@ -1,6 +1,6 @@
 import { DataSectionSkeleton } from "./Skeleton";
 import Error from "@/components/page/Error";
-import { Card } from "./Card";
+import { Card, AthensTemperatureCard } from "./Card";
 
 import { ApiRequestFactory } from "@/logic/ApiRequest";
 
@@ -47,7 +47,7 @@ const DataSection = async ( { endpoint }: PropsType ) => {
                 option='precipitation'
                 result={ result }
             />
-            <Card
+            <AthensTemperatureCard
                 option='temperature'
                 result={ result }
             />

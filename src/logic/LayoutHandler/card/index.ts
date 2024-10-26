@@ -107,7 +107,7 @@ class PrecipitationCardLayoutHandler extends CardLayoutHandler {
     }
 }
 
-class TemperatureCardLayoutHandler extends CardLayoutHandler {
+class AthensTemperatureCardLayoutHandler extends CardLayoutHandler {
 
     constructor( dataParser: CardDataParser ) {
         super( { 
@@ -152,12 +152,12 @@ class CardLayoutHandlerFactory {
             }
 
             case 'precipitation': {
-                this.handler = new PrecipitationCardLayoutHandler( dataHandler );
+                this.handler = new PrecipitationCardLayoutHandler( dataParser );
                 break;
             }
 
             case 'temperature': {
-                this.handler = new TemperatureCardLayoutHandler( dataHandler );
+                this.handler = new AthensTemperatureCardLayoutHandler( dataParser );
                 break;
             }
 

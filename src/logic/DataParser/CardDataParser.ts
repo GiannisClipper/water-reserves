@@ -116,7 +116,7 @@ class PrecipitationCardDataParser extends CardDataParser {
         const key: string = 'weather';
         super( result, key );
 
-        this.clusters = result[ key ].analysis.precipitation.kmeans.clusters;
+        this.clusters = result[ key ].analysis.precipitation_sum.kmeans.clusters;
         this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
         const { recent_entries } = result[ key ];
@@ -136,7 +136,7 @@ class PrecipitationCardDataParser extends CardDataParser {
     }
 }
 
-class TemperatureCardDataParser extends CardDataParser {
+class AthensTemperatureCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
@@ -147,9 +147,11 @@ class TemperatureCardDataParser extends CardDataParser {
     temperature_2m_mean: number;
     temperature_2m_max: number;
 
+    historicAvg: ObjectType;
+
     constructor( result: any ) {
 
-        const key: string = 'weather';
+        const key: string = 'athens_temperature';
         super( result, key );
 
         this.clusters = result[ key ].analysis.temperature_mean.kmeans.clusters;
@@ -166,6 +168,12 @@ class TemperatureCardDataParser extends CardDataParser {
             temperature_2m_mean: entry.temperature_2m_mean, 
             temperature_2m_max: entry.temperature_2m_max, 
         } ) );
+
+        this.historicAvg = {
+            min: result[ key ].historic_avg.temperature_2m_min,
+            mean: result[ key ].historic_avg.temperature_2m_mean,
+            max: result[ key ].historic_avg.temperature_2m_max,
+        }
     }
 
     toJSON(): ObjectType {
@@ -174,6 +182,7 @@ class TemperatureCardDataParser extends CardDataParser {
             temperature_2m_min: this.temperature_2m_min,
             temperature_2m_mean: this.temperature_2m_mean,
             temperature_2m_max: this.temperature_2m_max,
+            historicAvg: this.historicAvg,
         }
     }
 }
@@ -199,7 +208,7 @@ class CardDataParserFactory {
                 break;
             }
             case 'temperature': {
-                this.parser = new TemperatureCardDataParser( result );
+                this.parser = new AthensTemperatureCardDataParser( result );
                 break;
             }
             default:
@@ -209,4 +218,4 @@ class CardDataParserFactory {
 }
 
 export default CardDataParserFactory;
-export { CardDataParser };
+export { CardDataParser, AthensTemperatureCardDataParser };
