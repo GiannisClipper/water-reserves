@@ -56,5 +56,5 @@ class SavingsStatus( AbstractTableStatus ):
         self.analysis = {}
         analysis = StatusAnalysis( interval=interval )
         partial_data = map( lambda row: [ row[ 0 ], row[ 1 ] ], data )
-        analysis.calc_kmeans( partial_data )
+        analysis.calc_kmeans( partial_data, 6 )
         self.analysis[ 'quantity' ] = analysis

@@ -61,7 +61,7 @@ class AthensTemperatureStatus( AbstractTableStatus ):
 
         analysis = StatusAnalysis( interval=interval )
         partial_data = map( lambda row: [ row[ 0 ], row[ 3 ] ], data )
-        analysis.calc_kmeans( partial_data )
+        analysis.calc_kmeans( partial_data, 6 )
         self.analysis = {}
         self.analysis[ 'temperature_mean' ] = analysis
 

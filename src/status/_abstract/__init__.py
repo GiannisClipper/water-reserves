@@ -6,6 +6,8 @@ from sklearn.cluster import KMeans
 
 from src.helpers.time import get_past_date, get_past_month_day
 
+from src.helpers.clustering import kmeans_clustering
+
 INTERVAL_DAYS: int = 30
 
 @dataclass
@@ -45,36 +47,13 @@ class StatusAnalysis( ABC ):
     interval: tuple[ str ] | None = None
     kmeans: dict[ str, list[ dict ] ] | None = None
 
-    def calc_kmeans( self, data: list[ list[ str, int | float ] ] ) -> dict[ str, str | list ]:
+    def calc_kmeans( self, data: list[ list[ str, int | float ] ], n_clusters=5 ) -> dict[ str, str | list ]:
     
         data = list( data )
         lst = list( map( lambda x: x[ 1 ], data ) ) # ( year, quantity ) or ( year, precipitation_sum ) or ...
-        arr = np.array( lst )
-        # print( lst, arr )
-
-        kmeans = KMeans( n_clusters=5, max_iter=600, random_state=32 )
-        kmeans.fit( arr.reshape( -1, 1 ) ) # np.array([ 1, 2, 3 ]).reshape( -1, 1 ) => np.array([ [1], [2], [3] ])
-        # print( kmeans.cluster_centers )
-        # print( kmeans.labels_ )
-
-        centers = list( map( lambda x: x[ 0 ], kmeans.cluster_centers_ ) )
-        centers = list( map( lambda x: int( x ), centers ) )
-
-        clusters = kmeans.predict( arr.reshape( -1, 1 ) )
-        clusters = list( map( lambda x: int( x ), clusters ) )
-        # print( centers )
-        # print( clusters )
-
-        # change cluster to center values, sort centers, change back to cluster values
-
-        clusters = list( map( lambda cl: centers[ cl ], clusters ) )
-        centers.sort()
-        clusters = list( map( lambda cl: centers.index( cl ), clusters ) )
-        # print( centers )
-        # print( clusters )
+        centers, clusters = kmeans_clustering( lst, n_clusters )
 
         # format result
 
-        clusters = [ { "year": x[0][0], "quantity": int( x[0][1] ), "cluster": x[1] } for x in list( zip( data, clusters ) ) ]
-        
+        clusters = [ { "year": x[0][0], "quantity": int( x[0][1] ), "cluster": x[1] } for x in list( zip( data, clusters ) ) ]        
         self.kmeans = { "centers": centers, "clusters": clusters }
