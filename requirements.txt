@@ -11,3 +11,4 @@ beautifulsoup4
 numpy
 scikit-learn
 shapely
+matplotlib
