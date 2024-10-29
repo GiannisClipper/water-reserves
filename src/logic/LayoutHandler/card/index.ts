@@ -20,7 +20,9 @@ import { XTicksCalculator } from "@/logic/LayoutHandler/chart/_abstract/xTicks";
 import { MinimalYTicksCalculator } from "@/logic/LayoutHandler/chart/_abstract/yTicks";
 import { CardDataParser } from "@/logic/DataParser/CardDataParser";
 
-const evaluation: EvaluationType = { 0: 'lower', 1: 'low', 2: 'mid', 3:'high', 4: 'higher' };
+const evaluation4: EvaluationType = { 0: 'lower', 1: 'low', 2:'high', 3: 'higher' };
+const evaluation5: EvaluationType = { 0: 'lower', 1: 'low', 2: 'mid', 3:'high', 4: 'higher' };
+const evaluation6: EvaluationType = { 0: 'lower', 1: 'low', 2: 'mid-low', 3: 'mid-high', 4:'high', 5: 'higher' };
 
 interface CardLayoutHandlerType {
     title: string;
@@ -56,7 +58,7 @@ class SavingsCardLayoutHandler extends CardLayoutHandler {
             } ),
 
             pieChartHandler: new EvaluationChartLayoutHandler( {
-                evaluation,
+                evaluation: evaluation6,
                 color: SKY,
             } ),
         } );
@@ -78,7 +80,7 @@ class ProductionCardLayoutHandler extends CardLayoutHandler {
             } ),
 
             pieChartHandler: new EvaluationChartLayoutHandler( {
-                evaluation,
+                evaluation: evaluation4,
                 color: PINK,
             } ),
         } );
@@ -100,7 +102,7 @@ class PrecipitationCardLayoutHandler extends CardLayoutHandler {
             } ),
 
             pieChartHandler: new EvaluationChartLayoutHandler( {
-                evaluation,
+                evaluation: evaluation5,
                 color: TEAL,
             } ),
         } );
@@ -111,7 +113,7 @@ class AthensTemperatureCardLayoutHandler extends CardLayoutHandler {
 
     constructor( dataParser: CardDataParser ) {
         super( { 
-            title: 'Temperatures in Athens',
+            title: 'Temperature in Athens',
 
             lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
@@ -126,7 +128,7 @@ class AthensTemperatureCardLayoutHandler extends CardLayoutHandler {
             } ),
 
             pieChartHandler: new EvaluationChartLayoutHandler( {
-                evaluation,
+                evaluation: evaluation6,
                 color: YELLOW,
             } ),
         } );

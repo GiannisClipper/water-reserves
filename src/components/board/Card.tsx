@@ -24,7 +24,6 @@ const Card = ( { option, result }: PropsType ) => {
     const unit: UnitType = layoutHandler.lineChartHandler.yValueHandlers[ 0 ].unit;
 
     const evaluation: string = layoutHandler.pieChartHandler.evaluation[ dataParser.cluster ];
-    const pieLabel = `Evaluation: ${dataParser.cluster+1} (${evaluation})`;
 
     return (
         <div className="Card">
@@ -44,8 +43,8 @@ const Card = ( { option, result }: PropsType ) => {
             />
 
             <CardPieChart 
+                centers={ dataParser.centers }
                 cluster={ dataParser.cluster } 
-                label={ pieLabel }
                 layoutHandler={ layoutHandler.pieChartHandler }
             />
         </div>
@@ -112,8 +111,8 @@ const AthensTemperatureCard = ( { option, result }: PropsType ) => {
             />
 
             <CardPieChart 
+                centers={ dataParser.centers }
                 cluster={ dataParser.cluster } 
-                label={ pieLabel }
                 layoutHandler={ layoutHandler.pieChartHandler }
             />
         </div>

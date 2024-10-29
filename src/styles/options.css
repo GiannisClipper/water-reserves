@@ -23,10 +23,12 @@
   }
 
   .Options .Option .text {
-    @apply min-h-12 p-4 font-semibold  text-lg
+    @apply min-h-12 p-4 text-sky-700
+    font-semibold text-lg
   }
 
   .Options .Option .text p:nth-child(2) {
-    @apply mt-4 font-normal text-sm
+    @apply mt-4 
+    font-normal text-sm
   }
 }

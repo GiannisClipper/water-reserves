@@ -68,27 +68,53 @@ const CardLineChart = ( { data, label, layoutHandler }: LineChartPropsType ) => 
 }
 
 type PieChartPropsType = { 
+    centers: number[]
     cluster: number
-    label: string
     layoutHandler: EvaluationChartLayoutHandler
 };
 
-const CardPieChart = ( { cluster, label, layoutHandler }: PieChartPropsType ) => {
+const CardPieChart = ( { centers, cluster, layoutHandler }: PieChartPropsType ) => {
 
     const WIDTH: number = 400;
     const HEIGHT: number = 200;
 
     const RADIAN = Math.PI / 180;
 
-    const levels = [
-        { name: 'lower', degrees: 36, color: layoutHandler.color[ 200 ] },
-        { name: 'low', degrees: 36, color: layoutHandler.color[ 300 ] },
-        { name: 'mid', degrees: 36, color: layoutHandler.color[ 400 ] },
-        { name: 'high', degrees: 36, color: layoutHandler.color[ 500 ] },
-        { name: 'higher', degrees: 36, color: layoutHandler.color[ 600 ] },
-    ];
+    type colorsType = { [ key: number ]: string[] };
 
-    const level: number = ( cluster + 1) * 36 -18;
+    const colors: colorsType = {
+        4: [
+            layoutHandler.color[ 200 ],
+            layoutHandler.color[ 300 ],
+            layoutHandler.color[ 500 ],
+            layoutHandler.color[ 600 ]
+        ],
+
+        5: [
+            layoutHandler.color[ 200 ],
+            layoutHandler.color[ 300 ],
+            layoutHandler.color[ 400 ],
+            layoutHandler.color[ 500 ],
+            layoutHandler.color[ 600 ]
+        ],
+
+        6: [
+            layoutHandler.color[ 200 ],
+            layoutHandler.color[ 300 ],
+            layoutHandler.color[ 400 ],
+            layoutHandler.color[ 400 ],
+            layoutHandler.color[ 500 ],
+            layoutHandler.color[ 600 ]
+        ]
+    };
+
+    const levelArc = 180 / centers.length;
+
+    const data = centers.map( _ => ( { degrees: levelArc } ) );
+
+    const level: number = ( cluster + 1) * levelArc - 0.5 * levelArc;
+
+    const label = `Evaluation: ${cluster+1}/${centers.length} (${layoutHandler.evaluation[ cluster ]})`;
 
     const cx = WIDTH / 2;
     const cy = HEIGHT / 1.5;
@@ -96,12 +122,10 @@ const CardPieChart = ( { cluster, label, layoutHandler }: PieChartPropsType ) =>
     const oR = 120;
     
     const needle = ( 
-        level: number, levels: ObjectType, cx: number, cy: number, iR: number, oR: number, color: string 
+        level: number, cx: number, cy: number, iR: number, oR: number, color: string 
     ) => {
 
-        let degrees = 0;
-        levels.forEach( ( l: ObjectType ) => { degrees += l.degrees; } );
-        // const degrees = levels.reduce( ( a: ObjectType, b: ObjectType ) => a.degrees + b.degrees, 0 );
+        let degrees = 180;
 
         const ang = 180.0 * ( 1 - level / degrees );
         const length = ( iR + 2 * oR ) / 3;
@@ -133,7 +157,7 @@ const CardPieChart = ( { cluster, label, layoutHandler }: PieChartPropsType ) =>
                     dataKey="degrees"
                     startAngle={ 180 }
                     endAngle={ 0 }
-                    data={ levels }
+                    data={ data }
                     cx={ cx }
                     cy={ cy }
                     innerRadius={ iR }
@@ -144,10 +168,10 @@ const CardPieChart = ( { cluster, label, layoutHandler }: PieChartPropsType ) =>
                     // disable animation to bypass error: Hydration failed because 
                     // the initial UI does not match what was rendered on the server.
                 >
-                    { levels.map( ( row: ObjectType, i: number ) => <Cell key={ `cell-${i}` } fill={ row.color } /> ) }
+                    { colors[ centers.length ].map( ( color: string, i: number ) => <Cell key={ `cell-${i}` } fill={ color } /> ) }
                 </Pie>
 
-                { needle( level, levels, cx, cy, iR, oR, '#966' ) }
+                { needle( level, cx, cy, iR, oR, '#966' ) }
 
                 <Customized
                     component={<BottomLabel height={ HEIGHT } label={ label } />}

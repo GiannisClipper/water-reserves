@@ -28,7 +28,7 @@ class TemperatureChartLayoutHandler extends ChartLayoutHandler {
                 new TemperatureMeanValueHandler(),
                 new TemperatureMaxValueHandler()
             ],        
-            title: 'Temperatures in Athens',
+            title: 'Temperature in Athens',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Celcius degrees',
             data: dataParser.data,

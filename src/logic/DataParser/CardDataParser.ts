@@ -7,6 +7,7 @@ abstract class CardDataParser {
     date: string;
     abstract recentEntries: ObjectType[];
 
+    abstract centers: number[];
     abstract clusters: ObjectType[];
     abstract cluster: number;
 
@@ -28,6 +29,7 @@ abstract class CardDataParser {
             interval: this.interval,
             date: this.date, 
             recentEntries: this.recentEntries,
+            centers: this.centers,
             clusters: this.clusters,
             cluster: this.clusters,
         }
@@ -38,6 +40,7 @@ class SavingsCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
+    centers: number[];
     clusters: ObjectType[];
     cluster: number;
 
@@ -48,6 +51,7 @@ class SavingsCardDataParser extends CardDataParser {
         const key: string = 'savings';
         super( result, key );
 
+        this.centers = result[ key ].analysis.quantity.kmeans.centers;
         this.clusters = result[ key ].analysis.quantity.kmeans.clusters;
         this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
@@ -72,6 +76,7 @@ class ProductionCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
+    centers: number[];
     clusters: ObjectType[];
     cluster: number;
 
@@ -82,6 +87,7 @@ class ProductionCardDataParser extends CardDataParser {
         const key: string = 'production';
         super( result, key );
 
+        this.centers = result[ key ].analysis.quantity.kmeans.centers;
         this.clusters = result[ key ].analysis.quantity.kmeans.clusters;
         this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
@@ -106,6 +112,7 @@ class PrecipitationCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
+    centers: number[];
     clusters: ObjectType[];
     cluster: number;
 
@@ -116,6 +123,7 @@ class PrecipitationCardDataParser extends CardDataParser {
         const key: string = 'weather';
         super( result, key );
 
+        this.centers = result[ key ].analysis.precipitation_sum.kmeans.centers;
         this.clusters = result[ key ].analysis.precipitation_sum.kmeans.clusters;
         this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
@@ -140,6 +148,7 @@ class AthensTemperatureCardDataParser extends CardDataParser {
 
     recentEntries: ObjectType[];
 
+    centers: number[];
     clusters: ObjectType[];
     cluster: number;
 
@@ -154,6 +163,7 @@ class AthensTemperatureCardDataParser extends CardDataParser {
         const key: string = 'athens_temperature';
         super( result, key );
 
+        this.centers = result[ key ].analysis.temperature_mean.kmeans.centers;
         this.clusters = result[ key ].analysis.temperature_mean.kmeans.clusters;
         this.cluster = this.clusters[ this.clusters.length -1  ].cluster;
 
