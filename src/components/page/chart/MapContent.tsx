@@ -3,40 +3,29 @@
 import { useState } from 'react';
 
 import { MapContainer, TileLayer, ZoomControl, GeoJSON, Tooltip, Marker, Popup } from 'react-leaflet'
-
-import ValueParserCollection from '@/logic/ValueParser/ValueParserCollection';
-import { ValueParser } from '@/logic/ValueParser';
-
+import geojson from '@/geography/dhmoi_okxe_attica.json';
+import { SpatialStandardDataParser } from '@/logic/DataParser/StandardDataParser';
+import { SpatialInterruptionsStandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/interruptions';
 import { withCommas } from '@/helpers/numbers';
 import type { ObjectType } from '@/types';
-
-import geojson from '@/geography/dhmoi_okxe_attica.json';
-
-import { ChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
-
-import { SpatialStandardDataParser } from '@/logic/DataParser/StandardDataParser';
 
 import 'leaflet/dist/leaflet.css'
 import "@/styles/chart.css";
 
 type PropsType = { 
     dataParser: SpatialStandardDataParser
-    layoutHandler: ChartLayoutHandler
+    layoutHandler: SpatialInterruptionsStandardChartLayoutHandler
     chartType: string | undefined
 }
 
 const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
 
-    const parserCollection: ValueParserCollection = dataParser.parserCollection;
-
-    const municipalityParser: ValueParser = parserCollection.getByAxeX()[ 0 ];
-    const nameParser: ValueParser = parserCollection.getByKey( 'name' );
-    const areaParser: ValueParser = parserCollection.getByKey( 'area' );
-    const populationParser: ValueParser = parserCollection.getByKey( 'population' );
-    const eventsParser: ValueParser = parserCollection.getByKey( 'events' );
-    const overAreaParser: ValueParser = parserCollection.getByKey( 'events_over_area' );
-    const overPopulationParser: ValueParser = parserCollection.getByKey( 'events_over_population' );
-    const clusterParser: ValueParser = parserCollection.getByKey( 'cluster' );
+    const nameValueHandler = layoutHandler.nameValueHandler;
+    const areaValueHandler = layoutHandler.areaValueHandler;
+    const populationValueHandler = layoutHandler.populationValueHandler;
+    const eventsValueHandler = layoutHandler.eventsValueHandler;
+    const eventsOverAreaValueHandler = layoutHandler.eventsOverAreaValueHandler;
+    const eventsOverPopulationValueHandler = layoutHandler.eventsOverPopulationValueHandler;
 
     const municipalities: ObjectType = {}; 
     if ( dataParser.legend ) {
@@ -70,7 +59,7 @@ const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
             feature[ 'events_over_population' ] = events[ id ][ 'events_over_population' ];
 
             const cluster: number = events[ id ][ 'cluster' ];
-            const clusterName: string = [ 'low', 'mid', 'high' ][ cluster ];
+            const clusterName: string = [ 'lower', 'low', 'mid', 'high', 'higher' ][ cluster ];
             feature[ 'cluster' ] = cluster;
             feature[ 'clusterRepr' ] = `${cluster + 1} (${clusterName})`;
         }
@@ -78,7 +67,7 @@ const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
  
     const setStyle = feature => {
 
-        const clusterColors: string[] = [ '#ffcc11', '#ff6699', '#ff0000' ];
+        const clusterColors: string[] = [ '#ffcc11', '#ffa811', '#ff7599', '#ff4299', '#ff0000' ];
 
         const color: string = feature.events
             ? clusterColors[ feature.cluster ]
@@ -133,35 +122,35 @@ const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
                             <div className='Tooltip Map'>
                                 { ! showTooltip 
                                 ?
-                                <div>{ municipalityParser[ 'label'] } of { f.name }</div>
+                                <div>{ nameValueHandler.label } of { f.name }</div>
                                 :
                                 <>
                                 <strong>
-                                    <div>{ municipalityParser[ 'label'] } of { f.name }</div>
+                                    <div>{ nameValueHandler.label } of { f.name }</div>
                                 </strong>
                                 <table>
                                     <tbody>
                                         <tr>
-                                            <td>{ eventsParser[ 'label'] }</td>
+                                            <td>{ eventsValueHandler.label }</td>
                                             <td>{ withCommas( f.events ) }</td>
                                         </tr>
                                         <tr>
-                                            <td>{ areaParser[ 'label'] }</td>
+                                            <td>{ areaValueHandler.label }</td>
                                             <td>{ withCommas( f.area ) }</td>
                                         </tr>
                                         <tr>
-                                            <td>{ overAreaParser[ 'label'] }</td>
+                                            <td>{ eventsOverAreaValueHandler.label }</td>
                                             <td>{ withCommas( Math.round( f.events_over_area * 10 ) / 10 ) }</td>
                                         </tr>
                                         <tr>
-                                            <td>{ populationParser[ 'label'] }</td>
+                                            <td>{ populationValueHandler.label }</td>
                                             <td>{ withCommas( f.population ) }</td>
                                         </tr>                                        <tr>
-                                            <td>{ overPopulationParser[ 'label'] }</td>
+                                            <td>{ eventsOverPopulationValueHandler.label }</td>
                                             <td>{ withCommas( Math.round( f.events_over_population * 10 ) / 10 ) }</td>
                                         </tr>
                                         <tr>
-                                            <td>{ clusterParser[ 'label'] }</td>
+                                            <td>{ 'Evaluation' }</td>
                                             <td>{ f.clusterRepr }</td>
                                         </tr>
                                     </tbody>
