@@ -51,16 +51,18 @@ async def get_all(
         return InterruptionsResponse( headers=headers, data=data )
 
     # calculate interruptions clustering
+
     if time_aggregation and time_aggregation[ 0 ] == 'alltime':
         # values = list( map( lambda row: .5 * ( row[ -1 ] + row[ -2 ] ), data ) )
         values = list( map( lambda row: ( row[ -1 ], row[ -2 ] ), data ) )
-        centers, clusters = kmeans_clustering( values, n_clusters=3 )
+        centers, clusters = kmeans_clustering( values, n_clusters=5 )
         # print( 'centers', centers )
         # print( 'clusters', clusters )
         headers += [ 'cluster' ]
         data = [ tuple( list( x[ 0 ] ) + [ x[ 1 ] ] ) for x in zip( data, clusters ) ]
 
     # place municipalities data in result legend
+
     query_handler = MunicipalitiesPoolQueryFactory().handler
     query_handler.maker.select_all()
     await query_handler.run_query()
