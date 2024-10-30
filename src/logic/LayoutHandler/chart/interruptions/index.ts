@@ -73,11 +73,17 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
             yValueHandlerClass = EventsOverPopulationValueHandler
         }
 
+        // sort the data
+
+        const key = new yValueHandlerClass().key;
+        dataParser.data.sort( ( a, b ) => b[ key ] - a[ key ] );
+        console.log( key, dataParser.data )
+
         super( {
             title: title,
             xLabel: 'Municipalities',
             yLabel: yLabel,
-            xValueHandler: new MunicipalityIdValueHandler(),
+            xValueHandler: new MunicipalityNameValueHandler(),
             yValueHandlers: [ new yValueHandlerClass() ],
             data: dataParser.data,
             XTicksCalculator,

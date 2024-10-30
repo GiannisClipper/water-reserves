@@ -10,6 +10,7 @@ import { StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstrac
 import { XAxisSpatialTick } from '../ticks';
 
 import "@/styles/chart.css";
+import DataParser from '@/logic/DataParser';
 
 type Props1Type = { 
     chartType: string | undefined
@@ -47,7 +48,7 @@ const InterruptionsSpatialChartContent = ( { chartType, layoutHandler }: Props2T
     console.log( "rendering: ChartContent..." )
 
     return (
-        <div className="ChartContent">
+        <div className="ChartContent" >
 
             { chartType === 'line'
             ?
