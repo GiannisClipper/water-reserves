@@ -1,6 +1,6 @@
 "use client"
 
-import { LineChart, Line } from 'recharts';
+import { LineChart, Line} from 'recharts';
 import { AreaChart, Area } from 'recharts';
 import { BarChart, Bar } from 'recharts';
 import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, Customized  } from 'recharts';
@@ -11,6 +11,7 @@ import { XAxisTick, YAxisTick } from '@/components/page/chart/ticks';
 import { MultiStandardTooltip } from '@/components/page/chart/tooltips';
 import { StandardLegend } from "@/components/page/chart/legends";
 import { StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
+import { getCell } from '@/components/page/chart/cells';
 
 import "@/styles/chart.css";
 
@@ -19,6 +20,7 @@ type StandardChartPropsType = {
     CustomXAxisTick?: any
     CustomYAxisTick?: any
     CustomTooltip?: any
+    cellFunc?: CallableFunction
 }
 
 const StandardLineChart = ( { 
@@ -171,6 +173,7 @@ const StandardBarChart = ( {
     CustomXAxisTick=XAxisTick,
     CustomYAxisTick=YAxisTick,
     CustomTooltip=MultiStandardTooltip,
+    cellFunc=getCell,
 }: StandardChartPropsType ) => {
 
     return (
@@ -221,7 +224,12 @@ const StandardBarChart = ( {
                             stroke={ handler.color[ 400 ] } 
                             fill={ handler.color[ 300 ] } 
                             fillOpacity={ .65 } 
-                        />
+                        >
+                            {/* custom cell, able to set bar color for each value individualy */}
+                            { layoutHandler.data.map( ( row, i ) => 
+                                cellFunc( { key: i, payload: row, handler }
+                            ) ) }
+                        </Bar>
                     );
                 } ) }
                 </>

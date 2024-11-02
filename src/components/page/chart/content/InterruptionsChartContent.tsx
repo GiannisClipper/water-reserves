@@ -11,6 +11,7 @@ import { XAxisSpatialTick } from '../ticks';
 
 import "@/styles/chart.css";
 import DataParser from '@/logic/DataParser';
+import { getClusterColorCell } from '../cells';
 
 type Props1Type = { 
     chartType: string | undefined
@@ -50,12 +51,13 @@ const InterruptionsSpatialChartContent = ( { chartType, layoutHandler }: Props2T
     return (
         <div className="ChartContent" >
 
-            { chartType === 'line'
+            { chartType === 'bar'
             ?
             <StandardBarChart
                 layoutHandler={ layoutHandler }
                 CustomXAxisTick={ XAxisSpatialTick }
                 CustomTooltip={ SpatialInterruptionsTooltip }
+                cellFunc={ getClusterColorCell }
             />
 
             :
