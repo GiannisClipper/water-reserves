@@ -66,9 +66,22 @@ class EventsOverPopulationValueHandler extends ValueHandler {
     }
 }
 
+class NClustersValueHandler extends ValueHandler {
+    constructor() {
+        super( { key: 'n_clusters' } );
+    }
+}
+
+class ClusterValueHandler extends ValueHandler {
+    constructor() {
+        super( { key: 'cluster' } );
+    }
+}
+
 export { 
     TimeValueHandler, 
     EventsValueHandler, EventsDifferenceValueHandler, EventsChangeValueHandler,
     MunicipalityIdValueHandler, MunicipalityNameValueHandler, MunicipalityAreaValueHandler, MunicipalityPopulationValueHandler,
     EventsOverAreaValueHandler, EventsOverPopulationValueHandler,
+    NClustersValueHandler, ClusterValueHandler,
 };

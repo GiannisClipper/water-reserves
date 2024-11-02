@@ -20,6 +20,12 @@ const INTERRUPTIONS_DESCR: string = "The events of water supply interruptions in
 const SAVINGS_PRODUCTION_DESCR: string = "Combination between water reservres and drinking water production data.";
 const SAVINGS_PRECIPITATION_DESCR: string = "Combination between water reserves and precipitation measurements.";
 
+const CLUSTER_LABELS: { [ key: number ]: string[] } = {
+    4: [ 'low', 'mid-low', 'mid-high', 'high' ],
+    5: [ 'lower', 'low', 'mid', 'high', 'higher' ],
+    6: [ 'lower', 'low', 'mid-low', 'mid-high', 'high', 'higher' ],
+}
+
 export { 
     NEXT_PUBLIC_REST_API_BASE_URL, 
 
@@ -42,5 +48,7 @@ export {
     TEMPERATURE_DESCR,
     INTERRUPTIONS_DESCR,
     SAVINGS_PRODUCTION_DESCR,
-    SAVINGS_PRECIPITATION_DESCR
+    SAVINGS_PRECIPITATION_DESCR,
+
+    CLUSTER_LABELS,
 };

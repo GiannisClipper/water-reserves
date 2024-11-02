@@ -3,8 +3,8 @@ import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from '@/helpers/numbers';
 import { timeLabel } from '@/helpers/time';
 import { StandardChartLayoutHandler, StackChartLayoutHandler } from "@/logic/LayoutHandler/chart/_abstract";
-import { SpatialInterruptionsSingleChartLayoutHandler } from "@/logic/LayoutHandler/chart/InterruptionsChartLayoutHandler";
-
+import { SpatialInterruptionsStandardChartLayoutHandler } from "@/logic/LayoutHandler/chart/interruptions";
+import { CLUSTER_LABELS } from "@/app/settings";
 import type { ObjectType } from '@/types';
 
 type CardTooltipPropsType = {
@@ -180,7 +180,7 @@ const StackTooltip = ( { active, payload, layoutHandler, sortFunc }: StackToolti
 type SpatialInterruptionsTooltipPropsType = {
     active?: boolean
     payload?: any
-    layoutHandler: SpatialInterruptionsSingleChartLayoutHandler
+    layoutHandler: SpatialInterruptionsStandardChartLayoutHandler
 } 
 
 const SpatialInterruptionsTooltip = ( { active, payload, layoutHandler }: SpatialInterruptionsTooltipPropsType ) => {
@@ -196,6 +196,11 @@ const SpatialInterruptionsTooltip = ( { active, payload, layoutHandler }: Spatia
         const overArea = layoutHandler.eventsOverAreaValueHandler;
         const overPopulation = layoutHandler.eventsOverPopulationValueHandler;
 
+        const nClusters = layoutHandler.nClustersValueHandler.readFrom( payload );
+        const cluster = layoutHandler.clusterValueHandler.readFrom( payload );
+        const clusterLabel = CLUSTER_LABELS[ nClusters ][ cluster ];
+
+        const evaluation = `${cluster+1}/${nClusters} (${clusterLabel})`;
         return (
             <div className="Tooltip">
                 <strong>
@@ -222,6 +227,10 @@ const SpatialInterruptionsTooltip = ( { active, payload, layoutHandler }: Spatia
                         <tr>
                             <td>{ overPopulation.label }</td>
                             <td>{ withCommas( Math.round( overPopulation.readFrom( payload ) * 10 ) / 10 ) }</td>
+                        </tr>
+                        <tr>
+                            <td>{ 'Evaluation' }</td>
+                            <td>{ evaluation }</td>
                         </tr>
                     </tbody>
                 </table>

@@ -124,6 +124,17 @@ class EventsOverPopulationValueParser extends PrimaryValueParser {
     }
 }
 
+class NClustersValueParser extends PrimaryValueParser {
+
+    constructor( props: PrimaryValueParserType ) {
+        super( {
+            dataset: 'interruptions', 
+            key: 'n_clusters', 
+            ...props 
+        } );
+    }
+}
+
 class ClusterValueParser extends PrimaryValueParser {
 
     constructor( props: PrimaryValueParserType ) {
@@ -145,5 +156,6 @@ export {
     MunicipalityPopulationValueParser,
     EventsOverAreaValueParser,
     EventsOverPopulationValueParser,
+    NClustersValueParser,
     ClusterValueParser,
 }

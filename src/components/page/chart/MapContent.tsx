@@ -145,7 +145,8 @@ const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
                                         <tr>
                                             <td>{ populationValueHandler.label }</td>
                                             <td>{ withCommas( f.population ) }</td>
-                                        </tr>                                        <tr>
+                                        </tr>                                        
+                                        <tr>
                                             <td>{ eventsOverPopulationValueHandler.label }</td>
                                             <td>{ withCommas( Math.round( f.events_over_population * 10 ) / 10 ) }</td>
                                         </tr>

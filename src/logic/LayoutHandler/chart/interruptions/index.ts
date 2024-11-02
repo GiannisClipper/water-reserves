@@ -5,14 +5,14 @@ import { ParamValues } from "@/logic/ParamValues";
 import { ValueHandler, timeRepr } from "@/logic/ValueHandler";
 
 import { 
-    TimeValueHandler, 
+    TimeValueHandler,
     EventsValueHandler, EventsDifferenceValueHandler, EventsChangeValueHandler,
+    NClustersValueHandler, ClusterValueHandler,
     MunicipalityIdValueHandler,
     EventsOverAreaValueHandler, EventsOverPopulationValueHandler, 
     MunicipalityNameValueHandler,
     MunicipalityAreaValueHandler,
     MunicipalityPopulationValueHandler
-
 } from "@/logic/ValueHandler/interruptions";
 
 import type { SearchParamsType } from "@/types/searchParams";
@@ -52,6 +52,8 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
     eventsValueHandler: ValueHandler;
     eventsOverAreaValueHandler: ValueHandler;
     eventsOverPopulationValueHandler: ValueHandler;
+    nClustersValueHandler: ValueHandler;
+    clusterValueHandler: ValueHandler;
 
     constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
@@ -96,6 +98,8 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
         this.eventsValueHandler = new EventsValueHandler();
         this.eventsOverAreaValueHandler = new EventsOverAreaValueHandler();
         this.eventsOverPopulationValueHandler = new EventsOverPopulationValueHandler();
+        this.nClustersValueHandler = new NClustersValueHandler();
+        this.clusterValueHandler = new ClusterValueHandler();
     }
 }
 

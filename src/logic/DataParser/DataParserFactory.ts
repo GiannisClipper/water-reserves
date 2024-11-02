@@ -47,6 +47,7 @@ import {
     MunicipalityPopulationValueParser,
     EventsOverAreaValueParser,
     EventsOverPopulationValueParser,
+    NClustersValueParser,
     ClusterValueParser,
 } from "@/logic/ValueParser/interruptions";
 
@@ -188,7 +189,8 @@ class DataParserFactory {
                         new MunicipalityPopulationValueParser( { index: 3 } ),
                         new EventsOverAreaValueParser( { index: 4 } ),
                         new EventsOverPopulationValueParser( { index: 5 } ),
-                        new ClusterValueParser( { index: 6 } ),
+                        new NClustersValueParser( { index: 6 } ),
+                        new ClusterValueParser( { index: 7 } ),
                     ] );
                 }            
                 break;
