@@ -58,8 +58,8 @@ async def get_all(
         centers, clusters = kmeans_clustering( values, n_clusters=5 )
         # print( 'centers', centers )
         # print( 'clusters', clusters )
-        headers += [ 'cluster' ]
-        data = [ tuple( list( x[ 0 ] ) + [ x[ 1 ] ] ) for x in zip( data, clusters ) ]
+        headers += [ 'n_clusters', 'cluster' ]
+        data = [ tuple( list( x[ 0 ] ) + [ len( centers ), x[ 1 ] ] ) for x in zip( data, clusters ) ]
 
     # place municipalities data in result legend
 
