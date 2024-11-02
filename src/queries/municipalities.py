@@ -7,14 +7,18 @@ from src.queries._abstract.QueryHandler import SyncQueryHandler, AsyncQueryHandl
 
 from src.db import conninfo, pool
 
+from src.geography.MunicipalitiesHandler import MunicipalitiesHandler
+
 CREATE_TABLE: str = """
     CREATE TABLE {table} (
         id CHAR(4) PRIMARY KEY,
         name_el VARCHAR(30) UNIQUE NOT NULL,
         name_en VARCHAR(30) UNIQUE,
         prefecture VARCHAR(30) NOT NULL,
-        area real,
-        population integer
+        area REAL,
+        population INTEGER,
+        lat REAL,
+        lon REAL
     );
 """
 
@@ -29,6 +33,8 @@ class Municipality( BaseModel ):
     prefecture: str
     area: float
     population: int
+    lat: float
+    lon: float
 
 class MunicipalitiesQueryMaker( QueryMaker ):
 
@@ -40,12 +46,16 @@ class MunicipalitiesQueryMaker( QueryMaker ):
 
     def insert_into( self, data: list ) -> None:
 
-        query = '''INSERT INTO {table} ( id, name_el, name_en, prefecture, area, population ) VALUES '''
+        geoCenters = MunicipalitiesHandler().findCenters()
+ 
+        query = '''INSERT INTO {table} ( id, name_el, name_en, prefecture, area, population, lat, lon ) VALUES '''
         query = query.replace( '{table}', self.table_name )
 
         for row in data:
             id, name_el, name_en, prefecture, area, population = row
-            row = f"('{id}','{name_el}','{name_en}','{prefecture}',{area},{population}),"
+            lat = geoCenters[ id ].y
+            lon = geoCenters[ id ].x
+            row = f"('{id}','{name_el}','{name_en}','{prefecture}',{area},{population},{lat},{lon}),"
             query += row
 
         query = query[ 0:-1 ] + ';' # change last comma with semicolumn

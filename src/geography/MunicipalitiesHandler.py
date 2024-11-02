@@ -1,5 +1,6 @@
 from shapely.geometry import Point
 from shapely.geometry import shape
+from shapely import centroid
 
 from src.settings import get_settings
 from src.helpers.json import parse_json_content
@@ -15,7 +16,15 @@ class MunicipalitiesHandler:
         # load geojson data
         self.geojson = parse_json_content( self.geojson_file )
 
-    def findByPoint( self, lat, lon ):
+    def findCenters( self ) -> dict:
+
+        result = {}
+        for feature in self.geojson[ 'features' ]:
+            polygon = shape( feature[ 'geometry' ] )
+            result[ feature[ 'properties' ][ 'KWD_YPES' ] ] = centroid( polygon )
+        return result
+
+    def findByPoint( self, lat, lon ) -> str | None:
 
         # Notice: Repeat searching with slightly changed coords, considering rare cases:
         # eg. lat/lon next to coastline of Paloukia was not mapped with Salamina municipality.
