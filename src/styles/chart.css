@@ -32,7 +32,7 @@
   }
 
   .Tooltip.Map {
-    @apply border-0 bg-transparent
+    @apply border-0 bg-transparent p-1
   }
 
   div:has(.Tooltip.Map) {
@@ -66,4 +66,44 @@
     @apply inline-block ml-2 mr-1
   }
 
+  .MapContent .Legend {
+    @apply bg-white
+  }
+
+  .MapContent .Legend > * {
+    @apply inline px-4 py-1
+  }
+
+  .MapContent .Legend > * > * {
+    @apply text-gray-600
+  }
+
+  .MapContent .Legend > :nth-child(1) {
+    @apply bg-[#ffcc11]
+    bg-opacity-35
+  }
+
+  .MapContent .Legend > :nth-child(2) {
+    @apply bg-[#ff9811]
+    bg-opacity-35
+  }
+
+  .MapContent .Legend > :nth-child(3) {
+    @apply bg-[#ff7599]
+    bg-opacity-35
+  }
+
+  .MapContent .Legend > :nth-child(4) {
+    @apply bg-[#ff4299]
+    bg-opacity-35
+  }
+
+  .MapContent .Legend > :nth-child(5) {
+    @apply bg-[#ff0000]
+    bg-opacity-35
+  }
+
+  .MapContent .Text {
+    @apply border-0 bg-transparent
+  }
 }

@@ -1,6 +1,7 @@
-import { ValueParser } from '@/logic/ValueParser';
-import ValueParserCollection from '@/logic/ValueParser/ValueParserCollection';
-import type { ObjectType } from '@/types';
+import { useEffect } from "react";
+import L from "leaflet";
+
+import "@/styles/chart.css";
 
 type StandardLegendPropsType = {
     payload?: any
@@ -33,4 +34,32 @@ const StandardLegend = ( { payload, labels, colors, dashes }: StandardLegendProp
     )
 }
 
-export { StandardLegend };
+const MapLegend = ( { map } ) => {
+
+    useEffect( () => {
+
+        if ( ! map ) {
+            return;
+        }
+
+        const legend = L.control( { position: "bottomleft" } );
+
+        legend.onAdd = () => {
+            const div = L.DomUtil.create( "div", "Legend");
+            div.innerHTML =
+                "<div><span>Lower</span></div>" +
+                "<div><span>Low</span></div>" +
+                "<div><span>Mid</span></div>" +
+                "<div><span>High</span></div>" +
+                "<div><span>Higher</span></div>";
+            return div;
+        };
+
+        legend.addTo( map );
+
+    }, [ map ] );
+
+    return null;
+}
+
+export { StandardLegend, MapLegend };
