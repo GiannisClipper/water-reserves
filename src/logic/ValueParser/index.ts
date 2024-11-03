@@ -103,8 +103,8 @@ abstract class GrowthValueParser extends SecondaryValueParser {
         for ( let i = data.length - 1; i >= 0; i-- ) {
             if ( i > 0 ) {
                 data[ i ][ this.key ] = Math.round( 
-                    ( data[ i ][ this.sourceKey ] / data[ i - 1 ][ this.sourceKey ] - 1 ) * 100 
-                );
+                    ( data[ i ][ this.sourceKey ] / data[ i - 1 ][ this.sourceKey ] - 1 ) * 100 * 10
+                ) / 10;
             } else {
                 data[ i ][ this.key ] = 0;
             }

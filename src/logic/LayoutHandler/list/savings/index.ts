@@ -1,15 +1,16 @@
 import DataParser from "@/logic/DataParser";
 import { ListLayoutHandler, StandardListLayoutHandler } from "../_abstract";
-import { ParamValues } from "@/logic/ParamValues";
 
-import { ValueHandler, timeRepr, valueRepr } from "@/logic/ValueHandler";
+import { ValueHandler } from "@/logic/ValueHandler";
 
 import { 
     TimeValueHandler, 
     SavingsValueHandler, SavingsDifferenceValueHandler, SavingsChangeValueHandler,
-    ReservoirsNameValueHandler, ReservoirsValueHandler, ReservoirsPercentageValueHandler,
+    ReservoirsValueHandler, ReservoirsPercentageValueHandler,
     ReservoirsSumValueHandler,
 } from "@/logic/ValueHandler/savings";
+
+import { SAVINGS } from "@/app/settings";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -18,7 +19,7 @@ class SavingsStandardListLayoutHandler extends StandardListLayoutHandler {
     constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
         super( {
-            title: 'Water reserves (aggregated)',
+            title: `${SAVINGS} (aggregated)`,
             data: dataParser.data,
             valueHandlers: [
                 new TimeValueHandler(),
@@ -55,7 +56,7 @@ class SavingsStackListLayoutHandler extends StandardListLayoutHandler {
         }
 
         super( {
-            title: 'Water reserves (per reservoir)',
+            title: `${SAVINGS} (per reservoir)`,
             labels,
             data: dataParser.data,
             valueHandlers,

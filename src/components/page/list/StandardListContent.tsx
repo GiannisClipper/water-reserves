@@ -11,7 +11,6 @@ import "@/styles/list.css";
 const getNested = ( obj: ObjectType, key: string ): any => {
     const keys = key.split( '.' );
     if ( keys.length > 1 ) {
-        // console.log( keys, obj )
         return getNested( obj[ keys[ 0 ] ], keys.slice( 1 ).join( '.' ) );
     }
     return obj[ key ];

@@ -6,7 +6,6 @@ import ListLayoutHandlerFactory from "@/logic/LayoutHandler/list/ListLayoutHandl
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
-import type { ObjectType } from "@/types";
 
 type PropsType = {
     endpoint: string
@@ -23,19 +22,13 @@ const ListSection = ( { endpoint, searchParams, result, dataParser }: PropsType 
     const layoutHandler = new ListLayoutHandlerFactory( endpoint, searchParams, dataParser )
         .handler;
 
-    const listContents: ObjectType = {
-        'standard': StandardListContent,
-        'stack': StandardListContent,
-    };
-    const ListContent = listContents[ dataParser.type ];
-
     console.log( "rendering: ListSection..." )
 
     return (
         <div className="ListSection">
             <ListLabel />
 
-            <ListContent
+            <StandardListContent
                 dataParser={ dataParser }
                 layoutHandler={ layoutHandler }
             />

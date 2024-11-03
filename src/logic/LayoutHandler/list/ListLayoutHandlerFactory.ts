@@ -1,6 +1,6 @@
 import { ListLayoutHandler } from "./_abstract";
 import { SavingsListLayoutHandlerFactory } from "./savings";
-// import { ProductionListLayoutHandlerFactory } from "./production";
+import { ProductionListLayoutHandlerFactory } from "./production";
 // import { PrecipitationListLayoutHandlerFactory } from "./precipitation";
 // import { TemperatureListLayoutHandlerFactory } from "./temperature";
 // import { SavingsProductionListLayoutHandlerFactory } from "./savings-production";
@@ -24,10 +24,10 @@ class ListLayoutHandlerFactory {
                 break;
             }
 
-            // case 'production': {
-            //     this.handler = new ProductionListLayoutHandlerFactory( searchParams, dataParser ).handler;
-            //     break;
-            // }
+            case 'production': {
+                this.handler = new ProductionListLayoutHandlerFactory( searchParams, dataParser ).handler;
+                break;
+            }
 
             // case 'precipitation': {
             //     this.handler = new PrecipitationListLayoutHandlerFactory( searchParams, dataParser ).handler;

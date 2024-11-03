@@ -3,6 +3,7 @@ import { PrimaryValueParser, DifferenceValueParser, GrowthValueParser, RatioValu
 import { NestedValueParser, NestedSumValueParser, NestedPercentageValueParser  } from "@/logic/ValueParser";
 
 import type { PrimaryValueParserType, SecondaryValueParserType, NestedValueParserType } from "@/logic/ValueParser";
+import { ObjectType } from "@/types";
 
 class ProductionValueParser extends PrimaryValueParser {
 
@@ -13,6 +14,13 @@ class ProductionValueParser extends PrimaryValueParser {
             ...props 
         } );
     }
+
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
+        super.parse( data, legend );
+        for ( let i = data.length - 1; i >= 0; i-- ) {
+            data[ i ][ this.key ] = Math.round( data[ i ][ this.key ] );
+        }
+    }    
 }
 
 class ProductionDifferenceValueParser extends DifferenceValueParser {
@@ -24,7 +32,15 @@ class ProductionDifferenceValueParser extends DifferenceValueParser {
             ...props 
         } );
     }
+
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
+        super.parse( data, legend );
+        for ( let i = data.length - 1; i >= 0; i-- ) {
+            data[ i ][ this.key ] = Math.round( data[ i ][ this.key ] );
+        }
+    }    
 }
+
 class ProductionGrowthValueParser extends GrowthValueParser {
 
     constructor( props: SecondaryValueParserType ) {

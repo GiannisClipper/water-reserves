@@ -12,19 +12,19 @@ import { TimeValueHandler } from './savings';
 
 class ProductionValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'production', label: 'Production', unit: 'm3', color: PINK } );
+        super( { type: 'number', key: 'production', label: 'Production', unit: 'm3', color: PINK } );
     }
 }
 
 class ProductionDifferenceValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'production_difference', label: 'Difference', unit: 'm3' } );
+        super( { type: 'number', key: 'production_difference', label: 'Difference', unit: 'm3' } );
     }
 }
 
 class ProductionChangeValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'production_percentage', label: 'Production change', unit: '%', color: PINK } );
+        super( { type: 'number', key: 'production_percentage', label: 'Production change', unit: '%', color: PINK } );
     }
 }
 
@@ -32,19 +32,19 @@ class ProductionChangeValueHandler extends ValueHandler {
 
 class FactoriesValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'factories.{id}.production', label: 'Production', unit: 'm3', color: PINK } );
+        super( { type: 'number', key: 'factories.{id}.production', label: 'Production', unit: 'm3', color: PINK } );
     }
 }
 
 class FactoriesPercentageValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'factories.{id}.percentage', label: 'Percentage', unit: '%' } );
+        super( { type: 'number', key: 'factories.{id}.percentage', label: 'Percentage', unit: '%' } );
     }
 }
 
 class FactoriesSumValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'sum', label: 'Total', unit: 'm3', color: PINK } );
+        super( { type: 'number', key: 'sum', label: 'Total', unit: 'm3', color: PINK } );
     }
 }
 

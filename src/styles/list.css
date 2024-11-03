@@ -37,7 +37,7 @@
   }
 
   .ListContent td {
-    @apply border border-gray-600 p-2 px-6
+    @apply border border-gray-600 p-2 px-4
     whitespace-nowrap
   }
 
