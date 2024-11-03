@@ -12,19 +12,19 @@ import { TimeValueHandler } from './savings';
 
 class EventsValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'events', label: 'Events', unit: '', color: RED } );
+        super( { type: 'number', key: 'events', label: 'Events', unit: '', color: RED } );
     }
 }
 
 class EventsDifferenceValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'events_difference', label: 'Difference', unit: '' } );
+        super( { type: 'number', key: 'events_difference', label: 'Difference', unit: '' } );
     }
 }
 
 class EventsChangeValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'events_percentage', label: 'Change', unit: '%' } );
+        super( { type: 'number', key: 'events_percentage', label: 'Change', unit: '%' } );
     }
 }
 
@@ -44,37 +44,37 @@ class MunicipalityNameValueHandler extends ValueHandler {
 
 class MunicipalityAreaValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'area', label: 'Area', unit: 'km2' } );
+        super( { type: 'number', key: 'area', label: 'Area', unit: 'km2' } );
     }
 }
 
 class MunicipalityPopulationValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'population', label: 'Population', unit: '' } );
+        super( { type: 'number', key: 'population', label: 'Population', unit: '' } );
     }
 }
 
 class EventsOverAreaValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'events_over_area', label: 'Events per sq. km', unit: '', color: RED } );
+        super( { type: 'number', key: 'events_over_area', label: 'Events per sq. km', unit: '', color: RED } );
     }
 }
 
 class EventsOverPopulationValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'events_over_population', label: 'Events per 1000 persons', unit: '', color: RED } );
+        super( { type: 'number', key: 'events_over_population', label: 'Events per 1000 persons', unit: '', color: RED } );
     }
 }
 
 class NClustersValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'n_clusters' } );
+        super( { type: 'number', key: 'n_clusters' } );
     }
 }
 
 class ClusterValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'cluster' } );
+        super( { type: 'number', key: 'cluster' } );
     }
 }
 

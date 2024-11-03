@@ -38,7 +38,12 @@
 
   .ListContent td {
     @apply border border-gray-600 p-2 px-4
+    text-left
     whitespace-nowrap
+  }
+
+  .ListContent td.time {
+    @apply text-center
   }
 
   .ListContent td.number {

@@ -44,7 +44,7 @@ import {
     MunicipalityIdValueParser,
     EventsValueParser, 
     EventsDifferenceValueParser,
-    EventsGrowthValueParser,
+    EventsChangeValueParser,
     MunicipalityNameValueParser,
     MunicipalityAreaValueParser,
     MunicipalityPopulationValueParser,
@@ -185,7 +185,7 @@ class DataParserFactory {
                         new TimeValueParser( { index: 0 } ),
                         new EventsValueParser( { index: 1 } ),
                         new EventsDifferenceValueParser( {} ),
-                        new EventsGrowthValueParser( {} ),
+                        new EventsChangeValueParser( {} ),
                     ] );
                 }
                 else {

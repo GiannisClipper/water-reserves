@@ -56,10 +56,9 @@ class MunicipalityNameValueParser extends SecondaryValueParser {
             key: 'name', 
             ...props 
         } );
-        this.parser = this.defaultParser;
     }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
 
         // make municipalities dictionary for quick search
 
@@ -120,7 +119,6 @@ class EventsOverPopulationValueParser extends PrimaryValueParser {
             key: 'events_over_population', 
             ...props 
         } );
-
     }
 }
 
@@ -148,7 +146,7 @@ class ClusterValueParser extends PrimaryValueParser {
 
 export {
     MunicipalityIdValueParser,
-    EventsValueParser, 
+    EventsValueParser,
     EventsDifferenceValueParser,
     EventsChangeValueParser,
     MunicipalityNameValueParser,

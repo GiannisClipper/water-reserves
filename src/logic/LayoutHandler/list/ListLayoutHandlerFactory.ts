@@ -5,7 +5,7 @@ import { PrecipitationListLayoutHandlerFactory } from "./precipitation";
 import { TemperatureListLayoutHandlerFactory } from "./temperature";
 import { SavingsProductionListLayoutHandlerFactory } from "./savings-production";
 import { SavingsPrecipitationListLayoutHandlerFactory } from "./savings-precipitation";
-// import { InterruptionsListLayoutHandlerFactory } from "./interruptions";
+import { InterruptionsListLayoutHandlerFactory } from "./interruptions";
 
 import DataParser from "@/logic/DataParser";
 
@@ -49,10 +49,10 @@ class ListLayoutHandlerFactory {
                 break;
             }
 
-            // case 'interruptions': {
-            //     this.handler = new InterruptionsListLayoutHandlerFactory( searchParams, dataParser ).handler;
-            //     break;
-            // }
+            case 'interruptions': {
+                this.handler = new InterruptionsListLayoutHandlerFactory( searchParams, dataParser ).handler;
+                break;
+            }
 
             default:
                 throw `Invalid option (${option}) used in ListLayoutHandlerFactory`;
