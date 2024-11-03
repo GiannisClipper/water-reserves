@@ -2,9 +2,9 @@ import { ListLayoutHandler } from "./_abstract";
 import { SavingsListLayoutHandlerFactory } from "./savings";
 import { ProductionListLayoutHandlerFactory } from "./production";
 import { PrecipitationListLayoutHandlerFactory } from "./precipitation";
-// import { TemperatureListLayoutHandlerFactory } from "./temperature";
-// import { SavingsProductionListLayoutHandlerFactory } from "./savings-production";
-// import { SavingsPrecipitationListLayoutHandlerFactory } from "./savings-precipitation";
+import { TemperatureListLayoutHandlerFactory } from "./temperature";
+import { SavingsProductionListLayoutHandlerFactory } from "./savings-production";
+import { SavingsPrecipitationListLayoutHandlerFactory } from "./savings-precipitation";
 // import { InterruptionsListLayoutHandlerFactory } from "./interruptions";
 
 import DataParser from "@/logic/DataParser";
@@ -34,20 +34,20 @@ class ListLayoutHandlerFactory {
                 break;
             }
 
-            // case 'temperature': {
-            //     this.handler = new TemperatureListLayoutHandlerFactory( searchParams, dataParser ).handler;
-            //     break;
-            // }
+            case 'temperature': {
+                this.handler = new TemperatureListLayoutHandlerFactory( searchParams, dataParser ).handler;
+                break;
+            }
 
-            // case 'savings-production': {
-            //     this.handler = new SavingsProductionListLayoutHandlerFactory( searchParams, dataParser ).handler;
-            //     break;
-            // }
+            case 'savings-production': {
+                this.handler = new SavingsProductionListLayoutHandlerFactory( searchParams, dataParser ).handler;
+                break;
+            }
 
-            // case 'savings-precipitation': {
-            //     this.handler = new SavingsPrecipitationListLayoutHandlerFactory( searchParams, dataParser ).handler;
-            //     break;
-            // }
+            case 'savings-precipitation': {
+                this.handler = new SavingsPrecipitationListLayoutHandlerFactory( searchParams, dataParser ).handler;
+                break;
+            }
 
             // case 'interruptions': {
             //     this.handler = new InterruptionsListLayoutHandlerFactory( searchParams, dataParser ).handler;

@@ -52,7 +52,7 @@ class PrecipitationStackListLayoutHandler extends StandardListLayoutHandler {
             handler = new LocationsPercentageValueHandler();
             handler.key = handler.key.replace( '{id}', location.id ) ;
             valueHandlers.push( handler ); 
-            labels.push( handler.unit );
+            labels.push( location.name_en + '_' + handler.unit );
         }
 
         super( {

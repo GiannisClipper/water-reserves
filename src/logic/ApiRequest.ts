@@ -375,8 +375,14 @@ class ApiRequestFactory {
                 break;
             }
             case 'savings-production': {
+
+                let { time_aggregation } = searchParams || {}; 
+                if ( time_aggregation ) {
+                    time_aggregation = time_aggregation.split( ',' )[ 0 ] + ',sum';
+                }
+
                 const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
-                const searchParams2 = { ...searchParams, factory_aggregation: 'sum' };
+                const searchParams2 = { ...searchParams, factory_aggregation: 'sum', time_aggregation };
 
                 this._apiRequestCollection = new ApiRequestCollection( [
                     new SavingsApiRequest( searchParams1 ),
@@ -385,9 +391,16 @@ class ApiRequestFactory {
                 break;
             }
             case 'savings-precipitation': {
-                const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
-                const searchParams2 = { ...searchParams, location_aggregation: 'sum' };
 
+                let { time_aggregation } = searchParams || {}; 
+                if ( time_aggregation ) {
+                    time_aggregation = time_aggregation.split( ',' )[ 0 ] + ',sum';
+                }
+
+                const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
+                const searchParams2 = { ...searchParams, location_aggregation: 'sum', time_aggregation };
+
+                console.log( searchParams1, searchParams2 )
                 this._apiRequestCollection = new ApiRequestCollection( [
                     new SavingsApiRequest( searchParams1 ),
                     new WeatherApiRequest( searchParams2 )

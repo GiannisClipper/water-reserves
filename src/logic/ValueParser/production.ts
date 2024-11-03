@@ -1,4 +1,4 @@
-import { PrimaryValueParser, DifferenceValueParser, GrowthValueParser, RatioValueParser } from "@/logic/ValueParser";
+import { PrimaryValueParser, DifferenceValueParser, ChangeValueParser, RatioValueParser } from "@/logic/ValueParser";
 
 import { NestedValueParser, NestedSumValueParser, NestedPercentageValueParser  } from "@/logic/ValueParser";
 
@@ -41,7 +41,7 @@ class ProductionDifferenceValueParser extends DifferenceValueParser {
     }    
 }
 
-class ProductionGrowthValueParser extends GrowthValueParser {
+class ProductionChangeValueParser extends ChangeValueParser {
 
     constructor( props: SecondaryValueParserType ) {
         super( { 
@@ -116,7 +116,7 @@ export {
     ProductionValueParser, 
     FactoryIdValueParser,
     ProductionDifferenceValueParser, 
-    ProductionGrowthValueParser, 
+    ProductionChangeValueParser, 
     ProductionRatioValueParser,     
     FactoriesValueParser, 
     FactoriesSumValueParser,

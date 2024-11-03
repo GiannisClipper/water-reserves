@@ -1,4 +1,4 @@
-import { PrimaryValueParser, SecondaryValueParser, DifferenceValueParser, GrowthValueParser } from "@/logic/ValueParser";
+import { PrimaryValueParser, SecondaryValueParser, DifferenceValueParser, ChangeValueParser } from "@/logic/ValueParser";
 
 import type { PrimaryValueParserType, SecondaryValueParserType } from "@/logic/ValueParser";
 import type { ObjectType } from "@/types";
@@ -37,7 +37,7 @@ class EventsDifferenceValueParser extends DifferenceValueParser {
     }
 }
 
-class EventsGrowthValueParser extends GrowthValueParser {
+class EventsChangeValueParser extends ChangeValueParser {
 
     constructor( props: SecondaryValueParserType ) {
         super( { 
@@ -150,7 +150,7 @@ export {
     MunicipalityIdValueParser,
     EventsValueParser, 
     EventsDifferenceValueParser,
-    EventsGrowthValueParser,
+    EventsChangeValueParser,
     MunicipalityNameValueParser,
     MunicipalityAreaValueParser,
     MunicipalityPopulationValueParser,

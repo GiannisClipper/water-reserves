@@ -5,7 +5,7 @@ import {
     SavingsValueParser, 
     ReservoirIdValueParser,
     SavingsDifferenceValueParser, 
-    SavingsGrowthValueParser, 
+    SavingsChangeValueParser, 
     ReservoirsValueParser, 
     ReservoirsSumValueParser,
     ReservoirsPercentageValueParser, 
@@ -15,7 +15,7 @@ import {
     ProductionValueParser, 
     FactoryIdValueParser,
     ProductionDifferenceValueParser, 
-    ProductionGrowthValueParser, 
+    ProductionChangeValueParser, 
     FactoriesValueParser, 
     FactoriesSumValueParser,
     FactoriesPercentageValueParser, 
@@ -25,16 +25,19 @@ import {
     PrecipitationValueParser, 
     LocationIdValueParser,
     PrecipitationDifferenceValueParser, 
-    PrecipitationGrowthValueParser,
+    PrecipitationChangeValueParser,
     LocationsValueParser, 
     LocationsSumValueParser,
     LocationsPercentageValueParser, 
 } from "@/logic/ValueParser/precipitation";
 
 import {
-    TemperatureMinValueParser, 
+    TemperatureMinValueParser,
     TemperatureMeanValueParser, 
-    TemperatureMaxValueParser, 
+    TemperatureMaxValueParser,
+    TemperatureMinDifferenceValueParser,
+    TemperatureMeanDifferenceValueParser,
+    TemperatureMaxDifferenceValueParser, 
 } from "@/logic/ValueParser/temperature";
 
 import {
@@ -84,7 +87,7 @@ class DataParserFactory {
                         new TimeValueParser( { index: 0 } ),
                         new SavingsValueParser( { index: 1 } ),
                         new SavingsDifferenceValueParser( {} ),
-                        new SavingsGrowthValueParser( {} ),
+                        new SavingsChangeValueParser( {} ),
                     ] );
 
                 } else {
@@ -108,7 +111,7 @@ class DataParserFactory {
                         new TimeValueParser( { index: 0 } ),
                         new ProductionValueParser( { index: 1 } ),
                         new ProductionDifferenceValueParser( {} ),
-                        new ProductionGrowthValueParser( {} ),
+                        new ProductionChangeValueParser( {} ),
                     ] );
                 } else {
                     this.type = 'stack';
@@ -155,6 +158,9 @@ class DataParserFactory {
                         new TemperatureMinValueParser( { index: 3 } ),
                         new TemperatureMeanValueParser( { index: 4 } ),
                         new TemperatureMaxValueParser( { index: 5 } ),
+                        new TemperatureMinDifferenceValueParser( {} ),
+                        new TemperatureMeanDifferenceValueParser( {} ),
+                        new TemperatureMaxDifferenceValueParser( {} ),
                     ] );
     
                 } else {
@@ -164,6 +170,9 @@ class DataParserFactory {
                         new TemperatureMinValueParser( { index: 4 } ),
                         new TemperatureMeanValueParser( { index: 5 } ),
                         new TemperatureMaxValueParser( { index: 6 } ),
+                        new TemperatureMinDifferenceValueParser( {} ),
+                        new TemperatureMeanDifferenceValueParser( {} ),
+                        new TemperatureMaxDifferenceValueParser( {} ),
                     ] );
                 }
                 break;
@@ -201,9 +210,11 @@ class DataParserFactory {
                 this._parserCollection = new ValueParserCollection( [
                     new TimeValueParser( { index: 0 } ),
                     new SavingsValueParser( { index: 1 } ),
-                    new SavingsGrowthValueParser( {} ),
+                    new SavingsDifferenceValueParser( {} ),
+                    new SavingsChangeValueParser( {} ),
                     new ProductionValueParser( { index: 1 } ), 
-                    new ProductionGrowthValueParser( {} ), 
+                    new ProductionDifferenceValueParser( {} ),
+                    new ProductionChangeValueParser( {} ), 
                 ] );
                 break;
             }
@@ -213,9 +224,11 @@ class DataParserFactory {
                 this._parserCollection = new ValueParserCollection( [
                     new TimeValueParser( { index: 0 } ),
                     new SavingsValueParser( { index: 1 } ),
-                    new SavingsGrowthValueParser( {} ),
+                    new SavingsDifferenceValueParser( {} ),
+                    new SavingsChangeValueParser( {} ),
                     new PrecipitationValueParser( { index: 1 } ), 
-                    new PrecipitationGrowthValueParser( {} ), 
+                    new PrecipitationDifferenceValueParser( {} ),
+                    new PrecipitationChangeValueParser( {} ), 
                 ] );
                 break;
             }

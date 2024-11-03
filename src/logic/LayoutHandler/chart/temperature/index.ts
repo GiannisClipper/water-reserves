@@ -1,12 +1,13 @@
 import DataParser from "@/logic/DataParser";
-import { ChartLayoutHandler, StackChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
+import { ChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
 import { timeRepr } from "@/logic/ValueHandler";
 
 import { 
     TimeValueHandler, 
-    TemperatureMinValueHandler, TemperatureMeanValueHandler, TemperatureMaxValueHandler 
+    TemperatureMinValueHandler, TemperatureMeanValueHandler, TemperatureMaxValueHandler,
+    TemperatureMinDifferenceValueHandler, TemperatureMeanDifferenceValueHandler, TemperatureMaxDifferenceValueHandler,
 } from "@/logic/ValueHandler/temperature";
 
 import { TemporalXTicksCalculator } from "../_abstract/xTicks";
@@ -14,7 +15,7 @@ import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
-class TemperatureChartLayoutHandler extends ChartLayoutHandler {
+class TemperatureChartLayoutHandler extends StandardChartLayoutHandler {
 
     constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
 
@@ -27,7 +28,13 @@ class TemperatureChartLayoutHandler extends ChartLayoutHandler {
                 new TemperatureMinValueHandler(), 
                 new TemperatureMeanValueHandler(),
                 new TemperatureMaxValueHandler()
-            ],        
+            ],
+            yDifferenceValueHandlers: [
+                new TemperatureMinDifferenceValueHandler(), 
+                new TemperatureMeanDifferenceValueHandler(),
+                new TemperatureMaxDifferenceValueHandler()  
+            ],
+            yChangeValueHandlers: [],
             title: 'Temperature in Athens',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Celcius degrees',

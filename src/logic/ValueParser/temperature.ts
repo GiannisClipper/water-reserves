@@ -47,35 +47,66 @@ class TemperatureMeanDifferenceValueParser extends DifferenceValueParser {
             ...props 
         } );
     }
+
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
+        super.parse( data, legend );
+        for ( let i = data.length - 1; i >= 0; i-- ) {
+            data[ i ][ this.key ] = Math.round( data[ i ][ this.key ] * 10 ) / 10;
+        }
+    }    
 }
 
-class TemperatureMeanGrowthValueParser extends GrowthValueParser {
+class TemperatureMinDifferenceValueParser extends TemperatureMeanDifferenceValueParser {
 
     constructor( props: SecondaryValueParserType ) {
         super( { 
-            sourceKey: 'temperature_mean',
-            key: 'temperature_mean_percentage', 
+            sourceKey: 'temperature_min',
+            key: 'temperature_min_difference', 
             ...props 
         } );
     }
 }
 
-class TemperatureMeanRatioValueParser extends RatioValueParser {
+class TemperatureMaxDifferenceValueParser extends TemperatureMeanDifferenceValueParser {
 
     constructor( props: SecondaryValueParserType ) {
         super( { 
-            sourceKey: 'temperature_mean',
-            key: 'temperature_mean_ratio', 
+            sourceKey: 'temperature_max',
+            key: 'temperature_max_difference', 
             ...props 
         } );
     }
 }
+
+// class TemperatureMeanGrowthValueParser extends GrowthValueParser {
+
+//     constructor( props: SecondaryValueParserType ) {
+//         super( { 
+//             sourceKey: 'temperature_mean',
+//             key: 'temperature_mean_percentage', 
+//             ...props 
+//         } );
+//     }
+// }
+
+// class TemperatureMeanRatioValueParser extends RatioValueParser {
+
+//     constructor( props: SecondaryValueParserType ) {
+//         super( { 
+//             sourceKey: 'temperature_mean',
+//             key: 'temperature_mean_ratio', 
+//             ...props 
+//         } );
+//     }
+// }
 
 export {
     TemperatureMinValueParser, 
     TemperatureMeanValueParser, 
     TemperatureMaxValueParser, 
+    TemperatureMinDifferenceValueParser, 
     TemperatureMeanDifferenceValueParser, 
-    TemperatureMeanGrowthValueParser, 
-    TemperatureMeanRatioValueParser,     
+    TemperatureMaxDifferenceValueParser, 
+    // TemperatureMeanGrowthValueParser, 
+    // TemperatureMeanRatioValueParser,     
 }

@@ -93,7 +93,7 @@ abstract class DifferenceValueParser extends SecondaryValueParser {
     }
 }
 
-abstract class GrowthValueParser extends SecondaryValueParser {
+abstract class ChangeValueParser extends SecondaryValueParser {
     
     constructor( props: SecondaryValueParserType ) {
         super( props );
@@ -210,7 +210,7 @@ export type {
 
 export {
     ValueParser, PrimaryValueParser, SecondaryValueParser,
-    DifferenceValueParser, GrowthValueParser, RatioValueParser,
+    DifferenceValueParser, ChangeValueParser, RatioValueParser,
     NestedValueParser, NestedSumValueParser, NestedPercentageValueParser,
     TimeValueParser
 }
