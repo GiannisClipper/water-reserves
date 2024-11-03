@@ -2,11 +2,10 @@
 
 import { useState, useEffect } from "react";
 
-// import MapContent from "@/components/page/chart/MapContent";
+import MapContent from "@/components/page/chart/MapContent";
 // import dynamic... to fix Server Error: ReferenceError: window is not defined
-import dynamic from 'next/dynamic'
-const MapContent = dynamic( () => import( './MapContent' ), { ssr: false } )
-
+// import dynamic from 'next/dynamic'
+// const MapContent = dynamic( () => import( './MapContent' ), { ssr: false } )
 
 import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
@@ -38,7 +37,8 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     const dataParser = new DataParserFactory( { endpoint, searchParams, result } )
         .dataParser;
     
-    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataParser ).handler;
+    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataParser )
+        .handler;
 
     const chartLabels: ObjectType = {
         'standard': ChartLabel1,

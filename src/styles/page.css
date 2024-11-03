@@ -56,25 +56,4 @@
     bg-gray-700 text-gray-300 text-xs
     font-mono
   }
-
-  .ListContent table {
-  }
-
-  .ListContent tbody {
-    @apply w-full h-full
-    overflow-scroll
-  }
-
-  .ListContent th {
-    @apply p-2 px-6
-  }
-
-  .ListContent td {
-    @apply border-2 border-gray-600 p-2 px-6
-    whitespace-nowrap
-  }
-
-  .ListContent td.number {
-    @apply text-right
-  }
 }

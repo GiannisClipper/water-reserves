@@ -1,0 +1,38 @@
+@tailwind components;
+
+@layer components {
+
+  table {
+    @apply flex flex-row flex-wrap justify-center
+    overflow-scroll
+  }
+
+  caption, thead, tbody {
+    @apply w-full
+  }
+
+  caption {
+    @apply text-base font-semibold p-4
+  }
+
+  th {
+    @apply bg-gray-600 border border-gray-700 p-2 px-6
+  }
+
+  th:first-child {
+    @apply border-l-gray-600
+  }
+
+  th:last-child {
+    @apply border-r-gray-600
+  }
+
+  td {
+    @apply border border-gray-600 p-2 px-6
+    whitespace-nowrap
+  }
+
+  td.number {
+    @apply text-right
+  }
+}

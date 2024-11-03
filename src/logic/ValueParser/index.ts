@@ -26,7 +26,7 @@ abstract class ValueParser {
         this.key = key || 'value'
     }
 
-    parse(data: ObjectType[], legend: ObjectType | undefined ) {}
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {}
 
     toJSON(): ObjectType {
         return {
@@ -82,7 +82,7 @@ abstract class DifferenceValueParser extends SecondaryValueParser {
         super( props );
     }
 
-    parse(data: ObjectType[], legend: ObjectType | undefined ) {
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
         for ( let i = data.length - 1; i >= 0; i-- ) {
             if ( i > 0 ) {
                 data[ i ][ this.key ] =  data[ i ][ this.sourceKey ] - data[ i - 1 ][ this.sourceKey ];
@@ -99,7 +99,7 @@ abstract class GrowthValueParser extends SecondaryValueParser {
         super( props );
     }
 
-    parse(data: ObjectType[], legend: ObjectType | undefined ) {
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
         for ( let i = data.length - 1; i >= 0; i-- ) {
             if ( i > 0 ) {
                 data[ i ][ this.key ] = Math.round( 
@@ -118,7 +118,7 @@ abstract class RatioValueParser extends SecondaryValueParser {
         super( props );
     }
 
-    parse(data: ObjectType[], legend: ObjectType | undefined ) {
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
         const maxVal = Math.max( ...( data.map( x => x[ this.sourceKey ] ) ) );
         for ( let i = 0; i <= data.length - 1; i++ ) {
             data[ i ][ this.key ] /= maxVal; // normalize between 0..1
@@ -132,7 +132,7 @@ abstract class NestedSumValueParser extends SecondaryValueParser {
         super( props );
     }
 
-    parse(data: ObjectType[], legend: ObjectType | undefined ) {
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
 
         // an example for the row structure
         // {
@@ -164,7 +164,7 @@ abstract class NestedPercentageValueParser extends SecondaryValueParser {
         super( props );
     }
 
-    parse(data: ObjectType[], legend: ObjectType | undefined ) {
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
         // an example for the row structure
         // {
         //     time: "2023",

@@ -55,7 +55,7 @@ class ChartLayoutHandlerFactory {
             }
 
             default:
-                throw `Invalid option (${option}) used in StackChartLayoutHandlerFactory`;
+                throw `Invalid option (${option}) used in ChartLayoutHandlerFactory`;
         }
     }
 }

@@ -2,11 +2,16 @@ import { Suspense } from "react";
 
 import { ChartSectionSkeleton, ListSectionSkeleton } from "@/components/page/Skeleton";
 import Error from "@/components/page/Error";
-import ChartSection from "./chart/ChartSection";
+
+// import ChartSection from "@/components/page/chart/ChartSection";
+// import dynamic... to fix Server Error: ReferenceError: window is not defined
+import dynamic from 'next/dynamic'
+const ChartSection = dynamic( () => import( './chart/ChartSection' ), { ssr: false } )
+
 import ListSection from "./list/ListSection";
 
 import { ApiRequestFactory } from "@/logic/ApiRequest";
-
+import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = { 
@@ -17,9 +22,14 @@ type PropsType = {
 const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     let error = null, result = null;
+    let dataParser: any;
+
     if ( Object.keys( searchParams ).length ) {
         const apiRequestCollection = new ApiRequestFactory( endpoint, searchParams ).apiRequestCollection;
         ( { error, result } = ( await apiRequestCollection.request() ).toJSON() );
+
+        dataParser = new DataParserFactory( { endpoint, searchParams, result } )
+            .dataParser;
     }  
 
     console.log( "rendering: DataSection..." );
@@ -54,6 +64,7 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
                     endpoint={ endpoint }
                     searchParams={ searchParams }
                     result={ result }
+                    dataParser={ dataParser }
                 />
             </Suspense>
         </div>

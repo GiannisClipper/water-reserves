@@ -17,19 +17,19 @@ class TimeValueHandler extends ValueHandler {
 
 class SavingsValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'savings', label: 'Reserves', unit: 'm3', color: SKY } );
+        super( { type: 'number', key: 'savings', label: 'Reserves', unit: 'm3', color: SKY } );
     }
 }
 
 class SavingsDifferenceValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'savings_difference', label: 'Difference', unit: 'm3' } );
+        super( { type: 'number', key: 'savings_difference', label: 'Difference', unit: 'm3' } );
     }
 }
 
 class SavingsChangeValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'savings_percentage', label: 'Savings change', unit: '%', color: SKY } );
+        super( { type: 'number', key: 'savings_percentage', label: 'Savings change', unit: '%', color: SKY } );
     }
 }
 

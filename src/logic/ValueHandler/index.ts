@@ -1,7 +1,8 @@
 import { ObjectType } from "@/types"
-import type { UnitType } from '@/types';
+import type { ValueType, UnitType } from '@/types';
 
 interface ValueHandlerType {
+    type?: ValueType
     key: string
     label?: string
     unit?: UnitType
@@ -10,12 +11,14 @@ interface ValueHandlerType {
 
 class ValueHandler {
 
+    type: ValueType;
     key: string;
     label: string;
     unit: UnitType;
     color: ObjectType
 
-    constructor( { key, label, unit, color }: ValueHandlerType ) {
+    constructor( { type, key, label, unit, color }: ValueHandlerType ) {
+        this.type = type || '';
         this.key = key
         this.label = label || '';
         this.unit = unit || '';
@@ -32,6 +35,7 @@ class ValueHandler {
 
     toJSON(): ObjectType {
         return {
+            type: this.type,
             key: this.key,
             label: this.label,
             unit: this.unit,

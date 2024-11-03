@@ -1,8 +1,9 @@
 import ListLabel from "@/components/page/list/ListLabel";
-import SingleListContent from "@/components/page/list/SingleListContent";
+import StandardListContent from "@/components/page/list/StandardListContent";
 import StackListContent from "@/components/page/list/StackListContent";
 
-import DataParserFactory from "@/logic/DataParser/DataParserFactory";
+import DataParser from "@/logic/DataParser";
+import ListLayoutHandlerFactory from "@/logic/LayoutHandler/list/ListLayoutHandlerFactory";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { RequestResultType } from "@/types/requestResult";
@@ -12,17 +13,19 @@ type PropsType = {
     endpoint: string
     searchParams: SearchParamsType
     result: RequestResultType | null
+    dataParser: DataParser
 }
 
-const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
-
-    const dataParser = new DataParserFactory( { endpoint, searchParams, result } ).dataParser;
+const ListSection = ( { endpoint, searchParams, result, dataParser }: PropsType  ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 1000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
+    const layoutHandler = new ListLayoutHandlerFactory( endpoint, searchParams, dataParser )
+        .handler;
+
     const listContents: ObjectType = {
-        'standard': SingleListContent,
+        'standard': StandardListContent,
         'stack': StackListContent,
     };
     const ListContent = listContents[ dataParser.type ];
@@ -33,9 +36,10 @@ const ListSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         <div className="ListSection">
             <ListLabel />
 
-            {/* <ListContent
+            <StandardListContent
                 dataParser={ dataParser }
-            /> */}
+                layoutHandler={ layoutHandler }
+            />
         </div>
     );
 }
