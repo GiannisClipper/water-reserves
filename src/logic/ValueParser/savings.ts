@@ -1,4 +1,4 @@
-import { PrimaryValueParser, DifferenceValueParser, GrowthValueParser, RatioValueParser } from "@/logic/ValueParser";
+import { PrimaryValueParser, SecondaryValueParser, DifferenceValueParser, GrowthValueParser, RatioValueParser } from "@/logic/ValueParser";
 
 import { NestedValueParser, NestedSumValueParser, NestedPercentageValueParser  } from "@/logic/ValueParser";
 
@@ -78,9 +78,9 @@ class ReservoirsValueParser extends NestedValueParser {
 
     constructor( props: NestedValueParserType ) {
         super( { 
+            key: 'reservoirs', 
             nestedKey: 'reservoir_id',
             nestedInnerKey: 'savings',
-            key: 'reservoirs', 
             ...props 
         } );
     }
@@ -120,5 +120,5 @@ export {
     SavingsRatioValueParser,     
     ReservoirsValueParser, 
     ReservoirsSumValueParser,
-    ReservoirsPercentageValueParser, 
+    ReservoirsPercentageValueParser,
 }

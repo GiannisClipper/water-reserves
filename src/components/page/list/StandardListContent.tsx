@@ -1,4 +1,3 @@
-import { CubicMeters } from "@/components/Symbols";
 import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
 import DataParser from '@/logic/DataParser';
@@ -8,6 +7,15 @@ import { ValueHandler } from "@/logic/ValueHandler";
 import type { ObjectType } from "@/types";
 
 import "@/styles/list.css";
+
+const getNested = ( obj: ObjectType, key: string ): any => {
+    const keys = key.split( '.' );
+    if ( keys.length > 1 ) {
+        // console.log( keys, obj )
+        return getNested( obj[ keys[ 0 ] ], keys.slice( 1 ).join( '.' ) );
+    }
+    return obj[ key ];
+}
 
 type PropsType = { 
     dataParser: DataParser
@@ -22,45 +30,50 @@ const ListContent = ( { dataParser, layoutHandler }: PropsType ) => {
     console.log( `rendering: ListContent...` )
 
     return (
-        <table className="ListContent">
+        <div className="ListContent">
 
-            <caption>{ layoutHandler.title }</caption>
+            <table>
+                <caption>{ layoutHandler.title }</caption>
 
-            <thead>
-            </thead>
-            <tbody>
-            <tr>
-                { valueHandlers.map( ( handler: ValueHandler, i: number ) =>
-                    <th 
-                        key={ i }
-                        data-key={ handler.label }
-                    >
-                        { handler.label }
-                    </th>
-                ) }
-                </tr>
-
-                { data.map( ( row: ObjectType, i: number ) =>
-                    <tr key={ i }>
-                    { valueHandlers.map( ( handler: ValueHandler, j: number ) =>
-                        <td
-                            key={ j }
-                            data-key={ handler.key }
-                            className={ handler.type }
-                        >
-                            { 
-                            handler.type === 'number' 
-                            ? withCommas( row[ handler.key ] )
-                            : row[ handler.key ] 
-                            }
-                            <span> </span>
-                            <Unit unit={ handler.unit } />
-                        </td>
-                    ) }
+                <thead>
+                    <tr>
+                        { layoutHandler.labels.map( ( label: string, i: number ) =>
+                            <th 
+                                key={ i }
+                                data-key={ label }
+                            >
+                                { label }
+                            </th>
+                        ) }
                     </tr>
-                ) }
-            </tbody>
-        </table>
+                </thead>
+
+                <tbody>
+
+                    { data.map( ( row: ObjectType, i: number ) =>
+                        <tr key={ i }>
+                        { valueHandlers.map( ( handler: ValueHandler, j: number ) =>
+                            <td
+                                key={ j }
+                                data-key={ getNested( row, handler.key ) }
+                                className={ handler.type }
+                            >
+                                { handler.type === 'number' 
+                                ? 
+                                withCommas( getNested( row, handler.key ) )
+                                : 
+                                getNested( row, handler.key ) 
+                                }
+                                <span> </span> {/* to place a space between values */}
+                                <Unit unit={ handler.unit } />
+                            </td>
+                        ) }
+                        </tr>
+                    ) }
+                </tbody>
+            </table>
+
+        </div>
     );
 }
 

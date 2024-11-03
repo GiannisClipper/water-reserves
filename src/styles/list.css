@@ -2,37 +2,46 @@
 
 @layer components {
 
-  table {
-    @apply flex flex-row flex-wrap justify-center
+  .ListContent {
+    @apply
+    min-w-full
+    max-w-full
+    aspect-[2]
+    /* min-h-[calc(50vh)]
+    max-h-[calc(50vh)] */
+    bg-gray-700 text-gray-300 text-xs 
+    p-4
+    font-mono
     overflow-scroll
+    text-center
   }
 
-  caption, thead, tbody {
-    @apply w-full
+  .ListContent table {
+    @apply inline-block 
   }
 
-  caption {
-    @apply text-base font-semibold p-4
+  .ListContent caption {
+    @apply text-base font-semibold p-4 pt-0
   }
 
-  th {
+  .ListContent th {
     @apply bg-gray-600 border border-gray-700 p-2 px-6
   }
 
-  th:first-child {
+  .ListContent th:first-child {
     @apply border-l-gray-600
   }
 
-  th:last-child {
+  .ListContent th:last-child {
     @apply border-r-gray-600
   }
 
-  td {
+  .ListContent td {
     @apply border border-gray-600 p-2 px-6
     whitespace-nowrap
   }
 
-  td.number {
+  .ListContent td.number {
     @apply text-right
   }
 }

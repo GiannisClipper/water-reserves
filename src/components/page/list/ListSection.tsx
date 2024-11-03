@@ -1,6 +1,5 @@
 import ListLabel from "@/components/page/list/ListLabel";
 import StandardListContent from "@/components/page/list/StandardListContent";
-import StackListContent from "@/components/page/list/StackListContent";
 
 import DataParser from "@/logic/DataParser";
 import ListLayoutHandlerFactory from "@/logic/LayoutHandler/list/ListLayoutHandlerFactory";
@@ -26,7 +25,7 @@ const ListSection = ( { endpoint, searchParams, result, dataParser }: PropsType 
 
     const listContents: ObjectType = {
         'standard': StandardListContent,
-        'stack': StackListContent,
+        'stack': StandardListContent,
     };
     const ListContent = listContents[ dataParser.type ];
 
@@ -36,7 +35,7 @@ const ListSection = ( { endpoint, searchParams, result, dataParser }: PropsType 
         <div className="ListSection">
             <ListLabel />
 
-            <StandardListContent
+            <ListContent
                 dataParser={ dataParser }
                 layoutHandler={ layoutHandler }
             />

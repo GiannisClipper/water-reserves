@@ -95,7 +95,7 @@ class DataParserFactory {
                         new SavingsValueParser( { index: 2 } ),
                         new ReservoirsValueParser( {} ),
                         new ReservoirsSumValueParser( {} ),
-                        new ReservoirsPercentageValueParser( {} )
+                        new ReservoirsPercentageValueParser( {} ),
                     ] );
                 }
                 break;

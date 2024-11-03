@@ -92,6 +92,15 @@ class ReservoirsStackDataParser extends StackDataParser {
         super( responseResult, parserCollection );
 
         if ( this.data.length ) {
+
+            // set reservoir names
+            // for ( const row of this.data ) {
+            //     for ( const reservoir_id of Object.keys( row.reservoirs ) ) {
+            //         row[ 'reservoirs' ][ reservoir_id ].name = this.legend?.reservoirs[ reservoir_id - 1 ].name_en;
+            //     }
+            // }
+
+            // filter reservoirs in legend
             const nestedObj = this.data[ 0 ][ 'reservoirs' ];
             const ids: string[] = Object.keys( nestedObj ).map( id => `${id}` );
             if ( this.legend ) {
