@@ -12,19 +12,19 @@ import { TimeValueHandler } from './savings';
 
 class PrecipitationValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'precipitation', label: 'Precipitation', unit: 'mm', color: TEAL } );
+        super( { type: 'number', key: 'precipitation', label: 'Precipitation', unit: 'mm', color: TEAL } );
     }
 }
 
 class PrecipitationDifferenceValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'precipitation_difference', label: 'Difference', unit: 'mm' } );
+        super( { type: 'number', key: 'precipitation_difference', label: 'Difference', unit: 'mm' } );
     }
 }
 
 class PrecipitationChangeValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'precipitation_percentage', label: 'Precipitation change', unit: '%', color: TEAL } );
+        super( { type: 'number', key: 'precipitation_percentage', label: 'Precipitation change', unit: '%', color: TEAL } );
     }
 }
 
@@ -32,19 +32,19 @@ class PrecipitationChangeValueHandler extends ValueHandler {
 
 class LocationsValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'locations.{id}.precipitation', label: 'Precipitation', unit: 'mm', color: TEAL } );
+        super( { type: 'number', key: 'locations.{id}.precipitation', label: 'Precipitation', unit: 'mm', color: TEAL } );
     }
 }
 
 class LocationsPercentageValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'locations.{id}.percentage', label: 'Percentage', unit: '%' } );
+        super( { type: 'number', key: 'locations.{id}.percentage', label: 'Percentage', unit: '%' } );
     }
 }
 
 class LocationsSumValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'sum', label: 'Total', unit: 'mm', color: TEAL } );
+        super( { type: 'number', key: 'sum', label: 'Total', unit: 'mm', color: TEAL } );
     }
 }
 

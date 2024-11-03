@@ -3,7 +3,7 @@ import { PrimaryValueParser, DifferenceValueParser, GrowthValueParser, RatioValu
 import { NestedValueParser, NestedSumValueParser, NestedPercentageValueParser  } from "@/logic/ValueParser";
 
 import type { PrimaryValueParserType, SecondaryValueParserType, NestedValueParserType } from "@/logic/ValueParser";
-import { ObjectType } from "@/types";
+import type { ObjectType } from "@/types";
 
 class ProductionValueParser extends PrimaryValueParser {
 

@@ -3,6 +3,7 @@ import { PrimaryValueParser, DifferenceValueParser, GrowthValueParser, RatioValu
 import { NestedValueParser, NestedSumValueParser, NestedPercentageValueParser  } from "@/logic/ValueParser";
 
 import type { PrimaryValueParserType, SecondaryValueParserType, NestedValueParserType } from "@/logic/ValueParser";
+import type { ObjectType } from "@/types";
 
 class PrecipitationValueParser extends PrimaryValueParser {
 
@@ -12,8 +13,14 @@ class PrecipitationValueParser extends PrimaryValueParser {
             key: 'precipitation', 
             ...props 
         } );
-
     }
+
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
+        super.parse( data, legend );
+        for ( let i = data.length - 1; i >= 0; i-- ) {
+            data[ i ][ this.key ] = Math.round( data[ i ][ this.key ] );
+        }
+    }    
 }
 
 class PrecipitationDifferenceValueParser extends DifferenceValueParser {
@@ -25,6 +32,13 @@ class PrecipitationDifferenceValueParser extends DifferenceValueParser {
             ...props 
         } );
     }
+
+    parse( data: ObjectType[], legend: ObjectType | undefined ) {
+        super.parse( data, legend );
+        for ( let i = data.length - 1; i >= 0; i-- ) {
+            data[ i ][ this.key ] = Math.round( data[ i ][ this.key ] );
+        }
+    }    
 }
 
 class PrecipitationGrowthValueParser extends GrowthValueParser {

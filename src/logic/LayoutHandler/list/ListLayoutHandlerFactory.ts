@@ -1,7 +1,7 @@
 import { ListLayoutHandler } from "./_abstract";
 import { SavingsListLayoutHandlerFactory } from "./savings";
 import { ProductionListLayoutHandlerFactory } from "./production";
-// import { PrecipitationListLayoutHandlerFactory } from "./precipitation";
+import { PrecipitationListLayoutHandlerFactory } from "./precipitation";
 // import { TemperatureListLayoutHandlerFactory } from "./temperature";
 // import { SavingsProductionListLayoutHandlerFactory } from "./savings-production";
 // import { SavingsPrecipitationListLayoutHandlerFactory } from "./savings-precipitation";
@@ -29,10 +29,10 @@ class ListLayoutHandlerFactory {
                 break;
             }
 
-            // case 'precipitation': {
-            //     this.handler = new PrecipitationListLayoutHandlerFactory( searchParams, dataParser ).handler;
-            //     break;
-            // }
+            case 'precipitation': {
+                this.handler = new PrecipitationListLayoutHandlerFactory( searchParams, dataParser ).handler;
+                break;
+            }
 
             // case 'temperature': {
             //     this.handler = new TemperatureListLayoutHandlerFactory( searchParams, dataParser ).handler;

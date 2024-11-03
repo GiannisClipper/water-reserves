@@ -53,15 +53,15 @@ class ReservoirsSumValueHandler extends ValueHandler {
     }
 }
 
-class ReservoirsNameValueHandler extends ValueHandler {
-    constructor() {
-        super( { key: 'reservoirs.{id}.name', label: 'Reservoir' } );
-    }
-}
+// class ReservoirsNameValueHandler extends ValueHandler {
+//     constructor() {
+//         super( { key: 'reservoirs.{id}.name', label: 'Reservoir' } );
+//     }
+// }
 
 export { 
     TimeValueHandler, 
     SavingsValueHandler, SavingsDifferenceValueHandler, SavingsChangeValueHandler,
     ReservoirsValueHandler, ReservoirsPercentageValueHandler, ReservoirsSumValueHandler,
-    ReservoirsNameValueHandler
+    // ReservoirsNameValueHandler
 };
