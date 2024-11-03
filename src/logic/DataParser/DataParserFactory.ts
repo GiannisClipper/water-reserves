@@ -82,7 +82,7 @@ class DataParserFactory {
                     this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
-                        new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new SavingsValueParser( { index: 1 } ),
                         new SavingsDifferenceValueParser( {} ),
                         new SavingsGrowthValueParser( {} ),
                     ] );
@@ -92,7 +92,7 @@ class DataParserFactory {
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new ReservoirIdValueParser( { index: 1 } ),
-                        new SavingsValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
+                        new SavingsValueParser( { index: 2 } ),
                         new ReservoirsValueParser( {} ),
                         new ReservoirsSumValueParser( {} ),
                         new ReservoirsPercentageValueParser( {} )
@@ -106,7 +106,7 @@ class DataParserFactory {
                     this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
-                        new ProductionValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new ProductionValueParser( { index: 1 } ),
                         new ProductionDifferenceValueParser( {} ),
                         new ProductionGrowthValueParser( {} ),
                     ] );
@@ -115,7 +115,7 @@ class DataParserFactory {
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new FactoryIdValueParser( { index: 1 } ),
-                        new ProductionValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
+                        new ProductionValueParser( { index: 2 } ),
                         new FactoriesValueParser( {} ),
                         new FactoriesSumValueParser( {} ),
                         new FactoriesPercentageValueParser( {} ),
@@ -129,7 +129,7 @@ class DataParserFactory {
                     this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
-                        new PrecipitationValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new PrecipitationValueParser( { index: 1 } ),
                         new PrecipitationDifferenceValueParser( {} ),
                         new PrecipitationGrowthValueParser( {} ),
                     ] );
@@ -138,7 +138,7 @@ class DataParserFactory {
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
                         new LocationIdValueParser( { index: 1 } ),
-                        new PrecipitationValueParser( { index: 2, parser: ( v: number ): number => Math.round( v ) } ),
+                        new PrecipitationValueParser( { index: 2 } ),
                         new LocationsValueParser( {} ),
                         new LocationsSumValueParser( {} ),
                         new LocationsPercentageValueParser( {} ),
@@ -152,18 +152,18 @@ class DataParserFactory {
                     this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
-                        new TemperatureMinValueParser( { index: 3, parser: ( v: number ): number => Math.round( v ) } ),
-                        new TemperatureMeanValueParser( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
-                        new TemperatureMaxValueParser( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMinValueParser( { index: 3 } ),
+                        new TemperatureMeanValueParser( { index: 4 } ),
+                        new TemperatureMaxValueParser( { index: 5 } ),
                     ] );
     
                 } else {
                     this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 1 } ),
-                        new TemperatureMinValueParser( { index: 4, parser: ( v: number ): number => Math.round( v ) } ),
-                        new TemperatureMeanValueParser( { index: 5, parser: ( v: number ): number => Math.round( v ) } ),
-                        new TemperatureMaxValueParser( { index: 6, parser: ( v: number ): number => Math.round( v ) } ),
+                        new TemperatureMinValueParser( { index: 4 } ),
+                        new TemperatureMeanValueParser( { index: 5 } ),
+                        new TemperatureMaxValueParser( { index: 6 } ),
                     ] );
                 }
                 break;
@@ -174,7 +174,7 @@ class DataParserFactory {
                     this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
-                        new EventsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new EventsValueParser( { index: 1 } ),
                         new EventsDifferenceValueParser( {} ),
                         new EventsGrowthValueParser( {} ),
                     ] );
@@ -183,7 +183,7 @@ class DataParserFactory {
                     this.type = 'standard,spatial';
                     this._parserCollection = new ValueParserCollection( [
                         new MunicipalityIdValueParser( { index: 0 } ),
-                        new EventsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                        new EventsValueParser( { index: 1 } ),
                         new MunicipalityNameValueParser( {} ),
                         new MunicipalityAreaValueParser( { index: 2 } ),
                         new MunicipalityPopulationValueParser( { index: 3 } ),
@@ -200,9 +200,9 @@ class DataParserFactory {
                 this.type = 'standard';
                 this._parserCollection = new ValueParserCollection( [
                     new TimeValueParser( { index: 0 } ),
-                    new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                    new SavingsValueParser( { index: 1 } ),
                     new SavingsGrowthValueParser( {} ),
-                    new ProductionValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
+                    new ProductionValueParser( { index: 1 } ), 
                     new ProductionGrowthValueParser( {} ), 
                 ] );
                 break;
@@ -212,9 +212,9 @@ class DataParserFactory {
                 this.type = 'standard';
                 this._parserCollection = new ValueParserCollection( [
                     new TimeValueParser( { index: 0 } ),
-                    new SavingsValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ),
+                    new SavingsValueParser( { index: 1 } ),
                     new SavingsGrowthValueParser( {} ),
-                    new PrecipitationValueParser( { index: 1, parser: ( v: number ): number => Math.round( v ) } ), 
+                    new PrecipitationValueParser( { index: 1 } ), 
                     new PrecipitationGrowthValueParser( {} ), 
                 ] );
                 break;

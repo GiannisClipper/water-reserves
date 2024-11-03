@@ -1,9 +1,7 @@
 import { ObjectType } from "@/types"
-import type { UnitType } from '@/types';
 
 interface ValueParserType {
     key?: string
-    parser?: CallableFunction
 }
 
 interface PrimaryValueParserType extends ValueParserType {
@@ -23,14 +21,12 @@ interface NestedValueParserType extends ValueParserType {
 abstract class ValueParser {
 
     key: string;
-    parser: CallableFunction;
 
-    constructor( { key, parser }: ValueParserType ) {
+    constructor( { key }: ValueParserType ) {
         this.key = key || 'value'
-        this.parser = parser || this.defaultParser
     }
 
-    defaultParser = ( ( data: ObjectType[], legend: ObjectType | undefined ) => {} )
+    parse(data: ObjectType[], legend: ObjectType | undefined ) {}
 
     toJSON(): ObjectType {
         return {
@@ -84,11 +80,9 @@ abstract class DifferenceValueParser extends SecondaryValueParser {
     
     constructor( props: SecondaryValueParserType ) {
         super( props );
-        this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
-
+    parse(data: ObjectType[], legend: ObjectType | undefined ) {
         for ( let i = data.length - 1; i >= 0; i-- ) {
             if ( i > 0 ) {
                 data[ i ][ this.key ] =  data[ i ][ this.sourceKey ] - data[ i - 1 ][ this.sourceKey ];
@@ -103,11 +97,9 @@ abstract class GrowthValueParser extends SecondaryValueParser {
     
     constructor( props: SecondaryValueParserType ) {
         super( props );
-        this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
-
+    parse(data: ObjectType[], legend: ObjectType | undefined ) {
         for ( let i = data.length - 1; i >= 0; i-- ) {
             if ( i > 0 ) {
                 data[ i ][ this.key ] = Math.round( 
@@ -124,11 +116,9 @@ abstract class RatioValueParser extends SecondaryValueParser {
     
     constructor( props: SecondaryValueParserType ) {
         super( props );
-        this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
-
+    parse(data: ObjectType[], legend: ObjectType | undefined ) {
         const maxVal = Math.max( ...( data.map( x => x[ this.sourceKey ] ) ) );
         for ( let i = 0; i <= data.length - 1; i++ ) {
             data[ i ][ this.key ] /= maxVal; // normalize between 0..1
@@ -140,10 +130,9 @@ abstract class NestedSumValueParser extends SecondaryValueParser {
     
     constructor( props: SecondaryValueParserType ) {
         super( props );
-        this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
+    parse(data: ObjectType[], legend: ObjectType | undefined ) {
 
         // an example for the row structure
         // {
@@ -173,11 +162,9 @@ abstract class NestedPercentageValueParser extends SecondaryValueParser {
     
     constructor( props: SecondaryValueParserType ) {
         super( props );
-        this.parser = props.parser || this.defaultParser;
     }
 
-    defaultParser = ( data: ObjectType[], legend: ObjectType | undefined ) => {
-
+    parse(data: ObjectType[], legend: ObjectType | undefined ) {
         // an example for the row structure
         // {
         //     time: "2023",

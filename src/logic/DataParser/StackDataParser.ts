@@ -42,6 +42,9 @@ class StackDataParser extends DataParser {
                 return obj;
             } 
         );
+        for ( const specifier of specifiers ) {
+            specifier.parse( arr, this.legend );
+        }
 
         // process the nested values
 
@@ -77,7 +80,7 @@ class StackDataParser extends DataParser {
         const specifiers2: SecondaryValueParser[] = parserCollection.getSecondaryParsers();
 
         for ( const specifier of specifiers2 ) {
-            specifier.parser( this.data, this.legend );
+            specifier.parse( this.data, this.legend );
         }
         // console.log( 'this.data', this.data)
     }

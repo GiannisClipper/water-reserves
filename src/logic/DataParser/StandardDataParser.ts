@@ -44,6 +44,9 @@ class StandardDataParser extends DataParser {
                     return obj;
                 } 
             );
+            for ( const specifier of specifiers ) {
+                specifier.parse( temp, this.legend );
+            }
 
             // join the results of each dataset in a common flat object
             temp.forEach( ( row: ObjectType ) => { 
@@ -61,7 +64,7 @@ class StandardDataParser extends DataParser {
         
         const specifiers: SecondaryValueParser[] = parserCollection.getSecondaryParsers();
         for ( const specifier of specifiers ) {
-            specifier.parser( this.data, this.legend );
+            specifier.parse( this.data, this.legend );
         }
 
         // console.log( 'this.data', this.data)
