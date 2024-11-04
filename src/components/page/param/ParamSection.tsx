@@ -1,6 +1,6 @@
 import ParamState from "./ParamState";
 
-import { ApiRequestFactory } from "@/logic/ApiRequest";
+import { RequestMakerFactory } from "@/logic/RequestMaker/RequestMakerFactory";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
@@ -23,8 +23,8 @@ const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
     let error = null, result = null;
 
     if ( endpoints[ endpoint ] ) {
-        const apiRequestCollection = new ApiRequestFactory( endpoints[ endpoint ] ).apiRequestCollection;
-        ( { error, result } = ( await apiRequestCollection.request() ).toJSON() );
+        const requestMakerCollection = new RequestMakerFactory( endpoints[ endpoint ] ).requestMakerCollection;
+        ( { error, result } = ( await requestMakerCollection.request() ).toJSON() );
 
         if ( result ) {
             const key = Object.keys( result )[ 0 ];

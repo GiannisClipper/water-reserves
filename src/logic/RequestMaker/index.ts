@@ -3,17 +3,10 @@ import ObjectList from '@/helpers/objects/ObjectList';
 import { ParamValidation } from "@/logic/ParamValidation";
 
 import type { ObjectType } from '@/types';
-import { RequestErrorType, RequestResultType } from '@/types/requestResult';
+import type { RequestErrorType, RequestResultType } from '@/types/requestResult';
+import type { SearchParamsType } from "@/types/searchParams";
 
-import type { 
-    SearchParamsType,
-    SavingsSearchParamsType,
-    ProductionSearchParamsType,
-    WeatherSearchParamsType,
-    InterruptionsSearchParamsType,
-} from "@/types/searchParams";
-
-abstract class ApiRequest {    
+abstract class RequestMaker {    
 
     abstract endpoint: string;
     _error: RequestErrorType | null = null;
@@ -72,7 +65,7 @@ abstract class ApiRequest {
     }
 }
 
-abstract class ApiRequestWithParams extends ApiRequest {    
+abstract class RequestMakerWithParams extends RequestMaker {    
 
     searchParams: ObjectType;
 
@@ -87,7 +80,7 @@ abstract class ApiRequestWithParams extends ApiRequest {
             if ( [ 'time_range', 'interval_filter', 'year_start' ].includes( key ) ) {
                 filtered[ key ] = searchParams[ key ];
 
-            // keep the leading two parts (following parts used for client process) 
+            // keep the leading two parts (following parts may be used by the client) 
             } else if (  [ 'time_aggregation' ].includes( key ) ) {
                 if ( searchParams[ key ] ) {
                     filtered[ key ] = searchParams[ key ].split( ',' ).slice( 0, 2 ).join( ',' );
@@ -120,14 +113,14 @@ abstract class ApiRequestWithParams extends ApiRequest {
     }
 }
 
-class StatusApiRequest extends ApiRequest { 
+class StatusRequestMaker extends RequestMaker { 
         
     endpoint = 'status';
 
     constructor() { super(); }
 }
 
-class ReservoirsApiRequest extends ApiRequest { 
+class ReservoirsRequestMaker extends RequestMaker { 
         
     endpoint = 'reservoirs';
 
@@ -142,7 +135,7 @@ class ReservoirsApiRequest extends ApiRequest {
     }
 }
 
-class FactoriesApiRequest extends ApiRequest { 
+class FactoriesRequestMaker extends RequestMaker { 
         
     endpoint = 'factories';
 
@@ -157,7 +150,7 @@ class FactoriesApiRequest extends ApiRequest {
     }
 }
 
-class LocationsApiRequest extends ApiRequest { 
+class LocationsRequestMaker extends RequestMaker { 
         
     endpoint = 'locations';
 
@@ -172,7 +165,7 @@ class LocationsApiRequest extends ApiRequest {
     }
 }
 
-class MunicipalitiesApiRequest extends ApiRequest { 
+class MunicipalitiesRequestMaker extends RequestMaker { 
         
     endpoint = 'municipalities';
 
@@ -187,7 +180,7 @@ class MunicipalitiesApiRequest extends ApiRequest {
     }
 }
 
-class SavingsApiRequest extends ApiRequestWithParams { 
+class SavingsRequestMaker extends RequestMakerWithParams { 
     
     endpoint = 'savings';
 
@@ -205,7 +198,7 @@ class SavingsApiRequest extends ApiRequestWithParams {
     }
 }
 
-class ProductionApiRequest extends ApiRequestWithParams { 
+class ProductionRequestMaker extends RequestMakerWithParams { 
     
     endpoint = 'production';
 
@@ -223,7 +216,7 @@ class ProductionApiRequest extends ApiRequestWithParams {
     }
 }
 
-class WeatherApiRequest extends ApiRequestWithParams { 
+class WeatherRequestMaker extends RequestMakerWithParams { 
     
     endpoint = 'weather';
 
@@ -241,7 +234,7 @@ class WeatherApiRequest extends ApiRequestWithParams {
     }
 }
 
-class InterruptionsApiRequest extends ApiRequestWithParams { 
+class InterruptionsRequestMaker extends RequestMakerWithParams { 
     
     endpoint = 'interruptions';
 
@@ -259,173 +252,17 @@ class InterruptionsApiRequest extends ApiRequestWithParams {
     }
 }
 
-class ApiRequestCollection {
-
-    _apiRequests: ApiRequest[];
-
-    constructor( apiRequests: ApiRequest[] ) {
-        this._apiRequests = apiRequests;
-    }
-
-    public async request() {
-        for ( const apiRequest of this._apiRequests ) {
-            const { error, result } = ( await apiRequest.request() ).toJSON();
-            if ( error ) {
-                break;
-            }
-        }
-        return this;
-    }
-
-    get error(): RequestErrorType | null {
-
-        for ( const apiRequest of this._apiRequests ) {
-            if ( apiRequest.error ) {
-                return apiRequest.error;
-            }
-        }
-        return null;
-    } 
-
-    get result(): ObjectType | null {
-
-        const result: ObjectType = {};
-        for ( const apiRequest of this._apiRequests ) {
-            if ( apiRequest.result ) {
-                result[ apiRequest.endpoint ] = apiRequest.result;
-            }
-        }
-        return result;
-    }
-
-    public toJSON(): ObjectType {
-        return {
-            error: this.error,
-            result: this.result,
-        }
-    }
-}
-
-class ApiRequestFactory {
-
-    private _apiRequestCollection: ApiRequestCollection;
-
-    constructor( endpoint: string, searchParams?: SearchParamsType ) {
-
-        switch ( endpoint ) {
-
-            case 'status': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new StatusApiRequest(),
-                ] );
-                break;
-            }
-            case 'reservoirs': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new ReservoirsApiRequest()
-                ] );
-                break;
-            }
-            case 'factories': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new FactoriesApiRequest()
-                ] );
-                break;
-            }
-            case 'locations': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new LocationsApiRequest()
-                ] );
-                break;
-            }
-            case 'municipalities': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new MunicipalitiesApiRequest()
-                ] );
-                break;
-            }
-            case 'savings': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new SavingsApiRequest( searchParams || {} )
-                ] );
-                break;
-            }
-            case 'production': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new ProductionApiRequest( searchParams || {} )
-                ] );
-                break;
-            }
-            case 'precipitation': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new WeatherApiRequest( searchParams || {} )
-                ] );
-                break;
-            }
-            case 'temperature': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new WeatherApiRequest( searchParams || {} )
-                ] );
-                break;
-            }
-            case 'interruptions': {
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new InterruptionsApiRequest( searchParams || {} )
-                ] );
-                break;
-            }
-            case 'savings-production': {
-
-                let { time_aggregation } = searchParams || {}; 
-                if ( time_aggregation ) {
-                    time_aggregation = time_aggregation.split( ',' )[ 0 ] + ',sum';
-                }
-
-                const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
-                const searchParams2 = { ...searchParams, factory_aggregation: 'sum', time_aggregation };
-
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new SavingsApiRequest( searchParams1 ),
-                    new ProductionApiRequest( searchParams2 )
-                ] );
-                break;
-            }
-            case 'savings-precipitation': {
-
-                let { time_aggregation } = searchParams || {}; 
-                if ( time_aggregation ) {
-                    time_aggregation = time_aggregation.split( ',' )[ 0 ] + ',sum';
-                }
-
-                const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
-                const searchParams2 = { ...searchParams, location_aggregation: 'sum', time_aggregation };
-
-                this._apiRequestCollection = new ApiRequestCollection( [
-                    new SavingsApiRequest( searchParams1 ),
-                    new WeatherApiRequest( searchParams2 )
-                ] );
-                break;
-            }
-
-            default:
-                throw `Invalid endpoint (${endpoint}) used in ApiRequestFactory`;
-        }
-    }
-
-    get apiRequestCollection(): ApiRequestCollection {
-        return this._apiRequestCollection;
-    }
-}
-
 export { 
-    ApiRequest,
-    ApiRequestWithParams,
-    ReservoirsApiRequest,
-    FactoriesApiRequest,
-    LocationsApiRequest,
-    SavingsApiRequest, 
-    ProductionApiRequest,
-    WeatherApiRequest,
-    InterruptionsApiRequest,
-    ApiRequestFactory
+    RequestMaker, 
+    RequestMakerWithParams,
+
+    StatusRequestMaker,
+    ReservoirsRequestMaker,
+    FactoriesRequestMaker,
+    LocationsRequestMaker,
+    SavingsRequestMaker, 
+    ProductionRequestMaker,
+    WeatherRequestMaker,
+    MunicipalitiesRequestMaker,
+    InterruptionsRequestMaker,
 };

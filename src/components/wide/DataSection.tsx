@@ -2,7 +2,7 @@ import { ChartSectionSkeleton } from "@/components/page/Skeleton";
 import Error from "@/components/page/Error";
 import ChartSection from "./chart/ChartSection";
 
-import { ApiRequest, ApiRequestFactory } from "@/logic/ApiRequest";
+import { RequestMakerFactory } from "@/logic/RequestMaker/RequestMakerFactory";
 
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -17,8 +17,8 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     let error = null, result = null;
     if ( Object.keys( searchParams ).length ) {
-        const apiRequestCollection = new ApiRequestFactory( endpoint, searchParams ).apiRequestCollection;
-        ( { error, result } = ( await apiRequestCollection.request() ).toJSON() );
+        const requestMakerCollection = new RequestMakerFactory( endpoint, searchParams ).requestMakerCollection;
+        ( { error, result } = ( await requestMakerCollection.request() ).toJSON() );
     }  
 
     console.log( "rendering: DataSection..." );

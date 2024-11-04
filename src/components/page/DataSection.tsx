@@ -10,7 +10,7 @@ const ChartSection = dynamic( () => import( './chart/ChartSection' ), { ssr: fal
 
 import ListSection from "./list/ListSection";
 
-import { ApiRequestFactory } from "@/logic/ApiRequest";
+import { RequestMakerFactory } from "@/logic/RequestMaker/RequestMakerFactory";
 import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 import type { SearchParamsType } from "@/types/searchParams";
 
@@ -25,8 +25,8 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
     let dataParser: any;
 
     if ( Object.keys( searchParams ).length ) {
-        const apiRequestCollection = new ApiRequestFactory( endpoint, searchParams ).apiRequestCollection;
-        ( { error, result } = ( await apiRequestCollection.request() ).toJSON() );
+        const requestMakerCollection = new RequestMakerFactory( endpoint, searchParams ).requestMakerCollection;
+        ( { error, result } = ( await requestMakerCollection.request() ).toJSON() );
 
         dataParser = new DataParserFactory( { endpoint, searchParams, result } )
             .dataParser;
