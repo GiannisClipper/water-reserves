@@ -400,7 +400,6 @@ class ApiRequestFactory {
                 const searchParams1 = { ...searchParams, reservoir_aggregation: 'sum' };
                 const searchParams2 = { ...searchParams, location_aggregation: 'sum', time_aggregation };
 
-                console.log( searchParams1, searchParams2 )
                 this._apiRequestCollection = new ApiRequestCollection( [
                     new SavingsApiRequest( searchParams1 ),
                     new WeatherApiRequest( searchParams2 )

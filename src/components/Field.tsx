@@ -1,3 +1,5 @@
+import { DateInput } from "./Input";
+
 import "@/styles/checkbox.css"
 
 type FieldPropsType = {
@@ -36,25 +38,21 @@ const Field = ( { className, label, value }: FieldPropsType ) => {
 
 const FieldFromDate = ( props: any ) => {
 
-    props = { placeholder: 'YYYY-MM-DD', ...props }
-
     return (
         <Field
             label = { <span>From</span> }
-            value = { <input {...props} /> }
+            value = { <DateInput {...props} /> }
         />
     );
 }
 
 const FieldToDate = ( props: any ) => {
 
-    props = { placeholder: 'YYYY-MM-DD', ...props }
-
     return (
 
         <Field
             label = { <span>To</span> }
-            value = { <input {...props} /> }
+            value = { <DateInput {...props} /> }
         />
     );
 }

@@ -54,11 +54,13 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
         :
         <div className="DataSection">
-            <ChartSection 
-                endpoint={ endpoint }
-                searchParams={ searchParams }
-                result={ result }
-            />
+            <Suspense fallback={<ChartSectionSkeleton />}>
+                <ChartSection 
+                    endpoint={ endpoint }
+                    searchParams={ searchParams }
+                    result={ result }
+                />
+            </Suspense>
             <Suspense fallback={<ListSectionSkeleton />}>
                 <ListSection 
                     endpoint={ endpoint }
