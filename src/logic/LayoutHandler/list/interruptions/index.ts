@@ -1,7 +1,4 @@
-import DataParser from "@/logic/DataParser";
 import { ListLayoutHandler, StandardListLayoutHandler } from "../_abstract";
-
-import { ValueHandler } from "@/logic/ValueHandler";
 
 import { 
     TimeValueHandler, 
@@ -14,14 +11,15 @@ import { INTERRUPTIONS } from "@/app/settings";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import ParamValues from "@/logic/ParamValues";
+import { ObjectType } from "@/types";
 
 class TemporalInterruptionsStandardListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         super( {
             title: `${INTERRUPTIONS} (temporal)`,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers: [
                 new TimeValueHandler(),
                 new EventsValueHandler(),
@@ -34,9 +32,9 @@ class TemporalInterruptionsStandardListLayoutHandler extends StandardListLayoutH
 
 class SpatialInterruptionsStandardListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
-        const data = dataParser.data.sort( ( a, b ) => a.name.localeCompare( b.name ) );
+        const data = dataBox.data.sort( ( a, b ) => a.name.localeCompare( b.name ) );
 
         super( {
             title: `${INTERRUPTIONS} (spatial)`,
@@ -57,16 +55,16 @@ class InterruptionsListLayoutHandlerFactory {
 
     handler: ListLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation } = params;
 
         if ( timeAggregation !== 'alltime' ) {
-            this.handler = new TemporalInterruptionsStandardListLayoutHandler( searchParams, dataParser );
+            this.handler = new TemporalInterruptionsStandardListLayoutHandler( searchParams, dataBox );
 
         } else {
-            this.handler = new SpatialInterruptionsStandardListLayoutHandler( searchParams, dataParser );
+            this.handler = new SpatialInterruptionsStandardListLayoutHandler( searchParams, dataBox );
         }
     }
 }

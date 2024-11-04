@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
@@ -14,10 +13,11 @@ import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class TemperatureChartLayoutHandler extends StandardChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -38,7 +38,7 @@ class TemperatureChartLayoutHandler extends StandardChartLayoutHandler {
             title: 'Temperature in Athens',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Celcius degrees',
-            data: dataParser.data,
+            data: dataBox.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator,
         } );
@@ -49,17 +49,17 @@ class TemperatureChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
-        switch ( dataParser.type ) {
+        switch ( dataBox.type ) {
 
             case 'standard': {
-                this.handler = new TemperatureChartLayoutHandler( searchParams, dataParser );
+                this.handler = new TemperatureChartLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataParser.type}) used in TemperatureChartLayoutHandlerFactory`;
+                throw `Invalid type (${dataBox.type}) used in TemperatureChartLayoutHandlerFactory`;
         }
     }
 }

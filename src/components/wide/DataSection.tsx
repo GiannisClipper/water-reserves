@@ -1,9 +1,12 @@
 import { ChartSectionSkeleton } from "@/components/page/Skeleton";
 import Error from "@/components/page/Error";
-import ChartSection from "./chart/ChartSection";
 
-import { RequestMakerFactory } from "@/logic/RequestMaker/RequestMakerFactory";
+// import ChartSection from "./chart/ChartSection";
+// import dynamic... to fix Server Error: ReferenceError: window is not defined
+import dynamic from 'next/dynamic'
+const ChartSection = dynamic( () => import( './chart/ChartSection' ), { ssr: false } )
 
+import useApiRequest from "@/logic/useApiRequest";
 import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = { 
@@ -15,17 +18,13 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 2000 ) )
 
-    let error = null, result = null;
-    if ( Object.keys( searchParams ).length ) {
-        const requestMakerCollection = new RequestMakerFactory( endpoint, searchParams ).requestMakerCollection;
-        ( { error, result } = ( await requestMakerCollection.request() ).toJSON() );
-    }  
+    const [ error, dataBox ] = await useApiRequest( { endpoint, searchParams } );
 
     console.log( "rendering: DataSection..." );
 
     return ( 
         
-        ! error && ! result
+        ! error && ! dataBox
         ?
         <div className="DataSection">
             <ChartSectionSkeleton /> 
@@ -44,7 +43,7 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
             <ChartSection 
                 endpoint={ endpoint }
                 searchParams={ searchParams }
-                result={ result }
+                dataBox={ dataBox }
             />
         </div>
     );

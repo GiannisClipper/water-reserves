@@ -23,21 +23,17 @@ import { SavingsProductionChartContent } from "./content/SavingsProductionChartC
 import { SavingsPrecipitationChartContent } from "./content/SavingsPrecipitationChartContent";
 
 import type { SearchParamsType } from "@/types/searchParams";
-import type { RequestResultType } from "@/types/requestResult";
 import type { ObjectType } from "@/types";
 
 type PropsType = {
     endpoint: string
     searchParams: SearchParamsType
-    result: RequestResultType | null
+    dataBox: ObjectType
 }
 
-const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
-
-    const dataParser = new DataParserFactory( { endpoint, searchParams, result } )
-        .dataParser;
+const ChartSection = ( { endpoint, searchParams, dataBox }: PropsType  ) => {
     
-    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataParser )
+    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataBox )
         .handler;
 
     const chartLabels: ObjectType = {
@@ -46,7 +42,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
         'stack': ChartLabel1,
     };
 
-    const ChartLabel = chartLabels[ dataParser.type ];
+    const ChartLabel = chartLabels[ dataBox.type ];
 
     const chartContents: ObjectType = {
         'savings': SavingsChartContent,
@@ -75,7 +71,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
     // await new Promise( resolve => setTimeout( resolve, 3000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
-    console.log( "rendering: ChartSection..." )//, ChartContent )
+    console.log( "rendering: ChartSection..." )//, layoutHandler )
 
     return (
         <div className="ChartSection">
@@ -84,7 +80,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
             />
 
             <ChartContent 
-                dataParser={ dataParser }
+                dataBox={ dataBox }
                 layoutHandler={ layoutHandler }
                 chartType={ chartType }
             />

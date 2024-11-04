@@ -222,7 +222,7 @@ class CardDataParserFactory {
                 break;
             }
             default:
-                throw `Invalid option (${option}) used in CardHandlerFactory`;
+                throw `Invalid option (${option}) used in CardDataParserFactory`;
         }
     }
 }

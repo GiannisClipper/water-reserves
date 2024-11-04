@@ -17,14 +17,14 @@ const getNested = ( obj: ObjectType, key: string ): any => {
 }
 
 type PropsType = { 
-    dataParser: DataParser
+    dataBox: ObjectType
     layoutHandler: StandardListLayoutHandler
 }
 
-const ListContent = ( { dataParser, layoutHandler }: PropsType ) => {
+const ListContent = ( { dataBox, layoutHandler }: PropsType ) => {
 
+    const data: ObjectType[] = dataBox.data;
     const valueHandlers = layoutHandler.valueHandlers;
-    const data: ObjectType[] = dataParser.data;
 
     console.log( `rendering: ListContent...` )
 

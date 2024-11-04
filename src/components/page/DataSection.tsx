@@ -9,9 +9,7 @@ import dynamic from 'next/dynamic'
 const ChartSection = dynamic( () => import( './chart/ChartSection' ), { ssr: false } )
 
 import ListSection from "./list/ListSection";
-
-import { RequestMakerFactory } from "@/logic/RequestMaker/RequestMakerFactory";
-import DataParserFactory from "@/logic/DataParser/DataParserFactory";
+import useApiRequest from "@/logic/useApiRequest";
 import type { SearchParamsType } from "@/types/searchParams";
 
 type PropsType = { 
@@ -21,24 +19,13 @@ type PropsType = {
 
 const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
 
-    let error = null, result = null;
-    let dataParser: any;
-
-    if ( Object.keys( searchParams ).length ) {
-        const requestMakerCollection = new RequestMakerFactory( endpoint, searchParams ).requestMakerCollection;
-        ( { error, result } = ( await requestMakerCollection.request() ).toJSON() );
-
-        if ( ! error ) {
-            dataParser = new DataParserFactory( { endpoint, searchParams, result } )
-                .dataParser;
-        }
-    }  
+    const [ error, dataBox ] = await useApiRequest( { endpoint, searchParams } );
 
     console.log( "rendering: DataSection..." );
 
     return ( 
 
-        ! error && ! result
+        ! error && ! dataBox
         ?
         <div className="DataSection">
             <ChartSectionSkeleton /> 
@@ -60,15 +47,14 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
                 <ChartSection 
                     endpoint={ endpoint }
                     searchParams={ searchParams }
-                    result={ result }
+                    dataBox={ dataBox }
                 />
             </Suspense>
             <Suspense fallback={<ListSectionSkeleton />}>
                 <ListSection 
                     endpoint={ endpoint }
                     searchParams={ searchParams }
-                    result={ result }
-                    dataParser={ dataParser }
+                    dataBox={ dataBox }
                 />
             </Suspense>
         </div>

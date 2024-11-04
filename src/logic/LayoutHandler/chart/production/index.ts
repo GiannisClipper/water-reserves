@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ChartLayoutHandler, StackChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
@@ -15,10 +14,11 @@ import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class ProductionStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -33,7 +33,7 @@ class ProductionStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
             yDifferenceValueHandlers: [ new ProductionDifferenceValueHandler() ],
             yChangeValueHandlers: [ new ProductionChangeValueHandler() ],
-            data: dataParser.data,
+            data: dataBox.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator
         } );
@@ -42,7 +42,7 @@ class ProductionStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
 class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -51,8 +51,8 @@ class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
 
         const yValueHandlers: ValueHandler[] = [];        
         const yPercentageValueHandlers: ValueHandler[] = [];        
-        if ( dataParser.legend ) {
-            for ( const factory of dataParser.legend.factories ) {
+        if ( dataBox.legend ) {
+            for ( const factory of dataBox.legend.factories ) {
 
                 const yValueHandler = new FactoriesValueHandler();
                 yValueHandler.key = yValueHandler.key.replace( '{id}', factory.id );
@@ -73,7 +73,7 @@ class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
-            data: dataParser.data,
+            data: dataBox.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator
         } );
@@ -84,22 +84,22 @@ class ProductionChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
-        switch ( dataParser.type ) {
+        switch ( dataBox.type ) {
 
             case 'standard': {
-                this.handler = new ProductionStandardChartLayoutHandler( searchParams, dataParser );
+                this.handler = new ProductionStandardChartLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             case 'stack': {
-                this.handler = new ProductionStackChartLayoutHandler( searchParams, dataParser );
+                this.handler = new ProductionStackChartLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataParser.type}) used in ProductionChartLayoutHandlerFactory`;
+                throw `Invalid type (${dataBox.type}) used in ProductionChartLayoutHandlerFactory`;
         }
     }
 }

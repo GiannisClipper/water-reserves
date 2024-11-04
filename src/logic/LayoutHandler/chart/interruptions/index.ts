@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
@@ -15,14 +14,15 @@ import {
     MunicipalityPopulationValueHandler
 } from "@/logic/ValueHandler/interruptions";
 
-import type { SearchParamsType } from "@/types/searchParams";
-
 import { XTicksCalculator, TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
+import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
+
 class TemporalInterruptionsStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -37,7 +37,7 @@ class TemporalInterruptionsStandardChartLayoutHandler extends StandardChartLayou
 
             yDifferenceValueHandlers: [ new EventsDifferenceValueHandler() ],
             yChangeValueHandlers: [ new EventsChangeValueHandler() ],
-            data: dataParser.data,
+            data: dataBox.data,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator,
         } );
@@ -55,7 +55,7 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
     nClustersValueHandler: ValueHandler;
     clusterValueHandler: ValueHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -78,8 +78,8 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
         // sort the data
 
         const key = new yValueHandlerClass().key;
-        dataParser.data.sort( ( a, b ) => b[ key ] - a[ key ] );
-        console.log( key, dataParser.data )
+        dataBox.data.sort( ( a, b ) => b[ key ] - a[ key ] );
+        console.log( key, dataBox.data )
 
         super( {
             title: title,
@@ -87,7 +87,7 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
             yLabel: yLabel,
             xValueHandler: new MunicipalityNameValueHandler(),
             yValueHandlers: [ new yValueHandlerClass() ],
-            data: dataParser.data,
+            data: dataBox.data,
             XTicksCalculator,
             YTicksCalculator
         } );
@@ -107,16 +107,16 @@ class InterruptionsChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation } = params;
 
         if ( timeAggregation !== 'alltime' ) {
-            this.handler = new TemporalInterruptionsStandardChartLayoutHandler( searchParams, dataParser );
+            this.handler = new TemporalInterruptionsStandardChartLayoutHandler( searchParams, dataBox );
 
         } else {
-            this.handler = new SpatialInterruptionsStandardChartLayoutHandler( searchParams, dataParser );
+            this.handler = new SpatialInterruptionsStandardChartLayoutHandler( searchParams, dataBox );
         }
     }
 }

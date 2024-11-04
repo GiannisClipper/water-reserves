@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ChartLayoutHandler, StackChartLayoutHandler, StandardChartLayoutHandler } from "../_abstract";
 import { ParamValues } from "@/logic/ParamValues";
 
@@ -15,10 +14,11 @@ import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class SavingsStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -31,7 +31,7 @@ class SavingsStandardChartLayoutHandler extends StandardChartLayoutHandler {
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yDifferenceValueHandlers: [ new SavingsDifferenceValueHandler() ],        
             yChangeValueHandlers: [ new SavingsChangeValueHandler() ],    
-            data: dataParser.data,
+            data: dataBox.data,
             XTicksCalculator: TemporalXTicksCalculator, 
             YTicksCalculator,
         } );
@@ -40,7 +40,7 @@ class SavingsStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
 class SavingsStackChartLayoutHandler extends StackChartLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
@@ -49,8 +49,8 @@ class SavingsStackChartLayoutHandler extends StackChartLayoutHandler {
 
         const yValueHandlers: ValueHandler[] = [];      
         const yPercentageValueHandlers: ValueHandler[] = [];  
-        if ( dataParser.legend ) {
-            for ( const reservoir of dataParser.legend.reservoirs ) {
+        if ( dataBox.legend ) {
+            for ( const reservoir of dataBox.legend.reservoirs ) {
 
                 const yValueHandler = new ReservoirsValueHandler();
                 yValueHandler.key = yValueHandler.key.replace( '{id}', reservoir.id );
@@ -71,7 +71,7 @@ class SavingsStackChartLayoutHandler extends StackChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
-            data: dataParser.data,
+            data: dataBox.data,
             XTicksCalculator: TemporalXTicksCalculator, 
             YTicksCalculator,
         } );
@@ -82,22 +82,22 @@ class SavingsChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
-        switch ( dataParser.type ) {
+        switch ( dataBox.type ) {
 
             case 'standard': {
-                this.handler = new SavingsStandardChartLayoutHandler( searchParams, dataParser );
+                this.handler = new SavingsStandardChartLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             case 'stack': {
-                this.handler = new SavingsStackChartLayoutHandler( searchParams, dataParser );
+                this.handler = new SavingsStackChartLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataParser.type}) used in SavingsChartLayoutHandlerFactory`;
+                throw `Invalid type (${dataBox.type}) used in SavingsChartLayoutHandlerFactory`;
         }
     }
 }

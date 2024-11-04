@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ListLayoutHandler, StandardListLayoutHandler } from "../_abstract";
 
 import { TimeValueHandler, SavingsValueHandler, SavingsDifferenceValueHandler, SavingsChangeValueHandler } from "@/logic/ValueHandler/savings";
@@ -6,12 +5,14 @@ import { ProductionValueHandler, ProductionDifferenceValueHandler, ProductionCha
 
 import { SAVINGS_PRODUCTION } from "@/app/settings";
 
-import type { SearchParamsType } from "@/types/searchParams";
 import { ValueHandler } from "@/logic/ValueHandler";
+
+import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class SavingsProductionStandardListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const valueHandlers: ValueHandler[] = [
             new TimeValueHandler(),
@@ -25,7 +26,7 @@ class SavingsProductionStandardListLayoutHandler extends StandardListLayoutHandl
 
         super( {
             title: `${SAVINGS_PRODUCTION}`,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers
         } );
     }
@@ -35,17 +36,17 @@ class SavingsProductionListLayoutHandlerFactory {
 
     handler: ListLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
-        switch ( dataParser.type ) {
+        switch ( dataBox.type ) {
 
             case 'standard': {
-                this.handler = new SavingsProductionStandardListLayoutHandler( searchParams, dataParser );
+                this.handler = new SavingsProductionStandardListLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataParser.type}) used in SavingsProductionListLayoutHandlerFactory`;
+                throw `Invalid type (${dataBox.type}) used in SavingsProductionListLayoutHandlerFactory`;
         }
     }
 }

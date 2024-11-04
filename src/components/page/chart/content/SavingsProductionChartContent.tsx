@@ -1,12 +1,9 @@
 "use client"
 
 import { MultiStandardTooltip } from '@/components/page/chart/tooltips';
-
-import { StandardDataParser } from '@/logic/DataParser/StandardDataParser';
-
 import { StandardAreaChart, StandardBarChart, StandardLineChart } from '@/components/page/chart/StandardChart';
 import { StackChartLayoutHandler, StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
-
+import type { ObjectType } from '@/types';
 import "@/styles/chart.css";
 
 type Props1Type = { 
@@ -51,14 +48,14 @@ const SavingsProductionAggregatedChartContent = ( { chartType, layoutHandler }: 
 }
 
 type PropsType = { 
-    dataParser: StandardDataParser
+    dataBox: ObjectType
     chartType: string | undefined
     layoutHandler: StandardChartLayoutHandler | StackChartLayoutHandler
 }
 
-const SavingsProductionChartContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
+const SavingsProductionChartContent = ( { dataBox, chartType, layoutHandler }: PropsType ) => {
 
-    switch ( dataParser.type ) {
+    switch ( dataBox.type ) {
 
         case 'standard':
             return ( <SavingsProductionAggregatedChartContent

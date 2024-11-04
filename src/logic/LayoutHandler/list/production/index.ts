@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ListLayoutHandler, StandardListLayoutHandler } from "../_abstract";
 
 import { ValueHandler } from "@/logic/ValueHandler";
@@ -13,14 +12,15 @@ import {
 import { PRODUCTION } from "@/app/settings";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class ProductionStandardListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         super( {
             title: `${PRODUCTION} (aggregated)`,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers: [
                 new TimeValueHandler(),
                 new ProductionValueHandler(),
@@ -33,7 +33,7 @@ class ProductionStandardListLayoutHandler extends StandardListLayoutHandler {
 
 class ProductionStackListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const valueHandlers: ValueHandler[] = [
             new TimeValueHandler(),
@@ -42,7 +42,7 @@ class ProductionStackListLayoutHandler extends StandardListLayoutHandler {
 
         const labels: string[] = valueHandlers.map( h => h.label );
 
-        for ( const factory of dataParser.legend.factories ) {
+        for ( const factory of dataBox.legend.factories ) {
 
             let handler = new FactoriesValueHandler();
             handler.key = handler.key.replace( '{id}', factory.id ) ;
@@ -58,7 +58,7 @@ class ProductionStackListLayoutHandler extends StandardListLayoutHandler {
         super( {
             title: `${PRODUCTION} (per plant)`,
             labels,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers,
         } );
     }
@@ -68,22 +68,22 @@ class ProductionListLayoutHandlerFactory {
 
     handler: ListLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
-        switch ( dataParser.type ) {
+        switch ( dataBox.type ) {
 
             case 'standard': {
-                this.handler = new ProductionStandardListLayoutHandler( searchParams, dataParser );
+                this.handler = new ProductionStandardListLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             case 'stack': {
-                this.handler = new ProductionStackListLayoutHandler( searchParams, dataParser );
+                this.handler = new ProductionStackListLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataParser.type}) used in ProductionListLayoutHandlerFactory`;
+                throw `Invalid type (${dataBox.type}) used in ProductionListLayoutHandlerFactory`;
         }
     }
 }

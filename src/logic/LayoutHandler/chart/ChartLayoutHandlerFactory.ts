@@ -7,50 +7,49 @@ import { SavingsProductionChartLayoutHandlerFactory } from "./savings-production
 import { SavingsPrecipitationChartLayoutHandlerFactory } from "./savings-precipitation";
 import { InterruptionsChartLayoutHandlerFactory } from "./interruptions";
 
-import DataParser from "@/logic/DataParser";
-
 import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class ChartLayoutHandlerFactory {
 
     handler: ChartLayoutHandler;
 
-    constructor( option: string, searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( option: string, searchParams: SearchParamsType, dataBox: ObjectType ) {
     
         switch ( option ) {
 
             case 'savings': {
-                this.handler = new SavingsChartLayoutHandlerFactory( searchParams, dataParser ).handler;
+                this.handler = new SavingsChartLayoutHandlerFactory( searchParams, dataBox ).handler;
                 break;
             }
 
             case 'production': {
-                this.handler = new ProductionChartLayoutHandlerFactory( searchParams, dataParser ).handler;
+                this.handler = new ProductionChartLayoutHandlerFactory( searchParams, dataBox ).handler;
                 break;
             }
 
             case 'precipitation': {
-                this.handler = new PrecipitationChartLayoutHandlerFactory( searchParams, dataParser ).handler;
+                this.handler = new PrecipitationChartLayoutHandlerFactory( searchParams, dataBox ).handler;
                 break;
             }
 
             case 'temperature': {
-                this.handler = new TemperatureChartLayoutHandlerFactory( searchParams, dataParser ).handler;
+                this.handler = new TemperatureChartLayoutHandlerFactory( searchParams, dataBox ).handler;
                 break;
             }
 
             case 'savings-production': {
-                this.handler = new SavingsProductionChartLayoutHandlerFactory( searchParams, dataParser ).handler;
+                this.handler = new SavingsProductionChartLayoutHandlerFactory( searchParams, dataBox ).handler;
                 break;
             }
 
             case 'savings-precipitation': {
-                this.handler = new SavingsPrecipitationChartLayoutHandlerFactory( searchParams, dataParser ).handler;
+                this.handler = new SavingsPrecipitationChartLayoutHandlerFactory( searchParams, dataBox ).handler;
                 break;
             }
 
             case 'interruptions': {
-                this.handler = new InterruptionsChartLayoutHandlerFactory( searchParams, dataParser ).handler;
+                this.handler = new InterruptionsChartLayoutHandlerFactory( searchParams, dataBox ).handler;
                 break;
             }
 

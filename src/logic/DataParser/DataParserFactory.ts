@@ -134,7 +134,7 @@ class DataParserFactory {
                         new TimeValueParser( { index: 0 } ),
                         new PrecipitationValueParser( { index: 1 } ),
                         new PrecipitationDifferenceValueParser( {} ),
-                        new PrecipitationGrowthValueParser( {} ),
+                        new PrecipitationChangeValueParser( {} ),
                     ] );
                 } else {
                     this.type = 'stack';

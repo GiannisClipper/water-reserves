@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ListLayoutHandler, StandardListLayoutHandler } from "../_abstract";
 
 import { TimeValueHandler, SavingsValueHandler, SavingsDifferenceValueHandler, SavingsChangeValueHandler } from "@/logic/ValueHandler/savings";
@@ -6,12 +5,14 @@ import { PrecipitationValueHandler, PrecipitationDifferenceValueHandler, Precipi
 
 import { SAVINGS_PRECIPITATION } from "@/app/settings";
 
-import type { SearchParamsType } from "@/types/searchParams";
 import { ValueHandler } from "@/logic/ValueHandler";
+
+import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class SavingsPrecipitationStandardListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const valueHandlers: ValueHandler[] = [
             new TimeValueHandler(),
@@ -25,7 +26,7 @@ class SavingsPrecipitationStandardListLayoutHandler extends StandardListLayoutHa
 
         super( {
             title: `${SAVINGS_PRECIPITATION}`,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers
         } );
     }
@@ -35,17 +36,17 @@ class SavingsPrecipitationListLayoutHandlerFactory {
 
     handler: ListLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
-        switch ( dataParser.type ) {
+        switch ( dataBox.type ) {
 
             case 'standard': {
-                this.handler = new SavingsPrecipitationStandardListLayoutHandler( searchParams, dataParser );
+                this.handler = new SavingsPrecipitationStandardListLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataParser.type}) used in SavingsPrecipitationListLayoutHandlerFactory`;
+                throw `Invalid type (${dataBox.type}) used in SavingsPrecipitationListLayoutHandlerFactory`;
         }
     }
 }

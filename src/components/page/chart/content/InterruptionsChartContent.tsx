@@ -1,17 +1,12 @@
 "use client"
 
 import { SingleStandardTooltip, SpatialInterruptionsTooltip } from '@/components/page/chart/tooltips';
-
-import { StandardDataParser } from '@/logic/DataParser/StandardDataParser';
-
 import { StandardBarChart } from '@/components/page/chart/StandardChart';
 import { StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
-
 import { XAxisSpatialTick } from '../ticks';
-
-import "@/styles/chart.css";
-import DataParser from '@/logic/DataParser';
 import { getClusterColorCell } from '../cells';
+import type { ObjectType } from '@/types';
+import "@/styles/chart.css";
 
 type Props1Type = { 
     chartType: string | undefined
@@ -68,14 +63,14 @@ const InterruptionsSpatialChartContent = ( { chartType, layoutHandler }: Props2T
 }
 
 type PropsType = { 
-    dataParser: StandardDataParser
+    dataBox: ObjectType
     chartType: string | undefined
     layoutHandler: StandardChartLayoutHandler
 }
 
-const InterruptionsChartContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
+const InterruptionsChartContent = ( { dataBox, chartType, layoutHandler }: PropsType ) => {
 
-    switch ( dataParser.type ) {
+    switch ( dataBox.type ) {
 
         case 'standard':
             return ( <InterruptionsTemporalChartContent

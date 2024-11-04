@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ListLayoutHandler, StandardListLayoutHandler } from "../_abstract";
 
 import { ValueHandler } from "@/logic/ValueHandler";
@@ -13,14 +12,15 @@ import {
 import { PRECIPITATION } from "@/app/settings";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class PrecipitationStandardListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         super( {
             title: `${PRECIPITATION} (aggregated)`,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers: [
                 new TimeValueHandler(),
                 new PrecipitationValueHandler(),
@@ -33,7 +33,7 @@ class PrecipitationStandardListLayoutHandler extends StandardListLayoutHandler {
 
 class PrecipitationStackListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const valueHandlers: ValueHandler[] = [
             new TimeValueHandler(),
@@ -42,7 +42,7 @@ class PrecipitationStackListLayoutHandler extends StandardListLayoutHandler {
 
         const labels: string[] = valueHandlers.map( h => h.label );
 
-        for ( const location of dataParser.legend.locations ) {
+        for ( const location of dataBox.legend.locations ) {
 
             let handler = new LocationsValueHandler();
             handler.key = handler.key.replace( '{id}', location.id ) ;
@@ -58,7 +58,7 @@ class PrecipitationStackListLayoutHandler extends StandardListLayoutHandler {
         super( {
             title: `${PRECIPITATION} (per location)`,
             labels,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers,
         } );
     }
@@ -68,22 +68,22 @@ class PrecipitationListLayoutHandlerFactory {
 
     handler: ListLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
-        switch ( dataParser.type ) {
+        switch ( dataBox.type ) {
 
             case 'standard': {
-                this.handler = new PrecipitationStandardListLayoutHandler( searchParams, dataParser );
+                this.handler = new PrecipitationStandardListLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             case 'stack': {
-                this.handler = new PrecipitationStackListLayoutHandler( searchParams, dataParser );
+                this.handler = new PrecipitationStackListLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataParser.type}) used in PrecipitationListLayoutHandlerFactory`;
+                throw `Invalid type (${dataBox.type}) used in PrecipitationListLayoutHandlerFactory`;
         }
     }
 }

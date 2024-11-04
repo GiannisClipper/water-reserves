@@ -1,4 +1,3 @@
-import DataParser from "@/logic/DataParser";
 import { ListLayoutHandler, StandardListLayoutHandler } from "../_abstract";
 
 import { ValueHandler } from "@/logic/ValueHandler";
@@ -13,14 +12,15 @@ import {
 import { SAVINGS } from "@/app/settings";
 
 import type { SearchParamsType } from "@/types/searchParams";
+import type { ObjectType } from "@/types";
 
 class SavingsStandardListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         super( {
             title: `${SAVINGS} (aggregated)`,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers: [
                 new TimeValueHandler(),
                 new SavingsValueHandler(),
@@ -33,7 +33,7 @@ class SavingsStandardListLayoutHandler extends StandardListLayoutHandler {
 
 class SavingsStackListLayoutHandler extends StandardListLayoutHandler {
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         const valueHandlers: ValueHandler[] = [
             new TimeValueHandler(),
@@ -42,7 +42,7 @@ class SavingsStackListLayoutHandler extends StandardListLayoutHandler {
 
         const labels: string[] = valueHandlers.map( h => h.label );
 
-        for ( const reservoir of dataParser.legend.reservoirs ) {
+        for ( const reservoir of dataBox.legend.reservoirs ) {
 
             let handler = new ReservoirsValueHandler();
             handler.key = handler.key.replace( '{id}', reservoir.id ) ;
@@ -58,7 +58,7 @@ class SavingsStackListLayoutHandler extends StandardListLayoutHandler {
         super( {
             title: `${SAVINGS} (per reservoir)`,
             labels,
-            data: dataParser.data,
+            data: dataBox.data,
             valueHandlers,
         } );
     }
@@ -68,22 +68,22 @@ class SavingsListLayoutHandlerFactory {
 
     handler: ListLayoutHandler;
 
-    constructor( searchParams: SearchParamsType, dataParser: DataParser ) {
+    constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
     
-        switch ( dataParser.type ) {
+        switch ( dataBox.type ) {
 
             case 'standard': {
-                this.handler = new SavingsStandardListLayoutHandler( searchParams, dataParser );
+                this.handler = new SavingsStandardListLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             case 'stack': {
-                this.handler = new SavingsStackListLayoutHandler( searchParams, dataParser );
+                this.handler = new SavingsStackListLayoutHandler( searchParams, dataBox );
                 break;
             }
 
             default:
-                throw `Invalid type (${dataParser.type}) used in SavingsListLayoutHandlerFactory`;
+                throw `Invalid type (${dataBox.type}) used in SavingsListLayoutHandlerFactory`;
         }
     }
 }

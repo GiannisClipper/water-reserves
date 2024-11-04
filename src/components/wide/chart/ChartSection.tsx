@@ -23,15 +23,13 @@ import type { RequestResultType } from "@/types/requestResult";
 type PropsType = {
     endpoint: string
     searchParams: SearchParamsType
-    result: RequestResultType | null
+    dataBox: ObjectType
 }
 
-const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
+const ChartSection = ( { endpoint, searchParams, dataBox }: PropsType  ) => {
 
-    const dataParser = new DataParserFactory( { endpoint, searchParams, result } )
-        .dataParser;
-
-    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataParser ).handler;
+    const layoutHandler = new ChartLayoutHandlerFactory( endpoint, searchParams, dataBox )
+        .handler;
 
     const chartContents: ObjectType = {
         'savings': SavingsChartContent,
@@ -59,7 +57,7 @@ const ChartSection = ( { endpoint, searchParams, result }: PropsType  ) => {
                 // toJSON() is used for serialization, considering the Error: 
                 // Only plain objects, and a few built-ins, can be passed to Client Components from Server Components. 
                 // Classes or null prototypes are not supported.
-                dataParser={ dataParser }
+                dataBox={ dataBox }
                 chartType={ chartType }
                 layoutHandler={ layoutHandler }
             />

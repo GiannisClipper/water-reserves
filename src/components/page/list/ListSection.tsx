@@ -1,25 +1,23 @@
 import ListLabel from "@/components/page/list/ListLabel";
 import StandardListContent from "@/components/page/list/StandardListContent";
 
-import DataParser from "@/logic/DataParser";
 import ListLayoutHandlerFactory from "@/logic/LayoutHandler/list/ListLayoutHandlerFactory";
 
 import type { SearchParamsType } from "@/types/searchParams";
-import type { RequestResultType } from "@/types/requestResult";
+import type { ObjectType } from "@/types";
 
 type PropsType = {
     endpoint: string
     searchParams: SearchParamsType
-    result: RequestResultType | null
-    dataParser: DataParser
+    dataBox: ObjectType
 }
 
-const ListSection = ( { endpoint, searchParams, result, dataParser }: PropsType  ) => {
+const ListSection = ( { endpoint, searchParams, dataBox }: PropsType  ) => {
 
     // await new Promise( resolve => setTimeout( resolve, 1000 ) )
     // const result: number = Math.floor( Math.random() * 10 );
 
-    const layoutHandler = new ListLayoutHandlerFactory( endpoint, searchParams, dataParser )
+    const layoutHandler = new ListLayoutHandlerFactory( endpoint, searchParams, dataBox )
         .handler;
 
     console.log( "rendering: ListSection..." )
@@ -29,7 +27,7 @@ const ListSection = ( { endpoint, searchParams, result, dataParser }: PropsType 
             <ListLabel />
 
             <StandardListContent
-                dataParser={ dataParser }
+                dataBox={ dataBox }
                 layoutHandler={ layoutHandler }
             />
         </div>

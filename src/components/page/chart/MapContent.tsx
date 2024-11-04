@@ -16,12 +16,12 @@ import 'leaflet/dist/leaflet.css'
 import "@/styles/chart.css";
 
 type PropsType = { 
-    dataParser: SpatialStandardDataParser
+    dataBox: ObjectType
     layoutHandler: SpatialInterruptionsStandardChartLayoutHandler
     chartType: string | undefined
 }
 
-const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
+const MapContent = ( { dataBox, chartType, layoutHandler }: PropsType ) => {
 
     const nameValueHandler = layoutHandler.nameValueHandler;
     const areaValueHandler = layoutHandler.areaValueHandler;
@@ -31,14 +31,14 @@ const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
     const eventsOverPopulationValueHandler = layoutHandler.eventsOverPopulationValueHandler;
 
     const municipalities: ObjectType = {}; 
-    if ( dataParser.legend ) {
-        for ( const row of dataParser.legend[ 'municipalities' ] ) {
+    if ( dataBox.legend ) {
+        for ( const row of dataBox.legend[ 'municipalities' ] ) {
             municipalities[ row.id ] = row;
         }
     }
 
     const events: ObjectType = {}; 
-    for ( const row of dataParser.data ) {
+    for ( const row of dataBox.data ) {
         events[ row.municipality_id ] = row;
     }
 
@@ -120,7 +120,7 @@ const MapContent = ( { dataParser, chartType, layoutHandler }: PropsType ) => {
         ? 1.4
         : 1.6;
 
-        console.log( "rendering: MapContent...", geojson.features )//, dataParser.data );
+        console.log( "rendering: MapContent...", geojson.features )//, dataBox.data );
     
     return (
         <div 
