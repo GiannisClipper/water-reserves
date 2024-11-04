@@ -105,7 +105,6 @@ abstract class RequestMakerWithParams extends RequestMaker {
     public async request() {
 
         this._error = new ParamValidation( this.searchParams ).validate();
-
         if ( ! this._error ) {
             return await super.request();
         }

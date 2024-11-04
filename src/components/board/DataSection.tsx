@@ -18,7 +18,7 @@ const DataSection = async ( { endpoint }: PropsType ) => {
         result = result[ key ];
     }
 
-    console.log( "rendering: DataSection...", error, result )
+    console.log( "rendering: DataSection..." )//, error, result )
 
     return (
         ! error && ! result

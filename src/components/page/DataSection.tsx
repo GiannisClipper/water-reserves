@@ -28,8 +28,10 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
         const requestMakerCollection = new RequestMakerFactory( endpoint, searchParams ).requestMakerCollection;
         ( { error, result } = ( await requestMakerCollection.request() ).toJSON() );
 
-        dataParser = new DataParserFactory( { endpoint, searchParams, result } )
-            .dataParser;
+        if ( ! error ) {
+            dataParser = new DataParserFactory( { endpoint, searchParams, result } )
+                .dataParser;
+        }
     }  
 
     console.log( "rendering: DataSection..." );

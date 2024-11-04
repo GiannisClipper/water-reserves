@@ -1,7 +1,5 @@
 import { 
     RequestMaker, 
-    RequestMakerWithParams,
-
     StatusRequestMaker,
     ReservoirsRequestMaker,
     FactoriesRequestMaker,
