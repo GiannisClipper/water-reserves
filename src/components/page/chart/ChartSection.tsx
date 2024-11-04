@@ -7,12 +7,12 @@ import MapContent from "@/components/page/chart/MapContent";
 // import dynamic from 'next/dynamic'
 // const MapContent = dynamic( () => import( './MapContent' ), { ssr: false } )
 
-import DataParserFactory from "@/logic/DataParser/DataParserFactory";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
 import ChartLayoutHandlerFactory from "@/logic/LayoutHandler/chart/ChartLayoutHandlerFactory";
 
-import ChartLabel1 from "./ChartLabel";
-import ChartLabel2 from "./ChartLabel2";
+import StandardChartLabel from "./label/StandardChartLabel";
+import { TemperatureChartLabel } from "./label/TemperatureChartLabel";
+import { InterruptionsChartLabel } from "./label/InterruptionsChartLabel";
 
 import { SavingsChartContent } from "./content/SavingsChartContent";
 import { ProductionChartContent } from "./content/ProductionChartContent";
@@ -37,12 +37,16 @@ const ChartSection = ( { endpoint, searchParams, dataBox }: PropsType  ) => {
         .handler;
 
     const chartLabels: ObjectType = {
-        'standard': ChartLabel1,
-        'standard,spatial': ChartLabel2,
-        'stack': ChartLabel1,
+        'savings': StandardChartLabel,
+        'production': StandardChartLabel,
+        'precipitation': StandardChartLabel,
+        'temperature': TemperatureChartLabel,
+        'interruptions': InterruptionsChartLabel,
+        'savings-production': StandardChartLabel,
+        'savings-precipitation': StandardChartLabel,
     };
 
-    const ChartLabel = chartLabels[ dataBox.type ];
+    const ChartLabel = chartLabels[ endpoint ];
 
     const chartContents: ObjectType = {
         'savings': SavingsChartContent,
@@ -76,6 +80,7 @@ const ChartSection = ( { endpoint, searchParams, dataBox }: PropsType  ) => {
     return (
         <div className="ChartSection">
             <ChartLabel 
+                dataBox={ dataBox }
                 setChartType={ setChartType }
             />
 

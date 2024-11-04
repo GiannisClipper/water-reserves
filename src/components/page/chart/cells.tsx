@@ -8,7 +8,7 @@ type CellPropsType = {
     handler?: ValueHandler,
 }
 
-const getCell = ( { key, payload={} }: CellPropsType ) => {
+const getCell = ( { key }: CellPropsType ) => {
     return (
         <Cell key={ key } />
     );

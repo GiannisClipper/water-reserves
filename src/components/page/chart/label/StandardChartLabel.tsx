@@ -1,21 +1,23 @@
 "use client"
 
 import { Left, Right } from "@/components/Generics";
-import { ChartBarIcon, MapIcon, LinkIcon, ScreenIcon, DownloadIcon } from "@/components/Icons";
+import { ChartLineIcon, ChartAreaIcon, ChartBarIcon, LinkIcon, ScreenIcon, DownloadIcon } from "@/components/Icons";
 
 import { downloadChart } from "@/logic/download";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
-
+import type { ObjectType } from "@/types";
 import "@/styles/label.css"
 
 type PropsType = { 
     setChartType: CallableFunction 
+    dataBox: ObjectType
 }
 
-export default function ChartLabel( { setChartType }: PropsType ) {
+export default function ChartLabel( { setChartType, dataBox }: PropsType ) {
 
+    const setChartLine = () => setChartType( 'line' );
+    const setChartArea = () => setChartType( 'area' );
     const setChartBar = () => setChartType( 'bar' );
-    const setMap = () => setChartType( 'map' );
     
     const expandChart = (): void => {
         const url: BrowserUrl = new BrowserUrl( window );
@@ -24,7 +26,7 @@ export default function ChartLabel( { setChartType }: PropsType ) {
         url.openBlank();
     }
 
-    console.log( "rendering: ChartLabel2..." )
+    console.log( "rendering: ChartLabel..." )
 
     return (
         <div className="Label ChartLabel">
@@ -32,8 +34,9 @@ export default function ChartLabel( { setChartType }: PropsType ) {
                 Charts
             </Left>
             <Right>
+                <ChartLineIcon className="icon" title="Line chart" onClick={ setChartLine } />
+                <ChartAreaIcon className="icon" title="Area chart" onClick={ setChartArea } />
                 <ChartBarIcon className="icon" title="Bar chart" onClick={ setChartBar } />
-                <MapIcon className="icon" title="Map" onClick={ setMap } />
                 <ScreenIcon className="icon" title="Wide view" onClick={ expandChart } />
                 <LinkIcon className="icon" title="Wide view link" />
                 <DownloadIcon className="icon" title="Download as image" onClick={ downloadChart } />
@@ -41,3 +44,5 @@ export default function ChartLabel( { setChartType }: PropsType ) {
         </div>
     );
 }
+
+

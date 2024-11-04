@@ -1,7 +1,7 @@
 "use client"
 
 import { SingleStandardTooltip, SpatialInterruptionsTooltip } from '@/components/page/chart/tooltips';
-import { StandardBarChart } from '@/components/page/chart/StandardChart';
+import { StandardLineChart, StandardAreaChart, StandardBarChart } from '@/components/page/chart/StandardChart';
 import { StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 import { XAxisSpatialTick } from '../ticks';
 import { getClusterColorCell } from '../cells';
@@ -20,11 +20,26 @@ const InterruptionsTemporalChartContent = ( { chartType, layoutHandler }: Props1
     return (
         <div className="ChartContent">
 
-            { chartType === 'bar'
+            { chartType === 'line'
+            ?
+            <StandardLineChart
+                layoutHandler={ layoutHandler }
+                CustomTooltip={ SingleStandardTooltip }                
+            />
+
+            :
+            chartType === 'area'
+            ?
+            <StandardAreaChart
+                layoutHandler={ layoutHandler }
+                CustomTooltip={ SingleStandardTooltip }                
+            />
+
+            : chartType === 'bar'
             ?
             <StandardBarChart
                 layoutHandler={ layoutHandler }
-                CustomTooltip={ SingleStandardTooltip }                
+                CustomTooltip={ SingleStandardTooltip }
             />
 
             :
@@ -46,8 +61,8 @@ const InterruptionsSpatialChartContent = ( { chartType, layoutHandler }: Props2T
     return (
         <div className="ChartContent" >
 
-            { chartType === 'bar'
-            ?
+            {/* { chartType === 'bar'
+            ? */}
             <StandardBarChart
                 layoutHandler={ layoutHandler }
                 CustomXAxisTick={ XAxisSpatialTick }
@@ -55,9 +70,9 @@ const InterruptionsSpatialChartContent = ( { chartType, layoutHandler }: Props2T
                 cellFunc={ getClusterColorCell }
             />
 
-            :
+            {/* :
             null
-            }
+            } */}
         </div>
     );
 }
