@@ -10,12 +10,14 @@
     p-8
   }
 
-  .ChartSectionSkeleton {
+  .ChartSectionSkeleton,
+  .ListSectionSkeleton {
     @apply flex flex-row
     w-full
   }
 
-  .ChartSection {
+  .ChartSection,
+  .ListSection {
     @apply flex flex-row justify-center
     w-full
   }
@@ -26,6 +28,25 @@
     max-w-[calc(1280px)]
     aspect-[2]
     bg-gray-50 text-gray-600 text-xs
+  }
+
+  .DataSection:has(.ListContent) {
+    @apply p-0
+  }
+
+  .ListContent {
+    @apply
+    w-full
+    max-w-[calc(1280px)]
+    aspect-[2.5]
+    bg-transparent
+    text-sky-950
+  }
+
+  .ListContent th,
+  .ListContent td {
+      @apply border-sky-950
+      bg-transparent
   }
 
   .MapContent {

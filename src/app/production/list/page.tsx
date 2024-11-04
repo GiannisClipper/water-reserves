@@ -1,5 +1,5 @@
 import WidePage from "@/components/wide/Page";
-import DataSection from "@/components/wide/chart/DataSection";
+import DataSection from "@/components/wide/list/DataSection";
 import { PRODUCTION } from "@/app/settings";
 import type { SearchParamsType } from "@/types/searchParams";
 

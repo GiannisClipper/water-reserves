@@ -1,10 +1,9 @@
-import { ChartSectionSkeleton } from "@/components/page/Skeleton";
+import { ListSectionSkeleton } from "@/components/page/Skeleton";
 import Error from "@/components/page/Error";
 
-// import ChartSection from "./chart/ChartSection";
 // import dynamic... to fix Server Error: ReferenceError: window is not defined
 import dynamic from 'next/dynamic'
-const ChartSection = dynamic( () => import( './chart/ChartSection' ), { ssr: false } )
+const ListSection = dynamic( () => import( './ListSection' ), { ssr: false } )
 
 import useApiRequest from "@/logic/useApiRequest";
 import type { SearchParamsType } from "@/types/searchParams";
@@ -27,20 +26,20 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
         ! error && ! dataBox
         ?
         <div className="DataSection">
-            <ChartSectionSkeleton /> 
+            <ListSectionSkeleton /> 
         </div>
 
         : error
         ? 
         <div className="DataSection">
-            <ChartSectionSkeleton>
+            <ListSectionSkeleton>
                 <Error error={error} /> 
-            </ChartSectionSkeleton>
+            </ListSectionSkeleton>
         </div>
 
         :
         <div className="DataSection">
-            <ChartSection 
+            <ListSection 
                 endpoint={ endpoint }
                 searchParams={ searchParams }
                 dataBox={ dataBox }
