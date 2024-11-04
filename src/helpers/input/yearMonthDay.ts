@@ -1,4 +1,4 @@
-const isTypingYearMonthDate = ( value: string ): any => 
+const isTypingYearMonthDay = ( value: string ): any => 
 
     value.length < 5 && value.match( /^\d{0,4}$/ )
     ||
@@ -41,7 +41,7 @@ const isYearMonth = ( value: string ): boolean => {
     return true;
 }
 
-const isYearMonthDate = ( value: string ): boolean => {
+const isYearMonthDay = ( value: string ): boolean => {
 
     if ( ! isYearMonth( value ) ) return false;
 
@@ -67,4 +67,4 @@ const isYearMonthDate = ( value: string ): boolean => {
     return true;
 }
 
-export { isTypingYearMonthDate, isYearMonthDate };
+export { isTypingYearMonthDay, isYearMonthDay };

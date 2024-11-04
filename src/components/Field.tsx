@@ -1,4 +1,4 @@
-import { DateInput } from "./Input";
+import { YearMonthDayInput, MonthDayInput } from "./Input";
 
 import "@/styles/checkbox.css"
 
@@ -41,7 +41,7 @@ const FieldFromDate = ( props: any ) => {
     return (
         <Field
             label = { <span>From</span> }
-            value = { <DateInput {...props} /> }
+            value = { <YearMonthDayInput {...props} /> }
         />
     );
 }
@@ -52,32 +52,28 @@ const FieldToDate = ( props: any ) => {
 
         <Field
             label = { <span>To</span> }
-            value = { <DateInput {...props} /> }
+            value = { <YearMonthDayInput {...props} /> }
         />
     );
 }
 
 const FieldFromInterval = ( props: any ) => {
 
-    props = { placeholder: 'MM-DD', ...props }
-
     return (
         <Field
             label = { <span>From</span> }
-            value = { <input {...props} /> }
+            value = { <MonthDayInput {...props} /> }
         />
     );
 }
 
 const FieldToInterval = ( props: any ) => {
 
-    props = { placeholder: 'MM-DD', ...props }
-
     return (
 
         <Field
             label = { <span>To</span> }
-            value = { <input {...props} /> }
+            value = { <MonthDayInput {...props} /> }
         />
     );
 }
