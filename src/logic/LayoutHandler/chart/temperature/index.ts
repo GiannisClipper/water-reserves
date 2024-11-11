@@ -38,7 +38,7 @@ class TemperatureChartLayoutHandler extends StandardChartLayoutHandler {
             title: 'Temperature in Athens',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Celcius degrees',
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator,
         } );

@@ -33,7 +33,7 @@ class PrecipitationStandardChartLayoutHandler extends StandardChartLayoutHandler
 
             yDifferenceValueHandlers: [ new PrecipitationDifferenceValueHandler() ],
             yChangeValueHandlers: [ new PrecipitationChangeValueHandler() ],
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator
         } );
@@ -74,7 +74,7 @@ class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator
         } );

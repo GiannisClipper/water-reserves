@@ -2,12 +2,47 @@ import { useEffect } from "react";
 import L from "leaflet";
 
 import "@/styles/chart.css";
+import { ChartLayoutHandler } from "@/logic/LayoutHandler/chart/_abstract";
 
 type StandardLegendPropsType = {
     payload?: any
     labels: string[]
     colors: string[]
     dashes?: string[]
+    layoutHandler?: ChartLayoutHandler
+}
+
+const SavingsStandardLegend = ( { payload, layoutHandler }: StandardLegendPropsType ) => {
+
+    return (
+        <StandardLegend
+            payload={ payload }
+            labels={ [ layoutHandler?.dataBox.legend.reservoirs.map( r => r.name_en ).sort().join( ',' ) ] }
+            colors={ [ layoutHandler?.yValueHandlers[ 0 ].color[ 500 ] ] }   
+        />
+    );
+}
+
+const ProductionStandardLegend = ( { payload, layoutHandler }: StandardLegendPropsType ) => {
+
+    return (
+        <StandardLegend
+            payload={ payload }
+            labels={ [ layoutHandler?.dataBox.legend.factories.map( r => r.name_en ).sort().join( ',' ) ] }
+            colors={ [ layoutHandler?.yValueHandlers[ 0 ].color[ 500 ] ] }   
+        />
+    );
+}
+
+const WeatherStandardLegend = ( { payload, layoutHandler }: StandardLegendPropsType ) => {
+
+    return (
+        <StandardLegend
+            payload={ payload }
+            labels={ [ layoutHandler?.dataBox.legend.locations.map( r => r.name_en ).sort().join( ',' ) ] }
+            colors={ [ layoutHandler?.yValueHandlers[ 0 ].color[ 500 ] ] }   
+        />
+    );
 }
 
 const StandardLegend = ( { payload, labels, colors, dashes }: StandardLegendPropsType ) => {
@@ -62,4 +97,10 @@ const MapLegend = ( { map } ) => {
     return null;
 }
 
-export { StandardLegend, MapLegend };
+export { 
+    StandardLegend,
+    SavingsStandardLegend,
+    ProductionStandardLegend,
+    WeatherStandardLegend,
+    MapLegend 
+};

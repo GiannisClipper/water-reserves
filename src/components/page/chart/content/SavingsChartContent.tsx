@@ -6,6 +6,7 @@ import { StackAreaChart, StackBarChart, StackLineChart } from '@/components/page
 import { StackChartLayoutHandler, StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
 import type { ObjectType } from '@/types';
 import "@/styles/chart.css";
+import { SavingsStandardLegend } from '../legends';
 
 type Props1Type = { 
     chartType: string | undefined
@@ -23,6 +24,7 @@ const SavingsAggregatedChartContent = ( { chartType, layoutHandler }: Props1Type
             ?
             <StandardLineChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ SavingsStandardLegend }                
                 CustomTooltip={ SingleStandardTooltip }                
             />
 
@@ -31,6 +33,7 @@ const SavingsAggregatedChartContent = ( { chartType, layoutHandler }: Props1Type
             ?
             <StandardAreaChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ SavingsStandardLegend }                
                 CustomTooltip={ SingleStandardTooltip }                
             />
 
@@ -38,6 +41,7 @@ const SavingsAggregatedChartContent = ( { chartType, layoutHandler }: Props1Type
             ?
             <StandardBarChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ SavingsStandardLegend }                
                 CustomTooltip={ SingleStandardTooltip }
             />
 

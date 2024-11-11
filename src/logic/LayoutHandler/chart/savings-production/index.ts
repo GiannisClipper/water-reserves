@@ -25,7 +25,7 @@ class SavingsProductionMultiChartLayoutHandler extends ChartLayoutHandler {
             title: 'Water reserves & drinking water production',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator,
         } );

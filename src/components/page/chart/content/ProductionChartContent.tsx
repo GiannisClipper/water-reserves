@@ -4,6 +4,7 @@ import { SingleStandardTooltip } from '@/components/page/chart/tooltips';
 import { StandardAreaChart, StandardBarChart, StandardLineChart } from '@/components/page/chart/StandardChart';
 import { StackAreaChart, StackBarChart, StackLineChart } from '@/components/page/chart/StackChart';
 import { StackChartLayoutHandler, StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
+import { ProductionStandardLegend } from '../legends';
 import type { ObjectType } from '@/types';
 import "@/styles/chart.css";
 
@@ -23,6 +24,7 @@ const ProductionAggregatedChartContent = ( { chartType, layoutHandler }: Props1T
             ?
             <StandardLineChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ ProductionStandardLegend }                
                 CustomTooltip={ SingleStandardTooltip }                
             />
 
@@ -31,6 +33,7 @@ const ProductionAggregatedChartContent = ( { chartType, layoutHandler }: Props1T
             ?
             <StandardAreaChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ ProductionStandardLegend }                
                 CustomTooltip={ SingleStandardTooltip }                
             />
 
@@ -38,6 +41,7 @@ const ProductionAggregatedChartContent = ( { chartType, layoutHandler }: Props1T
             ?
             <StandardBarChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ ProductionStandardLegend }                
                 CustomTooltip={ SingleStandardTooltip }
             />
 

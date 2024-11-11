@@ -25,7 +25,7 @@ class SavingsPrecipitationMultiChartLayoutHandler extends ChartLayoutHandler {
             title: 'Water reserves & precipitation',
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator: YTicksCalculator
         } );

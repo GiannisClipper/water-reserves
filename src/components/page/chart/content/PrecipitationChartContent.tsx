@@ -4,6 +4,7 @@ import { SingleStandardTooltip } from '@/components/page/chart/tooltips';
 import { StandardAreaChart, StandardBarChart, StandardLineChart } from '@/components/page/chart/StandardChart';
 import { StackAreaChart, StackBarChart, StackLineChart } from '@/components/page/chart/StackChart';
 import { StackChartLayoutHandler, StandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/_abstract';
+import { WeatherStandardLegend } from '../legends';
 import type { ObjectType } from '@/types';
 import "@/styles/chart.css";
 
@@ -23,6 +24,7 @@ const PrecipitationAggregatedChartContent = ( { chartType, layoutHandler }: Prop
             ?
             <StandardLineChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ WeatherStandardLegend }
                 CustomTooltip={ SingleStandardTooltip }                
             />
 
@@ -31,6 +33,7 @@ const PrecipitationAggregatedChartContent = ( { chartType, layoutHandler }: Prop
             ?
             <StandardAreaChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ WeatherStandardLegend }
                 CustomTooltip={ SingleStandardTooltip }                
             />
 
@@ -38,6 +41,7 @@ const PrecipitationAggregatedChartContent = ( { chartType, layoutHandler }: Prop
             ?
             <StandardBarChart
                 layoutHandler={ layoutHandler }
+                CustomLegend={ WeatherStandardLegend }
                 CustomTooltip={ SingleStandardTooltip }
             />
 

@@ -7,7 +7,6 @@ import L from "leaflet";
 import { MapLegend } from './legends';
 
 import geojson from '@/geography/dhmoi_okxe_attica.json';
-import { SpatialStandardDataParser } from '@/logic/DataParser/StandardDataParser';
 import { SpatialInterruptionsStandardChartLayoutHandler } from '@/logic/LayoutHandler/chart/interruptions';
 import { withCommas } from '@/helpers/numbers';
 import type { ObjectType } from '@/types';

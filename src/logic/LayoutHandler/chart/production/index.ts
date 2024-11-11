@@ -33,7 +33,7 @@ class ProductionStandardChartLayoutHandler extends StandardChartLayoutHandler {
 
             yDifferenceValueHandlers: [ new ProductionDifferenceValueHandler() ],
             yChangeValueHandlers: [ new ProductionChangeValueHandler() ],
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator
         } );
@@ -73,7 +73,7 @@ class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator
         } );

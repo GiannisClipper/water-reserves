@@ -31,7 +31,7 @@ class SavingsStandardChartLayoutHandler extends StandardChartLayoutHandler {
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yDifferenceValueHandlers: [ new SavingsDifferenceValueHandler() ],        
             yChangeValueHandlers: [ new SavingsChangeValueHandler() ],    
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator, 
             YTicksCalculator,
         } );
@@ -71,7 +71,7 @@ class SavingsStackChartLayoutHandler extends StackChartLayoutHandler {
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator, 
             YTicksCalculator,
         } );

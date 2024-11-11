@@ -45,7 +45,7 @@ const StackLineChart = ( {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <LineChart
-                data={ layoutHandler.data }
+                data={ layoutHandler.dataBox.data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -60,7 +60,7 @@ const StackLineChart = ( {
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> } 
+                    tick={ <CustomXAxisTick data={ layoutHandler.dataBox.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -68,7 +68,7 @@ const StackLineChart = ( {
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.dataBox.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
@@ -130,7 +130,7 @@ const StackAreaChart = ( {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-                data={ layoutHandler.data }
+                data={ layoutHandler.dataBox.data }
                 // stackOffset="expand"
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
@@ -146,7 +146,7 @@ const StackAreaChart = ( {
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> } 
+                    tick={ <CustomXAxisTick data={ layoutHandler.dataBox.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -154,7 +154,7 @@ const StackAreaChart = ( {
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.dataBox.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 
@@ -205,7 +205,7 @@ const StackBarChart = ( {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart
-                data={ layoutHandler.data }
+                data={ layoutHandler.dataBox.data }
                 margin={{ top: 60, right: 20, bottom:60, left: 40 }}
             >
                 <Customized
@@ -221,7 +221,7 @@ const StackBarChart = ( {
                     dataKey={ layoutHandler.xValueHandler.key }
                     ticks={ layoutHandler.xTicks } 
                     interval={ 0 } 
-                    tick={ <CustomXAxisTick data={ layoutHandler.data } /> } 
+                    tick={ <CustomXAxisTick data={ layoutHandler.dataBox.data } /> } 
                     label={ <XAxisLabel label={ layoutHandler.xLabel } /> }
                 />
 
@@ -229,7 +229,7 @@ const StackBarChart = ( {
                     domain={ [ layoutHandler.minYTick, layoutHandler.maxYTick ] } 
                     ticks={ layoutHandler.yTicks } 
                     interval={ 0 } 
-                    tick={ <CustomYAxisTick data={ layoutHandler.data } /> }
+                    tick={ <CustomYAxisTick data={ layoutHandler.dataBox.data } /> }
                     label={ <YAxisLabel label={ layoutHandler.yLabel } /> }
                 />
 

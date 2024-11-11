@@ -37,7 +37,7 @@ class TemporalInterruptionsStandardChartLayoutHandler extends StandardChartLayou
 
             yDifferenceValueHandlers: [ new EventsDifferenceValueHandler() ],
             yChangeValueHandlers: [ new EventsChangeValueHandler() ],
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator: TemporalXTicksCalculator,
             YTicksCalculator,
         } );
@@ -87,7 +87,7 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
             yLabel: yLabel,
             xValueHandler: new MunicipalityNameValueHandler(),
             yValueHandlers: [ new yValueHandlerClass() ],
-            data: dataBox.data,
+            dataBox: dataBox,
             XTicksCalculator,
             YTicksCalculator
         } );

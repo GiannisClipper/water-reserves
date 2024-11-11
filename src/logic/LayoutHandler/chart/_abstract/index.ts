@@ -8,7 +8,7 @@ interface ChartLayoutHandlerType {
     title?: string
     xLabel?: string
     yLabel?: string
-    data: ObjectType[]
+    dataBox: ObjectType
     XTicksCalculator: any
     YTicksCalculator: any
     lineType?: LineType
@@ -23,7 +23,7 @@ class ChartLayoutHandler {
     xLabel: string;
     yLabel: string;
 
-    data: ObjectType[] = [];
+    dataBox: ObjectType = {};
     xTicks: string[];
     yTicks: number[]; 
     // yValues: number[];
@@ -32,7 +32,7 @@ class ChartLayoutHandler {
 
     constructor( {
         xValueHandler, yValueHandlers, 
-        title, xLabel, yLabel, data, 
+        title, xLabel, yLabel, dataBox, 
         lineType,
         XTicksCalculator,
         YTicksCalculator,
@@ -43,14 +43,14 @@ class ChartLayoutHandler {
         this.title = title || '(title)';
         this.xLabel = xLabel || '(xLabel)';
         this.yLabel = yLabel || '(yLabel)';
-        this.data = data;
+        this.dataBox = dataBox;
         this._lineType = lineType;
 
-        const xValues = this.data.map( ( row: ObjectType ) => row[ this.xValueHandler.key ] );
+        const xValues = this.dataBox.data.map( ( row: ObjectType ) => row[ this.xValueHandler.key ] );
         this.xTicks = new XTicksCalculator( xValues ).xTicks;
 
         const yValues: number[] = [];
-        for ( const row of data ) {
+        for ( const row of dataBox.data ) {
             for ( const handler of this.yValueHandlers ) {
                 yValues.push( handler.readFrom( row ) );
             }
@@ -84,7 +84,7 @@ class ChartLayoutHandler {
             title: this.title,
             xLabel: this.xLabel,
             yLabel: this.yLabel,
-            data: this.data,
+            dataBox: this.dataBox,
             xTicks: this.xTicks,
             yTicks: this.yTicks,
             // yValues: this.yValues,
@@ -104,14 +104,14 @@ class StandardChartLayoutHandler extends ChartLayoutHandler {
 
     constructor( { 
         xValueHandler, yValueHandlers, 
-        title, xLabel, yLabel, data,
+        title, xLabel, yLabel, dataBox,
         XTicksCalculator, YTicksCalculator,
         yDifferenceValueHandlers, yChangeValueHandlers,
     }: StandardChartLayoutHandlerType ) {
 
         super( {
             xValueHandler, yValueHandlers, 
-            title, xLabel, yLabel, data,
+            title, xLabel, yLabel, dataBox,
             XTicksCalculator, YTicksCalculator,
         } )
         this.yDifferenceValueHandlers = yDifferenceValueHandlers;
@@ -137,14 +137,14 @@ class StackChartLayoutHandler extends ChartLayoutHandler {
 
     constructor( { 
         xValueHandler, yValueHandlers, 
-        title, xLabel, yLabel, data,
+        title, xLabel, yLabel, dataBox,
         XTicksCalculator, YTicksCalculator,
         yPercentageValueHandlers,
     }: StackChartLayoutHandlerType ) {
 
         super( { 
             xValueHandler, yValueHandlers, 
-            title, xLabel, yLabel, data, 
+            title, xLabel, yLabel, dataBox, 
             XTicksCalculator, YTicksCalculator,
         } );
         this.yPercentageValueHandlers = yPercentageValueHandlers;
