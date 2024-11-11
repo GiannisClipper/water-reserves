@@ -3,16 +3,9 @@
 @layer components {
 
   .Status .DataSection {
-    @apply flex flex-row flex-wrap justify-around
+    @apply flex flex-row flex-wrap justify-evenly
     w-full
   }
-
-  /* .DataSectionSkeleton {
-    @apply flex flex-row
-    w-full
-    bg-white bg-opacity-50
-    p-8
-  } */
 
   .Card {
     @apply w-full md:w-[480px]

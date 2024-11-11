@@ -15,6 +15,7 @@
   }
 
   body {
+    font-family: Nunito,sans-serif;
     /* @apply bg-[url("/water.jpg")] */
     /* @apply bg-[url("/water-brightness-50.jpg")] */
     /* @apply bg-[url("/water-blueish.jpg")] */

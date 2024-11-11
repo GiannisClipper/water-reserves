@@ -6,28 +6,30 @@ import "@/styles/modal.css";
 
 type ModalPropsType = {
     className?: string
+    title?: string
     onClose: () => void
     children: React.ReactNode
 }
 
-function Modal( { className, onClose, children }: ModalPropsType ) {
+function Modal( { className, title, onClose, children }: ModalPropsType ) {
 
     className = ( "Modal " + ( className ? className : "" ) ).trim();
 
     return (
         <div className={ className } onClick={ onClose }>
-            <ModalWindow onClose={ onClose }>
+            <ModalWindow title={ title } onClose={ onClose }>
                 { children }
             </ModalWindow>
         </div>
     )
 }
 
-function ModalWindow( { onClose, children }: ModalPropsType ) {
+function ModalWindow( { title, onClose, children }: ModalPropsType ) {
 
     return (
         <div className="ModalWindow" onClick={ e => e.stopPropagation() }>
             <Top>
+                <span>{ title }</span>
                 <button onClick={ onClose }><CloseIcon /></button>
             </Top>
             <Bottom>

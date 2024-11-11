@@ -36,6 +36,7 @@ import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
 
 type PropsType = { [ key: string ]:any };
 
@@ -70,6 +71,7 @@ const RefreshIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props }
 
 const PlusIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faPlus} />
 const MinusIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faMinus} />
+const CopyIcon = ( { ...props }: PropsType ) => <FontAwesomeIcon { ...props } icon={faCopy} />
 
 export { 
     GaugeIcon, WaterIcon, FaucetIcon, RainIcon, TemperatureIcon, ToolIcon, ComposeIcon,
@@ -78,5 +80,5 @@ export {
     WriteIcon, SearchIcon, DownloadIcon, LinkIcon, 
     CloseIcon, InfoIcon, ErrorIcon, 
     SpinnerIcon, RefreshIcon,
-    PlusIcon, MinusIcon
+    PlusIcon, MinusIcon, CopyIcon,
 };

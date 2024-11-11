@@ -1,0 +1,23 @@
+@tailwind components;
+
+@layer components {
+
+  .Button {
+    @apply flex flex-row justify-center
+    bg-yellow-100 
+    border border-solid border-yellow-100
+    hover:font-semibold
+    active:border-solid active:border-sky-300
+    active:bg-yellow-200
+    p-2
+  }
+
+  .Button > * {
+    @apply p-2
+  }
+
+  .Button > :nth-child(2) {
+    @apply p-1
+  }
+
+}

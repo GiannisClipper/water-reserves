@@ -69,19 +69,22 @@ class BrowserUrl {
         }
     }
 
+    getUrl(): string { // compose the url string
+
+        return `${this.origin}${this.pathname}?${this.params.join( '&' )}`;
+    }
+
     open(): void { // open in current tab
 
         if ( this.window ) {
-            const url: string = `${this.origin}${this.pathname}?${this.params.join( '&' )}`;
-            this.window.location.href = url; 
+            this.window.location.href = this.getUrl(); 
         }
     }
 
     openBlank(): void { // open in new tab
 
         if ( this.window ) {
-            const url: string = `${this.origin}${this.pathname}?${this.params.join( '&' )}`;
-            this.window.open( url, '_blank' );
+            this.window.open( this.getUrl(), '_blank' );
         }
     }
 }

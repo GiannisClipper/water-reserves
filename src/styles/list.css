@@ -6,7 +6,7 @@
     @apply
     min-w-full
     max-w-full
-    aspect-[2]
+    aspect-[1] md:aspect-[2]
     /* min-h-[calc(50vh)]
     max-h-[calc(50vh)] */
     bg-gray-700 text-gray-300 text-xs 
