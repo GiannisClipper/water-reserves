@@ -5,6 +5,7 @@ import { TimeValueHandler, SavingsChangeValueHandler } from "@/logic/ValueHandle
 import { ProductionChangeValueHandler } from "@/logic/ValueHandler/production";
 import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
@@ -22,7 +23,7 @@ class SavingsProductionMultiChartLayoutHandler extends ChartLayoutHandler {
                 new SavingsChangeValueHandler(), 
                 new ProductionChangeValueHandler()
             ],        
-            title: 'Water reserves & drinking water production',
+            title: 'Water reserves & drinking water production' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
             dataBox: dataBox,

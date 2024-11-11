@@ -14,6 +14,7 @@ import {
     MunicipalityPopulationValueHandler
 } from "@/logic/ValueHandler/interruptions";
 
+import { intervalRepr } from "@/logic/LayoutHandler";
 import { XTicksCalculator, TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
@@ -31,7 +32,7 @@ class TemporalInterruptionsStandardChartLayoutHandler extends StandardChartLayou
             xValueHandler: new TimeValueHandler(),
             yValueHandlers: [ new EventsValueHandler() ],
 
-            title: 'Water supply interruptions',
+            title: 'Water supply interruptions' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Events',
 
@@ -60,17 +61,15 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
 
-        let title: string = 'Water supply interruptions';
+        let title: string = 'Water supply interruptions' + intervalRepr( searchParams );
         let yLabel: string = 'Events';
         let yValueHandlerClass = EventsValueHandler;
 
         if ( valueAggregation === 'sum,over-area' ) {
-            title += ' (per sq. km)';
             yLabel += ' per sq. km';
             yValueHandlerClass = EventsOverAreaValueHandler
 
         } else if ( valueAggregation === 'sum,over-population' ) {
-            title += ' (per 1000 residents)';
             yLabel += ' per 1000 residents';
             yValueHandlerClass = EventsOverPopulationValueHandler
         }

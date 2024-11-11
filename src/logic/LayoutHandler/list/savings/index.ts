@@ -10,6 +10,7 @@ import {
 } from "@/logic/ValueHandler/savings";
 
 import { SAVINGS } from "@/app/settings";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
@@ -19,7 +20,7 @@ class SavingsStandardListLayoutHandler extends StandardListLayoutHandler {
     constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         super( {
-            title: `${SAVINGS} (aggregated)`,
+            title: SAVINGS + intervalRepr( searchParams ),
             data: dataBox.data,
             valueHandlers: [
                 new TimeValueHandler(),
@@ -56,7 +57,7 @@ class SavingsStackListLayoutHandler extends StandardListLayoutHandler {
         }
 
         super( {
-            title: `${SAVINGS} (per reservoir)`,
+            title: SAVINGS + intervalRepr( searchParams ),
             labels,
             data: dataBox.data,
             valueHandlers,

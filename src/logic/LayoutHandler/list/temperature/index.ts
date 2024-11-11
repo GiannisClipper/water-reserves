@@ -7,6 +7,7 @@ import {
 } from "@/logic/ValueHandler/temperature";
 
 import { TEMPERATURE } from "@/app/settings";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import { ValueHandler } from "@/logic/ValueHandler";
 
@@ -34,7 +35,7 @@ class TemperatureStandardListLayoutHandler extends StandardListLayoutHandler {
         labels[ 6 ] = labels[ 5 ] + '_diff';
 
         super( {
-            title: `${TEMPERATURE}`,
+            title: TEMPERATURE + intervalRepr( searchParams ),
             labels,
             data: dataBox.data,
             valueHandlers

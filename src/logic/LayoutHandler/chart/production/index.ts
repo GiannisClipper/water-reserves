@@ -10,6 +10,7 @@ import {
     FactoriesPercentageValueHandler,
 } from "@/logic/ValueHandler/production";
 
+import { intervalRepr } from "@/logic/LayoutHandler";
 import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
@@ -27,7 +28,7 @@ class ProductionStandardChartLayoutHandler extends StandardChartLayoutHandler {
             xValueHandler: new TimeValueHandler(),
             yValueHandlers: [ new ProductionValueHandler() ],   
      
-            title: 'Drinking water production (aggregated)',
+            title: 'Drinking water production' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
 
@@ -69,7 +70,7 @@ class ProductionStackChartLayoutHandler extends StackChartLayoutHandler {
         super( {
             xValueHandler: new TimeValueHandler(),
             yValueHandlers,
-            title: 'Drinking water production (per plant)',
+            title: 'Drinking water production' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,

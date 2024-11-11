@@ -9,6 +9,7 @@ import {
     TemperatureMinDifferenceValueHandler, TemperatureMeanDifferenceValueHandler, TemperatureMaxDifferenceValueHandler,
 } from "@/logic/ValueHandler/temperature";
 
+import { intervalRepr } from "@/logic/LayoutHandler";
 import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
@@ -35,7 +36,7 @@ class TemperatureChartLayoutHandler extends StandardChartLayoutHandler {
                 new TemperatureMaxDifferenceValueHandler()  
             ],
             yChangeValueHandlers: [],
-            title: 'Temperature in Athens',
+            title: 'Temperature in Athens' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: 'Celcius degrees',
             dataBox: dataBox,

@@ -10,6 +10,7 @@ import {
 } from "@/logic/ValueHandler/precipitation";
 
 import { PRECIPITATION } from "@/app/settings";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
@@ -19,7 +20,7 @@ class PrecipitationStandardListLayoutHandler extends StandardListLayoutHandler {
     constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         super( {
-            title: `${PRECIPITATION} (aggregated)`,
+            title: PRECIPITATION + intervalRepr( searchParams ),
             data: dataBox.data,
             valueHandlers: [
                 new TimeValueHandler(),
@@ -56,7 +57,7 @@ class PrecipitationStackListLayoutHandler extends StandardListLayoutHandler {
         }
 
         super( {
-            title: `${PRECIPITATION} (per location)`,
+            title: PRECIPITATION + intervalRepr( searchParams ),
             labels,
             data: dataBox.data,
             valueHandlers,

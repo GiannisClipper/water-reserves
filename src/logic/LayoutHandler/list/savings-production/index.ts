@@ -4,6 +4,7 @@ import { TimeValueHandler, SavingsValueHandler, SavingsDifferenceValueHandler, S
 import { ProductionValueHandler, ProductionDifferenceValueHandler, ProductionChangeValueHandler } from "@/logic/ValueHandler/production";
 
 import { SAVINGS_PRODUCTION } from "@/app/settings";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import { ValueHandler } from "@/logic/ValueHandler";
 
@@ -25,7 +26,7 @@ class SavingsProductionStandardListLayoutHandler extends StandardListLayoutHandl
         ];
 
         super( {
-            title: `${SAVINGS_PRODUCTION}`,
+            title: SAVINGS_PRODUCTION + intervalRepr( searchParams ),
             data: dataBox.data,
             valueHandlers
         } );

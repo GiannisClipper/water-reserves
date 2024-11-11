@@ -4,6 +4,7 @@ import { TimeValueHandler, SavingsValueHandler, SavingsDifferenceValueHandler, S
 import { PrecipitationValueHandler, PrecipitationDifferenceValueHandler, PrecipitationChangeValueHandler } from "@/logic/ValueHandler/precipitation";
 
 import { SAVINGS_PRECIPITATION } from "@/app/settings";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import { ValueHandler } from "@/logic/ValueHandler";
 
@@ -25,7 +26,7 @@ class SavingsPrecipitationStandardListLayoutHandler extends StandardListLayoutHa
         ];
 
         super( {
-            title: `${SAVINGS_PRECIPITATION}`,
+            title: SAVINGS_PRECIPITATION + intervalRepr( searchParams ),
             data: dataBox.data,
             valueHandlers
         } );

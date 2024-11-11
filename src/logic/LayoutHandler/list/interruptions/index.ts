@@ -8,6 +8,7 @@ import {
 } from "@/logic/ValueHandler/interruptions";
 
 import { INTERRUPTIONS } from "@/app/settings";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import ParamValues from "@/logic/ParamValues";
@@ -18,7 +19,7 @@ class TemporalInterruptionsStandardListLayoutHandler extends StandardListLayoutH
     constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         super( {
-            title: `${INTERRUPTIONS} (temporal)`,
+            title: INTERRUPTIONS + intervalRepr( searchParams ),
             data: dataBox.data,
             valueHandlers: [
                 new TimeValueHandler(),
@@ -37,7 +38,7 @@ class SpatialInterruptionsStandardListLayoutHandler extends StandardListLayoutHa
         const data = dataBox.data.sort( ( a, b ) => a.name.localeCompare( b.name ) );
 
         super( {
-            title: `${INTERRUPTIONS} (spatial)`,
+            title: INTERRUPTIONS + intervalRepr( searchParams ),
             data,
             valueHandlers: [
                 new MunicipalityNameValueHandler(),

@@ -10,6 +10,7 @@ import {
     ReservoirsPercentageValueHandler,
 } from "@/logic/ValueHandler/savings";
 
+import { intervalRepr } from "@/logic/LayoutHandler";
 import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
@@ -26,7 +27,7 @@ class SavingsStandardChartLayoutHandler extends StandardChartLayoutHandler {
         super( {
             xValueHandler: new TimeValueHandler(),
             yValueHandlers: [ new SavingsValueHandler() ],        
-            title: 'Water reserves (aggregated)',
+            title: 'Water reserves' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yDifferenceValueHandlers: [ new SavingsDifferenceValueHandler() ],        
@@ -44,7 +45,7 @@ class SavingsStackChartLayoutHandler extends StackChartLayoutHandler {
 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
-
+            
         // integrate legend values with data
 
         const yValueHandlers: ValueHandler[] = [];      
@@ -67,7 +68,7 @@ class SavingsStackChartLayoutHandler extends StackChartLayoutHandler {
         super( {
             xValueHandler: new TimeValueHandler(),
             yValueHandlers,
-            title: 'Water reserves (per reservoir)',
+            title: 'Water reserves' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,

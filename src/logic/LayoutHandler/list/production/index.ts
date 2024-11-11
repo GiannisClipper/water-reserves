@@ -10,6 +10,7 @@ import {
 } from "@/logic/ValueHandler/production";
 
 import { PRODUCTION } from "@/app/settings";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
@@ -19,7 +20,7 @@ class ProductionStandardListLayoutHandler extends StandardListLayoutHandler {
     constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
         super( {
-            title: `${PRODUCTION} (aggregated)`,
+            title: PRODUCTION + intervalRepr( searchParams ),
             data: dataBox.data,
             valueHandlers: [
                 new TimeValueHandler(),
@@ -56,7 +57,7 @@ class ProductionStackListLayoutHandler extends StandardListLayoutHandler {
         }
 
         super( {
-            title: `${PRODUCTION} (per plant)`,
+            title: PRODUCTION + intervalRepr( searchParams ),
             labels,
             data: dataBox.data,
             valueHandlers,

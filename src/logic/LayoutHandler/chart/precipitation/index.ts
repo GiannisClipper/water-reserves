@@ -10,6 +10,7 @@ import {
     LocationsPercentageValueHandler,
 } from "@/logic/ValueHandler/precipitation";
 
+import { intervalRepr } from "@/logic/LayoutHandler";
 import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
 
@@ -27,7 +28,7 @@ class PrecipitationStandardChartLayoutHandler extends StandardChartLayoutHandler
             xValueHandler: new TimeValueHandler(),
             yValueHandlers: [ new PrecipitationValueHandler() ],
                
-            title: 'Precipitation measurements (aggregated)',
+            title: 'Precipitation measurements' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (mm)',
 
@@ -70,7 +71,7 @@ class PrecipitationStackChartLayoutHandler extends StackChartLayoutHandler {
         super( {
             xValueHandler: new TimeValueHandler(),
             yValueHandlers,
-            title: 'Precipitation measurements (per location)',
+            title: 'Precipitation measurements' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (cubic meters)',
             yPercentageValueHandlers,

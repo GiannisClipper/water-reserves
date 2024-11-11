@@ -5,6 +5,7 @@ import { TimeValueHandler, SavingsChangeValueHandler } from "@/logic/ValueHandle
 import { PrecipitationChangeValueHandler } from "@/logic/ValueHandler/precipitation";
 import { TemporalXTicksCalculator } from "../_abstract/xTicks";
 import { YTicksCalculator } from "../_abstract/yTicks";
+import { intervalRepr } from "@/logic/LayoutHandler";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
@@ -22,7 +23,7 @@ class SavingsPrecipitationMultiChartLayoutHandler extends ChartLayoutHandler {
                 new SavingsChangeValueHandler(), 
                 new PrecipitationChangeValueHandler()
             ],        
-            title: 'Water reserves & precipitation',
+            title: 'Water reserves & precipitation' + intervalRepr( searchParams ),
             xLabel: timeRepr[ timeAggregation ],
             yLabel: valueRepr[ valueAggregation ] + ' (growth %)',
             dataBox: dataBox,
