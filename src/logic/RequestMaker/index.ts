@@ -23,7 +23,7 @@ abstract class RequestMaker {
         console.log( this.url );
 
         try {
-            const response = await fetch( this.url );
+            const response = await fetch( this.url, { cache: "no-store" } );
             // console.log( response.status, response.statusText )
             const result: any = await response.json();
 

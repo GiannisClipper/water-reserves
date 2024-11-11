@@ -9,12 +9,15 @@ import Modal from '@/components/Modal';
 
 import "@/styles/label.css"
 import { useState } from "react";
-import { ButtonCopy } from "@/components/Button";
+import { ButtonCopy, ButtonDownload } from "@/components/Button";
+import { FieldFilename } from "@/components/Field";
 
 const ListLabel = () => {
 
-    const [ modal, setModal ] = useState<boolean>( false );
-    
+    const [ urlModal, setUrlModal ] = useState<boolean>( false );
+    const [ downloadModal, setDownloadModal ] = useState<boolean>( false );
+    const [ filename, setFilename ] = useState<string>( 'water-reserves' );
+
     const getUrl = (): string => {
         const url: BrowserUrl = new BrowserUrl( window );
         const pathname: string = url.getPathname() + '/list';
@@ -38,26 +41,51 @@ const ListLabel = () => {
             </Left>
             <Right>
                 <ScreenIcon className="icon" title="Wide view" onClick={ expandChart } />
-                <LinkIcon className="icon" title="Wide view link" onClick={ () => setModal( true ) } />
-                <DownloadIcon className="icon" title="Download as file" onClick={ downloadList } />
+                <LinkIcon className="icon" title="Wide view link" onClick={ () => setUrlModal( true ) } />
+                <DownloadIcon className="icon" title="Download as file" onClick={ () => setDownloadModal( true ) } />
             </Right>
 
-            { modal
+            { urlModal
             ?
             <Modal
                 className="UrlModal"
                 title={ 'URL to reproduce the list (in wide view)' }
-                onClose={ () => setModal( false ) }
+                onClose={ () => setUrlModal( false ) }
             > 
                 <div>{ getUrl() }</div>
-                <ButtonCopy
-                    label="Copy to clipboard"
-                    onClick={()=> navigator.clipboard.writeText( getUrl() )}
+                <ButtonCopy onClick={ () => navigator.clipboard.writeText( getUrl() )} />
+            </Modal>
+            :
+            null
+            }
+
+            { downloadModal
+            ?
+            <Modal
+                className="DownloadModal"
+                title={ 'Download as file' }
+                onClose={ () => setDownloadModal( false ) }
+            > 
+                <div>
+                    <span>Filename:</span>
+                    <input
+                        value={ filename }
+                        onChange={ e => setFilename( e.target.value ) }
+                    />
+                </div>
+                <ButtonDownload 
+                    label="Download as CSV"
+                    onClick={ () => downloadList( filename + '.csv' ) }
+                />
+                <ButtonDownload 
+                    label="Download as JSON"
+                    onClick={ () => downloadList( filename + '.json' ) }
                 />
             </Modal>
             :
             null
             }
+
         </div>
     );
 }

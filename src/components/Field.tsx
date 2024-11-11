@@ -193,11 +193,22 @@ const CheckField = ( { label, ...props }: any ) => {
     );
 }
 
+const FieldFilename = ( props: any ) => {
+
+    return (
+        <Field
+            label = { <span>Filename</span> }
+            value = { <input {...props} /> }
+        />
+    );
+}
+
 export { 
     Field, 
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
     FieldItemsAggregation, 
     FieldTimeAggregation, FieldValueAggregation, 
-    CheckField
+    CheckField,
+    FieldFilename
 };

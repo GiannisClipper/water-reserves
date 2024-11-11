@@ -1,7 +1,6 @@
 import { Unit } from "@/components/Unit";
 import { withCommas, withPlusSign } from "@/helpers/numbers";
-import DataParser from '@/logic/DataParser';
-import { ListLayoutHandler, StandardListLayoutHandler } from '@/logic/LayoutHandler/list/_abstract';
+import { StandardListLayoutHandler } from '@/logic/LayoutHandler/list/_abstract';
 import { ValueHandler } from "@/logic/ValueHandler";
 
 import type { ObjectType } from "@/types";

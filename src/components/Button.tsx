@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react"
-import { CopyIcon } from "./Icons";
+import { CopyIcon, DownloadIcon } from "./Icons";
 
 import "@/styles/button.css"
 
@@ -23,11 +23,21 @@ const Button = ( { className, icon, label, onClick }: ButtonPropsType ) => {
 }
 
 const ButtonCopy = ( { className, label, onClick }: ButtonPropsType ) =>
+
     <Button
         className={ className }
         icon={ <CopyIcon /> }
-        label={ label }
+        label={ label ? label : 'Copy to clipboard' }
         onClick={ onClick }
     />;
 
-export { ButtonCopy };
+const ButtonDownload = ( { className, label, onClick }: ButtonPropsType ) =>
+
+    <Button
+        className={ className }
+        icon={ <DownloadIcon /> }
+        label={ label ? label : 'Download' }
+        onClick={ onClick }
+    />;
+    
+export { ButtonCopy, ButtonDownload };

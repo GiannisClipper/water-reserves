@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Left, Right } from "@/components/Generics";
 import { LinkIcon, ScreenIcon, DownloadIcon } from "@/components/Icons";
 import Modal from "@/components/Modal";
-import { ButtonCopy } from "@/components/Button";
+import { ButtonCopy, ButtonDownload } from "@/components/Button";
 
 import { downloadChart } from "@/logic/download";
 import BrowserUrl from "@/helpers/url/BrowserUrl";
@@ -15,7 +15,9 @@ export default function ChartLabel( props: ObjectType ) {
 
     const { children } = props;
 
-    const [ modal, setModal ] = useState<boolean>( false );
+    const [ urlModal, setUrlModal ] = useState<boolean>( false );
+    const [ downloadModal, setDownloadModal ] = useState<boolean>( false );
+    const [ filename, setFilename ] = useState<string>( 'water-reserves' );
     
     const getUrl = (): string => {
         const url: BrowserUrl = new BrowserUrl( window );
@@ -42,16 +44,16 @@ export default function ChartLabel( props: ObjectType ) {
             <Right>
                 { children }
                 <ScreenIcon className="icon" title="Wide view" onClick={ expandChart } />
-                <LinkIcon className="icon" title="Wide view link" onClick={ () => setModal( true ) } />
-                <DownloadIcon className="icon" title="Download as image" onClick={ downloadChart } />
+                <LinkIcon className="icon" title="Wide view link" onClick={ () => setUrlModal( true ) } />
+                <DownloadIcon className="icon" title="Download as image" onClick={ () => setDownloadModal( true ) } />
             </Right>
 
-            { modal
+            { urlModal
             ?
             <Modal
                 className="UrlModal"
                 title={ 'URL to reproduce the list (in wide view)' }
-                onClose={ () => setModal( false ) }
+                onClose={ () => setUrlModal( false ) }
             > 
                 <div>{ getUrl() }</div>
                 <ButtonCopy
@@ -62,6 +64,30 @@ export default function ChartLabel( props: ObjectType ) {
             :
             null
             }
+
+            { downloadModal
+            ?
+            <Modal
+                className="DownloadModal"
+                title={ 'Download as file' }
+                onClose={ () => setDownloadModal( false ) }
+            > 
+                <div>
+                    <span>Filename:</span>
+                    <input
+                        value={ filename }
+                        onChange={ e => setFilename( e.target.value ) }
+                    />
+                </div>
+                <ButtonDownload 
+                    label="Download as PNG"
+                    onClick={ () => downloadChart( filename + '.png' ) }
+                />
+            </Modal>
+            :
+            null
+            }
+
         </div>
     );
 }

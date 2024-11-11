@@ -2,7 +2,9 @@ import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import { downloadText, downloadImage } from "@/helpers/download";
 
-const downloadList = (): void => {
+const downloadList = ( filename: string ): void => {
+
+    filename = filename || 'filename';
 
     const table: HTMLCollection = document.body.getElementsByClassName( 'ListContent' );
     const trs: HTMLCollectionOf<Element> = table[ 0 ].getElementsByTagName( 'tr' );
@@ -12,7 +14,13 @@ const downloadList = (): void => {
 
     const cleanRepr = ( text: string | null ) => {
         if ( text ) {
-            return text.replaceAll( ',', '' ).replace( 'm3', '' ).trim();
+            return text.replaceAll( ',', '' )
+                .replace( 'm3', '' )
+                .replace( 'mm', '' )
+                .replace( 'oC', '' )
+                .replace( 'km2', '' )
+                .replace( '%', '' )
+                .trim();
         }
         return "";
     }
@@ -34,15 +42,17 @@ const downloadList = (): void => {
     data.forEach( row => rows.push( row.join( ',' ) ) );
 
     const text = rows.join( '\n' );
-    downloadText( 'savings.txt', text );
+    downloadText( filename, text );
 }
 
-const downloadChart = (): void => {
+const downloadChart = ( filename: string ): void => {
+
+    filename = filename || 'filename';
 
     const chartElem = document.body.getElementsByClassName( 'ChartContent' )[ 0 ] as HTMLElement;
 
     htmlToImage.toPng( chartElem ) //{ quality: 0.95 }
-        .then( ( dataUrl: string ) => downloadImage( 'savings.png', dataUrl ) )
+        .then( ( dataUrl: string ) => downloadImage( filename, dataUrl ) )
         .catch( ( error: any ) => console.error( 'Error:', error ) );
 }
 

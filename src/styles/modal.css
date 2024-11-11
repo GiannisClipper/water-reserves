@@ -74,22 +74,39 @@
         @apply flex flex-col justify-center
     }
 
-    .UrlModal .ModalWindow > .Bottom {
-        @apply h-[80%] p-8
+    .UrlModal .ModalWindow > .Bottom,
+    .DownloadModal .ModalWindow > .Bottom {
+            @apply h-[80%] p-8
         text-sky-700
     }
 
-    .UrlModal .ModalWindow > .Bottom > * {
-        @apply m-4
+    .UrlModal .ModalWindow > .Bottom > *,
+    .DownloadModal .ModalWindow > .Bottom > * {
+            @apply m-4
     }
 
     .UrlModal .ModalWindow > .Bottom > *:nth-child(1) {
         @apply border border-dotted border-sky-700 
         p-2 break-words
-
     }
+
+    .UrlModal .ModalWindow > .Bottom > *:nth-child(1),
+    .DownloadModal .ModalWindow > .Bottom > * {
+            @apply w-[70%] ml-[15%]
+    }
+
+    .DownloadModal .ModalWindow > .Bottom  > *:nth-child(1) > input {
+        @apply w-full bg-transparent
+        border border-sky-700 border-dashed p-4
+    }
+
     .UrlModal .ModalWindow > .Bottom > *:nth-child(2) {
         @apply w-[40%] ml-[30%]
     }
+
+    .DownloadModal .ModalWindow > .Bottom > :not(*:nth-child(1)) {
+        @apply w-[40%] ml-[30%]
+    }
+
 }
 @keyframes modalOpacity { 0% { opacity: 0; } 100% { opacity: .35; } }

@@ -26,6 +26,7 @@ const CardTooltip = ( { active, payload, layoutHandler }: CardTooltipPropsType )
             unit: handler.unit,
         } ) ).sort( ( a, b ) => b.value - a.value );
 
+        console.log( 'layoutHandler.yValueHandlers', layoutHandler.yValueHandlers )
         return (
             <div className="Tooltip">
                 <p>{ `Date: ${date}` }</p>

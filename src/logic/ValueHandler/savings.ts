@@ -29,7 +29,7 @@ class SavingsDifferenceValueHandler extends ValueHandler {
 
 class SavingsChangeValueHandler extends ValueHandler {
     constructor() {
-        super( { type: 'number', key: 'savings_percentage', label: 'Savings change', unit: '%', color: SKY } );
+        super( { type: 'number', key: 'savings_percentage', label: 'Percentage of change', unit: '%', color: SKY } );
     }
 }
 
