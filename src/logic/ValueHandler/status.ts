@@ -27,7 +27,7 @@ class ProductionValueHandler extends ValueHandler {
 
 class PrecipitationValueHandler extends ValueHandler {
     constructor() {
-        super( { key: 'precipitation_sum', label: 'Precipitation', unit: 'm3', color: TEAL } );
+        super( { key: 'precipitation_sum', label: 'Precipitation', unit: 'mm', color: TEAL } );
     }
 }
 

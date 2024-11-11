@@ -77,27 +77,27 @@ const AthensTemperatureCard = ( { option, result }: PropsType ) => {
                     <tbody>
                         <tr>
                             <th></th>
-                            <th className='numeric'>min <Unit unit={ units[ 0 ] }/></th>
-                            <th className='numeric'>mean <Unit unit={ units[ 0 ] }/></th>
-                            <th className='numeric'>max <Unit unit={ units[ 0 ] }/></th>
+                            <th className='numeric'>Current</th>
+                            <th className='numeric'>Historic avg</th>
+                            <th className='numeric'>Difference</th>
                         </tr>
                         <tr>
-                            <td>Measurement</td>
-                            <td className='numeric'>{ measurements[ 0 ] }</td>
-                            <td className='numeric'>{ measurements[ 1 ] }</td>
+                            <td>Max <Unit unit={ units[ 0 ] }/></td>
                             <td className='numeric'>{ measurements[ 2 ] }</td>
-                        </tr>
-                        <tr>
-                            <td>Historic avg</td>
-                            <td className='numeric'>{ Math.round( historicAvg.min * 10 ) / 10 }</td>
-                            <td className='numeric'>{ Math.round( historicAvg.mean * 10 ) / 10 }</td>
                             <td className='numeric'>{ Math.round( historicAvg.max * 10 ) / 10 }</td>
+                            <td className='numeric'>{ Math.round( ( measurements[ 2 ] - historicAvg.max ) * 10 ) / 10 }</td>
                         </tr>
                         <tr>
-                            <td>Difference</td>
-                            <td className='numeric'>{ Math.round( ( measurements[ 0 ] - historicAvg.min ) * 10 ) / 10 }</td>
+                            <td>Mean <Unit unit={ units[ 0 ] }/></td>
+                            <td className='numeric'>{ measurements[ 1 ] }</td>
+                            <td className='numeric'>{ Math.round( historicAvg.mean * 10 ) / 10 }</td>
                             <td className='numeric'>{ Math.round( ( measurements[ 1 ] - historicAvg.mean ) * 10 ) / 10 }</td>
-                            <td className='numeric'>{ Math.round( ( measurements[ 2 ] - historicAvg.max ) * 10 ) / 10 }</td>
+                        </tr>
+                        <tr>
+                            <td>Min <Unit unit={ units[ 0 ] }/></td>
+                            <td className='numeric'>{ measurements[ 0 ] }</td>
+                            <td className='numeric'>{ Math.round( historicAvg.min * 10 ) / 10 }</td>
+                            <td className='numeric'>{ Math.round( ( measurements[ 0 ] - historicAvg.min ) * 10 ) / 10 }</td>
                         </tr>
                     </tbody>
                     </table>
