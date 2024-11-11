@@ -65,8 +65,14 @@
     @apply pt-3
   }
 
-  .Header > .Top > .Right > .icon {
-    @apply text-3xl
+  .Header > .Top > .Right {
+    @apply pt-3
+  }
+
+  .Header > .Top > .Right .icon {
+      @apply ml-2 border border-sky-700
+      p-1 text-base text-sky-700
+      hover:bg-sky-700 hover:text-sky-300
   }
 
   .Header > .Top .text {

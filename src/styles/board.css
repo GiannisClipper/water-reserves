@@ -2,17 +2,17 @@
 
 @layer components {
 
-  .DataSection {
+  .Status .DataSection {
     @apply flex flex-row flex-wrap justify-around
     w-full
   }
 
-  .DataSectionSkeleton {
+  /* .DataSectionSkeleton {
     @apply flex flex-row
     w-full
     bg-white bg-opacity-50
     p-8
-  }
+  } */
 
   .Card {
     @apply w-full md:w-[480px]

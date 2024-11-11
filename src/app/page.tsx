@@ -5,7 +5,10 @@ import { APP_SUBTITLE } from "./settings";
 export default function Home() {
     return (
         <>
-        <Header subTitle={APP_SUBTITLE} />
+        <Header 
+            subTitle={ APP_SUBTITLE } 
+            withOptions={ false } 
+        />
         <Options />
         </>
     );

@@ -1,23 +1,22 @@
 "use client"
 
 import Link from 'next/link';
-import { useState } from "react";
 
 import { Top, Bottom, Left, Right } from "@/components/Generics";
-import { WaterIcon, InfoIcon  } from "@/components/Icons";
-import InfoModal from "./InfoModal";
+import { WaterIcon, GaugeIcon, FaucetIcon, RainIcon, TemperatureIcon, ToolIcon, ComposeIcon } from "@/components/Icons";
 
 import { APP_TITLE } from "./settings";
 
 import "@/styles/header.css";
 
-type PropsType = { subTitle: string }
+type PropsType = { 
+    subTitle: string 
+    withOptions: boolean | undefined
+}
 
-const Header = ( { subTitle }: PropsType ) => {
+const Header = ( { subTitle, withOptions }: PropsType ) => {
 
     subTitle = `${subTitle}`;
-
-    const [ openModal, setOpenModal ] = useState( false );
 
     return (
         <>
@@ -35,9 +34,7 @@ const Header = ( { subTitle }: PropsType ) => {
                 </Link>
 
                 <Right>
-                    <Right className="icon" onClick={ () => setOpenModal( true ) }>
-                        <InfoIcon />
-                    </Right>
+                    { withOptions ? <HeaderOptions /> : null }
                 </Right>
             </Top>
 
@@ -54,14 +51,60 @@ const Header = ( { subTitle }: PropsType ) => {
 
         </div>
 
-        { openModal ? 
-            <InfoModal onClose={ () => setOpenModal( false ) } /> 
-        : null }
-
         </>
     );
-
 }
+
+const HeaderOptions = () => 
+    <>
+        <Link className="Option" href="/status">
+            <span className='icon' title="Current status">
+                <GaugeIcon />
+            </span>
+        </Link>
+
+        <Link className="Option" href="/savings">
+            <span className='icon' title="Water reserves">
+                <WaterIcon />
+            </span>
+        </Link>
+
+        <Link className="Option" href="/production">
+            <span className='icon' title="Drinking water production">
+                <FaucetIcon />
+            </span>
+        </Link>
+
+        <Link className="Option" href="/precipitation">
+            <span className='icon' title="Precipitation measurements">
+                <RainIcon />
+            </span>
+        </Link>
+
+        <Link className="Option" href="/temperature">
+            <span className='icon' title="Temperature in Athens">
+                <TemperatureIcon />
+            </span>
+        </Link>
+
+        <Link className="Option" href="/interruptions">
+            <span className='icon' title="Water supply interruptions">
+                <ToolIcon />
+            </span>
+        </Link>
+
+        <Link className="Option" href="/savings-production">
+            <span className='icon' title="Water reserves & production">
+                <ComposeIcon />
+            </span>
+        </Link>
+
+        <Link className="Option" href="/savings-precipitation">
+            <span className='icon' title="Water reserves & precipitation">
+                <ComposeIcon />
+            </span>
+        </Link>
+    </>;
 
 export default Header;
 

@@ -20,7 +20,7 @@ export default function Page( { subTitle, DataSection, endpoint, searchParams }:
 
     return (
         <>
-        <Header subTitle={subTitle} />
+        <Header subTitle={ subTitle } withOptions={ false } />
 
         <div className="Content">
 

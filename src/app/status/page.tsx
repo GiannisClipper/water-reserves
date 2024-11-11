@@ -21,9 +21,9 @@ export default function Board( { searchParams }: PropsType ) {
 
     return (
         <>
-        <Header subTitle={STATUS} />
+        <Header subTitle={ STATUS } withOptions={ true } />
 
-        <div className="Content">
+        <div className="Content Status">
 
             <Suspense fallback="<p>Loading...</p>">
                 <DataSection 

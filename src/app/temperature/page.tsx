@@ -24,7 +24,7 @@ export default function Page( { searchParams }: PropsType ) {
 
     return (
         <>
-        <Header subTitle={ TEMPERATURE } />
+        <Header subTitle={ TEMPERATURE } withOptions={ true } />
 
         <div className="Content">
 

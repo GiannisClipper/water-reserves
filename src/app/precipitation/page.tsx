@@ -24,7 +24,7 @@ export default function Page( { searchParams }: PropsType ) {
 
     return (
         <>
-        <Header subTitle={ PRECIPITATION } />
+        <Header subTitle={ PRECIPITATION } withOptions={ true } />
 
         <div className="Content">
 
