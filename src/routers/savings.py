@@ -47,14 +47,19 @@ async def get_all(
     headers = get_query_headers( query_handler.maker.query )
     data = query_handler.data
 
-    if reservoir_aggregation != None:
-        return SavingsResponse( headers=headers, data=data )
+    # if reservoir_aggregation != None:
+    #     return SavingsResponse( headers=headers, data=data )
         # return { 'headers': headers, 'data': data }
     
     query_handler = ReservoirsPoolQueryFactory().handler
     query_handler.maker.select_all()
     await query_handler.run_query()
     reservoirs = query_handler.data
+
+    if reservoir_filter:
+        ids = reservoir_filter.split( ',' )
+        reservoirs = list( filter( lambda x: f'{x.id}' in ids, reservoirs ) )
+
     legend = Legend( reservoirs )
     return SavingsResponse( headers=headers, data=data, legend=legend )
     # return { 'headers': headers, 'data': data, 'legend': legend }

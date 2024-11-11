@@ -232,8 +232,8 @@ class InterruptionsQueryMaker( ExtendedQueryMaker ):
             ir.events AS events,
             mu.area AS area,
             mu.population AS population,
-            ir.events / mu.area AS events_over_area,
-            ir.events / ( .001 * mu.population ) AS events_over_population
+            ROUND( (ir.events / mu.area)::numeric, 2 ) AS events_over_area,
+            ROUND( (ir.events / ( .001 * mu.population ))::numeric, 2 ) AS events_over_population
             FROM (
                 SELECT
                 {alias}.municipality_id AS municipality_id, 

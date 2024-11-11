@@ -133,6 +133,3 @@ app.include_router( locations_router.router )
 app.include_router( weather_router.router )
 app.include_router( municipalities_router.router )
 app.include_router( interruptions_router.router )
-
-# from src.geography.MunicipalitiesHandler import MunicipalitiesHandler
-# print( MunicipalitiesHandler().findCenters() )

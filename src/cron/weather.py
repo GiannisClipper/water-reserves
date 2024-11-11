@@ -48,5 +48,8 @@ async def weather_cron_job() -> None:
         query_handler.maker.insert_into( req_handler.parser.data )
         await query_handler.run_query()
 
-        print( "Updating status..." )
+        print( "Updating status (precipitation)..." )
         await settings.status.weather.update()
+
+        print( "Updating status (athens_temperature)..." )
+        await settings.status.athens_temperature.update()

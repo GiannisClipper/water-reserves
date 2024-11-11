@@ -57,7 +57,7 @@ class PoolQueryRunner( QueryRunner ):
             row_factory = class_row( RowModel)
 
         async with self.pool.connection() as conn, conn.cursor( row_factory=row_factory ) as cur:
-            print( query )
+            # print( query )
             await cur.execute( query, params )
             await conn.commit()
 

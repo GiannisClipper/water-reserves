@@ -53,5 +53,10 @@ async def get_all(
     query_handler.maker.select_all()
     await query_handler.run_query()
     locations = query_handler.data
+
+    if location_filter:
+        ids = location_filter.split( ',' )
+        locations = list( filter( lambda x: f'{x.id}' in ids, locations ) )
+
     legend = Legend( locations )
     return WeatherResponse( headers=headers, data=data, legend=legend )

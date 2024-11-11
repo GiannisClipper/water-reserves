@@ -51,12 +51,17 @@ async def get_all(
     #     factory_aggregation, time_aggregation, year_start
     # )
 
-    if factory_aggregation != None:
-        return ProductionResponse( headers=headers, data=data )
+    # if factory_aggregation != None:
+    #     return ProductionResponse( headers=headers, data=data )
     
     query_handler = FactoriesPoolQueryFactory().handler
     query_handler.maker.select_all()
     await query_handler.run_query()
     factories = query_handler.data
+
+    if factory_filter:
+        ids = factory_filter.split( ',' )
+        factories = list( filter( lambda x: f'{x.id}' in ids, factories ) )
+
     legend = Legend( factories )
     return ProductionResponse( headers=headers, data=data, legend=legend )

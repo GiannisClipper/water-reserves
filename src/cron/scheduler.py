@@ -2,7 +2,7 @@ import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.memory import MemoryJobStore
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+# from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.triggers.cron import CronTrigger
 
 from .savings import savings_cron_job
@@ -15,8 +15,8 @@ from src.settings import get_settings
 settings = get_settings()
 
 jobstores = { 
-    # 'default': MemoryJobStore() 
-    'default': SQLAlchemyJobStore( url='sqlite:///apscheduler.sqlite3' )
+    'default': MemoryJobStore() 
+    # 'default': SQLAlchemyJobStore( url='sqlite:///apscheduler.sqlite3' )
 }
 
 scheduler = BackgroundScheduler( 

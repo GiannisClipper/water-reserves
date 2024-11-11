@@ -175,3 +175,15 @@ https://automating-gis-processes.github.io/2017/lessons/L3/point-in-polygon.html
 
 How to convert geojson to shapely polygon
 https://stackoverflow.com/questions/68820085/how-to-convert-geojson-to-shapely-polygon
+
+
+# time series analysis
+
+Time Series Analysis in Python | Time Series Forecasting | Data Science with Python | Edureka
+https://www.youtube.com/watch?v=e8Yw4alG16Q
+
+Time Series Analysis & Visualization in Python
+https://www.geeksforgeeks.org/time-series-data-visualization-in-python/
+
+Complete Guide on Time Series Analysis in Python
+https://www.kaggle.com/code/prashant111/complete-guide-on-time-series-analysis-in-python
