@@ -77,7 +77,8 @@ class BrowserUrl {
     open(): void { // open in current tab
 
         if ( this.window ) {
-            this.window.location.href = this.getUrl(); 
+            // this.window.location.href = this.getUrl(); 
+            this.window.open( this.getUrl(), '_self' );
         }
     }
 

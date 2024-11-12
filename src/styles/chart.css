@@ -26,7 +26,7 @@
     @apply  border-gray-400 bg-yellow-100 border 
     p-2
   }
-
+  
   .MapContent {
     @apply min-w-full
   }

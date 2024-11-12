@@ -52,7 +52,7 @@ class SavingsCardLayoutHandler extends CardLayoutHandler {
             lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new SavingsValueHandler() ],
-                data: dataParser.recentEntries,
+                dataBox: { data: dataParser.recentEntries },
                 XTicksCalculator,
                 YTicksCalculator: MinimalYTicksCalculator,
             } ),
@@ -74,7 +74,7 @@ class ProductionCardLayoutHandler extends CardLayoutHandler {
             lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new ProductionValueHandler() ],
-                data: dataParser.recentEntries,
+                dataBox: { data: dataParser.recentEntries },
                 XTicksCalculator,
                 YTicksCalculator: MinimalYTicksCalculator,
             } ),
@@ -96,7 +96,7 @@ class PrecipitationCardLayoutHandler extends CardLayoutHandler {
             lineChartHandler: new ChartLayoutHandler( { 
                 xValueHandler: new DateValueHandler(), 
                 yValueHandlers: [ new PrecipitationValueHandler() ],
-                data: dataParser.recentEntries,
+                dataBox: { data: dataParser.recentEntries },
                 XTicksCalculator,
                 YTicksCalculator: MinimalYTicksCalculator,
             } ),
@@ -122,7 +122,7 @@ class AthensTemperatureCardLayoutHandler extends CardLayoutHandler {
                     new MeanTemperatureValueHandler(),
                     new MaxTemperatureValueHandler(),
                 ],
-                data: dataParser.recentEntries,
+                dataBox: { data: dataParser.recentEntries },
                 XTicksCalculator,
                 YTicksCalculator: MinimalYTicksCalculator,
             } ),

@@ -44,6 +44,7 @@ const DataSection = async ( { endpoint, searchParams }: PropsType ) => {
         :
         <div className="DataSection">
             <Suspense fallback={<ChartSectionSkeleton />}>
+            {/* <Suspense fallback={"<div>W ai i t i n g . . . </div>"}> */}
                 <ChartSection 
                     endpoint={ endpoint }
                     searchParams={ searchParams }

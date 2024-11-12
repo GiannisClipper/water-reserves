@@ -24,7 +24,7 @@ export default function Page( { searchParams }: PropsType ) {
 
     return (
         <>
-        <Header subTitle={ SAVINGS_PRODUCTION } withOptions={ true } />
+        <Header subTitle={ SAVINGS_PRODUCTION } endpoint={ endpoint } />
 
         <div className="Content">
 

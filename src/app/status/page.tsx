@@ -21,7 +21,7 @@ export default function Board( { searchParams }: PropsType ) {
 
     return (
         <>
-        <Header subTitle={ STATUS } withOptions={ true } />
+        <Header subTitle={ STATUS } endpoint={ endpoint } />
 
         <div className="Content Status">
 

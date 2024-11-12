@@ -32,7 +32,7 @@ const ParamSection = async ( { endpoint, searchParams }: PropsType ) => {
         }
     }
 
-    console.log( "rendering: ParamSection..." )
+    console.log( "rendering: ParamSection..." )//, endpoint, searchParams, error, result )
 
     return (
         <div className="ParamSection">

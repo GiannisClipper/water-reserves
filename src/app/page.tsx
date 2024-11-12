@@ -7,7 +7,6 @@ export default function Home() {
         <>
         <Header 
             subTitle={ APP_SUBTITLE } 
-            withOptions={ false } 
         />
         <Options />
         </>

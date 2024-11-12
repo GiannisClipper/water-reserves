@@ -66,14 +66,25 @@
   }
 
   .Header > .Top > .Right {
-    @apply pt-3
+    @apply p-1
   }
 
-  .Header > .Top > .Right .icon {
-      @apply ml-2 border border-sky-700
-      p-1 text-base text-sky-700
+  .Header > .Top > .Right > * {
+      @apply w-[1.75em] h-[2em] 
+      m-1 border border-sky-700
+      p-1 text-base 
+      text-sky-700
       hover:bg-sky-700 hover:text-sky-300
   }
+
+  .Header > .Top > .Right.status > *:nth-child(1) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.savings > *:nth-child(2) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.production > *:nth-child(3) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.precipitation > *:nth-child(4) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.temperature > *:nth-child(5) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.interruptions > *:nth-child(6) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.savings-production > *:nth-child(7) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.savings-precipitation > *:nth-child(8) { @apply bg-sky-700 text-sky-300 }
 
   .Header > .Top .text {
     @apply p-2 text-3xl font-bold
@@ -82,4 +93,14 @@
   .Header > .Bottom .text {
     @apply ml-2 h-full pt-4 text-sm font-semibold 
   }
+
+  .Header, .Content, .Footer {
+    animation-name: slowOpacity;
+    animation-duration: 250ms;
+    animation-delay: 0ms;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+  }
 }
+
+@keyframes slowOpacity { 0% { opacity: 0; } 100% { opacity: .5; } }

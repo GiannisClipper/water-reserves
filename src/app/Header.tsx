@@ -1,5 +1,3 @@
-"use client"
-
 import Link from 'next/link';
 
 import { Top, Bottom, Left, Right } from "@/components/Generics";
@@ -11,10 +9,10 @@ import "@/styles/header.css";
 
 type PropsType = { 
     subTitle: string 
-    withOptions: boolean | undefined
+    endpoint?: string
 }
 
-const Header = ( { subTitle, withOptions }: PropsType ) => {
+const Header = ( { subTitle, endpoint }: PropsType ) => {
 
     subTitle = `${subTitle}`;
 
@@ -33,8 +31,8 @@ const Header = ( { subTitle, withOptions }: PropsType ) => {
                     </Right>
                 </Link>
 
-                <Right>
-                    { withOptions ? <HeaderOptions /> : null }
+                <Right className={endpoint}>
+                    { endpoint ? <HeaderOptions /> : null }
                 </Right>
             </Top>
 
@@ -56,53 +54,38 @@ const Header = ( { subTitle, withOptions }: PropsType ) => {
 }
 
 const HeaderOptions = () => 
+
     <>
-        <Link className="Option" href="/status">
-            <span className='icon' title="Current status">
-                <GaugeIcon />
-            </span>
+        <Link className="Option" title="Current status" href="/status">
+            <GaugeIcon />
         </Link>
 
-        <Link className="Option" href="/savings">
-            <span className='icon' title="Water reserves">
-                <WaterIcon />
-            </span>
+        <Link className="Option" title="Water reserves" href="/savings">
+            <WaterIcon />
         </Link>
 
-        <Link className="Option" href="/production">
-            <span className='icon' title="Drinking water production">
-                <FaucetIcon />
-            </span>
+        <Link className="Option" title="Drinking water production" href="/production">
+            <FaucetIcon />
         </Link>
 
-        <Link className="Option" href="/precipitation">
-            <span className='icon' title="Precipitation measurements">
-                <RainIcon />
-            </span>
+        <Link className="Option" title="Precipitation measurements" href="/precipitation">
+            <RainIcon />
         </Link>
 
-        <Link className="Option" href="/temperature">
-            <span className='icon' title="Temperature in Athens">
-                <TemperatureIcon />
-            </span>
+        <Link className="Option" title="Temperature in Athens" href="/temperature">
+            <TemperatureIcon />
         </Link>
 
-        <Link className="Option" href="/interruptions">
-            <span className='icon' title="Water supply interruptions">
+        <Link className="Option" title="Water supply interruptions" href="/interruptions">
                 <ToolIcon />
-            </span>
         </Link>
 
-        <Link className="Option" href="/savings-production">
-            <span className='icon' title="Water reserves & production">
-                <ComposeIcon />
-            </span>
+        <Link className="Option" title="Water reserves & production" href="/savings-production">
+            <ComposeIcon />
         </Link>
 
-        <Link className="Option" href="/savings-precipitation">
-            <span className='icon' title="Water reserves & precipitation">
-                <ComposeIcon />
-            </span>
+        <Link className="Option" title="Water reserves & precipitation" href="/savings-precipitation">
+            <ComposeIcon />
         </Link>
     </>;
 

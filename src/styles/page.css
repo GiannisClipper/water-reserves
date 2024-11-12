@@ -26,6 +26,10 @@
     min-h-[calc(3rem+55vh)] /* min label height + content height */
   }
 
+  /* .ChartSectionSkeleton {
+    @apply border-4 border-black
+  } */
+
   .ListSectionSkeleton {
     @apply 
     min-h-[calc(3rem+45vh)] /* min label height + content height */
@@ -33,7 +37,7 @@
 
   .ChartSection, .ListSection {
     @apply flex flex-col justify-items-start
-    w-full 
+    w-full
   }
 
   .ChartContent {

@@ -24,7 +24,7 @@ export default function Page( { searchParams }: PropsType ) {
 
     return (
         <>
-        <Header subTitle={ INTERRUPTIONS } withOptions={ true } />
+        <Header subTitle={ INTERRUPTIONS } endpoint={ endpoint } />
 
         <div className="Content">
 
