@@ -46,8 +46,8 @@ async def get_all(
     headers = get_query_headers( query_handler.maker.query )
     data = query_handler.data
 
-    if location_aggregation != None:
-        return WeatherResponse( headers=headers, data=data )
+    # if location_aggregation != None:
+    #     return WeatherResponse( headers=headers, data=data )
     
     query_handler = LocationsPoolQueryFactory().handler
     query_handler.maker.select_all()

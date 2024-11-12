@@ -54,7 +54,18 @@ async def get_all(
 
     if time_aggregation and time_aggregation[ 0 ] == 'alltime':
         # values = list( map( lambda row: .5 * ( row[ -1 ] + row[ -2 ] ), data ) )
-        values = list( map( lambda row: ( row[ -1 ], row[ -2 ] ), data ) )
+        # values = list( map( lambda row: ( row[ -1 ], row[ -2 ] ), data ) )
+
+        # normalize values between 0 and 1
+        values = []
+        for i in range( -1, -3, -1 ):
+            single_dim = list( map( lambda row: row[ i ], data ) )
+            min_val, max_val = min( single_dim ), max( single_dim )
+            single_dim = list( map( lambda val: ( val - min_val ) / ( max_val - min_val ), single_dim ) )
+            values.append( single_dim )
+        values = [ ( x[ 0 ], x[ 1 ] ) for x in zip( values[ 0 ], values[ 1 ] ) ]
+        # print( values )
+
         centers, clusters = kmeans_clustering( values, n_clusters=5 )
         # print( 'centers', centers )
         # print( 'clusters', clusters )

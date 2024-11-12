@@ -46,7 +46,6 @@ class WeatherStatus( AbstractTableStatus ):
         year_start = self.get_year_start()
 
         # precipitation_sum, all cities total
-
         weather_handler.maker.select_where(
             interval_filter=interval,
             location_aggregation='sum',
