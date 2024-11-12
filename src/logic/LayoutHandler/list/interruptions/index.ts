@@ -38,7 +38,7 @@ class SpatialInterruptionsStandardListLayoutHandler extends StandardListLayoutHa
         dataBox.data = dataBox.data.sort( ( a, b ) => a.name.localeCompare( b.name ) );
 
         super( {
-            title: INTERRUPTIONS + intervalRepr( searchParams ),
+            title: `${INTERRUPTIONS} (${searchParams.time_range})` + intervalRepr( searchParams ),
             dataBox: dataBox,
             valueHandlers: [
                 new MunicipalityNameValueHandler(),

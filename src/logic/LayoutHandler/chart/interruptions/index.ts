@@ -61,7 +61,7 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
         const params = new ParamValues( searchParams ).toJSON();
         const { timeAggregation, valueAggregation } = params;
 
-        let title: string = 'Water supply interruptions' + intervalRepr( searchParams );
+        let title: string = `Water supply interruptions (${searchParams.time_range})` + intervalRepr( searchParams );
         let yLabel: string = 'Events';
         let yValueHandlerClass = EventsValueHandler;
 

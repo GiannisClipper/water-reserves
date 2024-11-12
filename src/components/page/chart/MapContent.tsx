@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MapContainer, TileLayer, ZoomControl, GeoJSON, Tooltip, Marker, Popup, useMapEvents } from 'react-leaflet'
 import L from "leaflet";
@@ -18,6 +18,30 @@ type PropsType = {
     dataBox: ObjectType
     layoutHandler: SpatialInterruptionsStandardChartLayoutHandler
     chartType: string | undefined
+}
+
+const MapTitle = ( { map, layoutHandler } ) => {
+
+    useEffect( () => {
+
+        if ( ! map ) {
+            return;
+        }
+
+        const control = L.control( { position: "topleft" } );
+
+        control.onAdd = () => {
+            const div = L.DomUtil.create( "div", "Title" );
+            div.innerHTML =
+                `<div><span>${layoutHandler.title}</span></div>`;
+            return div;
+        };
+
+        control.addTo( map );
+
+    }, [ map ] );
+
+    return null;
 }
 
 const MapContent = ( { dataBox, chartType, layoutHandler }: PropsType ) => {
@@ -119,7 +143,7 @@ const MapContent = ( { dataBox, chartType, layoutHandler }: PropsType ) => {
         ? 1.4
         : 1.6;
 
-        console.log( "rendering: MapContent...", geojson.features )//, dataBox.data );
+        console.log( "rendering: MapContent..." )//, geojson.features )//, dataBox.data );
     
     return (
         <div 
@@ -150,6 +174,8 @@ const MapContent = ( { dataBox, chartType, layoutHandler }: PropsType ) => {
                 <ZoomControl 
                     position="topright" 
                 />
+
+                <MapTitle map={ map } layoutHandler={ layoutHandler } />
 
                 <MapLegend map={ map } />
 

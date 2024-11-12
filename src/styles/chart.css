@@ -66,6 +66,11 @@
     @apply inline-block ml-2 mr-1
   }
 
+
+  .MapContent .Title {
+    @apply font-semibold
+  }
+
   .MapContent .Legend {
     @apply bg-white
   }
