@@ -21,7 +21,7 @@ class ProductionStandardListLayoutHandler extends StandardListLayoutHandler {
 
         super( {
             title: PRODUCTION + intervalRepr( searchParams ),
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers: [
                 new TimeValueHandler(),
                 new ProductionValueHandler(),
@@ -59,7 +59,7 @@ class ProductionStackListLayoutHandler extends StandardListLayoutHandler {
         super( {
             title: PRODUCTION + intervalRepr( searchParams ),
             labels,
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers,
         } );
     }

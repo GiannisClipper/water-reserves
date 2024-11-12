@@ -37,7 +37,7 @@ class TemperatureStandardListLayoutHandler extends StandardListLayoutHandler {
         super( {
             title: TEMPERATURE + intervalRepr( searchParams ),
             labels,
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers
         } );
     }

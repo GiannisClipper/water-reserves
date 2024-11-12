@@ -27,7 +27,7 @@ class SavingsPrecipitationStandardListLayoutHandler extends StandardListLayoutHa
 
         super( {
             title: SAVINGS_PRECIPITATION + intervalRepr( searchParams ),
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers
         } );
     }

@@ -21,7 +21,7 @@ class PrecipitationStandardListLayoutHandler extends StandardListLayoutHandler {
 
         super( {
             title: PRECIPITATION + intervalRepr( searchParams ),
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers: [
                 new TimeValueHandler(),
                 new PrecipitationValueHandler(),
@@ -59,7 +59,7 @@ class PrecipitationStackListLayoutHandler extends StandardListLayoutHandler {
         super( {
             title: PRECIPITATION + intervalRepr( searchParams ),
             labels,
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers,
         } );
     }

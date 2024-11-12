@@ -17,7 +17,7 @@ const SavingsStandardLegend = ( { payload, layoutHandler }: StandardLegendPropsT
     return (
         <StandardLegend
             payload={ payload }
-            labels={ [ layoutHandler?.dataBox.legend.reservoirs.map( r => r.name_en ).sort().join( ',' ) ] }
+            labels={ [ layoutHandler?.dataBox.legend.reservoirs.map( r => r.name_en ).join( ',' ) ] }
             colors={ [ layoutHandler?.yValueHandlers[ 0 ].color[ 500 ] ] }   
         />
     );
@@ -28,7 +28,7 @@ const ProductionStandardLegend = ( { payload, layoutHandler }: StandardLegendPro
     return (
         <StandardLegend
             payload={ payload }
-            labels={ [ layoutHandler?.dataBox.legend.factories.map( r => r.name_en ).sort().join( ',' ) ] }
+            labels={ [ layoutHandler?.dataBox.legend.factories.map( r => r.name_en ).join( ',' ) ] }
             colors={ [ layoutHandler?.yValueHandlers[ 0 ].color[ 500 ] ] }   
         />
     );
@@ -39,7 +39,7 @@ const WeatherStandardLegend = ( { payload, layoutHandler }: StandardLegendPropsT
     return (
         <StandardLegend
             payload={ payload }
-            labels={ [ layoutHandler?.dataBox.legend.locations.map( r => r.name_en ).sort().join( ',' ) ] }
+            labels={ [ layoutHandler?.dataBox.legend.locations.map( r => r.name_en ).join( ',' ) ] }
             colors={ [ layoutHandler?.yValueHandlers[ 0 ].color[ 500 ] ] }   
         />
     );

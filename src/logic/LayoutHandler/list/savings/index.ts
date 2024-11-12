@@ -21,7 +21,7 @@ class SavingsStandardListLayoutHandler extends StandardListLayoutHandler {
 
         super( {
             title: SAVINGS + intervalRepr( searchParams ),
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers: [
                 new TimeValueHandler(),
                 new SavingsValueHandler(),
@@ -59,7 +59,7 @@ class SavingsStackListLayoutHandler extends StandardListLayoutHandler {
         super( {
             title: SAVINGS + intervalRepr( searchParams ),
             labels,
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers,
         } );
     }

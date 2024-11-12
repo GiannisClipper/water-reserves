@@ -18,9 +18,10 @@ const getNested = ( obj: ObjectType, key: string ): any => {
 type PropsType = { 
     dataBox: ObjectType
     layoutHandler: StandardListLayoutHandler
+    Legend: any
 }
 
-const ListContent = ( { dataBox, layoutHandler }: PropsType ) => {
+const ListContent = ( { dataBox, layoutHandler, Legend }: PropsType ) => {
 
     const data: ObjectType[] = dataBox.data;
     const valueHandlers = layoutHandler.valueHandlers;
@@ -31,7 +32,10 @@ const ListContent = ( { dataBox, layoutHandler }: PropsType ) => {
         <div className="ListContent">
 
             <table>
-                <caption>{ layoutHandler.title }</caption>
+                <caption>
+                    <div>{ layoutHandler.title }</div>
+                    <div>{ Legend ? <Legend layoutHandler={ layoutHandler } /> : null }</div>
+                </caption>
 
                 <thead>
                     <tr>

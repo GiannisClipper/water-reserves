@@ -27,7 +27,7 @@ class SavingsProductionStandardListLayoutHandler extends StandardListLayoutHandl
 
         super( {
             title: SAVINGS_PRODUCTION + intervalRepr( searchParams ),
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers
         } );
     }

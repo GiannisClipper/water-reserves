@@ -20,7 +20,7 @@ class TemporalInterruptionsStandardListLayoutHandler extends StandardListLayoutH
 
         super( {
             title: INTERRUPTIONS + intervalRepr( searchParams ),
-            data: dataBox.data,
+            dataBox: dataBox,
             valueHandlers: [
                 new TimeValueHandler(),
                 new EventsValueHandler(),
@@ -35,11 +35,11 @@ class SpatialInterruptionsStandardListLayoutHandler extends StandardListLayoutHa
 
     constructor( searchParams: SearchParamsType, dataBox: ObjectType ) {
 
-        const data = dataBox.data.sort( ( a, b ) => a.name.localeCompare( b.name ) );
+        dataBox.data = dataBox.data.sort( ( a, b ) => a.name.localeCompare( b.name ) );
 
         super( {
             title: INTERRUPTIONS + intervalRepr( searchParams ),
-            data,
+            dataBox: dataBox,
             valueHandlers: [
                 new MunicipalityNameValueHandler(),
                 new EventsValueHandler(),

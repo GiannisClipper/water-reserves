@@ -5,6 +5,7 @@ import ListLayoutHandlerFactory from "@/logic/LayoutHandler/list/ListLayoutHandl
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
+import { ProductionLegend, SavingsLegend, WeatherLegend } from "./legends";
 
 type PropsType = {
     endpoint: string
@@ -20,6 +21,14 @@ const ListSection = ( { endpoint, searchParams, dataBox }: PropsType  ) => {
     const layoutHandler = new ListLayoutHandlerFactory( endpoint, searchParams, dataBox )
         .handler;
 
+    const listLegends: ObjectType = {
+        'savings': SavingsLegend,
+        'production': ProductionLegend,
+        'precipitation': WeatherLegend,
+    };
+
+    const Legend = listLegends[ endpoint ];
+
     console.log( "rendering: ListSection..." )
 
     return (
@@ -29,6 +38,7 @@ const ListSection = ( { endpoint, searchParams, dataBox }: PropsType  ) => {
             <StandardListContent
                 dataBox={ dataBox }
                 layoutHandler={ layoutHandler }
+                Legend={ Legend }
             />
         </div>
     );

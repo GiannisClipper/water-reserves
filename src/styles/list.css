@@ -20,8 +20,12 @@
     @apply inline-block 
   }
 
-  .ListContent caption {
-    @apply text-base font-semibold p-4 pt-0
+  .ListContent caption > *:nth-child(1) {
+    @apply text-base font-semibold p-1 pt-0
+  }
+
+  .ListContent caption > *:nth-child(2) {
+    @apply p-2 text-xs text-right
   }
 
   .ListContent th {
