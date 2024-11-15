@@ -1,0 +1,106 @@
+@tailwind components;
+
+@layer components {
+
+  * {
+    /* @apply border border-white border-dotted */
+  }
+    
+  .Header {
+    @apply flex flex-col space-y-0
+    m-4 p-2 pb-4 
+    /* border-2 border-sky-700 */
+    text-sky-700
+    bg-white bg-opacity-50
+  }
+
+  .Content {
+    @apply flex 
+    flex-col md:flex-row 
+    space-x-0 md:space-x-4
+    space-y-4 md:space-y-0
+    max-w-full 
+    m-4 text-sm
+  }
+
+  .Footer {
+    @apply flex flex-row flex-wrap justify-center
+    m-4 p-1 
+    text-sky-800
+    /* bg-white bg-opacity-50 */
+  }
+
+  .Footer > * {
+    @apply m-2 text-sm font-semibold
+    /* bg-white bg-opacity-25 */
+  }
+
+  .Footer > a {
+    @apply border-b border-sky-700
+  }
+
+  .Header .Top,
+  .Header .Bottom {
+    @apply flex flex-row justify-between
+  }
+
+  .Header > .Top > *,
+  .Header > .Bottom > * {
+    @apply flex flex-row
+  }
+
+  .Header > .Top > * {
+    /* @apply hover:bg-sky-700 hover:bg-opacity-35 hover:text-sky-300 */
+  }
+
+  .Header .icon {
+    @apply w-12 h-8 p-2 text-2xl
+  }
+
+  .Header > .Top {
+    @apply border-b-2 border-sky-700
+  }
+
+  .Header > .Top > .Left .icon {
+    @apply pt-3
+  }
+
+  .Header > .Top > .Right {
+    @apply p-1
+  }
+
+  .Header > .Top > .Right > * {
+      @apply w-[1.75em] h-[2em] 
+      m-1 border border-sky-700
+      p-1 text-base 
+      text-sky-700
+      hover:bg-sky-700 hover:text-sky-300
+  }
+
+  .Header > .Top > .Right.status > *:nth-child(1) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.savings > *:nth-child(2) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.production > *:nth-child(3) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.precipitation > *:nth-child(4) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.temperature > *:nth-child(5) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.interruptions > *:nth-child(6) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.savings-production > *:nth-child(7) { @apply bg-sky-700 text-sky-300 }
+  .Header > .Top > .Right.savings-precipitation > *:nth-child(8) { @apply bg-sky-700 text-sky-300 }
+
+  .Header > .Top .text {
+    @apply p-2 text-3xl font-bold
+  }
+
+  .Header > .Bottom .text {
+    @apply ml-2 h-full pt-4 text-sm font-semibold 
+  }
+
+  .Header, .Content, .Footer {
+    animation-name: slowOpacity;
+    animation-duration: 250ms;
+    animation-delay: 0ms;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+  }
+}
+
+@keyframes slowOpacity { 0% { opacity: 0; } 100% { opacity: .5; } }

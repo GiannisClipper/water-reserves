@@ -1,0 +1,34 @@
+@tailwind components;
+
+@layer components {
+
+  .Options {
+    @apply flex flex-row flex-wrap justify-center
+  }
+
+  .Options .Option {
+    @apply flex flex-row justify-items-start
+    /* w-[calc(100%)] md:w-[calc(70%)] lg:w-[calc(60%)] */
+    w-[calc(90%)] sm:w-[calc(66%)] md:w-[calc(40%)] lg:w-[calc(30%)] xl:w-[calc(22%)]
+    aspect-[1.25]
+    m-4 border-4
+    border-transparent active:border-sky-200
+    bg-sky-200 hover:bg-sky-500 
+    text-sky-500 hover:text-sky-200 
+  }
+
+  .Options .Option .icon {
+    @apply w-12 p-3 pr-10 text-2xl
+    bg-sky-500 text-sky-200
+  }
+
+  .Options .Option .text {
+    @apply min-h-12 p-4 text-sky-700
+    font-semibold text-lg
+  }
+
+  .Options .Option .text p:nth-child(2) {
+    @apply mt-4 
+    font-normal text-sm
+  }
+}

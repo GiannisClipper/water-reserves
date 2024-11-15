@@ -1,0 +1,137 @@
+Next.js
+
+setup automatically: npx create-next-app@latest
+start the development server: npm run dev
+call the app in browser: http://localhost:3000
+
+Start building with Next.js
+https://nextjs.org/learn
+
+Next.js 14 Tutorial 
+https://www.youtube.com/playlist?list=PLC3y8-rFHvwjOKd6gdf4QtV1uYNiQnruI
+
+
+Tailwind CSS
+
+VS Code extension: Intelligent Tailwind CSS (to propose/autocomplete directives) 
+VS code extension: PostCSS Language Support (to fix error: Unknown at rule @apply css)
+
+https://tailwindcss.com/docs
+
+
+Colors 
+
+Tailwind CSS Colors
+https://uicolors.app/browse/tailwind-colors
+
+HSL to RGB color conversion
+https://www.rapidtables.com/convert/color/hsl-to-rgb.html
+
+
+Icons
+
+Font Awesome Docs: Set Up with React
+https://docs.fontawesome.com/web/use-with/react/
+to search fonts
+https://fontawesome.com/search?q=profile&o=r&m=free
+
+
+Typescript
+
+Learn Typescript with React | Quick Crash Course
+https://www.youtube.com/watch?v=kq6IhAZVNh8
+
+
+Recharts
+
+https://recharts.org/
+
+How to use Next.js and Recharts to build an information dashboard
+https://ably.com/blog/informational-dashboard-with-nextjs-and-recharts
+
+
+Download
+
+How to create a file and generate a download with Javascript in the Browser (without a server)
+https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
+
+How to download CSV and JSON files in React
+https://theroadtoenterprise.com/blog/how-to-download-csv-and-json-files-in-react
+
+How to Convert a React Component to an Image
+https://dev.to/saranshk/how-to-convert-a-react-component-to-an-image-2jon
+
+
+Leaflet (installation)
+
+leaflet library and React wrapper: 
+npm install leaflet react-leaflet
+
+types for the leaflet library: 
+npm install -D @types/leaflet
+
+library containing the default icons (icons might not display properly if this step is omitted):
+npm install leaflet-defaulticon-compatibility
+
+
+Leaflet
+
+React Leaflet
+https://react-leaflet.js.org/
+
+Embed OpenStreetMap in a Next.js project
+https://cloudinary.com/blog/guest_post/embed-openstreetmap-in-a-next-js-project
+
+Displaying a Leaflet Map in NextJS
+https://medium.com/@tomisinabiodun/displaying-a-leaflet-map-in-nextjs-85f86fccc10c
+
+
+https://leaflet-extras.github.io/leaflet-providers/preview/
+
+https://codesandbox.io/p/sandbox/react-leaflet-geojson-773y5?file=%2Fsrc%2Findex.js
+
+
+Chrome long screenshot
+
+1. Open the Inspect Window
+2. Select "Run command" (ctrl+shift+p)
+3. Type "Capture full size"
+
+
+Record screen with audio
+
+How to Install Kazam on Ubuntu?
+https://www.geeksforgeeks.org/how-to-install-kazam-on-ubuntu/
+
+Kazam shortcuts
+
+start recording: Super + Control + r
+pause recording: Super + Control + p
+finish recording: Super + Control + f
+show Kazam: Super + Control + s
+quit Kazam: Super + Control + q
+
+How to Install FFmpeg on Ubuntu 22.04
+https://gcore.com/learning/how-to-install-ffmpeg-on-ubuntu/
+
+Merge video with ffmpeg
+https://stackoverflow.com/a/42859731/12138247
+
+1 Create a text file like:
+file '10.mov'
+file '11.mov'
+
+2 Run on terminal:
+ffmpeg -f concat -i list.txt -c copy video.mp4
+
+How to Adjust Volume Using FFmpeg (Volume, DRC, Normalization included)
+https://ottverse.com/how-to-adjust-volume-using-ffmpeg-drc-normalization/
+
+increase by 3 dB: ffmpeg -i input.mp4 -af "volume=3dB" output.mp4
+decrease by 6 dB: ffmpeg -i input.mp4 -af "volume=-6dB" output.mp4
+
+ffmpeg convert without loss quality
+https://stackoverflow.com/a/27878699/12138247
+
+ffmpeg -i input.mp4 -vcodec copy -af "volume=3dB" output.mp4
+

@@ -1,0 +1,56 @@
+@tailwind components;
+
+@layer components {
+
+  .ListContent {
+    @apply
+    min-w-full
+    max-w-full
+    aspect-[1] md:aspect-[2]
+    /* min-h-[calc(50vh)]
+    max-h-[calc(50vh)] */
+    bg-gray-700 text-gray-300 text-xs 
+    p-4
+    font-mono
+    overflow-scroll
+    text-center
+  }
+
+  .ListContent table {
+    @apply inline-block 
+  }
+
+  .ListContent caption > *:nth-child(1) {
+    @apply text-base font-semibold p-1 pt-0
+  }
+
+  .ListContent caption > *:nth-child(2) {
+    @apply p-2 text-xs text-right
+  }
+
+  .ListContent th {
+    @apply bg-gray-600 border border-gray-700 p-2 px-6
+  }
+
+  .ListContent th:first-child {
+    @apply border-l-gray-600
+  }
+
+  .ListContent th:last-child {
+    @apply border-r-gray-600
+  }
+
+  .ListContent td {
+    @apply border border-gray-600 p-2 px-4
+    text-left
+    whitespace-nowrap
+  }
+
+  .ListContent td.time {
+    @apply text-center
+  }
+
+  .ListContent td.number {
+    @apply text-right
+  }
+}

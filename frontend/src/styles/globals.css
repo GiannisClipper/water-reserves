@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+
+  *, *:focus, *:hover {
+    outline: none;
+  }
+
+  body {
+    font-family: Nunito,sans-serif;
+    /* @apply bg-[url("/water.jpg")] */
+    /* @apply bg-[url("/water-brightness-50.jpg")] */
+    /* @apply bg-[url("/water-blueish.jpg")] */
+    @apply 
+    bg-cover
+    bg-[url("/water3-darker.jpg")]
+    h-full w-full min-h-screen
+    /* bg-gradient-to-b from-slate-200 to-slate-700 */
+  }
+
+  .icon {
+    @apply cursor-pointer
+  }
+
+  .Error {
+    @apply bg-transparent p-3 text-red-600
+  }
+
+  .Error .icon {
+    @apply w-4 h-4 text-lg
+  }
+}

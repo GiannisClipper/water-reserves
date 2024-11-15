@@ -1,0 +1,31 @@
+@tailwind components;
+
+@layer components {
+
+  .Form {
+    @apply min-w-full min-h-full
+    text-xs
+  }
+
+  .FormSection, .FormButton {
+    @apply m-2 bg-white bg-opacity-50 text-sky-800
+    pb-1
+  }
+
+  .FormButton {
+    @apply flex flex-row
+    pb-0
+  }
+
+  .FormSection > * {
+    @apply min-w-full text-inherit
+  }
+
+  .FormSection > .Top, .FormButton > * {
+    @apply p-2 text-inherit
+  }
+
+  .FormSection > .Bottom {
+  }
+   
+}
