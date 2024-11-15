@@ -31,7 +31,7 @@ def exists( table_names: tuple ):
         handler.maker.exists_table()
         handler.run_query()
 
-        table_result = handler.data[ 0 ]
+        table_result = handler.data[ 0 ][ 0 ] # handler.data looks like [(False,)]
         print( f"Table {table_name} {'already exists' if table_result else 'NOT exists'}." )
         final_result = final_result and table_result
 

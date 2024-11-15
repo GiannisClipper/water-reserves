@@ -58,6 +58,11 @@ How to Document an API for Python FastAPI: Best Practices for Maintainable and R
 https://medium.com/codex/how-to-document-an-api-for-python-fastapi-best-practices-for-maintainable-and-readable-code-a183a3f7f036
 
 
+=> to fix psycopg error while using docker-compose => pip install "psycopg[binary,pool]"
+ImportError "no pq wrapper available" when importing psycopg3
+https://stackoverflow.com/questions/72112754/importerror-no-pq-wrapper-available-when-importing-psycopg3
+
+
 # Testing
 
 FastAPI Async Tests
@@ -187,3 +192,27 @@ https://www.geeksforgeeks.org/time-series-data-visualization-in-python/
 
 Complete Guide on Time Series Analysis in Python
 https://www.kaggle.com/code/prashant111/complete-guide-on-time-series-analysis-in-python
+
+
+# Monorepo
+
+Merge Multiple Git Repositories without Breaking File History
+https://www.linkedin.com/pulse/merge-multiple-git-repositories-without-breaking-file-akshay-kaushik-qto1f/
+
+
+# Dockerize
+
+Containerizing FastAPI App with Docker: A Comprehensive Guide
+https://medium.com/@alidu143/containerizing-fastapi-app-with-docker-a-comprehensive-guide-416521b2457c
+
+Next.js Dockerfile Tutorial: Containerize Your Next.js App Easily
+https://www.dhiwise.com/post/nextjs-dockerfile-tutorial-containerize-your-nextjs-app
+
+# access filesystem in a docker image
+docker run --rm -it --entrypoint=/bin/bash name-of-image
+
+# access filesystem in a running docker image (container)
+docker exec -it mycontainer /bin/bash
+
+docker compose --env-file ./resources/.env up -d
+docker compose --env-file ./resources/.env down

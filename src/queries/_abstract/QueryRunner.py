@@ -31,6 +31,7 @@ class OnceQueryRunner( QueryRunner ):
             row_factory = class_row( RowModel)
 
         with psycopg.connect( conninfo=self.connection_string ) as conn, conn.cursor( row_factory=row_factory ) as cur:
+            # print( query )
             cur.execute( query, params )
             conn.commit()
 

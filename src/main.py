@@ -19,7 +19,7 @@ print( "+-----------------------+" )
 if not exists( tables ):
     try:
         print( "Initializing DB tables..." )
-        make_tables( db.tables )
+        make_tables( tables )
 
     except Exception as error:
         print( 'Error: ' + repr( error ) )

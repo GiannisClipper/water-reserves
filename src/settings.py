@@ -32,22 +32,22 @@ class Settings( BaseSettings ):
     interruptions_cron: str = "16,36,56 8-21 * * *"
     geolocation_cron: str = "17,37,57 8-21 * * *"
 
-    db_host: str = ""
-    db_port: str = ""
-    db_name: str = ""
-    db_user: str = ""
-    db_password: str = ""
+    db_host: str
+    db_port: str
+    db_name: str
+    db_user: str
+    db_password: str
 
     # Pydantic will read the environment variables in a case-INsensitive way, 
     # an upper-case variable APP_NAME will still be read for the attribute app_name
-    GEOAPIFY_API_KEY: str =""
+    GEOAPIFY_API_KEY: str
 
     status: object = None
 
-    model_config = SettingsConfigDict( 
-        env_file='resources/.env',
-        env_file_encoding='utf-8' 
-    )
+    # model_config = SettingsConfigDict( 
+    #     env_file='resources/.env',
+    #     env_file_encoding='utf-8' 
+    # )
 
 @lru_cache() # due to @lru_cache, will be returned a singleton object
 def get_settings():
