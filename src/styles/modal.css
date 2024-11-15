@@ -39,7 +39,7 @@
     }
 
     .ModalWindow {
-        @apply border-2 border-sky-700 bg-sky-200
+        @apply border-2 border-sky-700 bg-sky-100
     }
 
     .ModalWindow > .Top,
@@ -63,11 +63,11 @@
     }
 
     .ModalWindow > .Top {
-        @apply bg-sky-700 text-sky-200
+        @apply bg-sky-700 text-sky-100
     }
 
     .ModalWindow > .Top > * {
-        @apply bg-sky-700 text-sky-200
+        @apply bg-sky-700 text-sky-100
     }
 
     .ModalWindow > .Bottom {

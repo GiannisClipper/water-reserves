@@ -20,6 +20,7 @@
     /* @apply bg-[url("/water-brightness-50.jpg")] */
     /* @apply bg-[url("/water-blueish.jpg")] */
     @apply 
+    bg-cover
     bg-[url("/water3-darker.jpg")]
     h-full w-full min-h-screen
     /* bg-gradient-to-b from-slate-200 to-slate-700 */

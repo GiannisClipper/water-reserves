@@ -4,11 +4,11 @@
 
   .Button {
     @apply flex flex-row justify-center
-    bg-yellow-100 
-    border border-solid border-yellow-100
+    bg-sky-200 
+    border border-solid border-sky-700
     hover:font-semibold
-    active:border-solid active:border-sky-300
-    active:bg-yellow-200
+    active:border-solid active:border-sky-200
+    active:bg-sky-200
     p-2
   }
 

@@ -59,7 +59,10 @@ export default function ParamLabel( { searchParams, setOnPageRequest }: PropsTyp
                 <div>{ getUrl() }</div>
                 <ButtonCopy
                     label="Copy to clipboard"
-                    onClick={()=> navigator.clipboard.writeText( getUrl() )}
+                    onClick={ ()=> {
+                        navigator.clipboard.writeText( getUrl() );
+                        setModal( false );
+                    } }
                 />
             </Modal>
             :

@@ -53,7 +53,14 @@ const ListLabel = () => {
                 onClose={ () => setUrlModal( false ) }
             > 
                 <div>{ getUrl() }</div>
-                <ButtonCopy onClick={ () => navigator.clipboard.writeText( getUrl() )} />
+                <ButtonCopy 
+                    label="Copy to clipboard"
+                    onClick={ ()=> {
+                        navigator.clipboard.writeText( getUrl() );
+                        setUrlModal( false );
+                    } }
+                />
+                    
             </Modal>
             :
             null
@@ -75,12 +82,18 @@ const ListLabel = () => {
                 </div>
                 <ButtonDownload 
                     label="Download as CSV"
-                    onClick={ () => downloadList( filename + '.csv' ) }
+                    onClick={ () => {
+                        downloadList( filename + '.csv' );
+                        setDownloadModal( false );
+                    } }
                 />
-                <ButtonDownload 
+                {/* <ButtonDownload 
                     label="Download as JSON"
-                    onClick={ () => downloadList( filename + '.json' ) }
-                />
+                    onClick={ () => { 
+                        downloadList( filename + '.json' ); 
+                        setDownloadModal( false );
+                    } }
+                /> */}
             </Modal>
             :
             null

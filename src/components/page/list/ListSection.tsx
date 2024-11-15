@@ -2,10 +2,10 @@ import ListLabel from "@/components/page/list/ListLabel";
 import StandardListContent from "@/components/page/list/StandardListContent";
 
 import ListLayoutHandlerFactory from "@/logic/LayoutHandler/list/ListLayoutHandlerFactory";
+import { SavingsLegend, ProductionLegend, WeatherLegend } from "./legends";
 
 import type { SearchParamsType } from "@/types/searchParams";
 import type { ObjectType } from "@/types";
-import { ProductionLegend, SavingsLegend, WeatherLegend } from "./legends";
 
 type PropsType = {
     endpoint: string

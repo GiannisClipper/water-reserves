@@ -34,7 +34,7 @@
     @apply p-0
   }
 
-  .ListContent {
+  /* .Wide .ListContent {
     @apply
     w-full
     max-w-[calc(1280px)]
@@ -43,11 +43,13 @@
     text-sky-950
   }
 
-  .ListContent th,
-  .ListContent td {
+  .Wide .ListContent caption,
+  .Wide .ListContent th,
+  .Wide .ListContent td {
       @apply border-sky-950
       bg-transparent
-  }
+      text-sm
+  } */
 
   .MapContent {
     @apply

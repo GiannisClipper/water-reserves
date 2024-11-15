@@ -58,7 +58,10 @@ export default function ChartLabel( props: ObjectType ) {
                 <div>{ getUrl() }</div>
                 <ButtonCopy
                     label="Copy to clipboard"
-                    onClick={()=> navigator.clipboard.writeText( getUrl() )}
+                    onClick={ ()=> {
+                        navigator.clipboard.writeText( getUrl() );
+                        setUrlModal( false );
+                    } }
                 />
             </Modal>
             :
@@ -81,7 +84,10 @@ export default function ChartLabel( props: ObjectType ) {
                 </div>
                 <ButtonDownload 
                     label="Download as PNG"
-                    onClick={ () => downloadChart( filename + '.png' ) }
+                    onClick={ () => {
+                        downloadChart( filename + '.png' );
+                        setDownloadModal( false );
+                    } }
                 />
             </Modal>
             :

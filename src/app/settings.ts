@@ -1,7 +1,7 @@
 const NEXT_PUBLIC_REST_API_BASE_URL: string | undefined = process.env.NEXT_PUBLIC_REST_API_BASE_URL;
 
 const APP_TITLE: string = "Water reserves";
-const APP_SUBTITLE: string = "Platform of water management data";
+const APP_SUBTITLE: string = "Water management & analysis platform";
 const STATUS: string = "Current status";
 const SAVINGS: string = "Water reserves";
 const PRODUCTION: string = "Drinking water production";
