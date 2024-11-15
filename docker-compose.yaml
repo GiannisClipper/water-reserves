@@ -1,0 +1,87 @@
+services:
+
+  postgres:
+    image: postgres:14
+    container_name: water_reserves_db
+    restart: always
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -h postgres -p 5432
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    volumes:
+      - 'postgres_volume:/var/lib/postgresql/data/'
+
+  pgadmin:
+    image: dpage/pgadmin4:8.9
+    depends_on:
+      - postgres
+    container_name: water_reserves_pgadmin
+    restart: always
+    expose:
+      - 5050
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - pgadmin_volume:/var/lib/pgadmin
+
+  fastapi:
+    # image: ghcr.io/giannisclipper/no-image-exists-yet:1.0
+    build:
+      context: .
+      dockerfile: fastapi.Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DB_HOST='postgres'
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - GEOAPIFY_API_KEY=${GEOAPIFY_API_KEY}
+
+    healthcheck:      
+      test: [ "CMD", "curl", "-f", "http://fastapi:8000" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  nextjs:
+    # image: ghcr.io/giannisclipper/no-image-exists-yet:1.0
+    build:
+      context: .
+      dockerfile: nextjs.Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      fastapi:
+        condition: service_healthy
+    environment:
+      - NEXT_PUBLIC_SELF_BASE_URL=http://nextjs:3000
+      - NEXT_PUBLIC_REST_API_BASE_URL=http://fastapi:8000/api/v1
+
+    healthcheck:      
+      test: [ "CMD", "curl", "-f", "http://nextjs:3000" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+volumes:
+  postgres_volume:
+  pgadmin_volume:

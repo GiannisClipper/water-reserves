@@ -1,0 +1,23 @@
+# Monorepo
+
+Keeping git history when converting multiple repos into a monorepo
+https://medium.com/@chris_72272/keeping-git-history-when-converting-multiple-repos-into-a-monorepo-97641744d928
+
+
+# Dockerize
+
+Containerizing FastAPI App with Docker: A Comprehensive Guide
+https://medium.com/@alidu143/containerizing-fastapi-app-with-docker-a-comprehensive-guide-416521b2457c
+
+Next.js Dockerfile Tutorial: Containerize Your Next.js App Easily
+https://www.dhiwise.com/post/nextjs-dockerfile-tutorial-containerize-your-nextjs-app
+
+
+# access filesystem in a docker image
+docker run --rm -it --entrypoint=/bin/bash name-of-image
+
+# access filesystem in a running docker image (container)
+docker exec -it mycontainer /bin/bash
+
+docker compose --env-file ./resources/.env up -d
+docker compose --env-file ./resources/.env down
