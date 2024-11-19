@@ -18,8 +18,12 @@
   }
 
   .Options .Option .icon {
-    @apply w-12 p-3 pr-10 text-2xl
+    @apply w-12 p-3 pt-5 pr-10 text-2xl
     bg-sky-500 text-sky-200
+  }
+
+  .Options .Option .icon > svg {
+    @apply h-6
   }
 
   .Options .Option .text {

@@ -71,8 +71,8 @@
 
   .Header > .Top > .Right > * {
       @apply w-[1.75em] h-[2em] 
-      m-1 border border-sky-700
-      p-1 text-base 
+      border border-sky-700
+      m-1 p-1 text-base
       text-sky-700
       hover:bg-sky-700 hover:text-sky-300
   }
