@@ -21,3 +21,15 @@ docker exec -it mycontainer /bin/bash
 
 docker compose --env-file ./resources/.env up -d
 docker compose --env-file ./resources/.env down
+
+
+# to export env variables from file (https://stackoverflow.com/a/60406814/12138247)
+export $(xargs < .env)
+
+
+# VM setup
+
+scp ssh-key.pub user@192.168.1.1:~/.ssh
+ssh -vT git@github.com
+git ls-remote git@github.com:gianisclipper/water-reserves.git
+git clone git@github.com:gianisclipper/water-reserves.git
