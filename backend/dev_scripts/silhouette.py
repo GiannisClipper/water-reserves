@@ -63,8 +63,20 @@ def run_silhouette( title, data ):
     for n_clusters in no_of_clusters: 
     
         cluster = KMeans( n_clusters = n_clusters, max_iter=MAX_ITER, random_state=32 ) 
-        cluster_labels = cluster.fit_predict( data ) 
-    
+        cluster_labels = cluster.fit_predict( data )
+
+        print( 'cluster_centers_', cluster.cluster_centers_ )
+
+        # The label/ cluster that each instance is classified
+        print( 'labels_', cluster.labels_ )
+
+        # K-Means: Inertia. It is calculated by measuring the distance between each data point and its centroid, 
+        # squaring this distance, and summing these squares across one cluster. 
+        # A good model is one with low inertia AND a low number of clusters ( K ). 
+        # However, this is a tradeoff because as K increases, inertia decreases.
+        print( 'inertia_', cluster.inertia_ )
+
+
         # The silhouette_score gives the
         # average value for all the samples. 
         silhouette_avg = silhouette_score( data, cluster_labels ) 
@@ -203,7 +215,7 @@ def temperature_silhouette():
 def interruptions_silhouette():
 
     query = '''
-        SELECT a.municipality_id, a.events, b.area, a.events / b.area, b.population, a.events / ( 0.001 * b.population ) 
+        SELECT b.name_en, a.events, b.area, a.events / b.area, b.population, a.events / ( 0.001 * b.population ) 
         FROM (
             SELECT municipality_id, COUNT( * ) AS events 
             FROM interruptions GROUP BY municipality_id
@@ -217,8 +229,9 @@ def interruptions_silhouette():
         result = cur.fetchall()
         # for row in result: print( row )
 
-    # data = list( map( lambda x: [ float( x[ 3 ] ),  float( x[ 5 ] ) ], result ) )
-    data = list( map( lambda x: [ float( x[ 1 ] ) ], result ) )
+
+    data = list( map( lambda x: [ float( x[ 1 ] ), float( x[ 3 ] ), float( x[ 5 ] ) ], result ) )
+    # data = list( map( lambda x: [ float( x[ 1 ] ), float( x[ 2 ] ), float( x[ 3 ] ) ], result ) )
     print( data )
 
     print( "Interruptions rows:", len( data ), "Max iterations:", MAX_ITER ) 

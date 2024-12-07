@@ -57,20 +57,25 @@ async def get_all(
         # values = list( map( lambda row: ( row[ -1 ], row[ -2 ] ), data ) )
 
         # normalize values between 0 and 1
+        # data[ -2 ] = interruptions per 1 sq. km
+        # data[ -1 ] = interruptions per 1000 persons
         values = []
-        for i in range( -1, -3, -1 ):
+        for i in range( -2, 0, 1 ):
             single_dim = list( map( lambda row: row[ i ], data ) )
+            # print( 'single_dim', i, sorted( single_dim ) )
             min_val, max_val = min( single_dim ), max( single_dim )
             single_dim = list( map( lambda val: ( val - min_val ) / ( max_val - min_val ), single_dim ) )
+            # print( 'norlalized single_dim', i, sorted( single_dim ) )
             values.append( single_dim )
         values = [ ( x[ 0 ], x[ 1 ] ) for x in zip( values[ 0 ], values[ 1 ] ) ]
-        # print( values )
+        # print( '2-dim normalized values', values )
 
         centers, clusters = kmeans_clustering( values, n_clusters=5 )
-        # print( 'centers', centers )
+        print( 'centers ->', centers )
         # print( 'clusters', clusters )
         headers += [ 'n_clusters', 'cluster' ]
         data = [ tuple( list( x[ 0 ] ) + [ len( centers ), x[ 1 ] ] ) for x in zip( data, clusters ) ]
+        print( 'data=>', data )
 
     # place municipalities data in result legend
 

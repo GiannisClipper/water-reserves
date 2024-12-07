@@ -14,6 +14,7 @@ def kmeans_clustering( lst, n_clusters=5 ):
     # print( kmeans.cluster_centers )
     # print( kmeans.labels_ )
 
+    # print( 'centers ->>', kmeans.cluster_centers_ )
     centers = list( map( lambda x: np.average( x ), kmeans.cluster_centers_ ) )
 
     clusters = kmeans.predict( arr )
