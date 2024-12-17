@@ -22,10 +22,15 @@ docker exec -it mycontainer /bin/bash
 docker compose --env-file ./resources/.env up -d
 docker compose --env-file ./resources/.env down
 
+docker logs --since 1h
 
 # to export env variables from file (https://stackoverflow.com/a/60406814/12138247)
 export $(xargs < .env)
 
+# VPN
+
+sudo wq-quick up device-name
+sudo wq-quick down device-name
 
 # VM setup
 
@@ -33,3 +38,11 @@ scp ssh-key.pub user@192.168.1.1:~/.ssh
 ssh -vT git@github.com
 git ls-remote git@github.com:gianisclipper/water-reserves.git
 git clone git@github.com:gianisclipper/water-reserves.git
+
+# ubuntu
+
+lsb_release -a (ubuntu version)
+netstat -ptl (ports info)
+df -h --total (disk info)
+free -h (ram info)
+lscpu (cpu info)
