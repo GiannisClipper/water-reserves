@@ -151,7 +151,7 @@ class DataParserFactory {
             }
 
             case 'temperature': {
-                if ( searchParams.time_aggregation ) {
+                // if ( searchParams.time_aggregation ) {
                     this.type = 'standard';
                     this._parserCollection = new ValueParserCollection( [
                         new TimeValueParser( { index: 0 } ),
@@ -163,18 +163,18 @@ class DataParserFactory {
                         new TemperatureMaxDifferenceValueParser( {} ),
                     ] );
     
-                } else {
-                    this.type = 'standard';
-                    this._parserCollection = new ValueParserCollection( [
-                        new TimeValueParser( { index: 1 } ),
-                        new TemperatureMinValueParser( { index: 4 } ),
-                        new TemperatureMeanValueParser( { index: 5 } ),
-                        new TemperatureMaxValueParser( { index: 6 } ),
-                        new TemperatureMinDifferenceValueParser( {} ),
-                        new TemperatureMeanDifferenceValueParser( {} ),
-                        new TemperatureMaxDifferenceValueParser( {} ),
-                    ] );
-                }
+                // } else {
+                //     this.type = 'standard';
+                //     this._parserCollection = new ValueParserCollection( [
+                //         new TimeValueParser( { index: 1 } ),
+                //         new TemperatureMinValueParser( { index: 4 } ),
+                //         new TemperatureMeanValueParser( { index: 5 } ),
+                //         new TemperatureMaxValueParser( { index: 6 } ),
+                //         new TemperatureMinDifferenceValueParser( {} ),
+                //         new TemperatureMeanDifferenceValueParser( {} ),
+                //         new TemperatureMaxDifferenceValueParser( {} ),
+                //     ] );
+                // }
                 break;
             }
 

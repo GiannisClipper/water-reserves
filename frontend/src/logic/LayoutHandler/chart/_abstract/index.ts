@@ -74,7 +74,7 @@ class ChartLayoutHandler {
     
         return this.xTicks.length && this.xTicks[ 0 ].length === 10 
             ? 'linear' // in case of full dates
-            : 'monotone'; // in case of aggregated values (months, years, ...)
+            : 'linear' //monotone'; // in case of aggregated values (months, years, ...)
     }
 
     toJSON(): ObjectType {
