@@ -80,10 +80,11 @@ abstract class RequestMakerWithParams extends RequestMaker {
             if ( [ 'time_range', 'interval_filter', 'year_start' ].includes( key ) ) {
                 filtered[ key ] = searchParams[ key ];
 
-            // keep the leading two parts (following parts may be used by the client) 
             } else if (  [ 'time_aggregation' ].includes( key ) ) {
                 if ( searchParams[ key ] ) {
-                    filtered[ key ] = searchParams[ key ].split( ',' ).slice( 0, 2 ).join( ',' );
+                    // keep the leading two parts (following parts may be used by the client) 
+                    // filtered[ key ] = searchParams[ key ].split( ',' ).slice( 0, 2 ).join( ',' );
+                    filtered[ key ] = searchParams[ key ];
                 }
             }
         } );

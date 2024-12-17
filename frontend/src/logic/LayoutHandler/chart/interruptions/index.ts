@@ -47,6 +47,7 @@ class TemporalInterruptionsStandardChartLayoutHandler extends StandardChartLayou
 
 class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler {
 
+    mapTitle: string;
     nameValueHandler: ValueHandler
     areaValueHandler: ValueHandler;
     populationValueHandler: ValueHandler;
@@ -62,6 +63,11 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
         const { timeAggregation, valueAggregation } = params;
 
         let title: string = `Water supply interruptions (${searchParams.time_range})` + intervalRepr( searchParams );
+
+        const [ frequency, computation, ratio ] = searchParams.time_aggregation.split(',');
+        const over = ratio == 'over-population' ? 'over population' : 'over area';
+        const mapTitle: string = `Water supply interruptions ${over} (${searchParams.time_range})` + intervalRepr( searchParams );
+
         let yLabel: string = 'Events';
         let yValueHandlerClass = EventsValueHandler;
 
@@ -91,6 +97,7 @@ class SpatialInterruptionsStandardChartLayoutHandler extends ChartLayoutHandler 
             YTicksCalculator
         } );
 
+        this.mapTitle = mapTitle;
         this.nameValueHandler = new MunicipalityNameValueHandler();
         this.areaValueHandler = new MunicipalityAreaValueHandler();
         this.populationValueHandler = new MunicipalityPopulationValueHandler();

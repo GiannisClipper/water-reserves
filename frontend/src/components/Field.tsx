@@ -98,8 +98,21 @@ const reprValueAggregation = ( key: string ): string => {
         'avg': 'Average daily value',
         'sum': 'Sum daily values',
         'growth': 'Change percentage',
-        'sum,over-area': 'Sum values over area',
-        'sum,over-population': 'Sum values over population',
+    };
+
+    if ( key in values ) {
+        return values[ key ];
+    }
+    return "";
+}
+
+const reprEventsAggregation = ( key: string ): string => {
+
+    const values: { [key: string]: string } = { 
+        '': 'Events',
+        'sum': 'Events',
+        'sum,over-area': 'Events over area',
+        'sum,over-population': 'Events over population',
     };
 
     if ( key in values ) {
@@ -169,6 +182,18 @@ const FieldValueAggregation = ( { values, ...props } ) => (
     />
 );
 
+const FieldEventsAggregation = ( { values, ...props } ) => (
+
+    <Field
+        label = {<span>Value</span>}
+        value = {
+            <select { ...props } disabled={ values.length <= 1 }>
+                { values.map( v => <option key={v} value={v}>{reprEventsAggregation( v )}</option> ) }
+            </select>
+        }
+    />
+);
+
 const CheckField = ( { label, ...props }: any ) => {
 
     const onClick = ( e: React.MouseEvent<HTMLElement> ) => {
@@ -208,7 +233,7 @@ export {
     FieldFromDate, FieldToDate, 
     FieldFromInterval, FieldToInterval, 
     FieldItemsAggregation, 
-    FieldTimeAggregation, FieldValueAggregation, 
+    FieldTimeAggregation, FieldValueAggregation, FieldEventsAggregation,
     CheckField,
     FieldFilename
 };

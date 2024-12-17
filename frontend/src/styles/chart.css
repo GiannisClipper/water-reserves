@@ -84,27 +84,37 @@
   }
 
   .MapContent .Legend > :nth-child(1) {
-    @apply bg-[#ffcc11]
+    /* @apply bg-[#ffcc11] */
+    @apply bg-[lightskyblue]
     bg-opacity-35
   }
 
   .MapContent .Legend > :nth-child(2) {
-    @apply bg-[#ff9811]
+    /* @apply bg-[#ff9811] */
+    @apply bg-[MediumSpringGreen]
     bg-opacity-35
   }
 
   .MapContent .Legend > :nth-child(3) {
-    @apply bg-[#ff7599]
+    /* @apply bg-[#ff7599] */
+    @apply bg-[yellow]
     bg-opacity-35
   }
 
   .MapContent .Legend > :nth-child(4) {
-    @apply bg-[#ff4299]
+    /* @apply bg-[#ff4299] */
+    @apply bg-[orange]
     bg-opacity-35
   }
 
   .MapContent .Legend > :nth-child(5) {
-    @apply bg-[#ff0000]
+    /* @apply bg-[#ff0000] */
+    @apply bg-[tomato]
+    bg-opacity-35
+  }
+
+  .MapContent .Legend > :nth-child(6) {
+    @apply bg-[purple]
     bg-opacity-35
   }
 

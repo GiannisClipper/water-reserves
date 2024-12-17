@@ -33,7 +33,7 @@ const MapTitle = ( { map, layoutHandler } ) => {
         control.onAdd = () => {
             const div = L.DomUtil.create( "div", "Title" );
             div.innerHTML =
-                `<div><span>${layoutHandler.title}</span></div>`;
+                `<div><span>${layoutHandler.mapTitle}</span></div>`;
             return div;
         };
 
@@ -87,7 +87,7 @@ const MapContent = ( { dataBox, chartType, layoutHandler }: PropsType ) => {
             feature[ 'events_over_population' ] = events[ id ][ 'events_over_population' ];
 
             const cluster: number = events[ id ][ 'cluster' ];
-            const clusterName: string = [ 'lower', 'low', 'mid', 'high', 'higher' ][ cluster ];
+            const clusterName: string = [ 'lower', 'low', 'mid-low', 'mid-high', 'high', 'higher' ][ cluster ];
             feature[ 'cluster' ] = cluster;
             feature[ 'clusterRepr' ] = `${cluster + 1} (${clusterName})`;
         }
@@ -95,7 +95,8 @@ const MapContent = ( { dataBox, chartType, layoutHandler }: PropsType ) => {
  
     const setStyle = feature => {
 
-        const clusterColors: string[] = [ '#ffcc11', '#ff9811', '#ff7599', '#ff4299', '#ff0000' ];
+        // const clusterColors: string[] = [ '#ffcc11', '#ff9811', '#ff7599', '#ff4299', '#ff0000' ];
+        const clusterColors: string[] = [ 'lightskyblue', 'MediumSpringGreen', 'yellow', 'orange', 'tomato', 'purple' ]
 
         const color: string = feature.events
             ? clusterColors[ feature.cluster ]

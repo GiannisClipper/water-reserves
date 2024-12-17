@@ -82,11 +82,12 @@ const MapLegend = ( { map } ) => {
         legend.onAdd = () => {
             const div = L.DomUtil.create( "div", "Legend");
             div.innerHTML =
-                "<div><span>Lower</span></div>" +
-                "<div><span>Low</span></div>" +
-                "<div><span>Mid</span></div>" +
-                "<div><span>High</span></div>" +
-                "<div><span>Higher</span></div>";
+                "<div><span>lower</span></div>" +
+                "<div><span>low</span></div>" +
+                "<div><span>mid-low</span></div>" +
+                "<div><span>mid-high</span></div>" +
+                "<div><span>high</span></div>" +
+                "<div><span>higher</span></div>";
             return div;
         };
 

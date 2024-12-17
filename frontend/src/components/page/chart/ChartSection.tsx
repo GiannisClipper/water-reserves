@@ -62,7 +62,7 @@ const ChartSection = ( { endpoint, searchParams, dataBox }: PropsType  ) => {
 
     const [ chartType, setChartType ] = useState<string | undefined>( searchParams.chart_type );
 
-    if ( chartType === 'map' ) {
+    if ( chartType === 'map' && searchParams.time_aggregation?.startsWith( 'alltime' ) ) {
         ChartContent = MapContent;
     }
 
