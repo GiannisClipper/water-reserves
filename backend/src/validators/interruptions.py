@@ -8,17 +8,27 @@ def validate_time_aggregation( value: str | None ) -> list[ str, str ] | None:
         return None
     
     try:
-        value = value.split( ',' )
-        if len( value ) != 2:
+        frequency, computation, ratio = '', '', ''
+
+        values: list[ str ] = value.lower().split( ',' )
+        if len( values ) == 2:
+            values.append( '' )
+
+        if len( values ) != 3:
             raise ValueError()
 
-        if value[ 0 ].lower() not in ( 'alltime', 'date', 'month', 'year' ):
+        frequency, computation, ratio = values
+
+        if frequency not in ( 'alltime', 'date', 'month', 'year' ):
             raise ValueError()
 
-        if value[ 1 ].lower() not in ( 'sum' ):
+        if computation not in ( 'sum' ):
             raise ValueError()
-        
-        return [ value[ 0 ].lower(), value[ 1 ].lower() ]
+
+        if ratio not in ( '', 'over-area', 'over-population' ):
+            raise ValueError()
+
+        return [ frequency, computation, ratio ]
 
     except Exception:
         raise HTTPException( 400, "Invalid parameter value (time_aggregation)." )
