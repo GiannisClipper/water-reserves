@@ -15,9 +15,16 @@ abstract class DataParser {
 
         let result: ObjectType = responseResult || {};
 
-        // get legend data if exists
 
         for ( const key of Object.keys( result ) ) {
+
+            // remove id values if exist
+            // console.log( 'result =>', result[ key ] )
+            if ( result[ key ].headers && result[ key ].headers[ 0 ] == 'id' ) {
+                result[ key ].data = result[ key ].data.map( ( x: any[] ) => x.slice( 1, x.length ) );
+            }
+
+            // get legend data if exists
             if ( result[ key ].legend ) {
                 this._legend = { 
                     ...( this._legend || {} ), 
@@ -33,7 +40,7 @@ abstract class DataParser {
         return this._headers;
     } 
 
-    get data(): ObjectType[] {
+    get data(): ObjectType[] {        
         return this._data;
     }
 
