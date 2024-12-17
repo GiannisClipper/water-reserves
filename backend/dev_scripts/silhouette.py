@@ -2,7 +2,7 @@
 # $ source ./venv/bin/activate
 # (venv) $ python -m dev_scripts/shilouette
 
-import sys
+import sys, math
 
 from dev_scripts.conninfo import conninfo
 import psycopg
@@ -43,14 +43,14 @@ def run_normaldist( title, data ):
 
 def run_elbow( title, data ):
 
-    no_of_clusters = [ 2, 3, 4, 5, 6, 7, 8, 9 ] 
+    num_of_clusters = [ 2, 3, 4, 5, 6, 7, 8, 9 ] 
     sum_of_sq_distances = []
-    for n_clusters in no_of_clusters: 
+    for n_clusters in num_of_clusters: 
         kmeans = KMeans( n_clusters=n_clusters )
         kmeans.fit( data )
         sum_of_sq_distances.append( kmeans.inertia_ )
 
-    plt.plot( no_of_clusters, sum_of_sq_distances, marker='o')
+    plt.plot( num_of_clusters, sum_of_sq_distances, marker='o')
     plt.title( f'Elbow Curve method ({title})', fontsize=10 )
     plt.xlabel( 'Number of clusters' )
     plt.ylabel( 'Inertia (sum of sq. distances)' )
@@ -58,9 +58,9 @@ def run_elbow( title, data ):
 
 def run_silhouette( title, data ):
 
-    no_of_clusters = [ 2, 3, 4, 5, 6, 7, 8, 9 ] 
+    num_of_clusters = [ 2, 3, 4, 5, 6, 7, 8, 9 ] 
     shilouette_results = []
-    for n_clusters in no_of_clusters: 
+    for n_clusters in num_of_clusters: 
     
         cluster = KMeans( n_clusters = n_clusters, max_iter=MAX_ITER, random_state=32 ) 
         cluster_labels = cluster.fit_predict( data )
@@ -84,10 +84,76 @@ def run_silhouette( title, data ):
 
         print( "Number of clusters:", n_clusters, "Average silhouette score:", silhouette_avg )
 
-    plt.plot( no_of_clusters, shilouette_results, marker='o' )
+    plt.plot( num_of_clusters, shilouette_results, marker='o' )
     plt.title( f'Shilouette Analysis ({title})', fontsize=10 )
     plt.xlabel( 'Number of clusters' )
     plt.ylabel( 'Silhouette score' )
+    plt.show()
+
+def run_both_elbow_silhouette( title, data ):
+
+    num_of_clusters = [ 2, 3, 4, 5, 6, 7, 8, 9 ] 
+
+    sum_of_sq_distances = []
+    for n_clusters in num_of_clusters: 
+        kmeans = KMeans( n_clusters=n_clusters )
+        kmeans.fit( data )
+        sum_of_sq_distances.append( kmeans.inertia_ )
+
+    shilouette_results = []
+    for n_clusters in num_of_clusters: 
+    
+        cluster = KMeans( n_clusters = n_clusters, max_iter=MAX_ITER, random_state=32 ) 
+        cluster_labels = cluster.fit_predict( data )
+
+        print( 'cluster_centers_', cluster.cluster_centers_ )
+
+        # The label/ cluster that each instance is classified
+        print( 'labels_', cluster.labels_ )
+
+        # K-Means: Inertia. It is calculated by measuring the distance between each data point and its centroid, 
+        # squaring this distance, and summing these squares across one cluster. 
+        # A good model is one with low inertia AND a low number of clusters ( K ). 
+        # However, this is a tradeoff because as K increases, inertia decreases.
+        print( 'inertia_', cluster.inertia_ )
+
+
+        # The silhouette_score gives the
+        # average value for all the samples. 
+        silhouette_avg = silhouette_score( data, cluster_labels ) 
+        shilouette_results.append( silhouette_avg )
+
+        print( "Number of clusters:", n_clusters, "Average silhouette score:", silhouette_avg )
+
+    # plt.plot( num_of_clusters, sum_of_sq_distances, marker='o')
+    # plt.title( f'Elbow Curve method ({title})', fontsize=10 )
+    # plt.xlabel( 'Number of clusters' )
+    # plt.ylabel( 'Inertia (sum of sq. distances)' )
+    # plt.show()
+
+
+    # plt.plot( num_of_clusters, shilouette_results, marker='o' )
+    # plt.title( f'Shilouette Analysis ({title})', fontsize=10 )
+    # plt.xlabel( 'Number of clusters' )
+    # plt.ylabel( 'Silhouette score' )
+    # plt.show()
+
+    fig, ax1 = plt.subplots()
+
+    ax1.set_xlabel( 'Number of clusters' )
+
+    ax1.set_ylabel( 'Elbow (sum of sq. distances)', color='blue' )
+    ax1.plot( num_of_clusters, sum_of_sq_distances, marker='o', color='blue' )
+    # ax1.tick_params(axis='y', labelcolor='blue')
+
+    ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+
+    ax2.set_ylabel( 'Silhouette score (from -1 to 1)', color='red' )
+    ax2.plot( num_of_clusters, shilouette_results, marker='o', color='red' )
+    # ax2.tick_params(axis='y', labelcolor='grey')
+
+    fig.tight_layout()  # otherwise the right y-label is slightly clipped
+    plt.title( 'Elbow and Silhouette results' )
     plt.show()
 
 
@@ -115,11 +181,11 @@ def savings_silhouette():
     print( "Savings rows:", len( data ), "Max iterations:", MAX_ITER ) 
 
     # run_boxplot( 'Αποθέματα νερού', np.array( data ).reshape( -1 ) )
-    run_histogram( 'Αποθέματα νερού', np.array( data ).reshape( -1 ) )
-    run_normaldist( 'Αποθέματα νερού', np.array( data ).reshape( -1 ) )
-    run_elbow( 'Αποθέματα νερού', data )
-    run_silhouette( 'Αποθέματα νερού', data )
-
+    # run_histogram( 'Αποθέματα νερού', np.array( data ).reshape( -1 ) )
+    # run_normaldist( 'Αποθέματα νερού', np.array( data ).reshape( -1 ) )
+    # run_elbow( 'Αποθέματα νερού', data )
+    # run_silhouette( 'Αποθέματα νερού', data )
+    run_both_elbow_silhouette( 'water reserves', data )
 
 def production_silhouette():
 
@@ -214,6 +280,66 @@ def temperature_silhouette():
 
 def interruptions_silhouette():
 
+    def get_values_triple( result ):
+        values0 = np.zeros( [ len( result ), 1 ] )
+        values1 = np.zeros( [ len( result ), 1 ] )
+        values2 = np.zeros( [ len( result ), 1 ] )
+        for i, row in enumerate( result ):
+            events = float( row[ 1 ] )
+            area = float( row[ 2 ] )
+            population = float( row[ 4 ] )
+            values0[ i ] = [ events ]
+            values1[ i ] = [ events / area ]
+            values2[ i ] = [ events / population ]
+        values0 = ( values0 - min( values0 ) ) / ( max( values0 ) - min( values0 ) )
+        values1 = ( values1 - min( values1 ) ) / ( max( values1 ) - min( values1 ) )
+        values2 = ( values2 - min( values2 ) ) / ( max( values2 ) - min( values2 ) ) 
+        values0 = ( values0 + values1 + values2 ) / 3
+        return list( values0 )
+
+    def get_values_events( result ):
+        values = np.zeros( [ len( result ), 1 ] )
+        for i, row in enumerate( result ):
+            events = float( row[ 1 ] )
+            values[ i ] = [ events ]
+        return list( values )
+
+    def get_values_area( result ):
+        values = np.zeros( [ len( result ), 1 ] )
+        for i, row in enumerate( result ):
+            events = float( row[ 1 ] )
+            area = float( row[ 2 ] )
+            population = float( row[ 4 ] )
+            values[ i ] = [ events / area ]
+        return list( values )
+
+    def get_values_population( result ):
+        values = np.zeros( [ len( result ), 1 ] )
+        for i, row in enumerate( result ):
+            events = float( row[ 1 ] )
+            area = float( row[ 2 ] )
+            population = float( row[ 4 ] )
+            values[ i ] = [ events / population ]
+        return list( values )
+
+    def get_values_density( result ):
+        values = np.zeros( [ len( result ), 1 ] )
+        for i, row in enumerate( result ):
+            events = float( row[ 1 ] )
+            area = float( row[ 2 ] )
+            population = float( row[ 4 ] )
+            values[ i ] = [ events * population / area ]
+        return list( values )
+
+    def get_values_product( result ):
+        values = np.zeros( [ len( result ), 1 ] )
+        for i, row in enumerate( result ):
+            events = float( row[ 1 ] )
+            area = float( row[ 2 ] )
+            population = float( row[ 4 ] )
+            values[ i ] = [ events / population * area ]
+        return list( values )
+
     query = '''
         SELECT b.name_en, a.events, b.area, a.events / b.area, b.population, a.events / ( 0.001 * b.population ) 
         FROM (
@@ -229,8 +355,18 @@ def interruptions_silhouette():
         result = cur.fetchall()
         # for row in result: print( row )
 
+    # data = get_values_triple( result )
+    data = get_values_events( result )
+    # data = get_values_area( result )
+    # data = get_values_population( result )
+    # data = get_values_density( result )
+    # data = get_values_product( result )
 
-    data = list( map( lambda x: [ float( x[ 1 ] ), float( x[ 3 ] ), float( x[ 5 ] ) ], result ) )
+    # values.append( [ ( events / area ) * ( population / area ) ] )
+    # data = list( map( lambda x: [ math.log( ( float( x[ 1 ] ) / float( x[ 2 ] ) ) * ( float( x[ 4 ] ) / float( x[ 2 ] ) ), 10 ) ], result ) )
+    # data = list( map( lambda x: [ float(x[ 2 ] ) * ( float(x[ 4 ] ) / float(x[ 3 ] ) ) ], result ) )
+    # data = list( map( lambda x: [ float(x[ 3 ] ), float( x[ 5 ] ) ], result ) )
+    # data = list( map( lambda x: [ float( x[ 1 ] ), float( x[ 3 ] ), float( x[ 5 ] ) ], result ) )
     # data = list( map( lambda x: [ float( x[ 1 ] ), float( x[ 2 ] ), float( x[ 3 ] ) ], result ) )
     print( data )
 
