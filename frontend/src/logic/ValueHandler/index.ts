@@ -58,11 +58,11 @@ class ValueHandler {
 // }
 
 const timeRepr: ObjectType = {
-    '': 'Time density (date)',
-    'date': 'Time density (date)',
-    'month': 'Time density (month)',
-    'year': 'Time density (year)',
-    'custom_year': 'Time density (hydrologic year)',
+    '': 'Time aggregation (date)',
+    'date': 'Time aggregation (date)',
+    'month': 'Time aggregation (month)',
+    'year': 'Time aggregation (year)',
+    'custom_year': 'Time aggregation (hydrologic year)',
 };
 
 const valueRepr: ObjectType = {

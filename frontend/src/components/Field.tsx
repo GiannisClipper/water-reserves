@@ -129,7 +129,7 @@ const reprTimeAggregation = ( key: string ): string => {
         'month': 'Per month', 
         'year': 'Per year', 
         'custom_year': 'Per hydrological year',
-        'alltime': 'In total', 
+        'alltime': 'All time', 
     };
 
     if ( key in values ) {
@@ -141,7 +141,7 @@ const reprTimeAggregation = ( key: string ): string => {
 const FieldItemsAggregation = ( props: any ) => (
 
     <Field
-        label = {<span>Density</span>}
+        label = {<span>Aggregation</span>}
         value = {
             <select { ...props }>
                 <option value="sum">{reprItemsAggregation( "sum" )}</option>
@@ -154,7 +154,7 @@ const FieldItemsAggregation = ( props: any ) => (
 const FieldTimeAggregation = ( { values, ...props } ) => (
 
     <Field
-        label = {<span>Density</span>}
+        label = {<span>Aggregation</span>}
         value = {
             <select { ...props } disabled={ values.length <= 1 }>
                 { values.map( v => <option key={v} value={v}>{reprTimeAggregation( v )}</option> ) }

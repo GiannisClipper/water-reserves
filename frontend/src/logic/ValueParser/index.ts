@@ -35,7 +35,7 @@ abstract class ValueParser {
     }
 }
 
-// promary values: get directly from the http response
+// primary values: get directly from the http response
 
 abstract class PrimaryValueParser extends ValueParser {
 
