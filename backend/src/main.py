@@ -107,11 +107,14 @@ app = FastAPI(
 class HomeResponse( BaseModel ):
     message: str
 
-@app.get( '/', tags=[ docs.tag_home ] )
 async def home() -> HomeResponse:
     # for debugging/control purposes
-    print( scheduler.print_jobs() )
+    # print( scheduler.print_jobs() )
 
+    return { "message": "Water reserves back-end is up and running..." }
+
+@app.get( '/api', tags=[ docs.tag_home ] )
+async def home_api() -> HomeResponse:
     return { "message": "Water reserves back-end is up and running..." }
 
 from src.routers import status as status_router
