@@ -114,7 +114,7 @@ const CardPieChart = ( { centers, cluster, layoutHandler }: PieChartPropsType ) 
 
     const level: number = ( cluster + 1) * levelArc - 0.5 * levelArc;
 
-    const label = `Evaluation: ${cluster+1}/${centers.length} (${layoutHandler.evaluation[ cluster ]})`;
+    const label = `30-days-period evaluation: ${cluster+1}/${centers.length} (${layoutHandler.evaluation[ cluster ]})`;
 
     const cx = WIDTH / 2;
     const cy = HEIGHT / 1.5;
