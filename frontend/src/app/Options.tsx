@@ -34,7 +34,7 @@ export default function Options() {
         <div className="Content"> 
             <div className="Options"> 
 
-            <Link className="Option Status" href="/status">
+            <a className="Option Status" href="/status">
                 <Left className='icon'>
                     <GaugeIcon />
                 </Left>
@@ -42,9 +42,9 @@ export default function Options() {
                     <p>{ STATUS }</p>
                     <p>{ STATUS_DESCR }</p>
                 </Right>
-            </Link>
+            </a>
 
-            <Link className="Option Savings" href="/savings">
+            <a className="Option Savings" href="/savings">
                 <Left className='icon'>
                     <WaterIcon />
                 </Left>
@@ -52,9 +52,9 @@ export default function Options() {
                     <p>{ SAVINGS }</p>
                     <p>{ SAVINGS_DESCR }</p>
                 </Right>
-            </Link>
+            </a>
 
-            <Link className="Option Production" href="/production">
+            <a className="Option Production" href="/production">
                 <Left className='icon'>
                    <FaucetIcon />
                 </Left>
@@ -62,9 +62,9 @@ export default function Options() {
                     <p>{ PRODUCTION }</p>
                     <p>{ PRODUCTION_DESCR }</p>
                 </Right>
-            </Link>
+            </a>
 
-            <Link className="Option Precipitation" href="/precipitation">
+            <a className="Option Precipitation" href="/precipitation">
                 <Left className='icon'>
                     <RainIcon />
                 </Left>
@@ -72,9 +72,9 @@ export default function Options() {
                     <p>{ PRECIPITATION }</p>
                     <p>{ PRECIPITATION_DESCR }</p>
                 </Right>
-            </Link>
+            </a>
 
-            <Link className="Option Temperature" href="/temperature">
+            <a className="Option Temperature" href="/temperature">
                 <Left className='icon'>
                     <TemperatureIcon />
                 </Left>
@@ -82,9 +82,9 @@ export default function Options() {
                     <p>{ TEMPERATURE }</p>
                     <p>{ TEMPERATURE_DESCR }</p>
                 </Right>
-            </Link>
+            </a>
 
-            <Link className="Option Interruptions" href="/interruptions">
+            <a className="Option Interruptions" href="/interruptions">
                 <Left className='icon'>
                     <ToolIcon />
                 </Left>
@@ -92,9 +92,9 @@ export default function Options() {
                     <p>{ INTERRUPTIONS }</p>
                     <p>{ INTERRUPTIONS_DESCR }</p>
                 </Right>
-            </Link>
+            </a>
 
-            <Link className="Option SavingsProduction" href="/savings-production">
+            <a className="Option SavingsProduction" href="/savings-production">
                 <Left className='icon'>
                     <ComposeIcon />
                 </Left>
@@ -102,9 +102,9 @@ export default function Options() {
                     <p>{ SAVINGS_PRODUCTION }</p>
                     <p>{ SAVINGS_PRODUCTION_DESCR }</p>
                 </Right>
-            </Link>
+            </a>
 
-            <Link className="Option SavingsPrecipitation" href="/savings-precipitation">
+            <a className="Option SavingsPrecipitation" href="/savings-precipitation">
                 <Left className='icon'>
                     <ComposeIcon />
                 </Left>
@@ -112,7 +112,7 @@ export default function Options() {
                     <p>{ SAVINGS_PRECIPITATION }</p>
                     <p>{ SAVINGS_PRECIPITATION_DESCR }</p>
                 </Right>
-            </Link>
+            </a>
 
             </div>
         </div>

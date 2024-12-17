@@ -21,7 +21,7 @@ const Header = ( { subTitle, endpoint }: PropsType ) => {
         <div className="Header">
 
             <Top>
-                <Link className="Left" href="/">
+                <a className="Left" href="/">
 
                     <Left className="icon">
                         <WaterIcon />
@@ -29,7 +29,7 @@ const Header = ( { subTitle, endpoint }: PropsType ) => {
                     <Right className="text">
                         { APP_TITLE }
                     </Right>
-                </Link>
+                </a>
 
                 <Right className={endpoint}>
                     { endpoint ? <HeaderOptions /> : null }
@@ -56,37 +56,37 @@ const Header = ( { subTitle, endpoint }: PropsType ) => {
 const HeaderOptions = () => 
 
     <>
-        <Link className="Option" title="Current status" href="/status">
+        <a className="Option" title="Current status" href="/status">
             <GaugeIcon />
-        </Link>
+        </a>
 
-        <Link className="Option" title="Water reserves" href="/savings">
+        <a className="Option" title="Water reserves" href="/savings">
             <WaterIcon />
-        </Link>
+        </a>
 
-        <Link className="Option" title="Drinking water production" href="/production">
+        <a className="Option" title="Drinking water production" href="/production">
             <FaucetIcon />
-        </Link>
+        </a>
 
-        <Link className="Option" title="Precipitation measurements" href="/precipitation">
+        <a className="Option" title="Precipitation measurements" href="/precipitation">
             <RainIcon />
-        </Link>
+        </a>
 
-        <Link className="Option" title="Temperature in Athens" href="/temperature">
+        <a className="Option" title="Temperature in Athens" href="/temperature">
             <TemperatureIcon />
-        </Link>
+        </a>
 
-        <Link className="Option" title="Water supply interruptions" href="/interruptions">
+        <a className="Option" title="Water supply interruptions" href="/interruptions">
                 <ToolIcon />
-        </Link>
+        </a>
 
-        <Link className="Option" title="Water reserves & production" href="/savings-production">
+        <a className="Option" title="Water reserves & production" href="/savings-production">
             <ComposeIcon />
-        </Link>
+        </a>
 
-        <Link className="Option" title="Water reserves & precipitation" href="/savings-precipitation">
+        <a className="Option" title="Water reserves & precipitation" href="/savings-precipitation">
             <ComposeIcon />
-        </Link>
+        </a>
     </>;
 
 export default Header;

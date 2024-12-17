@@ -70,11 +70,17 @@
   }
 
   .Header > .Top > .Right > * {
-      @apply w-[1.75em] h-[2em] 
+      @apply w-[1.75em] h-[2em]
       border border-sky-700
-      m-1 p-1 text-base
+      m-1 p-1 pt-2
       text-sky-700
       hover:bg-sky-700 hover:text-sky-300
+  }
+
+  /* Adjust header icon sizes */
+  .Header > .Top > .Right > * > * {
+    @apply w-[1.1em] h-[1em]
+    block
   }
 
   .Header > .Top > .Right.status > *:nth-child(1) { @apply bg-sky-700 text-sky-300 }
