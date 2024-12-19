@@ -8,8 +8,8 @@
   }
 
   .Card {
-    /* @apply w-full md:w-[480px] */
-    @apply w-[480px]
+    @apply w-full md:w-[480px]
+    /* @apply w-[480px] */
     my-4 md:mx-4
     bg-white bg-opacity-50
     p-4

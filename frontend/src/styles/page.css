@@ -44,7 +44,8 @@
     @apply
     min-w-full
     max-w-full
-    aspect-[2]
+    aspect-[1.5]
+    md:aspect-[2]
     /*min-h-[calc(55vh)]
     max-h-[calc(55vh)] */
     bg-gray-50 text-gray-600 text-xs
