@@ -1,6 +1,6 @@
-# to run script:
+# to run the script:
 # $ source ./venv/bin/activate
-# (venv) $ python -m dev_scripts/kmeans-examples
+# (venv) $ python -m dev_scripts.kmeans_examples
 
 import sys, math
 import psycopg
@@ -14,7 +14,7 @@ def savings_example():
         SELECT SUBSTR( a.date::text,1,4) AS year, AVG( a.quantity ) AS quantity 
         FROM (
             SELECT date, SUM( quantity ) AS quantity 
-            FROM savings WHERE date < '2024-01-01' GROUP BY date
+            FROM savings WHERE date < '2025-01-01' GROUP BY date
         ) a
         GROUP BY SUBSTR( a.date::text,1,4) 
         ORDER BY SUBSTR( a.date::text,1,4);
@@ -42,14 +42,20 @@ def savings_example():
     print( 'centers', centers )
     print( 'labels', labels )
 
+    labels_repr = [ '1 lower', '2 low', '3 mid-low', '4 mid-high', '5 high', '6 higher' ]
+
     new_result = []
     for i, label in enumerate( labels ):
         new_result.append( [
             result[ i ][ 0 ],
-            result[ i ][ 1 ],
-            label
+            float( result[ i ][ 1 ] ),
+            label,
+            labels_repr[ label ]
         ] )
         print( new_result[ -1 ] )
+
+    # for entry in new_result:
+    #     print( entry[ -1 ] )
 
     for label in range( 6 ):
         min_result = 10e12
@@ -330,4 +336,8 @@ if __name__ == "__main__":
     #     print ( 'Syntax example: python -m dev_scripts/kmeans-example.py savings' )
     #     print ( 'Syntax example: python -m dev_scripts/kmeans-example.py interruptions' )
     #     exit( -1 )
+
+# to run the script:
+# $ source ./venv/bin/activate
+# (venv) $ python -m dev_scripts.kmeans_examples
 

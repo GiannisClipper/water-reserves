@@ -1,3 +1,10 @@
+# start backend summary
+export $(xargs < .env)
+uvicorn src.main:app --port=8000 --reload
+http://localhost:8000
+http://localhost:8000/docs (swagger-ui)
+
+
 # Documentation
 
 UML Class Diagram Relationships Explained with Examples

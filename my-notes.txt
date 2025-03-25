@@ -29,8 +29,10 @@ export $(xargs < .env)
 
 # VPN
 
-sudo wg-quick up device-name
-sudo wg-quick down device-name
+sudo wg-quick up 'device-name'
+sudo wg-quick up dell-ubuntu
+
+sudo wg-quick down 'device-name'
 
 # VM setup
 
@@ -48,3 +50,16 @@ netstat -ptl (ports info)
 df -h --total (disk info)
 free -h (ram info)
 lscpu (cpu info)
+hostnamectl (machine info)
+
+# psql
+
+# access database
+docker exec -it container psql -U username(admin) -d database(water_reserves)
+
+# list all tables
+water_reserves=# \dt
+
+# execute sql queries
+water_reserves=# SELECT * FROM reservoirs;
+water_reserves=# UPDATE savings SET quantity=20535000 WHERE date='2025-02-22' and reservoir_id=2;

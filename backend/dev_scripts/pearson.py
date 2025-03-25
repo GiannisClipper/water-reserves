@@ -100,7 +100,7 @@ def run_pearson():
         SELECT SUBSTR(s.date::text,1,4) AS year, AVG(s.quantity) AS savings
         FROM (
             SELECT date, SUM(quantity) AS quantity 
-            FROM savings WHERE date >= '1996-01-01' AND date <= '2023-12-31'
+            FROM savings WHERE date >= '1996-01-01' AND date <= '2024-12-31'
             GROUP BY date
         ) s
         GROUP BY SUBSTR(s.date::text,1,4)
@@ -108,7 +108,7 @@ def run_pearson():
 
     JOIN (
         SELECT SUBSTR(date::text,1,4) AS year, SUM(precipitation_sum) AS precipitation 
-        FROM weather WHERE date >= '1996-01-01' AND date <= '2023-12-31'
+        FROM weather WHERE date >= '1996-01-01' AND date <= '2024-12-31'
         GROUP BY SUBSTR(date::text,1,4)
     ) w
 
@@ -135,9 +135,9 @@ def run_pearson():
         precipitation_change.append( precipitation[ i ] / precipitation[ i -1 ] )
 
     plt.figure( figsize=( 10, 6 ) )
-    plt.suptitle( 'Growth of precipitation and the water reserves', fontsize=14 )
+    plt.suptitle( 'Growth of precipitation and water reserves', fontsize=14 )
     plt.xlabel( 'Years', fontsize=12 )
-    plt.ylabel("Change regarding the previous value", labelpad=12)
+    plt.ylabel("Change regarding the previous year", labelpad=12)
     plt.tick_params( axis='x', labelrotation=90, labelsize=9 )
     plt.tick_params( axis='y', labelrotation=0, labelsize=9 )
     plt.plot( years[:], precipitation_change, label="sum of annual precipitation", color="lightskyblue", linestyle='dashed' )

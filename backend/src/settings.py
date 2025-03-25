@@ -7,7 +7,7 @@ class Settings( BaseSettings ):
     cert_file: str = f'{os.getcwd()}/resources/eydap.gr.2025.cert'
 
     savings_url: str = 'https://www.eydap.gr/el/Controls/GeneralControls/SavingsDetails.aspx'
-    production_url: str = 'https://www.eydap.gr/el/Controls/GeneralControls/DrinkingWaterProductionDetails.aspx'
+    production_url: str = 'https://www.eydap.gr/el/Controls/GeneralControls/DrinkingWaterProductionDetailsDataHub.aspx'
     weather_url: str = 'https://archive-api.open-meteo.com/v1/archive'
     interruptions_url: str = 'https://opendata.eydap.gr'
     nominatim_url: str = 'https://nominatim.openstreetmap.org/search'
