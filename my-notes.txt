@@ -4,6 +4,14 @@ Keeping git history when converting multiple repos into a monorepo
 https://medium.com/@chris_72272/keeping-git-history-when-converting-multiple-repos-into-a-monorepo-97641744d928
 
 
+How do I make Git ignore file mode (chmod) changes?
+https://stackoverflow.com/questions/1580596/how-do-i-make-git-ignore-file-mode-chmod-changes
+(
+    after turning the github repository from private to public, 
+    git status shows all files modified: old mode 100644 -> new mode 100755
+)
+
+
 # Dockerize
 
 Containerizing FastAPI App with Docker: A Comprehensive Guide
@@ -24,6 +32,9 @@ docker compose --env-file ./resources/.env down
 
 docker logs --since 1h
 
+docker save -o <path for generated tar file> <image name>
+docker load -i <path to image tar file>
+
 # to export env variables from file (https://stackoverflow.com/a/60406814/12138247)
 export $(xargs < .env)
 
@@ -38,8 +49,8 @@ sudo wg-quick down 'device-name'
 
 scp ssh-key.pub user@192.168.1.1:~/.ssh
 ssh -vT git@github.com
-git ls-remote git@github.com:gianisclipper/water-reserves.git
-git clone git@github.com:gianisclipper/water-reserves.git
+git ls-remote git@github.com:giannisclipper/water-reserves.git
+git clone git@github.com:giannisclipper/water-reserves.git
 
 scp -r ./src stud@192.168.1.1:~/water-reserves/backend
 
