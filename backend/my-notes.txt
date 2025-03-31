@@ -166,7 +166,7 @@ https://cds-beta.climate.copernicus.eu/datasets/sis-temperature-statistics?tab=d
 
 # geoapify
 login: giannisclipper (google) 
-key: d26975e0efb049b99bea416fba70e36f
+key: d26975e0efb049b99bea416fba70e36f (indicative and inactive)
 
 https://apidocs.geoapify.com/docs/geocoding/forward-geocoding/
 
