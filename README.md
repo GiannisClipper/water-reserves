@@ -35,7 +35,7 @@ Specifically the backend application carries out two main operations:
 __DEPLOYMENT__
 
 - The __Docker compose__ is used in order for the three subsystems to be containerized and connected between. 
-- The platform is deployed on the infrastructure of Harokopio University: htttp://water.ditapps.hua.gr
+- The platform is deployed on the infrastructure of Harokopio University: https://water.ditapps.hua.gr
 
 __INDICATIVE VIEWS__
 
