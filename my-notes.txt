@@ -8,7 +8,8 @@ How do I make Git ignore file mode (chmod) changes?
 https://stackoverflow.com/questions/1580596/how-do-i-make-git-ignore-file-mode-chmod-changes
 (
     after turning the github repository from private to public, 
-    git status shows all files modified: old mode 100644 -> new mode 100755
+    git status showed all files modified: old mode 100644 -> new mode 100755
+    it was fixed with: git config core.fileMode false
 )
 
 
